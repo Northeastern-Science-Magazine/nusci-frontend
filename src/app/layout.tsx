@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import "bootstrap/dist/css/bootstrap.css";
 import "./globals.css";
+
+import { Inter } from "next/font/google";
+import BootstrapClient from "@/components/BootstrapClient";
 import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,6 +24,7 @@ export default function RootLayout({
         <div className={styles.container}>
           <Header />
           {children}
+          <BootstrapClient />
         </div>
       </body>
     </html>
@@ -28,5 +32,5 @@ export default function RootLayout({
 }
 
 const styles = {
-  container: "mx-8 h-screen",
+  container: "mx-3 mt-2",
 };

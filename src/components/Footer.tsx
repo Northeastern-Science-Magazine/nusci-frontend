@@ -29,24 +29,24 @@ export default function Footer() {
                         <Image
                             src="/insta.png"
                             alt="Instagram logo"
-                            width={20}
-                            height={20}
+                            width={30}
+                            height={30}
                         />
                     </a>
                     <a href="https://www.tiktok.com/@nuscimag?_t=8oBpgx2idTi&_r=1">
                         <Image
                             src="/tiktok.png"
                             alt="TikTok logo"
-                            width={20}
-                            height={20}
+                            width={30}
+                            height={30}
                         />
                     </a>
                     <a href="https://www.linkedin.com/company/nu-sci-magazine/">
                         <Image
                             src="/linkedin.png"
                             alt="LinkedIn logo"
-                            width={20}
-                            height={20}
+                            width={30}
+                            height={30}
                         />
                     </a>
                 </div>

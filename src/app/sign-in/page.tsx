@@ -11,9 +11,9 @@ export default function LogIn() {
               <div className={styles.formInnerContainer}>
                 <h1 className={styles.signInText}>SIGN IN</h1>
                 <h3 className={styles.signUpText}>
-                  Don't have an account yet?
+                  Don't have an account yet?{" "}
                   <a href="/signup" className={styles.signUpRefText}>
-                    Sign up!
+                     Sign up!
                   </a>
                 </h3>
                 <form className={styles.form}>

@@ -18,7 +18,7 @@ export default function LogIn() {
                 </h3>
                 <form className={styles.form}>
                   <div className="w-full">
-                    <label className={styles.label} for="username">
+                    <label className={styles.label} htmlFor="username">
                       Username
                     </label>
                     <input
@@ -29,7 +29,7 @@ export default function LogIn() {
                     />
                   </div>
                   <div className="w-full">
-                    <label className={styles.label} for="password">
+                    <label className={styles.label} htmlFor="password">
                       Password
                     </label>
                     <input
@@ -59,8 +59,8 @@ export default function LogIn() {
 }
 
 const styles = {
-  parentContainer: "flex justify-center items-center",
-  mainContainer: "flex w-[80vw] bg-[#f5f5f5] h-[70vh] rounded-md",
+  parentContainer: "flex justify-center items-center h-[75vh]",
+  mainContainer: "flex w-[80vw] bg-gray h-[70vh] rounded-md",
   imageContainer:
     "flex-1 bg-[black] w-[45vw] h-full rounded-bl-md rounded-tl-md",
   image: "w-full h-full object-contain",
@@ -69,13 +69,13 @@ const styles = {
   formInnerContainer: "w-[25vw] flex-col justify-center",
   signInText: "font-bold text-[3vw]",
   signUpText: "font-md text-[1vw]",
-  signUpRefText: "underline text-[#ee7a51] hover:text-[#a64510]",
+  signUpRefText: "underline text-light-orange hover:text-dark-orange",
   form: "flex flex-col mt-[5vh] space-y-[2vh]",
   label: "block uppercase text-gray-700 text-xs font-bold mb-[0.75vh]",
   input:
-    "w-full bg-gray-200 text-gray-700 active:border-b focus:outline-[#a64510] rounded py-[1.25vh] px-[0.75vw] mb-[0.75vh] leading-tight focus:bg-white",
+    "w-full bg-gray-200 text-gray-700 active:border-b focus:outline-dark-orange rounded py-[1.25vh] px-[0.75vw] mb-[0.75vh] leading-tight focus:bg-white",
   forgotPasswordText:
-    "underline text-[0.90vw] text-[#ee7a51] hover:text-[#a64510] w-[11vw]",
+    "underline text-[0.90vw] text-light-orange hover:text-dark-orange w-[11vw]",
   signInButton:
-    "bg-[#ee7a51] text-white font-bold py-[1.25vh] px-[0.75vw] rounded hover:bg-[#a64510] focus:outline-none focus:shadow-outline",
+    "bg-light-orange text-white font-bold py-[1.25vh] px-[0.75vw] rounded hover:bg-dark-orange focus:outline-none focus:shadow-outline",
 };

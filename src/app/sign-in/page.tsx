@@ -59,8 +59,8 @@ export default function LogIn() {
 }
 
 const styles = {
-  parentContainer: "flex justify-center items-center h-[75vh]",
-  mainContainer: "flex w-[80vw] bg-gray h-[70vh] rounded-md",
+  parentContainer: "flex justify-center items-center h-[73vh]",
+  mainContainer: "flex w-[85vw] bg-gray h-[70vh] rounded-md",
   imageContainer:
     "flex-1 bg-[black] w-[45vw] h-full rounded-bl-md rounded-tl-md",
   image: "w-full h-full object-contain",

@@ -39,7 +39,7 @@ export default function Header() {
 
 const styles = {
   container: "flex items-center w-full py-4",
-  logo: "border-2 border-black",
+  logo: "border-0",
   textContainer: "ml-16",
   pageContainer: "flex mt-2",
   title: "uppercase text-5xl py-2",

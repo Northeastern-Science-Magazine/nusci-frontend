@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: nusci-frontend
+    command: npm run dev
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app

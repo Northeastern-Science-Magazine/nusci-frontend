@@ -1,11 +1,28 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "./Button";
+import React from "react";
 
 /* Modify this when adding variants to Button */
 const variants = ["default", "emphasis", "outline"] as const;
-const sizes = ["sm", "md", "lg"] as const;
-const colors = ["black", "white", "red"] as const;
+const sizes = ["lg", "md", "sm"] as const;
+const colors = [
+  "black",
+  "white",
+  "red",
+  "aqua",
+  "aqua-light",
+  "forest-green",
+  "sage-green",
+  "border",
+  "neutral",
+  "purple",
+  "pink",
+  "maroon",
+  "coral",
+  "marigold",
+] as const;
 
+/** Define the control fields for Storybook */
 const meta: Meta<typeof Button> = {
   component: Button,
   title: "Components/Button",
@@ -28,6 +45,7 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
+/** Story for Default Variant */
 export const Default: Story = {
   args: {
     children: "Hello",
@@ -37,6 +55,7 @@ export const Default: Story = {
   },
 };
 
+/** Story for Emphasis Variant */
 export const Emphasis: Story = {
   args: {
     children: "Click Me",
@@ -46,6 +65,7 @@ export const Emphasis: Story = {
   },
 };
 
+/** Story for Outline Variant */
 export const Outline: Story = {
   args: {
     children: "Outline",
@@ -55,34 +75,34 @@ export const Outline: Story = {
   },
 };
 
+/** Gallery Story for all Button Variants */
 export const Gallery: Story = {
   args: {},
   render: (args) => {
     return (
-      <div className="space-y-8">
-        {variants.map((variant) => (
-          <div key={variant}>
-            <div className="">
-              {sizes.map((size) => (
-                <div key={size}>
-                  {/* When adding a color variant, +/- grid cols */}
-                  <div className="grid grid-cols-3">
-                    {colors.map((color) => {
-                      const isWhiteColor = color === "white";
-                      return (
-                        <div key={color} className={`${isWhiteColor ? "bg-zinc-300" : ""} p-3`}>
-                          <Button variant={variant} size={size} color={color}>
-                            {`${variant} / ${size} / ${color}`}
+      <div>
+        {colors.map((color) => {
+          const isWhiteColor = color === "white";
+          return (
+            <div key={color}>
+              <div className={`grid grid-cols-3 gap-2 ${isWhiteColor ? "bg-zinc-300" : ""}`}>
+                {variants.map((variant) => (
+                  <React.Fragment key={variant}>
+                    <div className="flex flex-col">
+                      {sizes.map((size) => (
+                        <div key={`${variant}-${size}`} className="flex justify-left p-2">
+                          <Button size={size} color={color} variant={variant}>
+                            {`${size} | ${variant} | ${color}`}
                           </Button>
                         </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
+                      ))}
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     );
   },

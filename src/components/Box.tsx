@@ -1,27 +1,18 @@
 import React from "react";
 
 interface BoxProps {
-    name? : string;
     backgroundColor? : string;
-    width? : number
-    margin? : number
-    height? : number
-    padding? : number
-    children : React.ReactNode;
+    width? : string; 
+    margin? : string;
+    height? : string;
+    padding? : string;
+    children? : React.ReactNode;
 }
 
-export default function Box({ name, backgroundColor, width, margin, height, padding, children }: BoxProps) {
+export default function Box({ backgroundColor = "bg-white", width = "w-12", margin = "m-4", height = "h-24", padding = "p-6", children }: BoxProps) {
 return (
-        <div className = {name || "box"}
-        style = {{
-            backgroundColor : backgroundColor || 'white',
-            width : width || 50,
-            margin : margin || 10,
-            height : height || 100,
-            padding : padding || 12
-
-        }}
-        > {children}
+        <div className = {`${backgroundColor} ${width} ${height} ${margin} ${padding}`} > 
+        {children}
         </div>
 );
 }

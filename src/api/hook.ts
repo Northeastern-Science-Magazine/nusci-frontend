@@ -6,12 +6,16 @@ const useFetch = <T>(url: string) => {
     const [data, setData] = useState<T | null>(null);
 
     useEffect(() => {
-        fetch(url)
-            .then((res) => res.json())
-            .then((data) => setData(data));
+        // fetch data function
+        const fetchData = async () => {
+            const response = await fetch(url);
+            const data = await response.json();
+            setData(data);
+        }
+        fetchData();
     }, [url]);
 
-    return [data];
+    return data;
 };
 
 export default useFetch;

@@ -1,17 +1,19 @@
 ---
 name: Frontend Ticket Template
 about: A new ticket for a frontend task to be done.
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
-## What is this?
-- 
+## Task / Problem Description
+-
 
-## What is Needed?
-- 
+## Solution Requirements
+-
+
+## Figma (if applicable)
+-
 
 ## Additional Notes
 -

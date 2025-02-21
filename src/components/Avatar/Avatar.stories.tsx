@@ -17,3 +17,10 @@ export const Default: Story = {
         fallback: "SX"
     }
 }
+
+export const TextAvatar: Story = {
+  args: {
+      src: "",
+      fallback: "SXU"
+  }
+}

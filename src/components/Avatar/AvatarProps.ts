@@ -1,5 +1,5 @@
 export interface AvatarProps {
     src?: string;
-    alt?: string | "an avatar";
+    alt?: string;
     fallback: string;
 }

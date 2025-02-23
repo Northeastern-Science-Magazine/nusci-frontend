@@ -21,6 +21,7 @@ export const Default: Story = {
 export const TextAvatar: Story = {
   args: {
       src: "",
+      alt: undefined,
       fallback: "SXU"
   }
 }

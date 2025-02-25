@@ -13,10 +13,6 @@ const meta: Meta<typeof AvatarCustom> = {
   component: AvatarCustom,
   title: "Components/Avatar",
   argTypes: {
-    shape: {
-      control: "select",
-      options: shapes,
-    },
     size: {
       control: "select",
       options: sizes,
@@ -32,7 +28,8 @@ export const Default: Story = {
     args: {
         src: "https://cdn.britannica.com/73/9173-050-9D9EA4BA/Surgeonfish.jpg",
         alt: "a blue surgeonfish avatar",
-        fallback: "SX"
+        fallback: "SX",
+        size: "md"
     }
 }
 
@@ -41,6 +38,7 @@ export const TextAvatar: Story = {
   args: {
       src: "",
       alt: undefined,
-      fallback: "SXU"
+      fallback: "SXU",
+      size: "md"
   }
 }

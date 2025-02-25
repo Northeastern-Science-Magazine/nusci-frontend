@@ -4,8 +4,6 @@ import React from "react";
 
 
 /* Modify this when adding variants to Avatar */
-const variants = ["default", "emphasis", "outline"] as const;
-const shapes = ["round"] as const;
 const sizes = ["sm", "md", "lg"] as const;
 
 /** Define the control fields for Storybook */
@@ -29,7 +27,6 @@ export const Default: Story = {
         src: "https://cdn.britannica.com/73/9173-050-9D9EA4BA/Surgeonfish.jpg",
         alt: "a blue surgeonfish avatar",
         fallback: "SX",
-        size: "md"
     }
 }
 
@@ -39,6 +36,5 @@ export const TextAvatar: Story = {
       src: "",
       alt: undefined,
       fallback: "SXU",
-      size: "md"
   }
 }

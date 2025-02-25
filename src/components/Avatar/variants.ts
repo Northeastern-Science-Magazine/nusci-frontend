@@ -5,9 +5,9 @@ export const avatarVariants = tv({
   base: "rounded-full",
   variants: {
     size: {
-      sm: "w-12 h-12 text-sm",
-      md: "w-24 h-24 text-base",
-      lg: "w-48 h-48 text-lg",
+      sm: "w-24 h-24 text-sm",
+      md: "w-32 h-32 text-base",
+      lg: "w-40 h-40 text-lg",
     },
   }, 
   defaultVariants: {

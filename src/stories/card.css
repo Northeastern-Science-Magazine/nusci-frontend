@@ -1,0 +1,91 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  
+  .card--default {
+    background-color: transparent;
+  }
+  
+  .card--shadow {
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 10px 1px;
+  }
+  
+  .card--rounded {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .card--border {
+    border: 1px solid #e0e0e0;
+  }
+  
+  .card--sm {
+    width: 250px;
+  }
+  
+  .card--md {
+    width: 300px;
+  }
+  
+  .card--lg {
+    width: 350px;
+  }
+  
+  .card--white {
+    background-color: white;
+  }
+  
+  .card--black {
+    background-color: black;
+  }
+  
+  .card--text-white {
+    color: white;
+  }
+  
+  .card--text-black {
+    color: black;
+  }
+  
+  .card--text-red {
+    color: #e53e3e;
+  }
+  
+  .card--text-green {
+    color: #38a169;
+  }
+  
+  .card--text-brown {
+    color: #8b4513;
+  }
+  
+  .card--text-yellow {
+    color: #ecc94b;
+  }
+  
+  .card--text-blue {
+    color: #3182ce;
+  }
+  
+  .card--text-lightBlue {
+    color: #90cdf4;
+  }
+  
+  .card__image {
+    width: 100%;
+  }
+  
+  .card__content {
+    padding: 16px;
+  }
+  
+  .card__title {
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  
+  .card__description {
+    line-height: 1.5;
+  }

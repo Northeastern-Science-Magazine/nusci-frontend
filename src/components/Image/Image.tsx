@@ -1,4 +1,4 @@
-import { AspectRatio } from "radix-ui";
+import * as AspectRatio from "@radix-ui/react-aspect-ratio";
 import { ImageProps, imageVariants } from "./variants";
 
 /**
@@ -9,11 +9,13 @@ import { ImageProps, imageVariants } from "./variants";
  */
 export const Image = (props: ImageProps) => {
   return (
-    <div className="Container">
+    <div className="w-[300px] overflow-hidden rounded-md shadow-[0_2px_10px] shadow-blackA4">
       <AspectRatio.Root ratio={props.ratio}>
-        <img className={imageVariants(props)}>
-			{props.children}
-		</img>
+        <img
+          className={(imageVariants(props), "w-full h-full object-scale-down")}
+          src={props.src}
+          alt={props.alt}
+        />
       </AspectRatio.Root>
     </div>
   );

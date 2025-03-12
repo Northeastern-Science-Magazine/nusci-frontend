@@ -5,8 +5,8 @@ export const cardVariants = tv({
   base: "overflow-hidden",
   variants: {
     variant: {
-      default: "h-1/2",
-      shadow: "drop-shadow-2xl h-1/2",
+      default: "",
+      shadow: "drop-shadow-2xl",
       rounded: "rounded-lg",
       border: "rounded-lg border"
     },

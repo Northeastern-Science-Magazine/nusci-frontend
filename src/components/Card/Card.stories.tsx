@@ -41,8 +41,8 @@ export const Default: Story = {
       size: "md",
       backgroundColor: "black",
       textColor: "white",
-      teamTitle: "Default Card",
-      teamDescription: "This is the default card variant",
+      title: "Default Card",
+      paragraph: "This is the default card variant",
       imageURL: "./logo.png"
     },
   };
@@ -54,8 +54,8 @@ export const Default: Story = {
       size: "sm",
       backgroundColor: "black",
       textColor: "red",
-      teamTitle: "Shadow Card",
-      teamDescription: "This card has a shadow effect",
+      title: "Shadow Card",
+      paragraph: "This card has a shadow effect",
       imageURL: "./logo.png"
     },
   };
@@ -67,8 +67,8 @@ export const Default: Story = {
       size: "lg",
       backgroundColor: "black",
       textColor: "green",
-      teamTitle: "Rounded Card",
-      teamDescription: "This card has rounded corners",
+      title: "Rounded Card",
+      paragraph: "This card has rounded corners",
       imageURL: "./logo.png"
     },
   };
@@ -80,8 +80,8 @@ export const Default: Story = {
       size: "md",
       backgroundColor: "white",
       textColor: "blue",
-      teamTitle: "Border Card",
-      teamDescription: "This card has a border outline",
+      title: "Border Card",
+      paragraph: "This card has a border outline",
       imageURL: "./logo.png"
     },
   };
@@ -93,8 +93,8 @@ export const Default: Story = {
       size: "sm",
       backgroundColor: "black",
       textColor: "yellow",
-      teamTitle: "Small Card",
-      teamDescription: "This is a small-sized card",
+      title: "Small Card",
+      paragraph: "This is a small-sized card",
       imageURL: "./logo.png"
     },
   };
@@ -106,8 +106,8 @@ export const Default: Story = {
       size: "lg",
       backgroundColor: "black",
       textColor: "lightBlue",
-      teamTitle: "Large Card",
-      teamDescription: "This is a large-sized card",
+      title: "Large Card",
+      paragraph: "This is a large-sized card",
       imageURL: "./logo.png"
     },
   };
@@ -119,8 +119,8 @@ export const Default: Story = {
       size: "md",
       backgroundColor: "black",
       textColor: "brown",
-      teamTitle: "Light Theme Card",
-      teamDescription: "This card uses a light theme",
+      title: "Light Theme Card",
+      paragraph: "This card uses a light theme",
       imageURL: "./logo.png"
     },
   }; 
@@ -146,8 +146,8 @@ export const Gallery: Story = {
                               size={size}
                               backgroundColor={bgColor}
                               textColor={isWhiteBackground ? "black" : "white"}
-                              teamTitle={`${size} | ${variant} | ${bgColor}`}
-                              teamDescription="This is a sample card description"
+                              title={`${size} | ${variant} | ${bgColor}`}
+                              paragraph="This is a sample card description"
                               imageURL="./logo.png"
                             />
                           </div>

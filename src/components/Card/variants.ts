@@ -154,7 +154,7 @@ type HTMLCardProps = Omit<HTMLAttributes<HTMLDivElement>, "color"> & ClassAttrib
 /** Export CardProps as one type */
 export interface CardProps extends CardVariants, HTMLCardProps {
   imageURL?: string;
-  teamTitle?: string;
-  teamDescription?: string;
+  title?: string;
+  paragraph?: string;
   children?: React.ReactNode;
 }

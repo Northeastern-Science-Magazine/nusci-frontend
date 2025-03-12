@@ -11,12 +11,12 @@ export const Card = (props: CardProps) => {
     <div className={cardVariants(props)}>
       <div className="flex justify-between items-start">
         <div className="team-title/description">
-          {props.teamTitle && <h3>{props.teamTitle}</h3>}
-          {props.teamTitle && props.teamDescription && <div className="p-1"></div>}
-          {props.teamDescription && <p className="text-[#757575]">{props.teamDescription}</p>}
+          {props.title && <h3>{props.title}</h3>}
+          {props.title && props.paragraph && <div className="p-1"></div>}
+          {props.paragraph && <p className="text-[#757575]">{props.paragraph}</p>}
           {props.children}
         </div>
-        {props.imageURL && <img src={props.imageURL} alt={props.teamTitle || "Card image"} className="size-40"/>}
+        {props.imageURL && <img src={props.imageURL} alt={props.title || "Card image"} className="size-40"/>}
       </div>
     </div>
   );

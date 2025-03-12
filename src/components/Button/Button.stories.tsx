@@ -46,34 +46,7 @@ export default meta;
 type Story = StoryObj<typeof Button>;
 
 /** Story for Default Variant */
-export const Default: Story = {
-  args: {
-    children: "Hello",
-    size: "md",
-    variant: "default",
-    color: "black",
-  },
-};
 
-/** Story for Emphasis Variant */
-export const Emphasis: Story = {
-  args: {
-    children: "Click Me",
-    size: "md",
-    variant: "emphasis",
-    color: "black",
-  },
-};
-
-/** Story for Outline Variant */
-export const Outline: Story = {
-  args: {
-    children: "Outline",
-    size: "md",
-    variant: "outline",
-    color: "black",
-  },
-};
 
 /** Gallery Story for all Button Variants */
 export const Gallery: Story = {

@@ -9,9 +9,9 @@ export interface CardProps {
     /* Color of the text in the card */
     textColor?: 'white' | 'black' | 'red' | 'green' | 'brown' | 'yellow' | 'blue' | 'lightBlue'
     /* Team Title */
-    teamTitle?: string;
+    title?: string;
     /** Card description */
-    teamDescription?: string;
+    paragraph?: string;
     /** URL for the card image */
     imageURL?: string;
     /** Additional content */
@@ -24,8 +24,8 @@ export const Card = ({
     size = 'md',
     backgroundColor = 'black',
     textColor = 'white',
-    teamTitle,
-    teamDescription,
+    title,
+    paragraph,
     imageURL,
     ...props
   }: CardProps) => {
@@ -34,10 +34,10 @@ export const Card = ({
         className={['card', `card--${variant}`, `card--${size}`, `card--${backgroundColor}`, `card--text-${textColor}`].join(' ')}
         {...props}
       >
-        {imageURL && <img className="card__image" src={imageURL} alt={teamTitle || 'Card image'} />}
+        {imageURL && <img className="card__image" src={imageURL} alt={title || 'Card image'} />}
         <div className="card__content">
-          {teamTitle && <h3 className="card__title">{teamTitle}</h3>}
-          {teamDescription && <p className="card__description">{teamDescription}</p>}
+          {title && <h3 className="card__title">{title}</h3>}
+          {paragraph && <p className="card__description">{paragraph}</p>}
         </div>
       </div>
     );

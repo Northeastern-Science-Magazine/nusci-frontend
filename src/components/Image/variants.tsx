@@ -29,5 +29,5 @@ export type ImageVariants = VariantProps<typeof imageVariants>;
 export interface ImageProps extends ImageVariants {
   src: string;
   alt: string;
-  width: number;
+  width: string;
 }

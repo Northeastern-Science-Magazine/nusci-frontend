@@ -9,7 +9,7 @@ import { ImageProps, imageVariants } from "./variants";
  */
 export const Image = (props: ImageProps) => {
   return (
-    <div className={`w-[${props.width}px]`}>
+    <div className={`${props.width}`}>
       <AspectRatio.Root ratio={props.ratio}>
         <img className={imageVariants(props)} src={props.src} alt={props.alt} />
       </AspectRatio.Root>

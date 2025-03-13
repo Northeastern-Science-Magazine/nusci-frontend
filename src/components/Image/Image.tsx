@@ -9,13 +9,9 @@ import { ImageProps, imageVariants } from "./variants";
  */
 export const Image = (props: ImageProps) => {
   return (
-    <div className="w-[300px] overflow-hidden rounded-md shadow-[0_2px_10px] shadow-blackA4">
+    <div className={`w-[${props.width}px]`}>
       <AspectRatio.Root ratio={props.ratio}>
-        <img
-          className={(imageVariants(props), "w-full h-full object-scale-down")}
-          src={props.src}
-          alt={props.alt}
-        />
+        <img className={imageVariants(props)} src={props.src} alt={props.alt} />
       </AspectRatio.Root>
     </div>
   );

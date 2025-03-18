@@ -1,14 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { AvatarCustom } from "./Avatar";
-import React from "react";
+import { Avatar } from "./Avatar";
 
 
 /* Modify this when adding variants to Avatar */
 const sizes = ["sm", "md", "lg"] as const;
 
 /** Define the control fields for Storybook */
-const meta: Meta<typeof AvatarCustom> = {
-  component: AvatarCustom,
+const meta: Meta<typeof Avatar> = {
+  component: Avatar,
   title: "Components/Avatar",
   argTypes: {
     size: {
@@ -19,7 +18,7 @@ const meta: Meta<typeof AvatarCustom> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof AvatarCustom>;
+type Story = StoryObj<typeof Avatar>;
 
 /** Story for Default Avatar */
 export const Default: Story = {

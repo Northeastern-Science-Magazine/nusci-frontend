@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 /** Define Avatar Variants using Tailwind Variant Definitions */
 export const avatarVariants = tv({
-  base: "rounded-full",
+  base:"flex items-center justify-center rounded-full border border-slate-400",
   variants: {
     size: {
       sm: "w-24 h-24 text-lg",
@@ -15,5 +15,8 @@ export const avatarVariants = tv({
   },
 });
 
-/** Create the typing for Avatar Variant Props */
-export type AvatarVariants = VariantProps<typeof avatarVariants>;
+export interface AvatarProps extends VariantProps<typeof avatarVariants> {
+  src?: string;
+  alt?: string; // add default alt text when not given
+  fallback: string; // validate if it's 1-2 characters long in prop
+}

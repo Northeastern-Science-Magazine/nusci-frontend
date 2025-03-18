@@ -1,6 +1,6 @@
-import { AvatarCustom } from "./Avatar";
-import { type AvatarProps } from "./AvatarProps";
+import { Avatar } from "./Avatar";
+import { type AvatarProps } from "./variants";
 
 /** Define safe exports for this component folder */
 export { AvatarProps };
-export default AvatarCustom;
+export default Avatar;

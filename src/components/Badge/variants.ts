@@ -2,7 +2,7 @@ import React from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const badgeVariants = tv({
-  base: "items-center justify-center font-medium rounded-md py-2 px-4 border-2",
+  base: "items-center justify-center font-medium rounded-3xl py-2 px-4 border-2",
   variants: {
     variant: {
       default: "bg-opacity-100",

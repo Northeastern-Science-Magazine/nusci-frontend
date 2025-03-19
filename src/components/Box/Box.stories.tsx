@@ -3,37 +3,127 @@ import { Box } from "./Box";
 import React from "react";
 
 /* Modify this when adding variants to Box */
-const backgroundColors = ["bg-red-500", "bg-orange-500", "bg-yellow-500", "bg-green-500", "bg-blue-500", "bg-purple-500", "bg-white-500"] as const;
-const width = ["w-12", "w-20", "w-32", "w-64"] as const;
-const margin = [ "m-4", "m-8", "m-16"] as const;
-const height = ["h-12", "h-20", "h-32", "h-64"] as const;
-const padding = ["p-4", "p-8", "p-12"] as const;
-
+const positions = ["static", "fixed", "absolute", "relative", "sticky"] as const;
+const displays = ["inline", "block", "inline-block", "hidden"] as const;
+const widths = ["full", "screen", "auto", "min", "max"] as const;
+const heights = ["full", "screen", "auto", "min", "max", "fit"] as const;
+const tops = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const bottoms = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const lefts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const rights = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const ms = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const mxs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const mys = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const mts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const mbs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const mrs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const mls = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const ps = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const pxs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const pys = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const pts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const pbs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const prs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const pls = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const colors = [ "black", "white", "red", "aqua", "aqua-light", "forest-green", "sage-green", "border",
+  "neutral", "purple", "pink", "maroon", "coral", "marigold"] as const;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Box> = {
   component: Box,
   title: "Components/Box",
   argTypes: {
-    backgroundColor: {
+    position: {
       control: "select",
-      options: backgroundColors,
+      options: positions,
+    },
+    display: {
+      control: "select",
+      options: displays,
     },
     width: {
       control: "select",
-      options: width,
-    },
-    margin: {
-      control: "select",
-      options: margin,
+      options: widths
     },
     height: {
-        control: "select",
-        options: height,
+      control: "select",
+      options: heights
     },
-    padding: {
-        control: "select",
-        options: padding,
+    top: {
+      control: "select",
+      options: tops
+    },
+    bottom: {
+      control: "select",
+      options: bottoms
+    },
+    left: {
+      control: "select",
+      options: lefts
+    },
+    right: {
+      control: "select",
+      options: rights
+    },
+    m: {
+      control: "select",
+      options: ms
+    },
+    mx: {
+      control: "select",
+      options: mxs
+    },
+    my: {
+      control: "select",
+      options: mys
+    },
+    mt: {
+      control: "select",
+      options: mts
+    },
+    mb: {
+      control: "select",
+      options: mbs
+    },
+    mr: {
+      control: "select",
+      options: mrs
+    },
+    ml: {
+      control: "select",
+      options: mls
+    },
+    p: {
+      control: "select",
+      options: ps
+    },
+    px: {
+      control: "select",
+      options: pxs
+    },
+    py: {
+      control: "select",
+      options: pys
+    },
+    pt: {
+      control: "select",
+      options: pts
+    },
+    pb: {
+      control: "select",
+      options: pbs
+    },
+    pr: {
+      control: "select",
+      options: prs
+    },
+    pl: {
+      control: "select",
+      options: pls
+    },
+    color: {
+      control: "select",
+      options: colors
     }
   },
 };
@@ -45,11 +135,11 @@ type Story = StoryObj<typeof Box>;
 export const Default: Story = {
   args: {
     children: "Text to put within box",
-    backgroundColor: "bg-red-500",
-    width: "w-32",
-    margin: "m-8",
-    height: "h-32",
-    padding: "p-4"
+    color: "red",
+    // width: "full",
+    m: "m-8",
+    // height: "full",
+    p: "p-4"
   }
 };
 
@@ -59,17 +149,17 @@ export const Gallery: Story = {
   render: (args) => {
     return (
       <div>
-        {backgroundColors.map((backgroundColor) => {
+        {colors.map((backgroundColor) => {
           return (
             <div key={backgroundColor}>
               <div className={`grid grid-cols-3 gap-2`}>
-                {width.map((width) => (
+                {widths.map((width) => (
                   <React.Fragment key={width}>
                     <div className="flex flex-col">
-                      {height.map((height) => (
+                      {heights.map((height) => (
                         <div key={`${width}-${height}`} className="flex justify-left p-2">
-                          <Box height={height} width={width} backgroundColor={backgroundColor}>
-                            {}
+                          <Box height={height} width={width} color={backgroundColor}>
+                            TextArea
                           </Box>
                         </div>
                       ))}

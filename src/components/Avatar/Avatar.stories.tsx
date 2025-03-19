@@ -43,11 +43,12 @@ export const TextAvatar: Story = {
 export const Gallery: Story = {
   args: {},
   render: (args) => {
+    const srcs = ["https://cdn.britannica.com/73/9173-050-9D9EA4BA/Surgeonfish.jpg", ""]
     return (
       <div>
         {sizes.map((size) => {
           return (
-            <div key={size} className="grid grid-cols-2 gap-2">
+            <div key={size} className="flex flex-row p-1 gap-7 place-content-evenly">
                 <Avatar
                   src="https://cdn.britannica.com/73/9173-050-9D9EA4BA/Surgeonfish.jpg"
                   alt="a blue surgeonfish avatar"

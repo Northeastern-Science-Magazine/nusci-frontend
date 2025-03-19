@@ -4,9 +4,9 @@ export const imageVariants = tv({
   base: "w-full h-full object-cover",
   variants: {
     ratio: {
-      1: 1 / 1,
-      2: 16 / 9,
-      3: 4 / 3,
+      square: 1 / 1,
+      wide: 16 / 9,
+      default: 4 / 3,
     },
     rounded: {
       default: "",
@@ -18,7 +18,7 @@ export const imageVariants = tv({
     },
   },
   defaultVariants: {
-    ratio: 3,
+    ratio: "default",
     rounded: "default",
     emphasis: "default",
   },
@@ -29,5 +29,5 @@ export type ImageVariants = VariantProps<typeof imageVariants>;
 export interface ImageProps extends ImageVariants {
   src: string;
   alt: string;
-  width: number;
+  width: string;
 }

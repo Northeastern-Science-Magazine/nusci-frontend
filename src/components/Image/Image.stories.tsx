@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Image } from "./Image";
 import React from "react";
 
-const ratio = [1, 2, 3] as const;
+const ratio = ["square", "default", "wide"] as const;
 type Ratio = (typeof ratio)[number];
 
 const emphasis = ["default", "emphasis"] as const;
@@ -33,10 +33,10 @@ type Story = StoryObj<typeof Image>;
 /** Story for Default Variant */
 export const Default: Story = {
   args: {
-    ratio: 3,
+    ratio: "default",
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg",
     alt: "cat",
-    width: 300,
+    width: "w-[300px]",
     emphasis: "default",
     rounded: "default",
   },
@@ -44,10 +44,10 @@ export const Default: Story = {
 
 export const Ratio: Story = {
   args: {
-    ratio: 1,
+    ratio: "square",
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg",
     alt: "cat",
-    width: 300,
+    width: "w-[300px]",
     emphasis: "default",
     rounded: "default",
   },
@@ -55,10 +55,10 @@ export const Ratio: Story = {
 
 export const Rounded: Story = {
   args: {
-    ratio: 1,
+    ratio: "default",
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg",
     alt: "cat",
-    width: 300,
+    width: "w-[300px]",
     emphasis: "default",
     rounded: "rounded",
   },
@@ -66,10 +66,10 @@ export const Rounded: Story = {
 
 export const Emphasis: Story = {
   args: {
-    ratio: 1,
+    ratio: "default",
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg",
     alt: "cat",
-    width: 300,
+    width: "w-[300px]",
     emphasis: "emphasis",
     rounded: "default",
   },
@@ -79,9 +79,9 @@ export const Gallery: Story = {
   args: {},
   render: (args) => {
     const ratios: { label: string; value: Ratio }[] = [
-      { label: "1:1", value: 1 },
-      { label: "16:9", value: 2 },
-      { label: "4:3", value: 3 },
+      { label: "1:1", value: "square" },
+      { label: "16:9", value: "wide" },
+      { label: "4:3", value: "default" },
     ];
 
     return (
@@ -102,7 +102,7 @@ export const Gallery: Story = {
                       emphasis={emphasis}
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
                       alt="cat"
-                      width={300}
+                      width="w-[300px]"
                     />
                     <div className="text-s text-muted-foreground">
                       <p>Rounded: {rounded}</p>

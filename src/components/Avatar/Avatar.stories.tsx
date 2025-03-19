@@ -47,9 +47,16 @@ export const Gallery: Story = {
       <div>
         {sizes.map((size) => {
           return (
-            <div key={size} className="p-1">
+            <div key={size} className="grid grid-cols-2 gap-2">
                 <Avatar
                   src="https://cdn.britannica.com/73/9173-050-9D9EA4BA/Surgeonfish.jpg"
+                  alt="a blue surgeonfish avatar"
+                  fallback="SX"
+                  size={size}
+                >
+                </Avatar>
+                <Avatar
+                  src=""
                   alt="a blue surgeonfish avatar"
                   fallback="SX"
                   size={size}

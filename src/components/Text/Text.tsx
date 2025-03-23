@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { TextProps, textVariants } from "./textVariants";
 
 /**
@@ -13,7 +13,7 @@ export const Text = (props: TextProps) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
 
-    // for external features
+    // for external features based on prop
     if (props.onChange) {
       props.onChange(event);
     }

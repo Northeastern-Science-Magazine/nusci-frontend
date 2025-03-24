@@ -2,9 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Image } from "./Image";
 import React from "react";
 
-const ratio = ["square", "default", "wide"] as const;
-type Ratio = (typeof ratio)[number];
-
 const emphasis = ["default", "emphasis"] as const;
 const rounded = ["default", "rounded"] as const;
 
@@ -12,10 +9,6 @@ const meta: Meta<typeof Image> = {
   component: Image,
   title: "Components/Image",
   argTypes: {
-    ratio: {
-      control: "select",
-      options: ratio,
-    },
     emphasis: {
       control: "select",
       options: emphasis,
@@ -33,7 +26,7 @@ type Story = StoryObj<typeof Image>;
 /** Story for Default Variant */
 export const Default: Story = {
   args: {
-    ratio: "default",
+    ratio: 16 / 9,
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg",
     alt: "cat",
     width: "w-[300px]",
@@ -44,7 +37,7 @@ export const Default: Story = {
 
 export const Ratio: Story = {
   args: {
-    ratio: "square",
+    ratio: 1,
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg",
     alt: "cat",
     width: "w-[300px]",
@@ -55,7 +48,7 @@ export const Ratio: Story = {
 
 export const Rounded: Story = {
   args: {
-    ratio: "default",
+    ratio: 1,
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg",
     alt: "cat",
     width: "w-[300px]",
@@ -66,7 +59,7 @@ export const Rounded: Story = {
 
 export const Emphasis: Story = {
   args: {
-    ratio: "default",
+    ratio: 1,
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg",
     alt: "cat",
     width: "w-[300px]",
@@ -78,42 +71,32 @@ export const Emphasis: Story = {
 export const Gallery: Story = {
   args: {},
   render: (args) => {
-    const ratios: { label: string; value: Ratio }[] = [
-      { label: "1:1", value: "square" },
-      { label: "16:9", value: "wide" },
-      { label: "4:3", value: "default" },
-    ];
-
     return (
       <div className="space-y-8">
-        {ratios.map((ratio) => (
-          <div key={ratio.value} className="space-y-4">
-            <h3 className="text-lg font-bold">{ratio.label}</h3>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              {rounded.map((rounded) =>
-                emphasis.map((emphasis) => (
-                  <div
-                    key={`${ratio.value}-${rounded}-${emphasis}`}
-                    className="flex flex-col gap-2"
-                  >
-                    <Image
-                      ratio={ratio.value}
-                      rounded={rounded}
-                      emphasis={emphasis}
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
-                      alt="cat"
-                      width="w-[300px]"
-                    />
-                    <div className="text-s text-muted-foreground">
-                      <p>Rounded: {rounded}</p>
-                      <p>Emphasis: {emphasis}</p>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        ))}
+        <h3 className="text-lg font-bold"></h3>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {rounded.map((rounded) =>
+            emphasis.map((emphasis) => (
+              <div
+                key={`${rounded}-${emphasis}`}
+                className="flex flex-col gap-2"
+              >
+                <Image
+                  ratio={1}
+                  rounded={rounded}
+                  emphasis={emphasis}
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
+                  alt="cat"
+                  width="w-[300px]"
+                />
+                <div className="text-s text-muted-foreground">
+                  <p>Rounded: {rounded}</p>
+                  <p>Emphasis: {emphasis}</p>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     );
   },

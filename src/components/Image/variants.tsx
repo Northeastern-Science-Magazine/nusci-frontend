@@ -3,11 +3,6 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const imageVariants = tv({
   base: "w-full h-full object-cover",
   variants: {
-    ratio: {
-      square: 1 / 1,
-      wide: 16 / 9,
-      default: 4 / 3,
-    },
     rounded: {
       default: "",
       rounded: "rounded-md",
@@ -18,7 +13,7 @@ export const imageVariants = tv({
     },
   },
   defaultVariants: {
-    ratio: "default",
+    ratio: "1/1",
     rounded: "default",
     emphasis: "default",
   },
@@ -27,6 +22,7 @@ export const imageVariants = tv({
 export type ImageVariants = VariantProps<typeof imageVariants>;
 
 export interface ImageProps extends ImageVariants {
+  ratio: number;
   src: string;
   alt: string;
   width: string;

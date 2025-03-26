@@ -6,9 +6,9 @@ import { BoxProps, boxVariants } from "./variants";
  * @param { BoxProps } props
  * @returns Box Component
  */
-export const Box = (props : BoxProps) => {
+export const Box = ({className = "", ...props } : BoxProps) => {
 return (
-        <div className={boxVariants(props)} > 
+        <div className={`${boxVariants(props)}  ${className}`} > 
         {props.children}
         </div>
 );

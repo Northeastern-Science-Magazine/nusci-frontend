@@ -136,10 +136,10 @@ export const Default: Story = {
   args: {
     children: "Text to put within box",
     color: "red",
-    // width: "full",
-    m: "m-8",
-    // height: "full",
-    p: "p-4"
+    width: "full",
+    m: 8,
+    height: "full",
+    p: 4
   }
 };
 
@@ -159,7 +159,7 @@ export const Gallery: Story = {
                       {heights.map((height) => (
                         <div key={`${width}-${height}`} className="flex justify-left p-2">
                           <Box height={height} width={width} color={backgroundColor}>
-                            TextArea
+                          {width} x {height}
                           </Box>
                         </div>
                       ))}

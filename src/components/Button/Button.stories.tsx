@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "./Button";
+import Button from "./Button";
 import React from "react";
 
 /* Modify this when adding variants to Button */
@@ -78,7 +78,7 @@ export const Outline: Story = {
 /** Gallery Story for all Button Variants */
 export const Gallery: Story = {
   args: {},
-  render: (args) => {
+  render: () => {
     return (
       <div>
         {colors.map((color) => {

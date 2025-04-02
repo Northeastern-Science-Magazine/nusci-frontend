@@ -194,7 +194,6 @@ type HTMLButtonProps = Omit<HTMLAttributes<HTMLButtonElement>, "color"> & ClassA
 
 /** Export ButtonProps as one type */
 export interface ButtonProps extends ButtonVariants, HTMLButtonProps {
-  className?: string;
   children: React.ReactNode;
   onClick?: () => void;
 }

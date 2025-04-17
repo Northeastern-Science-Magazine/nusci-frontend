@@ -1,24 +1,26 @@
 import React, { ClassAttributes, HTMLAttributes } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
+import * as LucideIcons from "lucide-react";
 
 /** Define icon Variants using Tailwind Variant Definitions */
 export const iconVariants = tv({
   base:  "items-center justify-center font-medium transition-all duration-200 rounded focus:outline-none focus:ring-2 focus:ring-offset-2",
   variants: {
     size: {
-      xs: "text-xs",
-      sm: "text-sm",
-      base: "text-base",
-      lg: "text-lg",
-      xl: "text-xl",
-      "2xl": "text-2xl",
-      "3xl": "text-3xl",
-      "4xl": "text-4xl",
-      "5xl": "text-5xl",
-      "6xl": "text-6xl",
-      '7xl': "text-7xl",
-      "8xl": "text-8xl",
-      "9xl": "text-9xl"  
+      8: "8px",
+      12: "12px",
+      14: "14px",
+      16: "16px",
+      18: "18px",
+      20: "20px",
+      24: "24px",
+      30: "30px",
+      36: "36px",
+      48: "48px",
+      60: "60px",
+      72: "72px",
+      96: "96px",
+      128: "128px",
     },
     color: {
       black: "text-white bg-black border-black hover:bg-black hover:border-black focus:ring-black",
@@ -42,7 +44,7 @@ export const iconVariants = tv({
   },
   defaultVariants: {
     color: "black",
-    size: "base",
+    size: 16,
   }
 });
 
@@ -54,7 +56,5 @@ type HTMLIconProps = Omit<HTMLAttributes<HTMLSpanElement>, "color"> & ClassAttri
 
 /** Export IconProps as one type */
 export interface IconProps extends IconVariants, HTMLIconProps {
-  children: React.ReactNode;
   iconName: string;
-  onClick?: () => void;
 }

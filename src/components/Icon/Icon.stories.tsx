@@ -3,7 +3,7 @@ import { Icon } from "./Icon";
 import React from "react";
 
 /* Modify this when adding variants to Icon */
-const sizes = ["xs", "sm", "base", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "6xl", "7xl", "8xl", "9xl"] as const;
+const sizes = [8, 12, 14, 16, 18, 20, 24, 30, 36, 48, 60, 72, 96, 128] as const;
 const colors = [
   "black",
   "white",
@@ -34,6 +34,9 @@ const meta: Meta<typeof Icon> = {
       control: "select",
       options: colors,
     },
+    iconName: {
+      control: "text",
+    }
   },
 };
 
@@ -43,8 +46,8 @@ type Story = StoryObj<typeof Icon>;
 /** Story for Default Variant */
 export const Default: Story = {
   args: {
-    children: "Icon within default",
-    size: "base",
+    iconName: "Smile",
+    size: 16,
     color: "black",
   },
 };
@@ -63,9 +66,7 @@ export const Gallery: Story = {
                 {sizes.map((size) => (
                   <React.Fragment key={size}>
                         <div key={`${color}-${size}`} className="flex justify-left p-2">
-                          <Icon size={size} color={color} iconName={`${size}x${color}`}>
-                            {`${size} | ${color}`}
-                          </Icon>
+                          <Icon size={size} color={color} iconName={'Smile'}/>
                         </div>
                   </React.Fragment>
                 ))}

@@ -1,39 +1,34 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Button from "./Button";
+import { Badge } from "./Badge";
 import React from "react";
 
 /* Modify this when adding variants to Button */
-const variants = ["default", "emphasis", "outline"] as const;
-const sizes = ["lg", "md", "sm"] as const;
+const variants = ["default", "outline"] as const;
 const colors = [
-    "black",
-    "white",
-    "red",
-    "aqua",
-    "aqua-light",
-    "forest-green",
-    "sage-green",
-    "border",
-    "neutral",
-    "purple",
-    "pink",
-    "maroon",
-    "coral",
-    "marigold",
-  ] as const;
+  "black",
+  "white",
+  "red",
+  "aqua",
+  "aqua-light",
+  "forest-green",
+  "sage-green",
+  "border",
+  "neutral",
+  "purple",
+  "pink",
+  "maroon",
+  "coral",
+  "marigold",
+] as const;
 
 /** Define the control fields for Storybook */
-const meta: Meta<typeof Button> = {
-  component: Button,
-  title: "Components/Button",
+const meta: Meta<typeof Badge> = {
+  component: Badge,
+  title: "Components/Badge",
   argTypes: {
     variant: {
       control: "select",
       options: variants,
-    },
-    size: {
-      control: "select",
-      options: sizes,
     },
     color: {
       control: "select",
@@ -43,24 +38,13 @@ const meta: Meta<typeof Button> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof Badge>;
 
 /** Story for Default Variant */
 export const Default: Story = {
   args: {
-    children: "Hello",
-    size: "md",
+    children: "Culture",
     variant: "default",
-    color: "black",
-  },
-};
-
-/** Story for Emphasis Variant */
-export const Emphasis: Story = {
-  args: {
-    children: "Click Me",
-    size: "md",
-    variant: "emphasis",
     color: "black",
   },
 };
@@ -69,7 +53,6 @@ export const Emphasis: Story = {
 export const Outline: Story = {
   args: {
     children: "Outline",
-    size: "md",
     variant: "outline",
     color: "black",
   },
@@ -78,7 +61,7 @@ export const Outline: Story = {
 /** Gallery Story for all Button Variants */
 export const Gallery: Story = {
   args: {},
-  render: () => {
+  render: (args) => {
     return (
       <div>
         {colors.map((color) => {
@@ -89,13 +72,11 @@ export const Gallery: Story = {
                 {variants.map((variant) => (
                   <React.Fragment key={variant}>
                     <div className="flex flex-col">
-                      {sizes.map((size) => (
-                        <div key={`${variant}-${size}`} className="flex justify-left p-2">
-                          <Button size={size} color={color} variant={variant}>
-                            {`${size} | ${variant} | ${color}`}
-                          </Button>
+                        <div key={`${variant}`} className="flex justify-left p-2">
+                          <Badge color={color} variant={variant}>
+                            {`${variant} | ${color}`}
+                          </Badge>
                         </div>
-                      ))}
                     </div>
                   </React.Fragment>
                 ))}

@@ -1,40 +1,8 @@
-import React, { useState } from "react";
-import { TextProps, textInputVariants } from "./textVariants";
+import React from "react";
+import { TextProps } from "./variants";
+import { textVariants } from "./variants";
 
-/**
- * Text Input Component
- *
- * @param {TextProps} props
- * @returns Text Input Component
- */
-export const Text = (props: TextProps) => {
-  const [inputValue, setInputValue] = useState("");
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-
-    // for external features based on prop
-    if (props.onChange) {
-      props.onChange(event);
-    }
-  };
-
-  return (
-    <div className="flex flex-col items-start">
-      {props.label && (
-        <label htmlFor={props.id} className="mb-1">
-          {" "}
-          {props.label}{" "}
-        </label>
-      )}
-      <input
-        type="text"
-        id={props.id}
-        value={inputValue}
-        placeholder={props.placeholder || "Enter text"}
-        onChange={handleChange}
-        className={textInputVariants(props)}
-      />
-    </div>
-  );
-};
+export default function Text({ className = "", as = "p", children, ...variantProps }: TextProps) {
+  const Component = as === "p" ? "p" : "span";
+  return <Component className={`${textVariants(variantProps)} ${className}`}>{children}</Component>;
+}

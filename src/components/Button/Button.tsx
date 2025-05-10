@@ -6,10 +6,10 @@ import { ButtonProps, buttonVariants } from "./variants";
  * @param { ButtonProps } props
  * @returns Button Component
  */
-export const Button = (props: ButtonProps) => {
+export default function Button({ className, onClick, children, ...variantProps }: ButtonProps) {
   return (
-    <button onClick={props.onClick} className={buttonVariants(props)}>
-      {props.children}
+    <button onClick={onClick} className={`${buttonVariants(variantProps)} ${className}`}>
+      {children}
     </button>
   );
-};
+}

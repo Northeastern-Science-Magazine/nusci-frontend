@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Text } from "./Text";
+import Text from "./Text";
 import React from "react";
 
-const variants = ["outline", "filled"] as const;
-const sizes = ["lg", "md", "sm"] as const;
+/* Modify this when adding variants to Text */
+const styles = ["regular", "bold", "italic", "underline", "overline", "strikethrough"] as const;
+const sizes = [8, 12, 14, 16, 18, 20, 24, 30, 36, 48, 60, 72, 96, 128] as const;
 const colors = [
   "black",
   "white",
@@ -26,86 +27,50 @@ const meta: Meta<typeof Text> = {
   component: Text,
   title: "Components/Text",
   argTypes: {
-    variant: {
+    style: {
       control: "select",
-      options: variants,
-    },
-    size: {
-      control: "select",
-      options: sizes,
+      options: styles,
     },
     color: {
       control: "select",
       options: colors,
     },
+    size: {
+      control: "select",
+      options: sizes,
+    },
   },
 };
 
 export default meta;
-
 type Story = StoryObj<typeof Text>;
 
-/** Story for Outline Variant */
-export const Outline: Story = {
+/** Story for Default Variant */
+export const Default: Story = {
   args: {
-    size: "md",
-    variant: "outline",
-    color: "black",
-    label: "",
-    id: ""
-  },
-};
-
-/** Story for Filled Variant */
-export const Filled: Story = {
-  args: {
-    size: "md",
-    variant: "filled",
+    children: "The Quick Brown Fox Jumps Over The Lazy Dog",
+    size: 12,
     color: "black",
   },
 };
 
-export const Gallery: Story = {
-  args: {},
-  render: (args) => {
-    return (
-      <div>
-        {colors.map((color) => {
-          const isWhiteColor = color === "white";
-          return (
-            <div key={color}>
-              <div
-                className={`grid grid-cols-2 gap-2 ${
-                  isWhiteColor ? "bg-zinc-300" : ""
-                }`}
-              >
-                {variants.map((variant) => (
-                  <React.Fragment key={variant}>
-                    <div className="flex flex-col">
-                      {sizes.map((size) => (
-                        <div
-                          key={`${variant}-${size}`}
-                          className="flex justify-left p-2"
-                        >
-                          <Text
-                            size={size}
-                            color={color}
-                            variant={variant}
-                            label={`${size}-${variant}-${color}`}
-                            id={`${size}-${variant}-${color}`}
-                          >
-                            {`${size} | ${variant} | ${color}`}
-                          </Text>
-                        </div>
-                      ))}
-                    </div>
-                  </React.Fragment>
-                ))}
-              </div>
+/** Gallery story showing every combination of style and size for each color */
+export const TextGallery: Story = {
+  render: () => (
+    <div className="flex flex-col gap-16 p-8 bg-white">
+      {colors.map((color) => (
+        <div key={color} className={`flex flex-col gap-8 ${color === "white" ? "bg-zinc-300 p-4 rounded-md" : ""}`}>
+          {styles.map((style) => (
+            <div key={`${color}-${style}`} className="flex flex-col gap-2">
+              {sizes.map((size) => (
+                <Text key={`${color}-${style}-${size}`} color={color} style={style} size={size}>
+                  example text
+                </Text>
+              ))}
             </div>
-          );
-        })}
-      </div>
-    );
-  },
+          ))}
+        </div>
+      ))}
+    </div>
+  ),
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextProps, textVariants } from "./textVariants";
+import { TextProps, textInputVariants } from "./textVariants";
 
 /**
  * Text Input Component
@@ -33,7 +33,7 @@ export const Text = (props: TextProps) => {
         value={inputValue}
         placeholder={props.placeholder || "Enter text"}
         onChange={handleChange}
-        className={textVariants(props)}
+        className={textInputVariants(props)}
       />
     </div>
   );

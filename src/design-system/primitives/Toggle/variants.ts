@@ -24,8 +24,9 @@ export const toggleVariants = cva(
   }
 );
 
-export interface ToggleProps extends React.ComponentPropsWithoutRef<typeof Switch.Root>,
-  VariantProps<typeof toggleVariants> {
+export interface ToggleProps
+  extends React.ComponentPropsWithoutRef<typeof Switch.Root>,
+    VariantProps<typeof toggleVariants> {
   label: string;
   labelClassName?: string;
 }

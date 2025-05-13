@@ -1,34 +1,30 @@
-import { tv, type VariantProps } from "tailwind-variants";
+import * as Switch from "@radix-ui/react-switch";
+import { cva, type VariantProps } from "class-variance-authority";
 
-export const toggleVariants = tv({
-  base: "relative h-6 w-11 cursor-default rounded-full bg-neutral-200 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 disabled:cursor-not-allowed disabled:opacity-50",
-  variants: {
-    variant: {
-      default: "data-[state=checked]:bg-neutral-900",
-      color: "data-[state=checked]:bg-primary-500",
-      success: "data-[state=checked]:bg-green-500",
-      danger: "data-[state=checked]:bg-red-500",
+export const toggleVariants = cva(
+  "relative inline-flex h-6 w-11 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-zinc-200 data-[state=checked]:bg-black",
+        success: "bg-zinc-200 data-[state=checked]:bg-green-500",
+        danger: "bg-zinc-200 data-[state=checked]:bg-red-500",
+      },
+      size: {
+        default: "h-6 w-11",
+        sm: "h-5 w-9",
+        lg: "h-7 w-[52px]",
+      },
     },
-    size: {
-      sm: "h-5 w-9",
-      md: "h-6 w-11",
-      lg: "h-7 w-13",
-    }
-  },
-  defaultVariants: {
-    variant: "default",
-    size: "md"
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
   }
-});
+);
 
-export type ToggleVariants = VariantProps<typeof toggleVariants>;
-
-export interface ToggleProps extends ToggleVariants {
-  className?: string;
-  checked?: boolean;
-  onCheckedChange?: (checked: boolean) => void;
-  disabled?: boolean;
-  required?: boolean;
-  id?: string;
-  label?: string;
+export interface ToggleProps extends React.ComponentPropsWithoutRef<typeof Switch.Root>,
+  VariantProps<typeof toggleVariants> {
+  label: string;
+  labelClassName?: string;
 }

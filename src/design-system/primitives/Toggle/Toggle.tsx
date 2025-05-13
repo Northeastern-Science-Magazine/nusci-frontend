@@ -1,42 +1,24 @@
+import * as React from "react";
 import * as Switch from "@radix-ui/react-switch";
-import { ToggleProps, toggleVariants } from "./variants";
+import { toggleVariants } from "./variants";
+import type { ToggleProps } from "./variants";
 
-/**
- * Toggle Component
- *
- * A wrapper around Radix UI's Switch component that provides toggle functionality
- * with consistent styling and behavior.
- *
- * @param {ToggleProps} props
- * @returns Toggle Component
- */
-export default function Toggle({
-  className,
-  checked,
-  onCheckedChange,
-  disabled,
-  required,
-  id,
-  label,
-  ...variantProps
-}: ToggleProps) {
+export const Toggle = React.forwardRef<
+  React.ElementRef<typeof Switch.Root>,
+  ToggleProps
+>(({ className, variant = "default", size = "default", label, labelClassName, ...props }, ref) => {
   return (
-    <div className="flex items-center gap-2">
-      {label && (
-        <label className="text-sm font-medium leading-none" htmlFor={id}>
-          {label}
-        </label>
-      )}
+    <label className="flex items-center gap-2 cursor-pointer">
       <Switch.Root
-        id={id}
-        checked={checked}
-        onCheckedChange={onCheckedChange}
-        disabled={disabled}
-        required={required}
-        className={`${toggleVariants(variantProps)} ${className}`}
+        ref={ref}
+        className={toggleVariants({ variant, size, className })}
+        {...props}
       >
-        <Switch.Thumb className="block h-5 w-5 rounded-full bg-white transition-transform duration-100 translate-x-0.5 will-change-transform data-[state=checked]:translate-x-[21px]" />
+        <Switch.Thumb className="block h-5 w-5 rounded-full bg-white transition-transform duration-100 translate-x-0.5 translate-y-0.5 will-change-transform data-[state=checked]:translate-x-[22px]" />
       </Switch.Root>
-    </div>
+      <span className={`text-sm font-medium ${labelClassName || ''}`}>{label}</span>
+    </label>
   );
-}
+});
+
+Toggle.displayName = "Toggle";

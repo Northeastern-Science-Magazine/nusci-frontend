@@ -1,13 +1,34 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
-import Toggle from "./Toggle";
+import { Toggle } from "./Toggle";
+import React from "react";
+
+const variants = ["default", "success", "danger"] as const;
+const sizes = ["default", "sm", "lg"] as const;
 
 const meta: Meta<typeof Toggle> = {
-  title: "Primitives/Toggle",
   component: Toggle,
-  tags: ["autodocs"],
-  args: {
-    label: "Airplane Mode",
+  title: "Components/Toggle",
+  argTypes: {
+    variant: {
+      control: "select",
+      options: variants,
+    },
+    size: {
+      control: "select",
+      options: sizes,
+    },
+    checked: {
+      control: "boolean",
+    },
+    disabled: {
+      control: "boolean",
+    },
+    label: {
+      control: "text",
+    },
+    labelClassName: {
+      control: "text",
+    },
   },
 };
 
@@ -15,75 +36,34 @@ export default meta;
 type Story = StoryObj<typeof Toggle>;
 
 export const Default: Story = {
-  render: (args) => {
-    const [checked, setChecked] = useState(false);
-    return <Toggle {...args} checked={checked} onCheckedChange={setChecked} />;
-  },
-};
-
-export const WithoutLabel: Story = {
   args: {
-    label: undefined,
-  },
-  render: (args) => {
-    const [checked, setChecked] = useState(false);
-    return <Toggle {...args} checked={checked} onCheckedChange={setChecked} />;
+    variant: "default",
+    size: "default",
+    label: "Airplane Mode",
   },
 };
 
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-  },
-  render: (args) => {
-    const [checked, setChecked] = useState(false);
-    return <Toggle {...args} checked={checked} onCheckedChange={setChecked} />;
-  },
-};
-
-export const Variants: Story = {
+export const Gallery: Story = {
   render: () => {
-    const [checks, setChecks] = useState({
-      default: false,
-      color: false,
-      success: false,
-      danger: false,
-    });
-
     return (
-      <div className="flex flex-col gap-4">
-        {Object.entries(checks).map(([key, value]) => (
-          <Toggle
-            key={key}
-            label={`${key.charAt(0).toUpperCase() + key.slice(1)} Variant`}
-            variant={key as any}
-            checked={value}
-            onCheckedChange={(checked) => setChecks((prev) => ({ ...prev, [key]: checked }))}
-          />
-        ))}
-      </div>
-    );
-  },
-};
-
-export const Sizes: Story = {
-  render: () => {
-    const [checks, setChecks] = useState({
-      sm: false,
-      md: false,
-      lg: false,
-    });
-
-    return (
-      <div className="flex flex-col gap-4">
-        {Object.entries(checks).map(([key, value]) => (
-          <Toggle
-            key={key}
-            label={`${key.toUpperCase()} Size`}
-            size={key as any}
-            checked={value}
-            onCheckedChange={(checked) => setChecks((prev) => ({ ...prev, [key]: checked }))}
-          />
+      <div className="space-y-8">
+        {variants.map((variant) => (
+          <div key={variant} className="space-y-4">
+            <h3 className="text-lg font-semibold capitalize">{variant}</h3>
+            <div className="flex gap-4">
+              {sizes.map((size) => (
+                <div key={size} className="flex flex-col items-center gap-2">
+                  <span className="text-sm capitalize">{size}</span>
+                  <Toggle
+                    variant={variant}
+                    size={size}
+                    defaultChecked
+                    label={`${variant} ${size}`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     );

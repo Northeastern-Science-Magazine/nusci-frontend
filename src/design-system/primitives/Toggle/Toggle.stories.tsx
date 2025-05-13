@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Toggle } from "./Toggle";
 import React from "react";
 
-const variants = ["default", "success", "danger"] as const;
-const sizes = ["default", "sm", "lg"] as const;
+const variants = ["black", "green", "blue", "red"] as const;
+const sizes = ["md", "sm", "lg"] as const;
 
 const meta: Meta<typeof Toggle> = {
   component: Toggle,
@@ -37,8 +37,8 @@ type Story = StoryObj<typeof Toggle>;
 
 export const Default: Story = {
   args: {
-    variant: "default",
-    size: "default",
+    variant: "black",
+    size: "md",
     label: "Airplane Mode",
   },
 };
@@ -58,7 +58,7 @@ export const Gallery: Story = {
                     variant={variant}
                     size={size}
                     defaultChecked
-                    label={`${variant} ${size}`}
+                    label={`Airplane Mode`}
                   />
                 </div>
               ))}

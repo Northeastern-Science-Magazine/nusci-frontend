@@ -3,7 +3,7 @@ import { Toggle } from "./Toggle";
 import React from "react";
 
 const variants = ["black", "green", "blue", "red"] as const;
-const sizes = ["md", "sm", "lg"] as const;
+const sizes = ["sm", "md", "lg"] as const;
 
 const meta: Meta<typeof Toggle> = {
   component: Toggle,

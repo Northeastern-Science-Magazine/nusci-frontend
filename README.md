@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Northeastern Science Magazine Frontend
 
-## Getting Started
+This repository acts as the frontend for a local environment. The architecture is as follows:
 
-First, run the development server:
+```md
+┏━━━━━━━━━━━━━━┓                      ┏━━━━━━━━━━━━━━┓                    ┏━━━━━━━━━━━━━━┓
+┃              ┃ -------------------> ┃              ┃ -----------------> ┃              ┃
+┃              ┃   [HTTP Requests]    ┃              ┃   [DB Requests]    ┃              ┃
+┃   Frontend   ┃                      ┃   Backend    ┃                    ┃   Database   ┃
+┃   Server     ┃                      ┃   Server     ┃                    ┃   Instance   ┃
+┃              ┃   [HTTP Responses]   ┃              ┃   [DB Responses]   ┃              ┃
+┃              ┃ <------------------- ┃              ┃ <----------------- ┃              ┃
+┗━━━━━━━━━━━━━━┛                      ┗━━━━━━━━━━━━━━┛                    ┗━━━━━━━━━━━━━━┛
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+     React                               Express.js                           MongoDB
+     Tailwind                            Mongoose/MongoDB                     Docker
+     Next.js                             Docker
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Running the Project
+- This section defines how to start up the project, and run it on your local machine.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Clone the repository to your computer
+- Navigate to this page, and click the "Code" button. Click the "HTTPS" tab, and copy the repository URL.
+- Open Github Desktop, and click the "Add" option, and then "Clone Repository". Select the "URL" option, and paste the URL from Github.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### 2. Open the Project in Visual Studio Code
+- Open the project directory in Visual Studio Code by either clicking "Open in Visual Studio Code" on Github Desktop, or launching Visual Studio Code, clicking "Open Folder", and navigating to the directory in which you cloned the project.
+- Add the ```.env.local``` file to the root directory. This will define our important secret keys we use for authentication, and initialization of the project.
 
-## Learn More
+### 3. Run the Initialization Commands
+- Open the terminal in VS Code and ensure that your current directory is the root of the project.
+- Run the following command to install the project dependencies:
+```properties
+npm i
+```
 
-To learn more about Next.js, take a look at the following resources:
+- Run the following command to start your local dev server. This enables hot-reloading of your application.
+```
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Utility Commands
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Run the following command to rebuild your next-project locally. You may need to run `npm run dev` again. 
+```
+npm run build
+```
 
-## Deploy on Vercel
+- Run the following command to open Storybook. This enables you to see the design system and component library.
+```
+npm run storybook
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Design Architecture
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### 1. Design Language
+
+- A design language is an opinionated standardization of the way design is communicated using words. For example, one might say "orange button", whilst another might say "rounded button, with an orange background and white text", whilst another may say "rounded button with a primary color of orange and secondary color of white". Whilst none of these descriptions may be wrong, they all take on different semantical understanding to how to describe a visual component. The language we choose, and the properties we imply with the language, define how we communicate our ideas. 
+
+### 2. Component Library
+
+- A component library is the translation of a design language into actual code. A component library serves as the basis for which to build larger visual blocks. 
+
+- Our component library consists of two parts, the Primitives and the Non-Primitives. Primitive components are defined as the atomic building blocks of the application that have minimal or no sub-components within them. Non-Primitives are anything else, so components that are compound.
+
+- Generally, any component in the design system should be used multiple places.Components that are page-specific do not belong to the design system. Should a page-specific component be used multiple times, then it can be promoted to the component library.
+
+### 3. Design System
+
+- A design system marries both a design language and a component library, which determines the way we communicate design, build components, draft new components, and generate new designs across the board. 
+
+- The design system should be the standard to which designers create, and developers build. It is critical that there is a shared understanding of the fundamental design system to communicate and operate with least friction possible. 

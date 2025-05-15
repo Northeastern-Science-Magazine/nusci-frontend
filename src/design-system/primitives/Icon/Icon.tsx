@@ -1,4 +1,4 @@
-import { IconProps, iconVariants } from "./variants";
+import { IconProps } from "./variants";
 import * as LucideIcons from "lucide-react";
 
 /**

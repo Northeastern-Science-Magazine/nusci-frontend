@@ -18,6 +18,7 @@ export const Default: Story = {
   },
 };
 
+/** Gallery Story for all Tab Variants */
 export const Gallery: Story = {
   args: {},
   render: (args) => {

@@ -1,4 +1,4 @@
-import Tab from "./Tab";
+import { Tab } from "./Tab";
 import { type TabProps } from "./variants";
 
 /** Define safe exports for this component folder */

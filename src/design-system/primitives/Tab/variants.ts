@@ -1,8 +1,8 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
-/** Define Avatar Variants using Tailwind Variant Definitions */
+/** Define Tab Variants using Tailwind Variant Definitions */
 export const tabRootVariants = tv({
-  base: "flex w-[300px] flex-col shadow-[0_2px_10px] shadow-blackA2",
+  base: "flex w-[300px] flex-col border-2 first:rounded-tl-md last:rounded-tr-md rounded-b-md",
 });
 
 export const tabListVariants = tv({

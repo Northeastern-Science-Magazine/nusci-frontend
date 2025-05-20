@@ -3,7 +3,7 @@ import Icon from "./Icon";
 import type { IconProps } from "./variants";
 import React from "react";
 
-const sizes: IconProps["size"] [] = ["lg", "md", "sm"];
+const sizes: IconProps["size"] [] = ["xs", "sm", "md", "lg", "xl"];
 const colors: IconProps["color"] [] = [
   "black",
   "white",

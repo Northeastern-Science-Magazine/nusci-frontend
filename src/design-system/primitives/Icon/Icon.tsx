@@ -23,7 +23,6 @@ export default function Icon({icon, color, size, className, onClick}: IconProps)
         "stroke-current", // tells SVG to use current text color for stroke
         className
       )}
-      aria-hidden="true"
     />
   );
 }

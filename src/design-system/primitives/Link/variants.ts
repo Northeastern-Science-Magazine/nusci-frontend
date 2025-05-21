@@ -12,6 +12,6 @@ export type LinkVariants = VariantProps<typeof linkVariants>;
 export interface LinkProps extends LinkVariants {
   className?: string;
   href: string;
-  target?: string;
+  newWindow: boolean;
   children: React.ReactNode;
 }

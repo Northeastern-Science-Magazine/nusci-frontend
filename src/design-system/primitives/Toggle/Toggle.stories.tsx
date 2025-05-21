@@ -20,7 +20,6 @@ const colors = [
   "coral",
   "marigold",
 ] as const;
-const sizes = ["sm", "md", "lg"] as const;
 
 const meta: Meta<typeof Toggle> = {
   component: Toggle,
@@ -29,10 +28,6 @@ const meta: Meta<typeof Toggle> = {
     toggleColor: {
       control: "select",
       options: colors,
-    },
-    size: {
-      control: "select",
-      options: sizes,
     },
     checked: {
       control: "boolean",
@@ -49,7 +44,6 @@ type Story = StoryObj<typeof Toggle>;
 export const Default: Story = {
   args: {
     toggleColor: "black",
-    size: "md",
   },
 };
 
@@ -61,12 +55,7 @@ export const Gallery: Story = {
           <div key={colors} className="space-y-4">
             <h3 className="text-lg font-semibold capitalize">{colors}</h3>
             <div className="flex gap-4">
-              {sizes.map((size) => (
-                <div key={size} className="flex flex-col items-center gap-2">
-                  <span className="text-sm capitalize">{size}</span>
-                  <Toggle toggleColor={colors} size={size} defaultChecked />
-                </div>
-              ))}
+              <Toggle toggleColor={colors} defaultChecked />
             </div>
           </div>
         ))}

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Checkbox } from "./Checkbox";
-import React from "react";
+import React, { useState } from "react";
 
 /* Modify this when adding variants to Avatar */
 const sizes = ["sm", "md", "lg"] as const;
@@ -28,35 +28,66 @@ type Story = StoryObj<typeof Checkbox>;
 
 /** Story for Default Checkbox */
 export const Default: Story = {
+  render: (args) => {
+    const [checkedValues, setCheckedValues] = useState<string[]>(args.checkedValues || []);
+
+    const handleCheckedChange = (option: string, value: boolean ) => {
+      setCheckedValues(prev =>
+          value ? [...prev, option] : prev.filter(val => val !== option)
+        );
+  }  
+
+    return (
+      <Checkbox
+        {...args}
+        checkedValues={checkedValues}
+        handleCheckedChange={handleCheckedChange}
+      />
+    );
+  },
   args: {
-    options: ['first option', 'second option', 'third option'],
+    options: ['default first option', 'default second option', 'default third option'],
     disabled: false,
-    required: false,
   },
 };
 
 /** Story for Disabled Checkbox */
 export const Disabled: Story = {
-    args: {
-      options: ['first option', 'second option', 'third option'],
-      disabled: true,
-      required: false,
-    },
-  };
+  render: (args) => {
+    const [checkedValues, setCheckedValues] = useState<string[]>(args.checkedValues || []);
 
-  /** Story for Required Checkbox */
-export const Required: Story = {
+    const handleCheckedChange = (option: string, value: boolean ) => {
+      setCheckedValues(prev =>
+          value ? [...prev, option] : prev.filter(val => val !== option)
+        );
+  }  
+
+    return (
+      <Checkbox
+        {...args}
+        checkedValues={checkedValues}
+        handleCheckedChange={handleCheckedChange}
+      />
+    );
+  },
     args: {
-      options: ['first option', 'second option', 'third option'],
-      disabled: false,
-      required: true,
+      options: ['disabled first option', 'disabled second option', 'disabled third option'],
+      disabled: true,
     },
   };
 
 /** Gallery Story for all Button Variants */
 export const Gallery: Story = {
     args: {},
-    render: () => {
+    render: () => {  
+      const [checkedValues, setCheckedValues] = useState<string[]>([]);
+
+      const handleCheckedChange = (option: string, value: boolean ) => {
+        setCheckedValues(prev =>
+            value ? [...prev, option] : prev.filter(val => val !== option)
+          );
+    }  
+  
       return (
         <div>
           {colors.map((color) => {
@@ -66,7 +97,12 @@ export const Gallery: Story = {
                 <div className={`grid grid-cols-3 gap-2 ${isWhiteColor ? "bg-zinc-300" : ""}`}>
                         {sizes.map((size) => (
                           <div key={`${size}`} className="flex justify-left p-2">
-                            <Checkbox size={size} color={color} options={ ['first option', 'second option', 'third option']}/>
+                            <Checkbox 
+                            size={size} 
+                            color={color} 
+                            options={ [`${color}-${size}`]} 
+                            checkedValues={checkedValues} 
+                            handleCheckedChange={handleCheckedChange}/>
                           </div>
                         ))}
                 </div>

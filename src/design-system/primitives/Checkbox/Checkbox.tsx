@@ -1,7 +1,6 @@
 import { Checkbox as RadixCheckbox } from "radix-ui";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { checkboxVariants, CheckboxProps } from "./variants";
-import { useState } from 'react';
 
 /**
  * Checkbox Component
@@ -9,15 +8,7 @@ import { useState } from 'react';
  * @param { CheckboxProps } props
  * @returns Checkbox Component
  */
-export const Checkbox = (props: CheckboxProps) => {
-
-    const [checkedValues, setCheckedValues] = useState<string[]>([]);
-
-    const handleCheckedChange = (option: string, value: boolean ) => {
-        setCheckedValues(prev =>
-            value ? [...prev, option] : prev.filter(val => val !== option)
-          );
-    }  
+export const Checkbox = ({options, size, color, disabled = false, checkedValues, handleCheckedChange}: CheckboxProps) => {
 
     const renderChecked = (option: string) : boolean  => {
         return checkedValues.includes(option); 
@@ -25,15 +16,14 @@ export const Checkbox = (props: CheckboxProps) => {
 
     return  (
         <div>
-          {props.options.map(option => {
+          {options.map(option => {
             return (
               <label key={option} className="flex items-center gap-2 cursor-pointer mb-3">
                 <RadixCheckbox.Root
-                  className={checkboxVariants(props)}
+                  className={checkboxVariants({size, color})}
                   checked={renderChecked(option)}
                   onCheckedChange={value => handleCheckedChange(option, !!value)}
-                  disabled={props.disabled || false}
-                  required={props.required || false}
+                  disabled={disabled || false}
                   name={option}
                 >
                   <RadixCheckbox.Indicator>

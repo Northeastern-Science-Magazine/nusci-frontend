@@ -185,8 +185,8 @@ export const textInputVariants = tv({
   },
 });
 
-/** Create TextProp types for variants */
-export type TextVariants = VariantProps<typeof textInputVariants>;
+/** Create TextInputProp types for variants */
+export type TextInputVariants = VariantProps<typeof textInputVariants>;
 
 /** Utilize HTML Text attributes excluding size and color */
 type HTMLTextProps = Omit<
@@ -196,7 +196,7 @@ type HTMLTextProps = Omit<
   ClassAttributes<HTMLInputElement>;
 
 /** Export the text props as one type */
-export interface TextInputProps extends TextVariants, HTMLTextProps {
+export interface TextInputProps extends TextInputVariants, HTMLTextProps {
   placeholder?: string;
   label: string;
   id: string;

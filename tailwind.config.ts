@@ -4,6 +4,7 @@ const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/design-system/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
@@ -22,7 +23,7 @@ const config: Config = {
         "aqua-light": "#57AAB1",
         "forest-green": "#0E3309",
         "sage-green": "#82A67C",
-        border: "#2C2C2C",
+        border: "#e5e5e5",
         neutral: "#CDCDCD",
         purple: "#87495D",
         pink: "#D4859D",

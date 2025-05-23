@@ -1,3 +1,5 @@
+/* Types from the backend repository */
+
 export enum ArticleContentType {
   BodyParagraph,
   PullQuote,
@@ -56,7 +58,7 @@ export type ArticleComment = {
 export type Article = {
   title: string;
   slug: string;
-  issueNumber: number; // what's the diff between lowercase and uppercase number?
+  issueNumber: number;
   categories: string[];
   articleContent: ArticleContent[];
   sources?: string[];

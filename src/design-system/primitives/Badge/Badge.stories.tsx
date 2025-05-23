@@ -72,11 +72,11 @@ export const Gallery: Story = {
                 {variants.map((variant) => (
                   <React.Fragment key={variant}>
                     <div className="flex flex-col">
-                        <div key={`${variant}`} className="flex justify-left p-2">
-                          <Badge color={color} variant={variant}>
-                            {`${variant} | ${color}`}
-                          </Badge>
-                        </div>
+                      <div key={`${variant}`} className="flex justify-left p-2">
+                        <Badge color={color} variant={variant}>
+                          {`${variant} | ${color}`}
+                        </Badge>
+                      </div>
                     </div>
                   </React.Fragment>
                 ))}

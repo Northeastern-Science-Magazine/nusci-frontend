@@ -62,6 +62,8 @@ export const Filled: Story = {
     size: "md",
     variant: "filled",
     color: "black",
+    label: "", 
+    id: "",
   },
 };
 

@@ -25,7 +25,7 @@ const meta: Meta<typeof Toggle> = {
   component: Toggle,
   title: "Components/Toggle",
   argTypes: {
-    toggleColor: {
+    color: {
       control: "select",
       options: colors,
     },
@@ -43,7 +43,7 @@ type Story = StoryObj<typeof Toggle>;
 
 export const Default: Story = {
   args: {
-    toggleColor: "black",
+    color: "black",
   },
 };
 
@@ -55,7 +55,7 @@ export const Gallery: Story = {
           <div key={colors} className="space-y-4">
             <h3 className="text-lg font-semibold capitalize">{colors}</h3>
             <div className="flex gap-4">
-              <Toggle toggleColor={colors} defaultChecked />
+              <Toggle color={colors} defaultChecked />
             </div>
           </div>
         ))}

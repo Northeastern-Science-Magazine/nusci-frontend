@@ -4,7 +4,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const toggleVariants = tv({
   base: "relative inline-flex h-6 w-11 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:h-5 [&>span]:w-5 [&>span]:translate-x-0.5 [&>span]:data-[state=checked]:translate-x-[22px]",
   variants: {
-    toggleColor: {
+    color: {
       white: "bg-zinc-200 data-[state=checked]:bg-white",
       black: "bg-zinc-200 data-[state=checked]:bg-black",
       "light-orange": "bg-zinc-200 data-[state=checked]:bg-light-orange",
@@ -24,12 +24,12 @@ export const toggleVariants = tv({
     },
   },
   defaultVariants: {
-    toggleColor: "black",
+    color: "black",
   },
 });
 
 export interface ToggleProps
-  extends React.ComponentPropsWithoutRef<typeof Switch.Root>,
+  extends Omit<React.ComponentPropsWithoutRef<typeof Switch.Root>, 'color'>,
     VariantProps<typeof toggleVariants> {
   onChange?: () => void;
 }

@@ -14,7 +14,7 @@ type Story = StoryObj<typeof Tab>;
 export const Default: Story = {
   args: {
     triggers: ["test1", <p>child1</p>],
-    children: [<p>child1</p>, <p>child2</p>],
+    content: [<p>child1</p>, <p>child2</p>],
   },
 };
 
@@ -26,7 +26,7 @@ export const Gallery: Story = {
       <div>
         <Tab
           triggers={["test1", <p>child1</p>]}
-          children={[<p>child1</p>, <p>child2</p>]}
+          content={[<p>child1</p>, <p>child2</p>]}
         />
       </div>
     );

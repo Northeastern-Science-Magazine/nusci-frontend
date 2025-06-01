@@ -5,6 +5,9 @@ import {
   tabListVariants,
   tabContentVariants,
   TabProps,
+  TabListProps,
+  TabTriggerProps,
+  TabContentProps,
 } from "./variants";
 
 /**
@@ -13,29 +16,63 @@ import {
  * @param { TabProps } props
  * @returns Tab Component
  */
-export const Tab = (props: TabProps) => {
+
+export function TabList({ triggers, ...variantProps }: TabListProps) {
+  return (
+    <RadixTab.List className={`${tabListVariants(variantProps)}`}>
+      {triggers.map((trigger, index) => (
+        <TabTrigger trigger={trigger} index={index} />
+      ))}
+    </RadixTab.List>
+  );
+}
+
+export function TabTrigger({
+  className,
+  trigger,
+  index,
+  ...variantProps
+}: TabTriggerProps) {
+  return (
+    <RadixTab.Trigger
+      value={"tab" + index}
+      className={`${tabTriggerVariants(variantProps)}`}
+    >
+      {trigger}
+    </RadixTab.Trigger>
+  );
+}
+
+export function TabContent({
+  className,
+  content,
+  value,
+  ...variantProps
+}: TabContentProps) {
+  return (
+    <RadixTab.Content
+      value={value}
+      className={`${tabContentVariants(variantProps)}`}
+    >
+      <p>{content}</p>
+    </RadixTab.Content>
+  );
+}
+
+export const Tab = ({
+  className,
+  triggers,
+  content,
+  ...variantProps
+}: TabProps) => {
   return (
     <RadixTab.Root
-      className={`${tabRootVariants(props)} ${props.className}`}
+      className={`${tabRootVariants(variantProps)} ${className}`}
       defaultValue={"tab0"}
     >
-      <RadixTab.List className={`${tabListVariants(props)} ${props.className}`}>
-        {props.triggers.map((trigger, index) => (
-          <RadixTab.Trigger
-            value={"tab" + index}
-            className={`${tabTriggerVariants(props)} ${props.className}`}
-          >
-            {trigger}
-          </RadixTab.Trigger>
-        ))}
-      </RadixTab.List>
-      {props.triggers.map((trigger, index) => (
-        <RadixTab.Content
-          value={"tab" + index}
-          className={`${tabContentVariants(props)} ${props.className}`}
-        >
-          <p>{props.children[index]}</p>
-        </RadixTab.Content>
+      <TabList triggers={triggers} />
+      {triggers.map((trigger, index) => (
+        <TabContent content={content[index]} value={"tab" + index} />
       ))}
     </RadixTab.Root>
   );

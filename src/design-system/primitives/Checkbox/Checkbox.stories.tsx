@@ -42,6 +42,7 @@ export const Default: Story = {
         {...args}
         checkedValues={checkedValues}
         handleCheckedChange={handleCheckedChange}
+        color={'red'}
       />
     );
   },
@@ -67,6 +68,7 @@ export const Disabled: Story = {
         {...args}
         checkedValues={checkedValues}
         handleCheckedChange={handleCheckedChange}
+        color={'red'}
       />
     );
   },

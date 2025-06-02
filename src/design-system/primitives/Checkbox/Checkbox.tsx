@@ -20,7 +20,7 @@ export const Checkbox = ({options, size, color, disabled = false, checkedValues,
             return (
               <label key={option} className="flex items-center gap-2 cursor-pointer mb-3">
                 <RadixCheckbox.Root
-                  className={checkboxVariants({size, color})}
+                  className={checkboxVariants({size, color: disabled ? "neutral" : color})}
                   checked={renderChecked(option)}
                   onCheckedChange={value => handleCheckedChange(option, !!value)}
                   disabled={disabled || false}

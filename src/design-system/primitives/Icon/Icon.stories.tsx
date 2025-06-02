@@ -92,22 +92,35 @@ export const Size: Story = {
   },
 };
 
-//  shows all the icon options, colors, and sizes
 export const Gallery: Story = {
   render: () => (
-    <div className="grid grid-cols-6 gap-4">
+    <div className="grid grid-cols-5 gap-4">
       {icons.map((icon) =>
         colors.map((color) =>
-          sizes.map((size) => (
-            <div key={`${icon}-${color}-${size}`} className="flex flex-col items-center">
-              <Icon icon={icon} color={color} size={size} />
-              <span className="text-[10px] text-center mt-1">
-                {icon} | {size} | {color}
-              </span>
-            </div>
-          ))
+          sizes.map((size) => {
+            const isWhite = color === "white";
+
+            return (
+              <div
+                key={`${icon}-${color}-${size}`}
+                className="flex flex-col items-center text-center"
+              >
+                <div
+                  className={`p-2 rounded ${
+                    isWhite ? "bg-zinc-300" : ""
+                  }`}
+                >
+                  <Icon icon={icon} color={color} size={size} />
+                </div>
+                <span className="text-[10px] mt-1">
+                  {icon} | {size} | {color}
+                </span>
+              </div>
+            );
+          })
         )
       )}
     </div>
   ),
 };
+

@@ -20,7 +20,6 @@ export default function Icon({icon, color, size, className, onClick}: IconProps)
       onClick={onClick}
       className={clsx(
         iconVariants({ color, size }), // text color + w/h
-        "stroke-current", // tells SVG to use current text color for stroke
         className
       )}
     />

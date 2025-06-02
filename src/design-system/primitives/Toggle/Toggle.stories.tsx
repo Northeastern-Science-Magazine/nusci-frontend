@@ -54,7 +54,7 @@ export const Gallery: Story = {
         {colors.map((colors) => (
           <div key={colors} className="space-y-4">
             <h3 className="text-lg font-semibold capitalize">{colors}</h3>
-            <div className="flex gap-4">
+            <div className={`flex gap-4 ${colors === 'white' ? 'bg-zinc-400 p-4 rounded-lg w-fit -ml-4' : ''}`}>
               <Toggle color={colors} defaultChecked />
             </div>
           </div>

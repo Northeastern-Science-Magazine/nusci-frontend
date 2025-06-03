@@ -17,35 +17,33 @@ import {
  * @returns Tab Component
  */
 
-export function TabList({ triggers, ...variantProps }: TabListProps) {
+export function TabList({ children, ...variantProps }: TabListProps) {
   return (
     <RadixTab.List className={`${tabListVariants(variantProps)}`}>
-      {triggers.map((trigger, index) => (
-        <TabTrigger trigger={trigger} index={index} />
-      ))}
+      {children}
     </RadixTab.List>
   );
 }
 
 export function TabTrigger({
   className,
-  trigger,
-  index,
+  children,
+  value,
   ...variantProps
 }: TabTriggerProps) {
   return (
     <RadixTab.Trigger
-      value={"tab" + index}
+      value={value}
       className={`${tabTriggerVariants(variantProps)}`}
     >
-      {trigger}
+      {children}
     </RadixTab.Trigger>
   );
 }
 
 export function TabContent({
   className,
-  content,
+  children,
   value,
   ...variantProps
 }: TabContentProps) {
@@ -54,26 +52,23 @@ export function TabContent({
       value={value}
       className={`${tabContentVariants(variantProps)}`}
     >
-      <p>{content}</p>
+      <p>{children}</p>
     </RadixTab.Content>
   );
 }
 
 export const Tab = ({
   className,
-  triggers,
-  content,
+  children,
+  defaultValue,
   ...variantProps
 }: TabProps) => {
   return (
     <RadixTab.Root
       className={`${tabRootVariants(variantProps)} ${className}`}
-      defaultValue={"tab0"}
+      defaultValue={defaultValue}
     >
-      <TabList triggers={triggers} />
-      {triggers.map((trigger, index) => (
-        <TabContent content={content[index]} value={"tab" + index} />
-      ))}
+      {children}
     </RadixTab.Root>
   );
 };

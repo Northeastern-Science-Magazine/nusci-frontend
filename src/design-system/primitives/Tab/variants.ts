@@ -1,4 +1,5 @@
 import { tv, type VariantProps } from "tailwind-variants";
+import { ReactElement } from "react";
 
 /** Define Tab Variants using Tailwind Variant Definitions */
 export const tabRootVariants = tv({
@@ -9,8 +10,8 @@ export type TabRootVariants = VariantProps<typeof tabRootVariants>;
 
 export interface TabProps extends TabRootVariants {
   className?: string;
-  triggers: React.ReactNode[];
-  content: React.ReactNode[];
+  children: React.ReactNode[];
+  defaultValue?: string;
 }
 
 export const tabListVariants = tv({
@@ -21,7 +22,7 @@ export type TabListVariants = VariantProps<typeof tabListVariants>;
 
 export interface TabListProps extends TabListVariants {
   className?: string;
-  triggers: React.ReactNode[];
+  children: ReactElement<TabTriggerProps> | ReactElement<TabTriggerProps>[];
 }
 
 export const tabTriggerVariants = tv({
@@ -32,8 +33,8 @@ export type TabTriggerVariants = VariantProps<typeof tabTriggerVariants>;
 
 export interface TabTriggerProps extends TabTriggerVariants {
   className?: string;
-  trigger: React.ReactNode;
-  index: number;
+  children: React.ReactNode;
+  value: string;
 }
 
 export const tabContentVariants = tv({
@@ -44,6 +45,6 @@ export type TabContentVariants = VariantProps<typeof tabContentVariants>;
 
 export interface TabContentProps extends TabContentVariants {
   className?: string;
-  content: React.ReactNode;
+  children: React.ReactNode;
   value: string;
 }

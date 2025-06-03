@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Tab } from "./Tab";
+import { Tab, TabContent, TabList, TabTrigger } from "./Tab";
 import React from "react";
 
 const meta: Meta<typeof Tab> = {
@@ -12,9 +12,17 @@ type Story = StoryObj<typeof Tab>;
 
 /** Story for Default Variant */
 export const Default: Story = {
-  args: {
-    triggers: ["test1", <p>child1</p>],
-    content: [<p>child1</p>, <p>child2</p>],
+  render: (args) => {
+    return (
+      <Tab defaultValue="tab0">
+        <TabList>
+          <TabTrigger value="tab0">trigger1</TabTrigger>
+          <TabTrigger value="tab1">trigger2</TabTrigger>
+        </TabList>
+        <TabContent value="tab0">child1</TabContent>
+        <TabContent value="tab1">child2</TabContent>
+      </Tab>
+    );
   },
 };
 
@@ -23,11 +31,26 @@ export const Gallery: Story = {
   args: {},
   render: (args) => {
     return (
-      <div>
-        <Tab
-          triggers={["test1", <p>child1</p>]}
-          content={[<p>child1</p>, <p>child2</p>]}
-        />
+      <div className="grid grid-cols-1 gap-2">
+        <Tab defaultValue="tab0">
+          <TabList>
+            <TabTrigger value="tab0">trigger1</TabTrigger>
+            <TabTrigger value="tab1">trigger2</TabTrigger>
+          </TabList>
+          <TabContent value="tab0">child1</TabContent>
+          <TabContent value="tab1">child2</TabContent>
+        </Tab>
+
+        <Tab>
+          <TabList>
+            <TabTrigger value="tab0">trigger1</TabTrigger>
+            <TabTrigger value="tab1">trigger2</TabTrigger>
+            <TabTrigger value="tab2">trigger3</TabTrigger>
+          </TabList>
+          <TabContent value="tab0">child1</TabContent>
+          <TabContent value="tab1">child2</TabContent>
+          <TabContent value="tab2">child3</TabContent>
+        </Tab>
       </div>
     );
   },

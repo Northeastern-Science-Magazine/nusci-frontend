@@ -29,13 +29,14 @@ export function DropdownItem({
 }
 
 export function DropdownInput({
+  onChange,
   className,
   children,
   placeholder,
   ...variantProps
 }: DropdownInputProps) {
   return (
-    <Select.Root>
+    <Select.Root onValueChange={onChange}>
       <Select.Trigger className="inline-flex h-[35px] items-center justify-center gap-[5px] rounded bg-white px-[15px] text-[13px] leading-none text-violet11 shadow-[0_2px_10px] shadow-black/10 outline-none hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black">
         <Select.Value placeholder={placeholder} />
         <Select.Icon>

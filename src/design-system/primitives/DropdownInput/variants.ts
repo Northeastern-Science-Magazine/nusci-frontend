@@ -8,6 +8,7 @@ export const dropdownInputVariants = tv({
 export type DropdownInputVariants = VariantProps<typeof dropdownInputVariants>;
 
 export interface DropdownInputProps extends DropdownInputVariants {
+  onChange?: (value: string) => void;
   className?: string;
   children: ReactElement<DropdownItemProps> | ReactElement<DropdownItemProps>[];
   placeholder?: string;

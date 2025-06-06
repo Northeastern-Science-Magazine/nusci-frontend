@@ -1,10 +1,6 @@
-import { DropdownInput, DropdownTrigger, DropdownItem } from "./DropdownInput";
-import {
-  type DropdownInputProps,
-  type DropdownTriggerProps,
-  type DropdownItemProps,
-} from "./variants";
+import { DropdownInput, DropdownItem } from "./DropdownInput";
+import { type DropdownInputProps, type DropdownItemProps } from "./variants";
 
 /** Define safe exports for this component folder */
-export { DropdownInputProps, DropdownTriggerProps, DropdownItemProps };
-export default { DropdownInput, DropdownTrigger, DropdownItem };
+export { DropdownInputProps, DropdownItemProps };
+export default { DropdownInput, DropdownItem };

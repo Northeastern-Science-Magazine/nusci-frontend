@@ -14,7 +14,7 @@ export interface DropdownInputProps extends DropdownInputVariants {
 }
 
 export const dropdownItemVariants = tv({
-  base: "",
+  base: "relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[35px] text-[13px] leading-none text-violet11 data-[disabled]:pointer-events-none data-[highlighted]:bg-aqua-light data-[disabled]:text-neutral data-[highlighted]:bg-aqua-light data-[highlighted]:outline-none",
 });
 
 export type DropdownItemVariants = VariantProps<typeof dropdownItemVariants>;

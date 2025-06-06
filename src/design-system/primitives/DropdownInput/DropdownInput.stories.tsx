@@ -18,7 +18,12 @@ export const Default: Story = {
     return (
       <div className="grid grid-cols-1 gap-2">
         <DropdownInput placeholder="select here">
-          <DropdownItem text="hu" />
+          <DropdownItem text="item1" />
+          <DropdownItem text="item2" />
+          <DropdownItem text="item3" disabled={true} />
+          <DropdownItem text="item4" />
+          <DropdownItem text="item5" />
+          <DropdownItem text="item6" />
         </DropdownInput>
       </div>
     );
@@ -32,7 +37,12 @@ export const DropdownGallery: Story = {
     return (
       <div className="grid grid-cols-1 gap-2">
         <DropdownInput placeholder="select here">
-          <DropdownItem text="hu" />
+          <DropdownItem text="item1" />
+          <DropdownItem text="item2" />
+          <DropdownItem text="item3" />
+          <DropdownItem text="item4" disabled={true} />
+          <DropdownItem text="item5" />
+          <DropdownItem text="item6" />
         </DropdownInput>
       </div>
     );

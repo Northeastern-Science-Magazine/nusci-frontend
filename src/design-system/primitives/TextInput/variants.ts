@@ -6,8 +6,8 @@ export const textInputVariants = tv({
   base: "rounded px-3 py-2 border focus:outline-none focus:ring-2",
   variants: {
     variant: {
-      outline: "bg-transparent",
-      filled: "",
+      outline: "bg-transparent placeholder-opacity-50",
+      filled: "placeholder-white placeholder-opacity-70",
     },
     size: {
       sm: "text-sm",
@@ -16,7 +16,7 @@ export const textInputVariants = tv({
     },
     color: {
       black: "text-white border-black focus:ring-black",
-      white: "text-black border-white focus:ring-white",
+      white: "text-black border-white focus:ring-white placeholder-grey",
       red: "text-white border-red-500 focus:ring-red-500",
       aqua: "text-white border-aqua focus:ring-aqua",
       "aqua-light":
@@ -25,7 +25,7 @@ export const textInputVariants = tv({
       "text-white border-forest-green focus:ring-forest-green",
       "sage-green":
       "text-black border-sage-green focus:ring-sage-green" ,
-      border: "text-white border-border focus:ring-border",
+      border: "text-white border-border focus:ring-border placeholder-black",
       neutral: "text-white border-neutral focus:ring-neutral",
       purple: "text-white border-purple focus:ring-purple",
       pink: "text-white border-pink focus:ring-pink",

@@ -18,12 +18,12 @@ export const Default: Story = {
     return (
       <div className="grid grid-cols-1 gap-2">
         <DropdownInput placeholder="select here">
-          <DropdownItem text="item1" />
-          <DropdownItem text="item2" />
-          <DropdownItem text="item3" disabled={true} />
-          <DropdownItem text="item4" />
-          <DropdownItem text="item5" />
-          <DropdownItem text="item6" />
+          <DropdownItem value="item1" children={"item1"} />
+          <DropdownItem value="item2" children={"item2"} />
+          <DropdownItem value="item3" children={"item3"} disabled={true} />
+          <DropdownItem value="item4" children={"item4"} />
+          <DropdownItem value="item5" children={"item5"} />
+          <DropdownItem value="item6" children={"item6"} />
         </DropdownInput>
       </div>
     );
@@ -37,12 +37,20 @@ export const DropdownGallery: Story = {
     return (
       <div className="grid grid-cols-1 gap-2">
         <DropdownInput placeholder="select here">
-          <DropdownItem text="item1" />
-          <DropdownItem text="item2" />
-          <DropdownItem text="item3" />
-          <DropdownItem text="item4" disabled={true} />
-          <DropdownItem text="item5" />
-          <DropdownItem text="item6" />
+          <DropdownItem value="item1" children={"item1"} />
+          <DropdownItem value="item2" children={"item2"} />
+          <DropdownItem value="item3">
+            <img
+              src={
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
+              }
+              alt={"cat"}
+              width="200"
+            />
+          </DropdownItem>
+          <DropdownItem value="item4" children={"item4"} disabled={true} />
+          <DropdownItem value="item5" children={"item5"} />
+          <DropdownItem value="item6" children={"item6"} />
         </DropdownInput>
       </div>
     );

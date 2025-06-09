@@ -22,6 +22,7 @@ export type DropdownItemVariants = VariantProps<typeof dropdownItemVariants>;
 
 export interface DropdownItemProps extends DropdownItemVariants {
   className?: string;
-  text: string;
+  value: string;
+  children: React.ReactNode;
   disabled?: boolean;
 }

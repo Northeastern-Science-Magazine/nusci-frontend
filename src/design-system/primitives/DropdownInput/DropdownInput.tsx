@@ -10,17 +10,18 @@ import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
 export function DropdownItem({
   className,
-  text,
+  value,
+  children,
   disabled,
   ...variantProps
 }: DropdownItemProps) {
   return (
     <Select.Item
-      value={text}
+      value={value}
       disabled={disabled}
       className={clsx(dropdownItemVariants(variantProps), className)}
     >
-      <Select.ItemText>{text}</Select.ItemText>
+      <Select.ItemText>{children}</Select.ItemText>
       <Select.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
         <CheckIcon />
       </Select.ItemIndicator>

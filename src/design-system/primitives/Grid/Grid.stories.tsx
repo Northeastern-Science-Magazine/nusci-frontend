@@ -9,7 +9,7 @@ const gaps = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Grid> = {
   component: Grid,
-  title: "Components/Grid",
+  title: "Primitives/Grid",
   argTypes: {
     col: { control: "boolean" },
     row: { control: "boolean" },

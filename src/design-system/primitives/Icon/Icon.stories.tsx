@@ -3,8 +3,8 @@ import Icon from "./Icon";
 import type { IconProps } from "./variants";
 import React from "react";
 
-const sizes: IconProps["size"] [] = ["xs", "sm", "md", "lg", "xl"];
-const colors: IconProps["color"] [] = [
+const sizes: IconProps["size"][] = ["xs", "sm", "md", "lg", "xl"];
+const colors: IconProps["color"][] = [
   "black",
   "white",
   "red",
@@ -21,39 +21,54 @@ const colors: IconProps["color"] [] = [
   "marigold",
 ];
 
-const icons: IconProps["icon"] [] = ["search", "loader", "share", "arrowright", "arrowleft",
-"bookmark", "user", "ellipsis", "ellipsisv", "image", "instagram", "linkedin", "star", "trash",
-"zoomin","zoomout"];
+const icons: IconProps["icon"][] = [
+  "search",
+  "loader",
+  "share",
+  "arrowright",
+  "arrowleft",
+  "bookmark",
+  "user",
+  "ellipsis",
+  "ellipsisv",
+  "image",
+  "instagram",
+  "linkedin",
+  "star",
+  "trash",
+  "zoomin",
+  "zoomout",
+];
 
 const meta: Meta<typeof Icon> = {
-    component: Icon, 
-    title: "Components/Icon",
-    argTypes: {
-        icon: {
-            control: "select", 
-            options: icons, 
-        }, 
-        size: {
-            control: "select", 
-            options: sizes,
-        },
-        color: {
-            control: "select", 
-            options: colors, 
-        },
+  component: Icon,
+  title: "Primitives/Icon",
+  argTypes: {
+    icon: {
+      control: "select",
+      options: icons,
     },
+    size: {
+      control: "select",
+      options: sizes,
+    },
+    color: {
+      control: "select",
+      options: colors,
+    },
+  },
 };
 
-export default meta; 
+export default meta;
 
 type Story = StoryObj<typeof Icon>;
 
 export const Default: Story = {
-    args: {
-        icon: "search", 
-        color: "black", 
-        size: "md",
-    },
+  args: {
+    icon: "search",
+    color: "black",
+    size: "md",
+  },
 };
 
 export const Color: Story = {
@@ -69,7 +84,7 @@ export const Color: Story = {
   ),
   // default setting, but can changed in the story book
   args: {
-    icon: "share", 
+    icon: "share",
     size: "md",
   },
 };
@@ -101,15 +116,8 @@ export const Gallery: Story = {
             const isWhite = color === "white";
 
             return (
-              <div
-                key={`${icon}-${color}-${size}`}
-                className="flex flex-col items-center text-center"
-              >
-                <div
-                  className={`p-2 rounded ${
-                    isWhite ? "bg-zinc-300" : ""
-                  }`}
-                >
+              <div key={`${icon}-${color}-${size}`} className="flex flex-col items-center text-center">
+                <div className={`p-2 rounded ${isWhite ? "bg-zinc-300" : ""}`}>
                   <Icon icon={icon} color={color} size={size} />
                 </div>
                 <span className="text-[10px] mt-1">
@@ -123,4 +131,3 @@ export const Gallery: Story = {
     </div>
   ),
 };
-

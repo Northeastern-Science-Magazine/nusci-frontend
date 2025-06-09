@@ -8,7 +8,7 @@ const sizes = ["sm", "md", "lg"] as const;
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Avatar> = {
   component: Avatar,
-  title: "Components/Avatar",
+  title: "Primitives/Avatar",
   argTypes: {
     size: {
       control: "select",

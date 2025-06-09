@@ -25,7 +25,7 @@ const colors = [
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Text> = {
   component: Text,
-  title: "Components/Text",
+  title: "Primitives/Text",
   argTypes: {
     style: {
       control: "select",

@@ -24,7 +24,7 @@ const colors = [
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Badge> = {
   component: Badge,
-  title: "Components/Badge",
+  title: "Primitives/Badge",
   argTypes: {
     variant: {
       control: "select",

@@ -3,10 +3,8 @@ import { Toggle } from "./Toggle";
 import React from "react";
 
 const colors = [
-  "white",
+  //"white", // white exists but doesn't really serve a purpose
   "black",
-  "light-orange",
-  "dark-orange",
   "gray",
   "aqua",
   "aqua-light",
@@ -23,7 +21,7 @@ const colors = [
 
 const meta: Meta<typeof Toggle> = {
   component: Toggle,
-  title: "Components/Toggle",
+  title: "Primitives/Toggle",
   argTypes: {
     color: {
       control: "select",
@@ -51,14 +49,15 @@ export const Gallery: Story = {
   render: () => {
     return (
       <div className="space-y-8">
-        {colors.map((colors) => (
-          <div key={colors} className="space-y-4">
-            <h3 className="text-lg font-semibold capitalize">{colors}</h3>
-            <div className={`flex gap-4 ${colors === 'white' ? 'bg-zinc-400 p-4 rounded-lg w-fit -ml-4' : ''}`}>
-              <Toggle color={colors} defaultChecked />
+        <h3 className="text-lg font-semibold">Toggle Gallery</h3>
+        <div className="grid grid-cols-3 gap-6">
+          {colors.map((color) => (
+            <div key={color} className="flex flex-col items-start gap-2">
+              <span className="text-sm font-medium capitalize">{color}</span>
+              <Toggle color={color} defaultChecked />
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     );
   },

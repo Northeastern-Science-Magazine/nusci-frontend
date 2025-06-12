@@ -40,3 +40,37 @@ export interface CheckboxProps extends VariantProps<typeof checkboxVariants> {
     checkedValues: Array<string>;
     handleCheckedChange: (option: string, value: boolean) => void;
 }
+
+export const indicatorVariants = tv({
+  base: "relative flex items-center justify-center rounded-md shrink-0",
+  variants: {
+    size: {
+      sm: "w-4 h-4",
+      md: "w-5 h-5",
+      lg: "	w-6 h-6",
+    },
+    color: {
+      black: "bg-black border-black",
+      white: "bg-black",
+      red: "bg-red-500 border-red-500",
+      aqua: "bg-aqua",
+      "aqua-light": "bg-aqua-light",
+      "forest-green": "bg-forest-green",
+      "sage-green": "bg-sage-green",
+      border: "bg-border",
+      neutral: "bg-neutral",
+      purple: "bg-purple",
+      pink: "bg-pink",
+      maroon: "bg-maroon",
+      coral: "bg-coral",
+      marigold: "bg-marigold",
+      },
+  },
+  defaultVariants: {
+    color: "black",
+    size: "md",
+  }, 
+});
+
+export interface IndicatorProps extends VariantProps<typeof indicatorVariants> {}
+

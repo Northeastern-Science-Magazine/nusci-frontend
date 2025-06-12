@@ -1,5 +1,5 @@
 import { Checkbox as RadixCheckbox } from "radix-ui";
-import { checkboxVariants, CheckboxProps } from "./variants";
+import { checkboxVariants, CheckboxProps, indicatorVariants } from "./variants";
 
 /**
  * Checkbox Component
@@ -13,29 +13,6 @@ export const Checkbox = ({options, size, color, disabled = false, checkedValues,
         return checkedValues.includes(option); 
     }
 
-    const checkedBgColors: Record<string, string> = {
-      black: "bg-black border-black",
-      white: "bg-black",
-      red: "bg-red-500 border-red-500",
-      aqua: "bg-aqua",
-      "aqua-light": "bg-aqua-light",
-      "forest-green": "bg-forest-green",
-      "sage-green": "bg-sage-green",
-      border: "bg-border",
-      neutral: "bg-neutral",
-      purple: "bg-purple",
-      pink: "bg-pink",
-      maroon: "bg-maroon",
-      coral: "bg-coral",
-      marigold: "bg-marigold",
-    };
-
-    const indicatorSizes: Record<string, string> = {
-      sm: "w-4 h-4",
-      md: "w-5 h-5",
-      lg: "w-6 h-6",
-    };
-
     return (
         <div>
           {options.map(option => (
@@ -47,9 +24,7 @@ export const Checkbox = ({options, size, color, disabled = false, checkedValues,
                   disabled={disabled || false}
                   name={option}
                 >
-                  <RadixCheckbox.Indicator className={`relative flex items-center justify-center rounded-md shrink-0 
-                    ${indicatorSizes[size ?? "md"]} 
-                    ${checkedBgColors[disabled ? "neutral" : color ?? "black"]}`}/>
+                  <RadixCheckbox.Indicator className={indicatorVariants({size, color: disabled ? "neutral" : color})}/>
                 </RadixCheckbox.Root>
                 <span>{option}</span>
                 {disabled && (

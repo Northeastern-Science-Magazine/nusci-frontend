@@ -122,7 +122,7 @@ export const Gallery: Story = {
           />
         </Box>
       </Box>,
-      <Badge key="photographer" color="black" className="absolute bottom-2 right-2 bg-neutral/70" variant="outline">
+      <Badge key="photographer" color="black" className="absolute bottom-2 right-2 bg-white/70" variant="outline">
         Photographer: Jia^2
       </Badge>,
       <Box

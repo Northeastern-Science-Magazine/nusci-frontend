@@ -4,7 +4,7 @@ import { tv, type VariantProps } from "tailwind-variants";
  * applies dynamic styling for checked/unchecked state using Radix data-state
 */
 export const radioButtonVariants = tv({
-  base: "border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2",
+  base: "border bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2",
   variants: {
     color: {
       black: "border-black data-[state=checked]:bg-black focus:ring-black",
@@ -39,6 +39,7 @@ export type RadioButtonVariants = VariantProps<typeof radioButtonVariants>;
  * className: optional additional classes
  * color: styling variant
  */
+
 export interface RadioButtonProps extends RadioButtonVariants {
   options: { label: string; value: string }[];
   name: string;
@@ -46,3 +47,4 @@ export interface RadioButtonProps extends RadioButtonVariants {
   onChange?: (value: string) => void;
   className?: string;
 }
+

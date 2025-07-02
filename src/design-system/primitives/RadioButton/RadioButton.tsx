@@ -6,9 +6,8 @@ import clsx from "clsx";
 /**
  * RadioButton Component
  *
- * Wraps Radix RadioGroup with state
+ * Uncontrolled component — selection managed by DOM using defaultValue
  */
-
 export default function RadioButton({
   options,
   name,
@@ -18,22 +17,14 @@ export default function RadioButton({
   color,
   ...props
 }: RadioButtonProps) {
-// internal state for selected option
-  const [selected, setSelected] = React.useState(defaultValue || "");
-
-  const handleValueChange = (value: string) => {
-    setSelected(value);
-    onChange?.(value);
-  };
-
   return (
     <RadixRadioGroup.Root
       className={clsx("flex gap-4", className)}
       name={name}
-      value={selected}
-      onValueChange={handleValueChange}
+      defaultValue={defaultValue}
+      onValueChange={onChange}
       {...props}
-      >
+    >
       {options.map((option) => {
         const id = `${name}-${option.value}`;
         return (
@@ -46,7 +37,11 @@ export default function RadioButton({
                 radioButtonVariants({ color })
               )}
             >
-              <RadixRadioGroup.Indicator className="w-2.5 h-2.5 bg-white rounded-full" />
+              <RadixRadioGroup.Indicator
+            className={clsx("w-2.5 h-2.5 rounded-full bg-white transition-transform", 
+            "group-radix-state-checked:scale-100 scale-0"
+    )}
+  />
             </RadixRadioGroup.Item>
             <label htmlFor={id} className="cursor-pointer text-sm">
               {option.label}

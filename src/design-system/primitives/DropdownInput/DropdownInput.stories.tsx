@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { DropdownInput, DropdownItem } from "./DropdownInput";
 import React from "react";
+import Image from "../Image";
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof DropdownInput> = {
@@ -18,12 +19,14 @@ export const Default: Story = {
     return (
       <div className="grid grid-cols-1 gap-2">
         <DropdownInput placeholder="select here">
-          <DropdownItem value="item1" children={"item1"} />
-          <DropdownItem value="item2" children={"item2"} />
-          <DropdownItem value="item3" children={"item3"} disabled={true} />
-          <DropdownItem value="item4" children={"item4"} />
-          <DropdownItem value="item5" children={"item5"} />
-          <DropdownItem value="item6" children={"item6"} />
+          <DropdownItem value="item1">Item 1</DropdownItem>
+          <DropdownItem value="item2">Item 2</DropdownItem>
+          <DropdownItem value="item3" disabled={true}>
+            Item 3
+          </DropdownItem>
+          <DropdownItem value="item4">Item 4</DropdownItem>
+          <DropdownItem value="item5">Item 5</DropdownItem>
+          <DropdownItem value="item6">Item 6</DropdownItem>
         </DropdownInput>
       </div>
     );
@@ -37,20 +40,19 @@ export const DropdownGallery: Story = {
     return (
       <div className="grid grid-cols-1 gap-2">
         <DropdownInput placeholder="select here">
-          <DropdownItem value="item1" children={"item1"} />
-          <DropdownItem value="item2" children={"item2"} />
-          <DropdownItem value="item3">
-            <img
-              src={
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
-              }
-              alt={"cat"}
-              width="200"
+          <DropdownItem value="item1">Item 1</DropdownItem>
+          <DropdownItem value="item2">Item 2</DropdownItem>
+          <DropdownItem value="item3" disabled={true}>
+            <Image
+              ratio={16 / 9}
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
+              alt="cat"
+              width="w-[40px]"
             />
           </DropdownItem>
-          <DropdownItem value="item4" children={"item4"} disabled={true} />
-          <DropdownItem value="item5" children={"item5"} />
-          <DropdownItem value="item6" children={"item6"} />
+          <DropdownItem value="item4">Item 4</DropdownItem>
+          <DropdownItem value="item5">Item 5</DropdownItem>
+          <DropdownItem value="item6">Item 6 With a Really Long Name</DropdownItem>
         </DropdownInput>
       </div>
     );

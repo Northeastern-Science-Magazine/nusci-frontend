@@ -7,14 +7,14 @@ import clsx from "clsx";
  * @param { IconProps } props
  * @returns Icon Component
  */
-export default function Icon({icon, color, size, className, onClick}: IconProps) {
+export default function Icon({ icon, color, size, className, onClick }: IconProps) {
   const LucideIcon = iconMap[icon];
-  
+
   if (!LucideIcon) {
     console.warn(`Icon "${icon}" not found in iconMap.`);
     return null;
   }
-  
+
   return (
     <LucideIcon
       onClick={onClick}

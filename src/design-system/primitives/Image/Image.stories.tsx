@@ -7,7 +7,7 @@ const rounded = ["default", "rounded"] as const;
 
 const meta: Meta<typeof Image> = {
   component: Image,
-  title: "Components/Image",
+  title: "Primitives/Image",
   argTypes: {
     emphasis: {
       control: "select",
@@ -77,10 +77,7 @@ export const Gallery: Story = {
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {rounded.map((rounded) =>
             emphasis.map((emphasis) => (
-              <div
-                key={`${rounded}-${emphasis}`}
-                className="flex flex-col gap-2"
-              >
+              <div key={`${rounded}-${emphasis}`} className="flex flex-col gap-2">
                 <Image
                   ratio={1}
                   rounded={rounded}

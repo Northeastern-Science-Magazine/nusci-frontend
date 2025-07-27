@@ -4,7 +4,7 @@ import React from "react";
 
 const meta: Meta<typeof Tab> = {
   component: Tab,
-  title: "Components/Tab",
+  title: "Primitives/Tab",
 };
 
 export default meta;

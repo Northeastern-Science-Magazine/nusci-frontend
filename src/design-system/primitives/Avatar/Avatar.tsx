@@ -7,12 +7,12 @@ import { avatarVariants, AvatarProps } from "./variants";
  * @param { AvatarProps } props
  * @returns Avatar Component
  */
-export const Avatar = (props: AvatarProps) => {
+export const Avatar = ({ size, src, alt, fallback, onClick }: AvatarProps) => {
   return (
-    <RadixAvatar.Root>
-      <RadixAvatar.Image className={avatarVariants(props)} src={props.src} alt={props.alt ?? "an avatar"} />
-      <RadixAvatar.Fallback className={avatarVariants(props)}>
-        {props.fallback.length == 0 ? "NA" : props.fallback.length <= 2 ? props.fallback : props.fallback.substring(0, 2)}
+    <RadixAvatar.Root onClick={onClick}>
+      <RadixAvatar.Image className={avatarVariants({ size })} src={src} alt={alt ?? "an avatar"} />
+      <RadixAvatar.Fallback className={avatarVariants({ size })}>
+        {fallback.length == 0 ? "NA" : fallback.length <= 2 ? fallback : fallback.substring(0, 2)}
       </RadixAvatar.Fallback>
     </RadixAvatar.Root>
   );

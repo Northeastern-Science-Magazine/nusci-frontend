@@ -440,5 +440,6 @@ type HTMLBoxProps = Omit<HTMLAttributes<HTMLDivElement>, "color">;
 
 /** Export ButtonProps as one type */
 export interface BoxProps extends HTMLBoxProps, BoxVariants {
+  className?: string;
   children: React.ReactNode;
 }

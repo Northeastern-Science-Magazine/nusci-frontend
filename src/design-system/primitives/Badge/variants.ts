@@ -108,5 +108,6 @@ export type BadgeVariants = VariantProps<typeof badgeVariants>;
 
 /** Export ButtonProps as one type */
 export interface BadgeProps extends BadgeVariants {
+  className?: string;
   children: React.ReactNode;
 }

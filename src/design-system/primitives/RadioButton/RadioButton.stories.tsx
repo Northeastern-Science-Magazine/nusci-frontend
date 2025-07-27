@@ -52,25 +52,30 @@ export const Default: Story = {
   },
 };
 
+export const Vertical: Story = {
+  args: {
+    name: "default-radio",
+    color: "black",
+    options,
+    defaultValue: "a",
+    direction: "vertical",
+  },
+};
+
 // gallery for each color variant
 export const Gallery: Story = {
-    args: {},
-    render: () => (
-      <div className="space-y-4">
-        {colors.map((color) => {
-          const isWhite = color === "white";
-          return (
-            <div key={color} className={isWhite ? "bg-zinc-300 p-4" : "p-4"}>
-              <h4 className="mb-2 font-semibold capitalize">{color}</h4>
-              <RadioButton
-                name={`radio-${color}`}
-                color={color}
-                options={options}
-                defaultValue="b"
-              />
-            </div>
-          );
-        })}
-      </div>
-    ),
-  };
+  args: {},
+  render: () => (
+    <div className="space-y-4">
+      {colors.map((color) => {
+        const isWhite = color === "white";
+        return (
+          <div key={color} className={isWhite ? "bg-zinc-300 p-4" : "p-4"}>
+            <h4 className="mb-2 font-semibold capitalize">{color}</h4>
+            <RadioButton name={`radio-${color}`} color={color} options={options} defaultValue="b" />
+          </div>
+        );
+      })}
+    </div>
+  ),
+};

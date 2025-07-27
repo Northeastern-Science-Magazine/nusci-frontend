@@ -25,8 +25,22 @@ const pts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 1
 const pbs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const prs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const pls = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const colors = [ "black", "white", "red", "aqua", "aqua-light", "forest-green", "sage-green", "border",
-  "neutral", "purple", "pink", "maroon", "coral", "marigold"] as const;
+const colors = [
+  "black",
+  "white",
+  "red",
+  "aqua",
+  "aqua-light",
+  "forest-green",
+  "sage-green",
+  "border",
+  "neutral",
+  "purple",
+  "pink",
+  "maroon",
+  "coral",
+  "marigold",
+] as const;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Box> = {
@@ -43,88 +57,88 @@ const meta: Meta<typeof Box> = {
     },
     width: {
       control: "select",
-      options: widths
+      options: widths,
     },
     height: {
       control: "select",
-      options: heights
+      options: heights,
     },
     top: {
       control: "select",
-      options: tops
+      options: tops,
     },
     bottom: {
       control: "select",
-      options: bottoms
+      options: bottoms,
     },
     left: {
       control: "select",
-      options: lefts
+      options: lefts,
     },
     right: {
       control: "select",
-      options: rights
+      options: rights,
     },
     m: {
       control: "select",
-      options: ms
+      options: ms,
     },
     mx: {
       control: "select",
-      options: mxs
+      options: mxs,
     },
     my: {
       control: "select",
-      options: mys
+      options: mys,
     },
     mt: {
       control: "select",
-      options: mts
+      options: mts,
     },
     mb: {
       control: "select",
-      options: mbs
+      options: mbs,
     },
     mr: {
       control: "select",
-      options: mrs
+      options: mrs,
     },
     ml: {
       control: "select",
-      options: mls
+      options: mls,
     },
     p: {
       control: "select",
-      options: ps
+      options: ps,
     },
     px: {
       control: "select",
-      options: pxs
+      options: pxs,
     },
     py: {
       control: "select",
-      options: pys
+      options: pys,
     },
     pt: {
       control: "select",
-      options: pts
+      options: pts,
     },
     pb: {
       control: "select",
-      options: pbs
+      options: pbs,
     },
     pr: {
       control: "select",
-      options: prs
+      options: prs,
     },
     pl: {
       control: "select",
-      options: pls
+      options: pls,
     },
     color: {
       control: "select",
-      options: colors
-    }
+      options: colors,
+    },
   },
 };
 
@@ -139,8 +153,8 @@ export const Default: Story = {
     width: "full",
     m: 8,
     height: "full",
-    p: 4
-  }
+    p: 4,
+  },
 };
 
 /** Gallery Story for some box variants with ranging background color, width, and height */
@@ -159,7 +173,7 @@ export const Gallery: Story = {
                       {heights.map((height) => (
                         <div key={`${width}-${height}`} className="flex justify-left p-2">
                           <Box height={height} width={width} color={backgroundColor}>
-                          {width} x {height}
+                            {width} x {height}
                           </Box>
                         </div>
                       ))}

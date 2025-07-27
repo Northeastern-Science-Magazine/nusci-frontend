@@ -15,11 +15,12 @@ export default function RadioButton({
   onChange,
   className,
   color,
+  direction = "horizontal",
   ...props
 }: RadioButtonProps) {
   return (
     <RadixRadioGroup.Root
-      className={clsx("flex gap-4", className)}
+      className={clsx("flex gap-4", direction === "vertical" ? "flex-col" : "flex-row", className)}
       name={name}
       defaultValue={defaultValue}
       onValueChange={onChange}
@@ -38,10 +39,11 @@ export default function RadioButton({
               )}
             >
               <RadixRadioGroup.Indicator
-            className={clsx("w-2.5 h-2.5 rounded-full bg-white transition-transform", 
-            "group-radix-state-checked:scale-100 scale-0"
-    )}
-  />
+                className={clsx(
+                  "w-2.5 h-2.5 rounded-full bg-white transition-transform",
+                  "group-radix-state-checked:scale-100 scale-0"
+                )}
+              />
             </RadixRadioGroup.Item>
             <label htmlFor={id} className="cursor-pointer text-sm">
               {option.label}

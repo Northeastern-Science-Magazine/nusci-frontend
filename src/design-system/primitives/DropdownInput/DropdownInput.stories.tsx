@@ -6,7 +6,7 @@ import Image from "../Image";
 /** Define the control fields for Storybook */
 const meta: Meta<typeof DropdownInput> = {
   component: DropdownInput,
-  title: "Components/DropdownInput",
+  title: "Primitives/DropdownInput",
 };
 
 export default meta;

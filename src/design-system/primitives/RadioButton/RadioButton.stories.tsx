@@ -23,7 +23,7 @@ const colors = [
 // Define Storybook metadata
 const meta: Meta<typeof RadioButton> = {
   component: RadioButton,
-  title: "Components/RadioButton",
+  title: "Primitives/RadioButton",
   argTypes: {
     color: {
       control: "select",

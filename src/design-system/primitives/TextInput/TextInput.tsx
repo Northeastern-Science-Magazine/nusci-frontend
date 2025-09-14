@@ -7,33 +7,36 @@ import { TextInputProps, textInputVariants } from "./variants";
  * @param {TextProps} props
  * @returns Text Input Component
  */
-export const TextInput = (props: TextInputProps) => {
-  const [inputValue, setInputValue] = useState("");
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-
-    // for external features based on prop
-    if (props.onChange) {
-      props.onChange(event);
-    }
-  };
-
+export const TextInput = ({
+  label,
+  id,
+  value,
+  placeholder,
+  onValueChange,
+  variant,
+  size,
+  color,
+  ...props
+}: TextInputProps) => {
+  
+  const autoId = React.useId();
+  const propId = id ?? autoId;
   return (
     <div className="flex flex-col items-start">
-      {props.label && (
-        <label htmlFor={props.id} className="mb-1">
+      {label && (
+        <label htmlFor={propId} className="mb-1">
           {" "}
-          {props.label}{" "}
+          {label}{" "}
         </label>
       )}
       <input
         type="text"
-        id={props.id}
-        value={inputValue}
-        placeholder={props.placeholder || "Enter text"}
-        onChange={handleChange}
-        className={textInputVariants(props)}
+        id={propId}
+        value={value}
+        placeholder={placeholder || "Enter text"}
+        onChange={(e) => onValueChange?.(e.target.value)}
+        className={textInputVariants({ variant, size, color })}
+        {...props}
       />
     </div>
   );

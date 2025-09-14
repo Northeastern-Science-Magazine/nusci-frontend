@@ -52,7 +52,6 @@ export const Outline: Story = {
     variant: "outline",
     color: "black",
     label: "",
-    id: ""
   },
 };
 
@@ -63,7 +62,6 @@ export const Filled: Story = {
     variant: "filled",
     color: "black",
     label: "", 
-    id: "",
   },
 };
 
@@ -71,37 +69,29 @@ export const Gallery: Story = {
   args: {},
   render: (args) => {
     return (
-      <div>
+      <div className="space-y-8">
         {colors.map((color) => {
-          const isWhiteColor = color === "white";
+          const isWhite = color == "white";
+          const defaultValue = "username";
           return (
-            <div key={color}>
-              <div
-                className={`grid grid-cols-2 gap-2 ${
-                  isWhiteColor ? "bg-zinc-300" : ""
-                }`}
-              >
+            <div key={color} className={isWhite ? "bg-zinc-300 p-4" : ""}>
+              <h2 className="text-xl font-bold mb-4 capitalize">{color}</h2>
+              <div className="grid grid-cols-2 gap-4">
                 {variants.map((variant) => (
-                  <React.Fragment key={variant}>
-                    <div className="flex flex-col">
-                      {sizes.map((size) => (
-                        <div
-                          key={`${variant}-${size}`}
-                          className="flex justify-left p-2"
-                        >
-                          <TextInput
-                            size={size}
-                            color={color}
-                            variant={variant}
-                            label={`${size}-${variant}-${color}`}
-                            id={`${size}-${variant}-${color}`}
-                          >
-                            {`${size} | ${variant} | ${color}`}
-                          </TextInput>
-                        </div>
-                      ))}
-                    </div>
-                  </React.Fragment>
+                  <div key={variant} className="space-y-2">
+                    <h3 className="font-medium capitalize">{variant}</h3>
+                    {sizes.map((size) => (
+                      <TextInput
+                        key={`${variant}-${size}-${color}`}
+                        size={size}
+                        color={color}
+                        variant={variant}
+                        label={`${size} | ${variant} | ${color}`}
+                        id={`${size}-${variant}-${color}`}
+                        value={defaultValue}
+                      />
+                    ))}
+                  </div>
                 ))}
               </div>
             </div>

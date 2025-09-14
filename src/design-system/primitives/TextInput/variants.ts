@@ -191,7 +191,7 @@ export type TextInputVariants = VariantProps<typeof textInputVariants>;
 /** Utilize HTML Text attributes excluding size and color */
 type HTMLTextProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
-  "size" | "color"
+  "size" | "color" | "value"
 > &
   ClassAttributes<HTMLInputElement>;
 
@@ -199,6 +199,7 @@ type HTMLTextProps = Omit<
 export interface TextInputProps extends TextInputVariants, HTMLTextProps {
   placeholder?: string;
   label: string;
-  id: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  id?: string;
+  value: string;
+  onValueChange?: (value: string) => void; 
 }

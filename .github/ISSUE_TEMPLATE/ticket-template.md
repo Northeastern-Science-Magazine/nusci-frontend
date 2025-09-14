@@ -12,7 +12,7 @@ assignees: ""
 ## Solution Requirements
 -
 
-## Figma (if applicable)
+## References
 -
 
 ## Additional Notes

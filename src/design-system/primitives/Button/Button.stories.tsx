@@ -25,7 +25,7 @@ const colors = [
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Button> = {
   component: Button,
-  title: "Components/Button",
+  title: "Primitives/Button",
   argTypes: {
     variant: {
       control: "select",

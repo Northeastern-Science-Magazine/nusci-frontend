@@ -16,7 +16,8 @@ export const avatarVariants = tv({
 });
 
 export interface AvatarProps extends VariantProps<typeof avatarVariants> {
+  onClick?: () => void;
   src?: string;
-  alt?: string; // add default alt text when not given
-  fallback: string; // validate if it's 1-2 characters long in prop
+  alt?: string;
+  fallback: string;
 }

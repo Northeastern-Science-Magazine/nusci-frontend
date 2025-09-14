@@ -24,7 +24,7 @@ const colors = [
 /** Define the control fields for Storybook */
 const meta: Meta<typeof TextInput> = {
   component: TextInput,
-  title: "Components/TextInput",
+  title: "Primitives/TextInput",
   argTypes: {
     variant: {
       control: "select",
@@ -72,7 +72,6 @@ export const Gallery: Story = {
       <div className="space-y-8">
         {colors.map((color) => {
           const isWhite = color == "white";
-          const defaultValue = "username";
           return (
             <div key={color} className={isWhite ? "bg-zinc-300 p-4" : ""}>
               <h2 className="text-xl font-bold mb-4 capitalize">{color}</h2>
@@ -88,7 +87,7 @@ export const Gallery: Story = {
                         variant={variant}
                         label={`${size} | ${variant} | ${color}`}
                         id={`${size}-${variant}-${color}`}
-                        value={defaultValue}
+                        value="username"
                       />
                     ))}
                   </div>

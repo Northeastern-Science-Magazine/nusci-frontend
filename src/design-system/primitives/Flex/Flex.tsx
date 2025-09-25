@@ -8,5 +8,5 @@ import clsx from "clsx";
  * @returns Flex Component
  */
 export function Flex({ children, className, ...props }: FlexProps) {
-  return <div className={clsx(flexVariants(props), className)}>{children}</div>;
+  return <div className={clsx(className, flexVariants(props))}>{children}</div>;
 }

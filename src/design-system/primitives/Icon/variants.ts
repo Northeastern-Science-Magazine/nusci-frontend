@@ -14,6 +14,7 @@ import {
   Trash2,
   ZoomIn,
   ZoomOut,
+  Mail
 } from "lucide-react";
 import { InstagramLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
 
@@ -73,6 +74,7 @@ export const iconMap = {
   trash: Trash2,
   zoomin: ZoomIn,
   zoomout: ZoomOut,
+  email: Mail,
 };
 
 export type IconName = keyof typeof iconMap;

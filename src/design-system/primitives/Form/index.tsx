@@ -1,1 +1,3 @@
-import { Form, FormField } from "./Form";
+import { Form, FormField } from "./form";
+
+export { Form, FormField };

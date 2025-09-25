@@ -18,10 +18,10 @@ const meta: Meta<typeof MediaCard> = {
       control: "select",
       options: ["image", "video"],
     },
-    size: {
-      control: "select",
-      options: sizes,
-    },
+    // size: {
+    //   control: "select",
+    //   options: sizes,
+    // },
   },
 };
 
@@ -32,7 +32,7 @@ export const Default: Story = {
   args: {
     mediaType: "image",
     mediaDirection: "default",
-    size: "lg",
+    // size: "lg",
     title: "Beautiful Landscape",
     subtitle: "Mountain Landscape",
     description: "A stunning view of mountains and forests",
@@ -48,9 +48,9 @@ export const Vertical: Story = {
   args: {
     mediaType: "image",
     mediaDirection: "top",
-    size: "md",
+    // size: "md",
     title: "Beautiful Landscape",
-     subtitle: "Mountain Landscape",
+    subtitle: "Mountain Landscape",
     description: "A stunning view of mountains and forests",
     imageProps: {
       src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop",
@@ -66,8 +66,8 @@ export const Gallery: Story = {
   render: (args) => {
     return (
       <div>
-        {sizes.map((size) => (
-          <div className={size}>
+        {/* {sizes.map((size) => (
+          <div className={size}> */}
             <h2 className="text-xl font-bold">MediaCard Gallery</h2>
 
             {mediaTypes.map((mediaType) => (
@@ -115,8 +115,8 @@ export const Gallery: Story = {
               </div>
             ))}
           </div>
-        ))}
-      </div>
+        // ))}
+      // </div>
     );
   },
 };

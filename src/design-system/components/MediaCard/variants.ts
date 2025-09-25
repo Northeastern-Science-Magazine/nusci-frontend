@@ -13,11 +13,11 @@ export const mediaCardVariants = tv({
             top: "flex-col-reverse", 
             bottom: "flex-col",
         }, 
-        size: {
-      sm: "px-3 py-1.5 text-sm",
-      md: "px-4 py-2 text-base",
-      lg: "px-5 py-3 text-lg",
-    },
+    //     size: {
+    //   sm: "px-3 py-1.5 text-sm",
+    //   md: "px-4 py-2 text-base",
+    //   lg: "px-5 py-3 text-lg",
+    // },
     },
     defaultVariants: {
         mediaDirection: "default"

@@ -25,9 +25,14 @@ export default meta;
 type Story = StoryObj<typeof Header>;
 
 /** Story for Default Header (Not Logged In) */
-export const Default: Story = {
+export const Hamburger: Story = {
   args: {
     isLoggedIn: false,
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
   },
   decorators: [
     (Story) => (
@@ -42,6 +47,29 @@ export const Default: Story = {
   ],
 };
 
+export const FullMenuDisplay: Story = {
+  args: {
+    isLoggedIn: false,
+    forceFullMenu: true,
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ height: '200vh', background: 'linear-gradient(to bottom, #f0f0f0, #e0e0e0)' }}>
+        <Story />
+        <div style={{ padding: '100px 20px' }}>
+          <h1>Full Menu Display Header</h1>
+          <p>All menu items are visible in the header without hamburger menu.</p>
+        </div>
+      </div>
+    ),
+  ],
+};
+
 /** Story for Logged In User */
 export const LoggedIn: Story = {
   args: {
@@ -49,6 +77,11 @@ export const LoggedIn: Story = {
     userProfile: {
       name: 'John Doe',
       avatar: '/logo.png',
+    },
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
     },
   },
   decorators: [

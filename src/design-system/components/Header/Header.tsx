@@ -14,9 +14,10 @@ interface HeaderProps {
     name: string;
     avatar?: string;
   };
+  forceFullMenu?: boolean; // New prop to force full menu display
 }
 
-export default function Header({ isLoggedIn = false, userProfile }: HeaderProps) {
+export default function Header({ isLoggedIn = false, userProfile, forceFullMenu = false }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -68,7 +69,7 @@ export default function Header({ isLoggedIn = false, userProfile }: HeaderProps)
           <Box className='flex-shrink-0'>
             <Link href='/' newWindow={false} className='flex items-center'>
               <Box className={`transition-all duration-300 ${isScrolled ? 'h-8 w-8' : 'h-12 w-12'}`}>
-                <Image src='/logo.png' alt='NU Sci Magazine' width='w-12' ratio={1} />
+                <Image src='/logo.png' alt='NU Sci Magazine' width={isScrolled ? 'w-8' : 'w-12'} ratio={1} />
               </Box>
               <Box className={`ml-3 ${isScrolled ? 'hidden sm:block' : ''}`}>
                 <Box className='text-xl font-bold text-black'>NU Sci</Box>
@@ -77,8 +78,8 @@ export default function Header({ isLoggedIn = false, userProfile }: HeaderProps)
             </Link>
           </Box>
 
-          {/* Desktop Navigation */}
-          <Box className='hidden lg:flex items-center space-x-8'>
+          {/* Desktop Navigation - Show always when forceFullMenu is true */}
+          <Box className={`${forceFullMenu ? 'flex' : 'hidden lg:flex'} items-center space-x-8`}>
             {navigationItems.map((item) => (
               <Link
                 key={item.label}
@@ -137,22 +138,23 @@ export default function Header({ isLoggedIn = false, userProfile }: HeaderProps)
             )}
           </Box>
 
-          {/* Mobile Menu Button */}
-          <Box className='lg:hidden'>
-            <Button variant='outline' size='sm' color='black' onClick={toggleMobileMenu} className='p-2'>
-              {isMobileMenuOpen ? <X className='h-5 w-5' /> : <Menu className='h-5 w-5' />}
-            </Button>
-          </Box>
+          {/* Mobile Menu Button - Hide when forceFullMenu is true */}
+          {!forceFullMenu && (
+            <Box className='lg:hidden'>
+              <Button variant='outline' size='sm' color='black' onClick={toggleMobileMenu} className='p-2'>
+                {isMobileMenuOpen ? <X className='h-5 w-5' /> : <Menu className='h-5 w-5' />}
+              </Button>
+            </Box>
+          )}
         </Box>
 
-        {/* Mobile Navigation Menu */}
-        {isMobileMenuOpen && (
+        {/* Mobile Navigation Menu - Only show when not forceFullMenu */}
+        {!forceFullMenu && isMobileMenuOpen && (
           <Box className='lg:hidden mt-4 pb-4 border-t border-gray-200'>
             <Box className='flex flex-col space-y-4 pt-4'>
               {navigationItems.map((item) => (
-                <Box onClick={() => setIsMobileMenuOpen(false)}>
+                <Box key={item.label} onClick={() => setIsMobileMenuOpen(false)}>
                   <Link
-                    key={item.label}
                     href={item.href}
                     newWindow={false}
                     className='text-gray-700 hover:text-black transition-colors duration-200 font-medium'

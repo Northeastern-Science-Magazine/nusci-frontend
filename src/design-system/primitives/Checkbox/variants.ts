@@ -9,36 +9,33 @@ export const checkboxVariants = tv({
       lg: "	w-6 h-6",
     },
     color: {
-        black: "bg-white border-black",
-        white: "bg-white border-white",
-        red: "bg-white border-red-500",
-        aqua: "bg-white border-aqua",
-        "aqua-light":
-          "bg-white border-aqua-light",
-        "forest-green":
-          "bg-white border-forest-green",
-        "sage-green":
-          "bg-white border-sage-green",
-        border: "bg-white border-border",
-        neutral: "bg-white border-neutral",
-        purple: "bg-white border-purple",
-        pink: "bg-white border-pink",
-        maroon: "bg-white border-maroon",
-        coral: "bg-white border-coral",
-        marigold: "bg-white border-marigold",
-      },
+      black: "bg-white border-black",
+      white: "bg-white border-white",
+      red: "bg-white border-red-500",
+      aqua: "bg-white border-aqua",
+      "aqua-light": "bg-white border-aqua-light",
+      "forest-green": "bg-white border-forest-green",
+      "sage-green": "bg-white border-sage-green",
+      border: "bg-white border-border",
+      neutral: "bg-white border-neutral",
+      purple: "bg-white border-purple",
+      pink: "bg-white border-pink",
+      maroon: "bg-white border-maroon",
+      coral: "bg-white border-coral",
+      marigold: "bg-white border-marigold",
+    },
   },
   defaultVariants: {
     color: "black",
     size: "md",
-  }, 
+  },
 });
 
 export interface CheckboxProps extends VariantProps<typeof checkboxVariants> {
-    options: Array<string>;
-    disabled?: boolean;
-    checkedValues: Array<string>;
-    handleCheckedChange: (option: string, value: boolean) => void;
+  options: Array<string>;
+  disabled?: boolean;
+  value: Array<string>;
+  onChange: (newValue: Array<string>) => void;
 }
 
 export const indicatorVariants = tv({
@@ -64,13 +61,12 @@ export const indicatorVariants = tv({
       maroon: "bg-maroon",
       coral: "bg-coral",
       marigold: "bg-marigold",
-      },
+    },
   },
   defaultVariants: {
     color: "black",
     size: "md",
-  }, 
+  },
 });
 
 export interface IndicatorProps extends VariantProps<typeof indicatorVariants> {}
-

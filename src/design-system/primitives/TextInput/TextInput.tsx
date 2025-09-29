@@ -7,18 +7,7 @@ import { TextInputProps, textInputVariants } from "./variants";
  * @param {TextProps} props
  * @returns Text Input Component
  */
-export const TextInput = ({
-  label,
-  id,
-  value,
-  placeholder,
-  onValueChange,
-  variant,
-  size,
-  color,
-  ...props
-}: TextInputProps) => {
-  
+export const TextInput = ({ label, id, value, placeholder, onChange, variant, size, color, ...props }: TextInputProps) => {
   const autoId = React.useId();
   const propId = id ?? autoId;
   return (
@@ -34,7 +23,7 @@ export const TextInput = ({
         id={propId}
         value={value}
         placeholder={placeholder || "Enter text"}
-        onChange={(e) => onValueChange?.(e.target.value)}
+        onChange={(e) => onChange?.(e.target.value)}
         className={textInputVariants({ variant, size, color })}
         {...props}
       />

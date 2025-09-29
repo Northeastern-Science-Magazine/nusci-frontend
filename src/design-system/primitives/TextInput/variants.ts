@@ -19,161 +19,158 @@ export const textInputVariants = tv({
       white: "text-black border-white focus:ring-white placeholder-grey",
       red: "text-white border-red-500 focus:ring-red-500",
       aqua: "text-white border-aqua focus:ring-aqua",
-      "aqua-light":
-      "text-black border-aqua-light focus:ring-aqua-light",
-      "forest-green":
-      "text-white border-forest-green focus:ring-forest-green",
-      "sage-green":
-      "text-black border-sage-green focus:ring-sage-green" ,
+      "aqua-light": "text-black border-aqua-light focus:ring-aqua-light",
+      "forest-green": "text-white border-forest-green focus:ring-forest-green",
+      "sage-green": "text-black border-sage-green focus:ring-sage-green",
       border: "text-white border-border focus:ring-border placeholder-black",
       neutral: "text-white border-neutral focus:ring-neutral",
       purple: "text-white border-purple focus:ring-purple",
       pink: "text-white border-pink focus:ring-pink",
       maroon: "text-white border-maroon focus:ring-maroon",
       coral: "text-white border-coral focus:ring-coral",
-      marigold: "text-white border-marigold focus:ring-marigold", 
-    }
+      marigold: "text-white border-marigold focus:ring-marigold",
+    },
   },
   compoundVariants: [
     {
-      variant: "outline", 
-      color: "black", 
+      variant: "outline",
+      color: "black",
       class: "bg-transparent border-2 border-black text-black",
-    }, 
+    },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "white",
       class: "bg-transparent border-2 border-white text-white",
-    }, 
+    },
     {
-      variant: "outline", 
-      color: "red", 
+      variant: "outline",
+      color: "red",
       class: "bg-transparent border-2 border-red-500 text-red-500",
-    }, 
+    },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "aqua",
       class: "bg-transparent border-2 border-aqua text-aqua",
     },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "aqua-light",
       class: "bg-transparent border-2 border-aqua-light text-aqua-light",
     },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "forest-green",
       class: "bg-transparent border-2 border-forest-green text-forest-green",
     },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "sage-green",
       class: "bg-transparent border-2 border-sage-green text-sage-green",
     },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "border",
       class: "bg-transparent border-2 border-border text-border",
     },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "neutral",
       class: "bg-transparent border-2 border-neutral text-neutral",
     },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "purple",
       class: "bg-transparent border-2 border-purple text-purple",
     },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "pink",
       class: "bg-transparent border-2 border-pink text-pink",
     },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "maroon",
       class: "bg-transparent border-2 border-maroon text-maroon",
     },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "coral",
       class: "bg-transparent border-2 border-coral text-coral",
     },
     {
-      variant: "outline", 
+      variant: "outline",
       color: "marigold",
       class: "bg-transparent border-2 border-marigold text-marigold",
     },
 
     //filled variants
     {
-      variant: "filled", 
+      variant: "filled",
       color: "black",
       class: "bg-black",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "white",
       class: "bg-white",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "red",
       class: "bg-red-500",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "aqua",
       class: "bg-aqua",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "aqua-light",
       class: "bg-aqua-light",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "forest-green",
       class: "bg-forest-green",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "sage-green",
       class: "bg-sage-green",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "border",
       class: "bg-border",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "neutral",
       class: "bg-neutral",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "purple",
       class: "bg-purple",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "pink",
       class: "bg-pink",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "maroon",
       class: "bg-maroon",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "coral",
       class: "bg-coral",
     },
     {
-      variant: "filled", 
+      variant: "filled",
       color: "marigold",
       class: "bg-marigold",
     },
@@ -189,10 +186,7 @@ export const textInputVariants = tv({
 export type TextInputVariants = VariantProps<typeof textInputVariants>;
 
 /** Utilize HTML Text attributes excluding size and color */
-type HTMLTextProps = Omit<
-  InputHTMLAttributes<HTMLInputElement>,
-  "size" | "color" | "value"
-> &
+type HTMLTextProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "color" | "value" | "onChange"> &
   ClassAttributes<HTMLInputElement>;
 
 /** Export the text props as one type */
@@ -200,6 +194,6 @@ export interface TextInputProps extends TextInputVariants, HTMLTextProps {
   placeholder?: string;
   label: string;
   id?: string;
-  value: string;
-  onValueChange?: (value: string) => void; 
+  value?: string;
+  onChange?: (value: string) => void;
 }

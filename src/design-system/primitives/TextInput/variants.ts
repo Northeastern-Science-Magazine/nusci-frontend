@@ -191,6 +191,7 @@ type HTMLTextProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "color
 
 /** Export the text props as one type */
 export interface TextInputProps extends TextInputVariants, HTMLTextProps {
+  className?: string;
   placeholder?: string;
   label: string;
   id?: string;

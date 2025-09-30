@@ -22,12 +22,12 @@ export const videoVariants = tv({
 export type VideoVariants = VariantProps<typeof videoVariants>;
 
 export interface VideoProps extends VideoVariants {
-  ratio: number;
   src: string;
   alt: string;
   width: string;
 
   // Video-specific HTML props
+  ratio?: number;
   poster?: string;
   controls?: boolean;
   autoplay?: boolean;

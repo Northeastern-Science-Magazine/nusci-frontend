@@ -8,11 +8,16 @@ import { ImageProps, imageVariants } from "./variants";
  * @returns Image Component
  */
 export const Image = (props: ImageProps) => {
+
   return (
-    <div className={props.width}>
+    <div className="w-full h-full object-cover">
+      {props.ratio ? 
       <AspectRatio.Root ratio={props.ratio}>
         <img className={imageVariants(props)} src={props.src} alt={props.alt} />
       </AspectRatio.Root>
+      : 
+      <img className={imageVariants(props)} src={props.src} alt={props.alt} />
+      }
     </div>
   );
 };

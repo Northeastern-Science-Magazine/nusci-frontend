@@ -1,13 +1,9 @@
-import {
-  MediaCardProps,
-  mediaCardVariants,
-} from "./variants";
+import { MediaCardProps, mediaCardVariants } from "./variants";
 import Box from "@/primitives/Box";
 import Image from "@/primitives/Image";
 import Video from "@/primitives/Video";
 import Text from "@/primitives/Text";
 import { mediaCardTextSizes } from "./variants";
-import Card from "@/primitives/Card";
 
 export const MediaCard = (props: MediaCardProps) => {
   const {
@@ -28,12 +24,19 @@ export const MediaCard = (props: MediaCardProps) => {
   // Get text sizes from the configuration
   const textSizes = mediaCardTextSizes[size ?? "md"];
 
-
   return (
     <Box
       {...boxProps}
       color={color}
-      className={mediaCardVariants({ mediaDirection, size, shadow, border, rounded, backgroundOpacity, color})}
+      className={mediaCardVariants({
+        mediaDirection,
+        size,
+        shadow,
+        border,
+        rounded,
+        backgroundOpacity,
+        color,
+      })}
     >
       {/* Content Section */}
       <div className="flex-1 p-4  pt-8 pb-8">
@@ -47,9 +50,11 @@ export const MediaCard = (props: MediaCardProps) => {
             {title}
           </Text>
         )}
-        {description && <Text size={textSizes.description} className="text-inherit">
-          {description}
-          </Text>}
+        {description && (
+          <Text size={textSizes.description} className="text-inherit">
+            {description}
+          </Text>
+        )}
       </div>
 
       {/* Media Section */}

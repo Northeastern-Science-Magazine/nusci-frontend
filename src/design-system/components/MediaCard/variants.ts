@@ -26,7 +26,7 @@ export const mediaCardVariants = tv({
     border: {
       default: "border border-border",
       none: "",
-    }, 
+    },
     rounded: {
       default: "rounded-3xl overflow-hidden",
       none: "",
@@ -65,9 +65,9 @@ export const mediaCardVariants = tv({
     // Horizontal layouts - add self-center to text content
     {
       mediaDirection: ["default", "left"],
-      class: "[&>div:first-child]:self-center"
+      class: "[&>div:first-child]:self-center",
     },
-    // Horizontal - keep fixed square sizes
+    // HORIZONTAL LAYOUTS
     {
       size: "sm",
       mediaDirection: ["default", "left"],
@@ -87,7 +87,7 @@ export const mediaCardVariants = tv({
         "[&_.media-container]:w-64 [&_.media-container]:h-auto [&_.media-container]:flex-shrink-0 max-w-xl",
     },
 
-    // VERTICAL LAYOUTS (top, bottom) - Fixed height, full width
+    // VERTICAL LAYOUTS
     {
       size: "sm",
       mediaDirection: ["top", "bottom"],
@@ -110,61 +110,61 @@ export const mediaCardVariants = tv({
     // Text colors based on Box color prop - light backgrounds
     {
       color: "white",
-      class: "text-black"
+      class: "text-black",
     },
     {
       color: "aqua-light",
-      class: "text-black"
+      class: "text-black",
     },
     {
       color: "sage-green",
-      class: "text-black"
+      class: "text-black",
     },
     {
       color: "neutral",
-      class: "text-black"
+      class: "text-black",
     },
     {
       color: "pink",
-      class: "text-black"
+      class: "text-black",
     },
     {
       color: "coral",
-      class: "text-black"
+      class: "text-black",
     },
     {
       color: "marigold",
-      class: "text-black"
+      class: "text-black",
     },
-    
+
     // Text colors based on Box color prop - dark backgrounds
     {
       color: "black",
-      class: "text-white"
+      class: "text-white",
     },
     {
       color: "red",
-      class: "text-white"
+      class: "text-white",
     },
     {
       color: "aqua",
-      class: "text-white"
+      class: "text-white",
     },
     {
       color: "forest-green",
-      class: "text-white"
+      class: "text-white",
     },
     {
       color: "border",
-      class: "text-white"
+      class: "text-white",
     },
     {
       color: "purple",
-      class: "text-white"
+      class: "text-white",
     },
     {
       color: "maroon",
-      class: "text-white"
+      class: "text-white",
     },
   ],
   defaultVariants: {

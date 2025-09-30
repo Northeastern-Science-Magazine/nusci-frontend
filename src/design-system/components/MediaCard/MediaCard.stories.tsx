@@ -10,7 +10,6 @@ const shadow = ["default", "none"] as const;
 const border = ["default", "none"] as const;
 const opacity = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, "none"] as const;
 
-
 const meta: Meta<typeof MediaCard> = {
   component: MediaCard,
   title: "Components/MediaCard",
@@ -21,7 +20,7 @@ const meta: Meta<typeof MediaCard> = {
     },
     mediaType: {
       control: "select",
-      options: mediaTypes, 
+      options: mediaTypes,
     },
     size: {
       control: "select",
@@ -49,9 +48,12 @@ const meta: Meta<typeof MediaCard> = {
 export default meta;
 type Story = StoryObj<typeof MediaCard>;
 
-const sampleDescription = "A paragraph is a distinct section of writing, consisting of one or more sentences, that focuses on a single, unified idea or topic.";
-const sampleImage = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop";
-const sampleVideo = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+const sampleDescription =
+  "A paragraph is a distinct section of writing, consisting of one or more sentences, that focuses on a single, unified idea or topic.";
+const sampleImage =
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop";
+const sampleVideo =
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
 // Basic Examples
 export const Default: Story = {
@@ -132,7 +134,9 @@ export const DirectionVariants: Story = {
             border="default"
             title="Sample Card"
             subtitle="Layout Demo"
-            description={`Media positioned ${direction === "default" ? "right" : direction}`}
+            description={`Media positioned ${
+              direction === "default" ? "right" : direction
+            }`}
             imageProps={{
               src: sampleImage,
               alt: "Sample image",
@@ -465,7 +469,6 @@ export const ShadowAndBorderCombination: Story = {
     </div>
   ),
 };
-
 
 // Opacity Variants
 export const OpacityVariants: Story = {

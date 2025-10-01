@@ -9,6 +9,7 @@ export interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ className = '' }) => {
   const currentYear = new Date().getFullYear();
 
+  //Making the links to each social media correspond to their logos.
   const socialLinks = [
     {
       label: 'Instagram',
@@ -31,12 +32,12 @@ const Footer: React.FC<FooterProps> = ({ className = '' }) => {
     <footer className={`bg-black-900 text-black ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col items-center space-y-8">
-          {/* NU Sci Logo */}
+          {/* The NU Sci logo section */}
           <div className="text-center">
             <h3 className="text-4xl font-bold text-black-500">NU Sci</h3>
           </div>
 
-          {/* Social Links */}
+          {/* The social media section */}
           <div className="flex space-x-6">
             {socialLinks.map((social) => (
               <Link
@@ -51,13 +52,13 @@ const Footer: React.FC<FooterProps> = ({ className = '' }) => {
             ))}
           </div>
 
-          {/* Copyright */}
+          {/* The copyright section */}
           <div className="text-center space-y-2">
             <p className="text-sm text-black-400">
               © {currentYear} NU Sci. All rights reserved.
             </p>
             <p className="text-sm text-black-400">
-              This website is built and maintained by the NU Sci web and software team
+              This website is built and maintained by the NU Sci web and software team.
             </p>
           </div>
         </div>

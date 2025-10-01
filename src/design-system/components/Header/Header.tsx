@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Box from "@/design-system/primitives/Box";
-import Button from "@/design-system/primitives/Button";
-import Link from "@/design-system/primitives/Link";
-import Image from "@/design-system/primitives/Image";
-import { DropdownInput, DropdownItem } from "@/design-system/primitives/DropdownInput";
-import { Menu, X, Search, User } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import Box from '@/design-system/primitives/Box';
+import Button from '@/design-system/primitives/Button';
+import Link from '@/design-system/primitives/Link';
+import Image from '@/design-system/primitives/Image';
+import { DropdownInput, DropdownItem } from '@/design-system/primitives/DropdownInput';
+import { Menu, X, Search, User } from 'lucide-react';
 
 interface HeaderProps {
   isLoggedIn?: boolean;
@@ -27,8 +27,8 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
       setIsScrolled(scrollTop > 50);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleMobileMenu = () => {
@@ -36,16 +36,16 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
   };
 
   const navigationItems = [
-    { label: "Print Articles", href: "/articles" },
-    { label: "About Us", href: "/about-us" },
+    { label: 'Print Articles', href: '/articles' },
+    { label: 'About Us', href: '/about-us' },
   ];
 
   const categories = [
-    { value: "science", label: "Science" },
-    { value: "technology", label: "Technology" },
-    { value: "health", label: "Health" },
-    { value: "environment", label: "Environment" },
-    { value: "research", label: "Research" },
+    { value: 'science', label: 'Science' },
+    { value: 'technology', label: 'Technology' },
+    { value: 'health', label: 'Health' },
+    { value: 'environment', label: 'Environment' },
+    { value: 'research', label: 'Research' },
   ];
 
   return (
@@ -58,7 +58,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
       color="white"
       className={`
         z-50 transition-all duration-300 ease-in-out
-        ${isScrolled ? "shadow-lg py-2" : "py-4"}
+        ${isScrolled ? 'shadow-lg py-2' : 'py-4'}
         border-b border-gray-200
       `}
     >
@@ -68,10 +68,10 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
           {/* Logo */}
           <Box className="flex-shrink-0">
             <Link href="/" newWindow={false} className="flex items-center">
-              <Box className={`transition-all duration-300 ${isScrolled ? "h-8 w-8" : "h-12 w-12"}`}>
-                <Image src="/logo.png" alt="NU Sci Magazine" width={isScrolled ? "w-8" : "w-12"} ratio={1} />
+              <Box className={`transition-all duration-300 ${isScrolled ? 'h-8 w-8' : 'h-12 w-12'}`}>
+                <Image src="/logo.png" alt="NU Sci Magazine" width={isScrolled ? 'w-8' : 'w-12'} ratio={1} />
               </Box>
-              <Box className={`ml-3 ${isScrolled ? "hidden sm:block" : ""}`}>
+              <Box className={`ml-3 ${isScrolled ? 'hidden sm:block' : ''}`}>
                 <Box className="text-xl font-bold text-black">NU Sci</Box>
                 <Box className="text-sm text-gray-600">Magazine</Box>
               </Box>
@@ -79,7 +79,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
           </Box>
 
           {/* Desktop Navigation - Show always when forceFullMenu is true */}
-          <Box className={`${forceFullMenu ? "flex" : "hidden lg:flex"} items-center space-x-8`}>
+          <Box className={`${forceFullMenu ? 'flex' : 'hidden lg:flex'} items-center space-x-8`}>
             {navigationItems.map((item) => (
               <Link
                 key={item.label}
@@ -97,7 +97,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                 placeholder="Categories"
                 onChange={(value) => {
                   // Handle category selection
-                  console.log("Selected category:", value);
+                  console.log('Selected category:', value);
                 }}
               >
                 {categories.map((category) => (
@@ -113,8 +113,8 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
               variant="outline"
               size="sm"
               color="black"
-              onClick={() => (window.location.href = "/search")}
-              className="flex items-center"
+              onClick={() => (window.location.href = '/search')}
+              className="flex items-center h-[35px]"
             >
               <Search className="h-4 w-4 mr-1" />
               Search Articles
@@ -132,10 +132,16 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
               </Link>
             ) : (
               <Box className="flex items-center space-x-2">
-                <Button variant="outline" size="sm" color="black" onClick={() => (window.location.href = "/login")}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  color="black"
+                  onClick={() => (window.location.href = '/login')}
+                  className="h-[32.5px]"
+                >
                   Login
                 </Button>
-                <Button size="sm" color="black" onClick={() => (window.location.href = "/signup")}>
+                <Button size="sm" color="black" onClick={() => (window.location.href = '/signup')}>
                   Sign Up
                 </Button>
               </Box>
@@ -173,7 +179,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                 <DropdownInput
                   placeholder="Categories"
                   onChange={(value) => {
-                    console.log("Selected category:", value);
+                    console.log('Selected category:', value);
                     setIsMobileMenuOpen(false);
                   }}
                 >
@@ -191,7 +197,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                 size="sm"
                 color="black"
                 onClick={() => {
-                  window.location.href = "/search";
+                  window.location.href = '/search';
                   setIsMobileMenuOpen(false);
                 }}
                 className="flex items-center justify-center"
@@ -219,7 +225,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                     size="sm"
                     color="black"
                     onClick={() => {
-                      window.location.href = "/login";
+                      window.location.href = '/login';
                       setIsMobileMenuOpen(false);
                     }}
                   >
@@ -229,7 +235,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                     size="sm"
                     color="black"
                     onClick={() => {
-                      window.location.href = "/signup";
+                      window.location.href = '/signup';
                       setIsMobileMenuOpen(false);
                     }}
                   >

@@ -14,36 +14,52 @@ import {
   carouselNavigationVariants,
 } from "./variants";
 
+/**
+ * Carousel Component
+    * Horizontal and vertical scroll orientations (independent of child content)
+    * Single or multiple items per view
+    * Autoplay with pause on hover
+    * Navigation arrows
+    * Loop functionality
+    * Customizable sizing and gaps
+    * Takes any children (cards, images, videos, custom components, etc.)
+ */
 export default function Carousel({
   children,
   className,
-  orientation = "horizontal",
-  size = "md",
-  showNavigation = true,
-  autoplay = false,
-  autoplayDelay = 3000,
-  loop = true,
-  itemsPerView = 1,
-  gap = "md",
-  onSlideChange,
+  orientation = "horizontal", // Direction of carousel scrolling
+  size = "md", // Overall size of the carousel container
+  showNavigation = true, // Whether to show prev/next arrows
+  autoplay = false, // Auto-advance slides
+  autoplayDelay = 3000, // Milliseconds between auto-advances
+  loop = true, // Whether to loop back to start after last slide
+  itemsPerView = 1, // Number of items visible simultaneously
+  gap = "md", // Space between items
+  onSlideChange, // Callback when slide changes
   ...props
 }: CarouselProps) {
+  // Current active slide/page index
   const [currentIndex, setCurrentIndex] = useState(0);
+  
+  // Prevents rapid clicking during transitions
   const [isAnimating, setIsAnimating] = useState(false);
+  
   const containerRef = useRef<HTMLDivElement>(null);
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Total number of slides
   const [totalSlides, setTotalSlides] = useState(0);
 
-
+  // Updates total slides
   useEffect(() => {
     const slides = React.Children.count(children);
     setTotalSlides(slides);
   }, [children]);
 
-
+  // Calculates total pages based on items per view
   const totalPages = itemsPerView === 1 ? totalSlides : Math.ceil(totalSlides / itemsPerView);
 
-
+  // Starts autoplay timer -- only runs if autoplay is enabled and there are multiple pages
   const startAutoplay = useCallback(() => {
     if (!autoplay || totalPages <= 1) return;
     
@@ -55,6 +71,7 @@ export default function Carousel({
     }, autoplayDelay);
   }, [autoplay, autoplayDelay, loop, totalPages]);
 
+  /// Stops and clears autoplay timer -- prevents memory leakage
   const stopAutoplay = useCallback(() => {
     if (autoplayRef.current) {
       clearTimeout(autoplayRef.current);
@@ -62,13 +79,13 @@ export default function Carousel({
     }
   }, []);
 
-
+  // Manages autoplay lifecycle - starts timer and ensures cleanup
   useEffect(() => {
     startAutoplay();
-    return stopAutoplay;
+    return stopAutoplay; 
   }, [startAutoplay, stopAutoplay, currentIndex]);
 
-
+  // Navigates to previous slide/page
   const goToPrevious = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
@@ -79,9 +96,10 @@ export default function Carousel({
     });
     
     setTimeout(() => setIsAnimating(false), 300);
-    stopAutoplay();
+    stopAutoplay(); 
   }, [isAnimating, loop, totalPages, stopAutoplay]);
 
+  // Navigates to next slide/page
   const goToNext = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
@@ -95,38 +113,26 @@ export default function Carousel({
     stopAutoplay();
   }, [isAnimating, loop, totalPages, stopAutoplay]);
 
-  const goToSlide = useCallback((index: number) => {
-    if (isAnimating || index === currentIndex) return;
-    setIsAnimating(true);
-    setCurrentIndex(index);
-    setTimeout(() => setIsAnimating(false), 300);
-    stopAutoplay();
-  }, [isAnimating, currentIndex, stopAutoplay]);
-
-
-  useEffect(() => {
-    onSlideChange?.(currentIndex);
-  }, [currentIndex, onSlideChange]);
-
-
+  // Pauses autoplay when user hovers over carousel
   const handleMouseEnter = () => {
     if (autoplay) stopAutoplay();
   };
 
+  // Resumes autoplay when user stops hovering
   const handleMouseLeave = () => {
     if (autoplay) startAutoplay();
   };
 
-
+  // Calculates CSS transform for slide movement
   const getTransform = () => {
     if (itemsPerView === 1) {
-
+      // Single item: move by 100% per slide
       if (orientation === "vertical") {
         return `translateY(-${currentIndex * 100}%)`;
       }
       return `translateX(-${currentIndex * 100}%)`;
     } else {
-
+      // Multi-item: move by 100% per page (group of items)
       const moveDistance = currentIndex * 100;
       if (orientation === "vertical") {
         return `translateY(-${moveDistance}%)`;
@@ -135,11 +141,14 @@ export default function Carousel({
     }
   };
 
+  // Determines if navigation buttons should be enabled
   const canGoPrevious = loop || currentIndex > 0;
   const canGoNext = loop || currentIndex < totalPages - 1;
 
+  // Renders carousel content based on viewing mode
   const renderContent = () => {
     if (itemsPerView === 1) {
+      // Single item mode: wrap each child in a slide container
       return React.Children.map(children, (child, index) => (
         <div
           key={index}
@@ -149,18 +158,21 @@ export default function Carousel({
         </div>
       ));
     } else {
+      // Multi-item mode: group children into pages
       const childArray = React.Children.toArray(children);
       const pages = [];
       
+      // Create pages by slicing children array
       for (let i = 0; i < childArray.length; i += itemsPerView) {
         const pageItems = childArray.slice(i, i + itemsPerView);
         pages.push(
           <div
             key={i}
             className={clsx(
-              "flex-shrink-0 h-full w-full flex items-center",
+              "flex-shrink-0 h-full w-full flex items-center justify-center",
               orientation === "vertical" ? "flex-col" : "flex-row",
-              gap === "none" ? "" : "gap-4"
+              gap === "none" ? "" : "gap-4",
+              "px-2"
             )}
           >
             {pageItems.map((child, childIndex) => (
@@ -180,6 +192,7 @@ export default function Carousel({
   };
 
   return (
+    // Main carousel container with navigation buttons
     <div className={clsx(carouselContainerVariants({ orientation, size }), className)}>
       <div
         ref={containerRef}
@@ -192,6 +205,7 @@ export default function Carousel({
         {...props}
       >
         <div className="relative h-full w-full overflow-hidden rounded-lg">
+          {/* Sliding content container */}
           <div
             className={clsx(
               "flex h-full transition-transform duration-300 ease-in-out",
@@ -206,8 +220,10 @@ export default function Carousel({
         </div>
       </div>
 
+      {/* Navigation buttons - only show if enabled and there are multiple pages */}
       {showNavigation && totalPages > 1 && (
         <>
+          {/* Previous button */}
           <Button
             className={carouselNavigationVariants({ orientation, position: "previous" })}
             onClick={goToPrevious}
@@ -221,6 +237,7 @@ export default function Carousel({
             />
           </Button>
           
+          {/* Next button */}
           <Button
             className={carouselNavigationVariants({ orientation, position: "next" })}
             onClick={goToNext}
@@ -239,6 +256,7 @@ export default function Carousel({
   );
 }
 
+// Carousel Content Component
 export function CarouselContent({ 
   children, 
   className, 
@@ -255,6 +273,8 @@ export function CarouselContent({
     </div>
   );
 }
+
+// Carousel Item Component
 
 export function CarouselItem({ 
   children, 

@@ -97,3 +97,30 @@ export const Mobile: Story = {
     ),
   ],
 };
+
+/** Story for Mobile Logged In User */
+export const MobileLoggedIn: Story = {
+  args: {
+    isLoggedIn: true,
+    userProfile: {
+      name: "John Doe",
+      avatar: "/logo.png",
+    },
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: "mobile1",
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ height: "200vh", background: "linear-gradient(to bottom, #f0f0f0, #e0e0e0)" }}>
+        <Story />
+        <div style={{ padding: "100px 20px" }}>
+          <h1>Mobile Header with Logged In User</h1>
+          <p>Tap the menu button to see the mobile navigation with user profile.</p>
+        </div>
+      </div>
+    ),
+  ],
+};

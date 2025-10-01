@@ -34,8 +34,8 @@ export const checkboxVariants = tv({
 export interface CheckboxProps extends VariantProps<typeof checkboxVariants> {
   options: Array<string>;
   disabled?: boolean;
-  value: Array<string>;
-  onChange: (newValue: Array<string>) => void;
+  value?: Array<string>;
+  onChange?: (newValue: Array<string>) => void;
 }
 
 export const indicatorVariants = tv({

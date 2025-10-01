@@ -143,7 +143,7 @@ export const BasicForm: Story = {
                     validate: (value) => (Array.isArray(value) && value.length > 0 ? true : "Pick at least one interest"),
                   }}
                 >
-                  <Checkbox options={["Sports", "Music", "Travel"]} color="sage-green" value={[]} onChange={() => {}} />
+                  <Checkbox options={["Sports", "Music", "Travel"]} color="sage-green" />
                 </FormField>
               </Box>
 
@@ -232,7 +232,7 @@ export const BasicForm: Story = {
                         : "You must agree before continuing",
                   }}
                 >
-                  <Checkbox options={["Agree to terms and conditions"]} value={[]} onChange={() => {}} />
+                  <Checkbox options={["Agree to terms and conditions"]} />
                 </FormField>
               </Box>
             </Box>

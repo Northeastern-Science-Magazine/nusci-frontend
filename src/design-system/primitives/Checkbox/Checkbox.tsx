@@ -9,19 +9,21 @@ import { checkboxVariants, CheckboxProps, indicatorVariants } from "./variants";
  */
 export const Checkbox = ({ options, size, color, disabled = false, value, onChange }: CheckboxProps) => {
   const handleToggle = (option: string, checked: boolean) => {
-    let newValue: string[];
-    if (checked) {
-      newValue = [...value, option];
-    } else {
-      newValue = value.filter((v) => v !== option);
+    if (value && onChange) {
+      let newValue: string[];
+      if (checked) {
+        newValue = [...value, option];
+      } else {
+        newValue = value.filter((v) => v !== option);
+      }
+      onChange?.(newValue);
     }
-    onChange?.(newValue);
   };
 
   return (
     <div>
       {options.map((option) => {
-        const isChecked = value.includes(option);
+        const isChecked = value?.includes(option);
         return (
           <label
             key={option}

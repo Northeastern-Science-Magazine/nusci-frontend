@@ -4,8 +4,8 @@ export const flexVariants = tv({
   base: "flex",
   variants: {
     wrap: {
-      base: "",
-      wrap: "flex-nowrap",
+      noWrap: "flex-nowrap",
+      wrap: "flex-wrap",
       reverse: "flex-wrap-reverse",
     },
     direction: {
@@ -15,44 +15,67 @@ export const flexVariants = tv({
       col: "flex-col",
       colReverse: "flex-col-reverse",
     },
+    gap: {
+      0: "gap-0",
+      1: "gap-1",
+      2: "gap-2",
+      4: "gap-4",
+      6: "gap-6",
+      8: "gap-8",
+      10: "gap-10",
+      12: "gap-12",
+      14: "gap-14",
+      16: "gap-16",
+      18: "gap-18",
+      20: "gap-20",
+      24: "gap-24",
+      28: "gap-28",
+      32: "gap-32",
+      64: "gap-64",
+      72: "gap-72",
+      96: "gap-96",
+      128: "gap-128",
+    },
+  },
+  defaultVariants: {
+    wrap: "noWrap",
+    direction: "base",
   },
 });
 
-export const flexChild = tv({
-  base: "",
+export const flexChildVariants = tv({
+  base: "flex",
   variants: {
-    initial: {
-      base: "flex-none",
-      initial: "flex-initial",
-    },
     auto: {
-      base: "flex-none",
+      base: "",
       auto: "flex-auto",
     },
     grow: {
-      base: "flex-none",
       grow: "grow",
+      noGrow: "grow-0",
     },
     shrink: {
-      base: "",
-      shrink: "shrink-0",
+      shrink: "shrink",
+      noShrink: "shrink-0",
     },
     basis: {
       base: "",
-      xs: "basis-xs",
-      sm: "basis-sm",
-      md: "basis-md",
-      lg: "basis-lg",
-      xl: "basis-xl",
+      full: "basis-full",
     },
   },
 });
 
-export type FlexVariants = VariantProps<typeof flexVariants>;
+type FlexVariants = VariantProps<typeof flexVariants>;
+type FlexChildVariants = VariantProps<typeof flexChildVariants>;
 
 export interface FlexProps extends FlexVariants {
-  children: React.ReactNode;
+  children:
+    | React.ReactElement<FlexChildVariants>
+    | React.ReactElement<FlexChildVariants>[];
   className?: string;
-  wrap?: FlexVariants["wrap"];
-  direction?: FlexVariants["direction"];
+}
+
+export interface FlexChildProps extends FlexChildVariants {
+  className?: string;
+  children: React.ReactNode;
 }

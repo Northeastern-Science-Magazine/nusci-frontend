@@ -1,51 +1,28 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Header from './Header';
-import React from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import Header from "./Header";
+import React from "react";
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Header> = {
   component: Header,
-  title: 'Components/Header',
+  title: "Components/Header",
   argTypes: {
     isLoggedIn: {
-      control: 'boolean',
-      description: 'Whether the user is logged in',
+      control: "boolean",
+      description: "Whether the user is logged in",
     },
     userProfile: {
-      control: 'object',
-      description: 'User profile information',
+      control: "object",
+      description: "User profile information",
     },
   },
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof Header>;
-
-/** Story for Default Header (Not Logged In) */
-export const Hamburger: Story = {
-  args: {
-    isLoggedIn: false,
-  },
-  parameters: {
-    viewport: {
-      defaultViewport: 'desktop',
-    },
-  },
-  decorators: [
-    (Story) => (
-      <div style={{ height: '200vh', background: 'linear-gradient(to bottom, #f0f0f0, #e0e0e0)' }}>
-        <Story />
-        <div style={{ padding: '100px 20px' }}>
-          <h1>Scroll down to see the header collapse</h1>
-          <p>This is some content to demonstrate the scroll behavior.</p>
-        </div>
-      </div>
-    ),
-  ],
-};
 
 export const FullMenuDisplay: Story = {
   args: {
@@ -54,14 +31,14 @@ export const FullMenuDisplay: Story = {
   },
   parameters: {
     viewport: {
-      defaultViewport: 'desktop',
+      defaultViewport: "desktop",
     },
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '200vh', background: 'linear-gradient(to bottom, #f0f0f0, #e0e0e0)' }}>
+      <div style={{ height: "200vh", background: "linear-gradient(to bottom, #f0f0f0, #e0e0e0)" }}>
         <Story />
-        <div style={{ padding: '100px 20px' }}>
+        <div style={{ padding: "100px 20px" }}>
           <h1>Full Menu Display Header</h1>
           <p>All menu items are visible in the header without hamburger menu.</p>
         </div>
@@ -70,27 +47,28 @@ export const FullMenuDisplay: Story = {
   ],
 };
 
-/** Story for Logged In User */
+/** Story for Logged In User with Full Menu */
 export const LoggedIn: Story = {
   args: {
     isLoggedIn: true,
     userProfile: {
-      name: 'John Doe',
-      avatar: '/logo.png',
+      name: "John Doe",
+      avatar: "/logo.png",
     },
+    forceFullMenu: true,
   },
   parameters: {
     viewport: {
-      defaultViewport: 'desktop',
+      defaultViewport: "desktop",
     },
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '200vh', background: 'linear-gradient(to bottom, #f0f0f0, #e0e0e0)' }}>
+      <div style={{ height: "200vh", background: "linear-gradient(to bottom, #f0f0f0, #e0e0e0)" }}>
         <Story />
-        <div style={{ padding: '100px 20px' }}>
-          <h1>Scroll down to see the header collapse</h1>
-          <p>This is some content to demonstrate the scroll behavior.</p>
+        <div style={{ padding: "100px 20px" }}>
+          <h1>Logged In User with Full Menu Display</h1>
+          <p>All menu items are visible in the header without hamburger menu.</p>
         </div>
       </div>
     ),
@@ -104,15 +82,15 @@ export const Mobile: Story = {
   },
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: "mobile1",
     },
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '200vh', background: 'linear-gradient(to bottom, #f0f0f0, #e0e0e0)' }}>
+      <div style={{ height: "200vh", background: "linear-gradient(to bottom, #f0f0f0, #e0e0e0)" }}>
         <Story />
-        <div style={{ padding: '100px 20px' }}>
-          <h1>Mobile Header</h1>
+        <div style={{ padding: "100px 20px" }}>
+          <h1>Mobile Header with Hamburger Menu</h1>
           <p>Tap the menu button to see the mobile navigation.</p>
         </div>
       </div>

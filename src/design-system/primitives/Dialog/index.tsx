@@ -1,2 +1,5 @@
 import { Dialog } from "./Dialog";
-import { type dialogVariants } from "./variants";
+import { type DialogVariants, type DialogProps } from "./variants";
+
+export { DialogVariants, DialogProps };
+export { Dialog };

@@ -1,16 +1,22 @@
-import { Dialog } from "./Dialog"
 import { tv, type VariantProps } from "tailwind-variants";
 
-// add overlay, content variants
 export const dialogVariants = tv({
-    base: "rounded-lg shadow-lg p-4",
+    base: "fixed bg-white dark:bg-neutral-900 outline-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
     variants: {
+        size: {
+            sm: "w-[20rem] p-4",
+            md: "w-[32rem] p-6",
+            lg: "w-[44rem] p-8",
+        },
         color: {
-            blue: "bg-blue-500 text-white",
-            red: "bg-red-500 text-white"
+            blue: "bg-blue-50 text-blue-900 border border-blue-300",
+            neutral: "bg-white text-neutral-900",
+            red: "bg-red-50 text-red-900 border border-red-300",
+            green: "bg-green-50 text-green-900 border border-green-300",
         }
     },
     defaultVariants: {
+        size: "md",
         color: "blue",
     }
 })

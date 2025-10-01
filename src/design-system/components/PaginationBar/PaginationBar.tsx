@@ -24,29 +24,46 @@ export function PaginationBar({
   className,
   onClickRight,
   onClickLeft,
-  children,
+  maxItems,
+  activeItem,
+  onClickFunctionGenerator,
   color,
 }: PaginationBarProps) {
+  let maxVisible = 5;
+  let start = 1;
+  let end = maxItems;
+
+  if (maxItems > maxVisible) {
+    const half = Math.floor(maxVisible / 2);
+    if (activeItem <= half) {
+      start = 1;
+      end = maxVisible;
+    } else if (activeItem >= maxItems - half) {
+      start = maxItems - maxVisible + 1;
+      end = maxItems;
+    } else {
+      start = activeItem - half;
+      end = activeItem + half;
+    }
+  }
+
+  const pages = [];
+  console.log(start, end);
+  for (let i = start; i <= end; i++) {
+    pages.push(
+      <PaginationItem
+        text={(i).toString()}
+        isActive={i === activeItem}
+        onClick={onClickFunctionGenerator(i)}
+        color={color}
+      />
+    );
+  }
+
   return (
     <div className={"flex items-center gap-2"}>
       <Icon icon={"arrowleft"} onClick={onClickLeft} color={color} />
-      {React.Children.map(children, (child) => {
-        // Only clone PaginationItem components
-        if (React.isValidElement(child) && child.type === PaginationItem) {
-          return React.cloneElement(
-            child as React.ReactElement<PaginationItemProps>,
-            { color }
-          );
-        }
-        if (React.isValidElement(child) && child.type === Icon) {
-          return React.cloneElement(
-            child as unknown as React.ReactElement<IconProps>,
-            { color }
-          );
-        }
-
-        return child;
-      })}
+      <div className={clsx("flex items-center gap-2", className)}>{pages}</div>
       <Icon icon={"arrowright"} onClick={onClickRight} color={color} />
     </div>
   );

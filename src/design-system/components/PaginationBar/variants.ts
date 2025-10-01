@@ -84,8 +84,7 @@ export interface PaginationBarProps
   className?: string;
   onClickRight?: () => void;
   onClickLeft?: () => void;
-  children:
-    | React.ReactElement<PaginationItemProps>
-    | React.ReactElement<PaginationItemProps>[]
-    | React.ReactElement<typeof Icon>;
+  maxItems: number;
+  activeItem: number;
+  onClickFunctionGenerator: (index: number) => () => void;
 }

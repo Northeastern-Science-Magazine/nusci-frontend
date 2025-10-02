@@ -38,8 +38,7 @@ export const MediaCard = (props: MediaCardProps) => {
         color,
       })}
     >
-      {/* Content Section */}
-      <div className="flex-1 p-4  pt-8 pb-8">
+      <Box className="flex-1" p={4} pt={8} pb={8}>
         {subtitle && (
           <Text size={textSizes.subtitle} className="font-light text-inherit">
             {subtitle}
@@ -55,17 +54,15 @@ export const MediaCard = (props: MediaCardProps) => {
             {description}
           </Text>
         )}
-      </div>
-
-      {/* Media Section */}
-      <div className="media-container flex-shrink-0">
+      </Box>
+      <Box className="media-container flex-shrink-0">
         {props.mediaType === "image" && (
           <Image {...props.imageProps} width="w-full h-full object-cover" />
         )}
         {props.mediaType === "video" && (
           <Video {...props.videoProps} width="w-full h-full object-cover" />
         )}
-      </div>
+      </Box>
     </Box>
   );
 };

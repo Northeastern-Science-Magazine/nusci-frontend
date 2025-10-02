@@ -7,7 +7,7 @@ import { VideoProps, videoVariants } from "./variants";
  * @param { VideoProps } props
  * @returns Video Component
  */
-export const Video = (props: VideoProps) => {
+export const Video = ({src, alt, width, ratio, poster, ...}: VideoProps) => {
   return (
     <div className="w-full h-full object-cover">
       {props.ratio ?

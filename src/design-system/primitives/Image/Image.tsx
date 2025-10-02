@@ -7,7 +7,7 @@ import { ImageProps, imageVariants } from "./variants";
  * @param { ImageProps } props
  * @returns Image Component
  */
-export const Image = (props: ImageProps) => {
+export const Image = ({ratio, src, alt, width, ...}: ImageProps) => {
 
   return (
     <div className="w-full h-full object-cover">

@@ -41,11 +41,17 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
   ];
 
   const categories = [
-    { value: 'science', label: 'Science' },
-    { value: 'technology', label: 'Technology' },
-    { value: 'health', label: 'Health' },
+    { value: 'biology', label: 'Biology' },
+    { value: 'chemistry', label: 'Chemistry' },
     { value: 'environment', label: 'Environment' },
-    { value: 'research', label: 'Research' },
+    { value: 'health', label: 'Health' },
+    { value: 'newsletter', label: 'Newsletter' },
+    { value: 'opinion', label: 'Opinion' },
+    { value: 'physics', label: 'Physics' },
+    { value: 'psychology', label: 'Psychology' },
+    { value: 'space', label: 'Space' },
+    { value: 'technology', label: 'Technology' },
+    { value: 'world', label: 'World' },
   ];
 
   return (

@@ -7,16 +7,16 @@ import { ImageProps, imageVariants } from "./variants";
  * @param { ImageProps } props
  * @returns Image Component
  */
-export const Image = ({ratio, src, alt, width, ...}: ImageProps) => {
+export const Image = ({ratio, src, alt, width, ...props}: ImageProps) => {
 
   return (
     <div className="w-full h-full object-cover">
-      {props.ratio ? 
-      <AspectRatio.Root ratio={props.ratio}>
-        <img className={imageVariants(props)} src={props.src} alt={props.alt} />
+      {ratio ? 
+      <AspectRatio.Root ratio={ratio}>
+        <img className={imageVariants(props)} src={src} alt={alt} />
       </AspectRatio.Root>
       : 
-      <img className={imageVariants(props)} src={props.src} alt={props.alt} />
+      <img className={imageVariants(props)} src={src} alt={alt} />
       }
     </div>
   );

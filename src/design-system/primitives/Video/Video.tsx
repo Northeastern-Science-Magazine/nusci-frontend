@@ -7,11 +7,11 @@ import { VideoProps, videoVariants } from "./variants";
  * @param { VideoProps } props
  * @returns Video Component
  */
-export const Video = ({src, alt, width, ratio, poster, ...}: VideoProps) => {
+export const Video = ({src, alt, width, ratio, poster, ...props}: VideoProps) => {
   return (
     <div className="w-full h-full object-cover">
-      {props.ratio ?
-      <AspectRatio.Root ratio={props.ratio}>
+      {ratio ?
+      <AspectRatio.Root ratio={ratio}>
         <video 
         className={videoVariants(props)} 
          

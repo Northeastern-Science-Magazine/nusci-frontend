@@ -1,8 +1,8 @@
-import { Select } from 'radix-ui';
-import clsx from 'clsx';
+import { Select } from "radix-ui";
+import clsx from "clsx";
 
-import { dropdownItemVariants, DropdownInputProps, DropdownItemProps } from './variants';
-import { CheckIcon, ChevronDownIcon } from '@radix-ui/react-icons';
+import { dropdownItemVariants, DropdownInputProps, DropdownItemProps } from "./variants";
+import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
 export function DropdownItem({ className, value, children, disabled, ...variantProps }: DropdownItemProps) {
   return (
@@ -18,7 +18,12 @@ export function DropdownItem({ className, value, children, disabled, ...variantP
 export function DropdownInput({ onChange, className, children, placeholder, ...variantProps }: DropdownInputProps) {
   return (
     <Select.Root onValueChange={onChange}>
-      <Select.Trigger className="inline-flex h-[35px] min-w-[150px] items-center justify-between gap-[5px] rounded bg-white px-[15px] text-[13px] leading-none text-violet11 shadow-[0_2px_10px] shadow-black/10 outline-none hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black border-2 border-black">
+      <Select.Trigger
+        className={clsx(
+          "inline-flex h-[35px] min-w-[150px] items-center justify-between gap-[5px] rounded bg-white px-[15px] text-[13px] leading-none text-violet11 shadow-[0_2px_10px] shadow-black/10 outline-none hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black border-2 border-black",
+          className
+        )}
+      >
         <Select.Value placeholder={placeholder} />
         <Select.Icon>
           <ChevronDownIcon />

@@ -186,21 +186,26 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
           <Box className="lg:hidden mt-4 pb-4 border-t border-gray-200">
             <Box className="flex flex-col space-y-4 pt-4">
               {navigationItems.map((item) => (
-                <Box key={item.label} onClick={() => setIsMobileMenuOpen(false)}>
-                  <Link
-                    href={item.href}
-                    newWindow={false}
-                    className="text-gray-700 hover:text-black transition-colors duration-200 font-medium"
-                  >
-                    {item.label}
-                  </Link>
-                </Box>
+                <Button
+                  key={item.label}
+                  variant="outline"
+                  size="sm"
+                  color="black"
+                  onClick={() => {
+                    window.location.href = item.href;
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-full justify-center"
+                >
+                  {item.label}
+                </Button>
               ))}
 
               {/* Mobile About Us Dropdown */}
               <Box className="w-full">
                 <DropdownInput
                   placeholder="About Us"
+                  className="w-full"
                   onChange={(value) => {
                     if (value === "about") {
                       window.location.href = "/about-us";
@@ -219,6 +224,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
               <Box className="w-full">
                 <DropdownInput
                   placeholder="Categories"
+                  className="w-full"
                   onChange={(value) => {
                     window.location.href = `/${value}`;
                     setIsMobileMenuOpen(false);

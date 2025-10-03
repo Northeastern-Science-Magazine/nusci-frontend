@@ -103,7 +103,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                 placeholder="Categories"
                 onChange={(value) => {
                   // Handle category selection
-                  console.log('Selected category:', value);
+                  window.location.href = `/${value}`;
                 }}
               >
                 {categories.map((category) => (
@@ -185,7 +185,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                 <DropdownInput
                   placeholder="Categories"
                   onChange={(value) => {
-                    console.log('Selected category:', value);
+                    window.location.href = `/${value}`;
                     setIsMobileMenuOpen(false);
                   }}
                 >

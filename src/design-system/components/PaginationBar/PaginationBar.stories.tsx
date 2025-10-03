@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { PaginationItem, PaginationBar } from "@/components/PaginationBar";
+import { PaginationBar } from "@/components/PaginationBar";
 import React from "react";
 
 /** Define the control fields for Storybook */
@@ -50,10 +50,6 @@ export const PaginationGallery: Story = {
         />
       );
     }
-    return (
-      <div className="grid grid-cols-1 gap-2">
-        {bars}
-      </div>
-    );
+    return <div className="grid grid-cols-1 gap-2">{bars}</div>;
   },
 };

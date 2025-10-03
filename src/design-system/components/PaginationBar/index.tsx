@@ -1,5 +1,5 @@
-import { PaginationBar, PaginationItem } from "./PaginationBar";
-import { PaginationBarProps, PaginationItemProps } from "./variants";
+import { PaginationBar } from "./PaginationBar";
+import { PaginationBarProps } from "./variants";
 
-export { type PaginationBarProps, type PaginationItemProps };
-export { PaginationBar, PaginationItem };
+export { type PaginationBarProps };
+export { PaginationBar };

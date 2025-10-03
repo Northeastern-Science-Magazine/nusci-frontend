@@ -6,7 +6,7 @@ import Button from "@/design-system/primitives/Button";
 import Link from "@/design-system/primitives/Link";
 import Image from "@/design-system/primitives/Image";
 import { DropdownInput, DropdownItem } from "@/design-system/primitives/DropdownInput";
-import { Menu, X, Search, User } from "lucide-react";
+import Icon from "@/design-system/primitives/Icon";
 
 interface HeaderProps {
   isLoggedIn?: boolean;
@@ -14,7 +14,7 @@ interface HeaderProps {
     name: string;
     avatar?: string;
   };
-  forceFullMenu?: boolean; // New prop to force full menu display
+  forceFullMenu?: boolean;
 }
 
 export default function Header({ isLoggedIn = false, userProfile, forceFullMenu = false }: HeaderProps) {
@@ -35,10 +35,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const navigationItems = [
-    { label: "Print Articles", href: "/articles" },
-    { label: "About Us", href: "/about-us" },
-  ];
+  const navigationItems = [{ label: "Print Articles", href: "/articles" }];
 
   const categories = [
     { value: "biology", label: "Biology" },
@@ -100,6 +97,23 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
               </Link>
             ))}
 
+            {/* About Us Dropdown */}
+            <Box className="relative">
+              <DropdownInput
+                placeholder="About Us"
+                onChange={(value) => {
+                  if (value === "about") {
+                    window.location.href = "/about-us";
+                  } else if (value === "eboard") {
+                    window.location.href = "/teams/eboard";
+                  }
+                }}
+              >
+                <DropdownItem value="about">Teams</DropdownItem>
+                <DropdownItem value="eboard">Eboard & Editors</DropdownItem>
+              </DropdownInput>
+            </Box>
+
             {/* Categories Dropdown */}
             <Box className="relative">
               <DropdownInput
@@ -125,7 +139,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
               onClick={() => (window.location.href = "/search")}
               className="flex items-center h-[35px]"
             >
-              <Search className="h-4 w-4 mr-1" />
+              <Icon icon="search" size="sm" className="mr-1" />
               Search Articles
             </Button>
 
@@ -136,7 +150,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                 newWindow={false}
                 className="flex items-center text-gray-700 hover:text-black transition-colors duration-200"
               >
-                <User className="h-5 w-5" />
+                <Icon icon="user" size="sm" />
                 <span className="ml-1">{userProfile.name}</span>
               </Link>
             ) : (
@@ -161,7 +175,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
           {!forceFullMenu && (
             <Box className="lg:hidden">
               <Button variant="outline" size="sm" color="black" onClick={toggleMobileMenu} className="p-2">
-                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {isMobileMenuOpen ? <Icon icon="x" size="sm" /> : <Icon icon="menu" size="sm" />}
               </Button>
             </Box>
           )}
@@ -182,6 +196,24 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                   </Link>
                 </Box>
               ))}
+
+              {/* Mobile About Us Dropdown */}
+              <Box className="w-full">
+                <DropdownInput
+                  placeholder="About Us"
+                  onChange={(value) => {
+                    if (value === "about") {
+                      window.location.href = "/about-us";
+                    } else if (value === "eboard") {
+                      window.location.href = "/teams/eboard";
+                    }
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <DropdownItem value="about">Teams</DropdownItem>
+                  <DropdownItem value="eboard">Eboard & Editors</DropdownItem>
+                </DropdownInput>
+              </Box>
 
               {/* Mobile Categories Dropdown */}
               <Box className="w-full">
@@ -211,7 +243,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                 }}
                 className="flex items-center justify-center"
               >
-                <Search className="h-4 w-4 mr-1" />
+                <Icon icon="search" size="sm" className="mr-1" />
                 Search Articles
               </Button>
 
@@ -223,7 +255,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                     newWindow={false}
                     className="flex items-center text-gray-700 hover:text-black transition-colors duration-200"
                   >
-                    <User className="h-5 w-5" />
+                    <Icon icon="user" size="sm" />
                     <span className="ml-1">{userProfile.name}</span>
                   </Link>
                 </Box>

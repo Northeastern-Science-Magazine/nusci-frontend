@@ -18,6 +18,8 @@ export const TextInput = ({
   size,
   color,
   className,
+  rows = 1,
+  resize = false,
   ...props
 }: TextInputProps) => {
   const autoId = React.useId();
@@ -30,13 +32,17 @@ export const TextInput = ({
           {label}{" "}
         </label>
       )}
-      <input
-        type="text"
+      <textarea
         id={propId}
         value={value}
         placeholder={placeholder || "Enter text"}
         onChange={(e) => onChange?.(e.target.value)}
-        className={clsx(textInputVariants({ variant, size, color }), className)}
+        className={clsx(
+          textInputVariants({ variant, size, color }),
+          className,
+          resize ? "resize-y" : "resize-none"
+        )}
+        rows={rows}
         {...props}
       />
     </div>

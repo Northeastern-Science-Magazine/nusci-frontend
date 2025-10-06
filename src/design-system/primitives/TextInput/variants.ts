@@ -186,8 +186,11 @@ export const textInputVariants = tv({
 export type TextInputVariants = VariantProps<typeof textInputVariants>;
 
 /** Utilize HTML Text attributes excluding size and color */
-type HTMLTextProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "color" | "value" | "onChange"> &
-  ClassAttributes<HTMLInputElement>;
+type HTMLTextProps = Omit<
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+  "size" | "color" | "value" | "onChange"
+> &
+  ClassAttributes<HTMLTextAreaElement>;
 
 /** Export the text props as one type */
 export interface TextInputProps extends TextInputVariants, HTMLTextProps {
@@ -197,4 +200,6 @@ export interface TextInputProps extends TextInputVariants, HTMLTextProps {
   id?: string;
   value?: string;
   onChange?: (value: string) => void;
+  rows?: number;
+  resize?: boolean;
 }

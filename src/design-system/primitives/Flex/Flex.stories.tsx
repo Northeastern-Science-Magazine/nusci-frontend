@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Flex } from "./Flex";
-import { FlexChild } from "./FlexChild";
+import { Flex, FlexChild } from "./Flex";
 import React from "react";
 
 const wraps = ["noWrap", "wrap", "reverse"] as const;
@@ -43,19 +42,19 @@ export const WrapDirection: Story = {
                   direction={direction}
                   gap={2}
                 >
-                  <FlexChild className="bg-blue-300 p-2 rounded text-white">
+                  <FlexChild className="bg-sage-green p-2 rounded text-white">
                     1
                   </FlexChild>
-                  <FlexChild className="bg-green-300 p-2 rounded text-white">
+                  <FlexChild className="bg-sage-green p-2 rounded text-white">
                     2
                   </FlexChild>
                   <FlexChild
-                    className="bg-red-300 p-2 rounded text-white"
+                    className="bg-sage-green p-2 rounded text-white"
                     basis="full"
                   >
                     3
                   </FlexChild>
-                  <FlexChild className="bg-yellow-300 p-2 rounded text-white">
+                  <FlexChild className="bg-sage-green p-2 rounded text-white">
                     4
                   </FlexChild>
                 </Flex>
@@ -83,7 +82,7 @@ export const ChangingSize: Story = {
           {auto.map((a) => (
             <FlexChild
               key={a}
-              className="bg-blue-300 p-4 text-white rounded"
+              className="bg-sage-green p-4 text-white rounded"
               auto={a}
             >
               {a}
@@ -104,7 +103,7 @@ export const ChangingSize: Story = {
           {basis.map((b) => (
             <FlexChild
               key={b}
-              className="bg-green-300 p-4 text-white rounded"
+              className="bg-sage-green p-4 text-white rounded"
               basis={b}
             >
               {b}
@@ -121,11 +120,11 @@ export const ChangingSize: Story = {
           direction="row"
           wrap="wrap"
         >
-          <FlexChild className="bg-red-300 p-4 text-white rounded" grow="grow">
+          <FlexChild className="bg-sage-green p-4 text-white rounded" grow="grow">
             {"grow"}
           </FlexChild>
           <FlexChild
-            className="bg-red-500 p-4 text-white rounded"
+            className="bg-forest-green p-4 text-white rounded"
             grow="noGrow"
           >
             {"noGrow"}
@@ -137,11 +136,11 @@ export const ChangingSize: Story = {
           direction="row"
           wrap="wrap"
         >
-          <FlexChild className="bg-red-300 p-4 text-white rounded" grow="grow">
+          <FlexChild className="bg-sage-green p-4 text-white rounded" grow="grow">
             {"grow"}
           </FlexChild>
           <FlexChild
-            className="bg-red-500 p-4 text-white rounded"
+            className="bg-forest-green p-4 text-white rounded"
             grow="noGrow"
           >
             {"noGrow"}
@@ -157,19 +156,17 @@ export const ChangingSize: Story = {
           direction="row"
           wrap="noWrap"
         >
-          <FlexChild
-            className="bg-yellow-300 p-4 text-white rounded w-14"
-          >
+          <FlexChild className="bg-sage-green p-4 text-white rounded w-14">
             base
           </FlexChild>
           <FlexChild
-            className="bg-yellow-300 p-4 text-white rounded w-64"
+            className="bg-forest-green p-4 text-white rounded w-64"
             shrink="shrink"
           >
             shrink
           </FlexChild>
           <FlexChild
-            className="bg-yellow-500 p-4 text-white rounded w-14"
+            className="bg-sage-green p-4 text-white rounded w-14"
             basis="full"
           >
             full
@@ -181,19 +178,17 @@ export const ChangingSize: Story = {
           direction="row"
           wrap="noWrap"
         >
-          <FlexChild
-            className="bg-yellow-300 p-4 text-white rounded w-14"
-          >
+          <FlexChild className="bg-sage-green p-4 text-white rounded w-14">
             base
           </FlexChild>
           <FlexChild
-            className="bg-yellow-300 p-4 text-white rounded w-64"
+            className="bg-forest-green p-4 text-white rounded w-64"
             shrink="noShrink"
           >
             noShrink
           </FlexChild>
           <FlexChild
-            className="bg-yellow-500 p-4 text-white rounded w-14"
+            className="bg-sage-green p-4 text-white rounded w-14"
             basis="full"
           >
             full

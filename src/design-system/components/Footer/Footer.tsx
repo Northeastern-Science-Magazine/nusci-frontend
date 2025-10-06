@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from '@/primitives/Link';
 import Icon from '@/primitives/Icon';
+import Image from '@/design-system/primitives/Image';
+
 
 export interface FooterProps {
   className?: string;
@@ -29,41 +31,36 @@ const Footer: React.FC<FooterProps> = ({ className = '' }) => {
   ];
 
   return (
-    <footer className={`bg-black-900 text-black ${className}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col items-center space-y-8">
-          {/* The NU Sci logo section */}
-          <div className="text-center">
-            <h3 className="text-4xl font-bold text-black-500">NU Sci</h3>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-6">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Image src="/logo.png" alt="NU Sci Magazine" width="w-10" ratio={1}/>
+            </div>
+
+            {/* Social media icons */}
+            <div className="flex items-center space-x-6">
+              {socialLinks.map((social) => (
+                <Link
+                  key={social.label}
+                  href={social.href}
+                  newWindow={true}
+                  className="group"
+                >
+                  {social.icon}
+                  <span className="sr-only">{social.label}</span>
+                </Link>
+              ))}
+            </div>
           </div>
 
-          {/* The social media section */}
-          <div className="flex space-x-6">
-            {socialLinks.map((social) => (
-              <Link
-                key={social.label}
-                href={social.href}
-                newWindow={true}
-                className="group"
-              >
-                {social.icon}
-                <span className="sr-only">{social.label}</span>
-              </Link>
-            ))}
-          </div>
-
-          {/* The copyright section */}
-          <div className="text-center space-y-2">
-            <p className="text-sm text-black-400">
-              © {currentYear} NU Sci. All rights reserved.
-            </p>
-            <p className="text-sm text-black-400">
-              This website is built and maintained by the NU Sci web and software team.
-            </p>
+          {/* Copyright section */}
+          <div className="text-sm text-black-400 text-center md:text-right">
+            Built and maintained by the NU Sci web team.
           </div>
         </div>
       </div>
-    </footer>
   );
 };
 

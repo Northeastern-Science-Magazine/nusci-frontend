@@ -27,15 +27,15 @@ import {
 export default function Carousel({
   children,
   className,
-  orientation = "horizontal", // Direction of carousel scrolling
-  size = "md", // Overall size of the carousel container
-  showNavigation = true, // Whether to show prev/next arrows
-  autoplay = false, // Auto-advance slides
-  autoplayDelay = 3000, // Milliseconds between auto-advances
-  loop = true, // Whether to loop back to start after last slide
-  itemsPerView = 1, // Number of items visible simultaneously
-  gap = "md", // Space between items
-  onSlideChange, // Callback when slide changes
+  orientation = "horizontal",
+  size = "md",
+  showNavigation = true,
+  autoplay = false,
+  autoplayDelay = 3000,
+  loop = true,
+  itemsPerView = 1,
+  gap = "md",
+  onSlideChange,
   ...props
 }: CarouselProps) {
   // Current active slide/page index
@@ -50,14 +50,22 @@ export default function Carousel({
   // Total number of slides
   const [totalSlides, setTotalSlides] = useState(0);
 
-  // Updates total slides
+  // Check if children are CarouselItem components
+  const childArray = React.Children.toArray(children);
+  const isUsingCarouselItem = childArray.some(
+    child => React.isValidElement(child) && child.type === CarouselItem
+  );
+
+  // Update total slides
   useEffect(() => {
     const slides = React.Children.count(children);
     setTotalSlides(slides);
   }, [children]);
 
-  // Calculates total pages based on items per view
-  const totalPages = itemsPerView === 1 ? totalSlides : Math.ceil(totalSlides / itemsPerView);
+  // Calculate total pages
+  const totalPages = isUsingCarouselItem 
+    ? totalSlides
+    : (itemsPerView === 1 ? totalSlides : Math.ceil(totalSlides / itemsPerView));
 
   // Starts autoplay timer -- only runs if autoplay is enabled and there are multiple pages
   const startAutoplay = useCallback(() => {
@@ -66,10 +74,11 @@ export default function Carousel({
     autoplayRef.current = setTimeout(() => {
       setCurrentIndex((prev) => {
         const nextIndex = loop ? (prev + 1) % totalPages : Math.min(prev + 1, totalPages - 1);
+        if (onSlideChange) onSlideChange(nextIndex);
         return nextIndex;
       });
     }, autoplayDelay);
-  }, [autoplay, autoplayDelay, loop, totalPages]);
+  }, [autoplay, autoplayDelay, loop, totalPages, onSlideChange]);
 
   /// Stops and clears autoplay timer -- prevents memory leakage
   const stopAutoplay = useCallback(() => {
@@ -92,12 +101,13 @@ export default function Carousel({
     
     setCurrentIndex((prev) => {
       const newIndex = loop ? (prev - 1 + totalPages) % totalPages : Math.max(prev - 1, 0);
+      if (onSlideChange) onSlideChange(newIndex);
       return newIndex;
     });
     
     setTimeout(() => setIsAnimating(false), 300);
     stopAutoplay(); 
-  }, [isAnimating, loop, totalPages, stopAutoplay]);
+  }, [isAnimating, loop, totalPages, stopAutoplay, onSlideChange]);
 
   // Navigates to next slide/page
   const goToNext = useCallback(() => {
@@ -106,14 +116,15 @@ export default function Carousel({
     
     setCurrentIndex((prev) => {
       const newIndex = loop ? (prev + 1) % totalPages : Math.min(prev + 1, totalPages - 1);
+      if (onSlideChange) onSlideChange(newIndex);
       return newIndex;
     });
     
     setTimeout(() => setIsAnimating(false), 300);
     stopAutoplay();
-  }, [isAnimating, loop, totalPages, stopAutoplay]);
+  }, [isAnimating, loop, totalPages, stopAutoplay, onSlideChange]);
 
-  // Pauses autoplay when user hovers over carousel
+  // Hover handlers
   const handleMouseEnter = () => {
     if (autoplay) stopAutoplay();
   };
@@ -123,73 +134,95 @@ export default function Carousel({
     if (autoplay) startAutoplay();
   };
 
-  // Calculates CSS transform for slide movement
+  // Calculate transform
   const getTransform = () => {
-    if (itemsPerView === 1) {
-      // Single item: move by 100% per slide
-      if (orientation === "vertical") {
-        return `translateY(-${currentIndex * 100}%)`;
-      }
-      return `translateX(-${currentIndex * 100}%)`;
-    } else {
-      // Multi-item: move by 100% per page (group of items)
-      const moveDistance = currentIndex * 100;
-      if (orientation === "vertical") {
-        return `translateY(-${moveDistance}%)`;
-      }
-      return `translateX(-${moveDistance}%)`;
+    const moveDistance = currentIndex * 100;
+    if (orientation === "vertical") {
+      return `translateY(-${moveDistance}%)`;
     }
+    return `translateX(-${moveDistance}%)`;
   };
 
-  // Determines if navigation buttons should be enabled
-  const canGoPrevious = loop || currentIndex > 0;
-  const canGoNext = loop || currentIndex < totalPages - 1;
-
-  // Renders carousel content based on viewing mode
+  // Render content based on usage pattern
   const renderContent = () => {
+    if (isUsingCarouselItem) {
+      // Using CarouselItem - render directly
+      return React.Children.map(children, (child) => {
+        if (React.isValidElement(child) && child.type === CarouselItem) {
+          return React.cloneElement(child as React.ReactElement<CarouselItemProps>, {
+            orientation,
+          });
+        }
+        return child;
+      });
+    }
+
+    // Legacy mode - wrap children
     if (itemsPerView === 1) {
-      // Single item mode: wrap each child in a slide container
+      // Single item mode
       return React.Children.map(children, (child, index) => (
         <div
           key={index}
-          className="flex-shrink-0 h-full w-full"
+          className="flex-shrink-0 w-full h-full"
         >
           {child}
         </div>
       ));
     } else {
-      // Multi-item mode: group children into pages
-      const childArray = React.Children.toArray(children);
-      const pages = [];
-      
-      // Create pages by slicing children array
-      for (let i = 0; i < childArray.length; i += itemsPerView) {
-        const pageItems = childArray.slice(i, i + itemsPerView);
-        pages.push(
-          <div
-            key={i}
-            className={clsx(
-              "flex-shrink-0 h-full w-full flex items-center justify-center",
-              orientation === "vertical" ? "flex-col" : "flex-row",
-              gap === "none" ? "" : "gap-4",
-              "px-2"
-            )}
-          >
-            {pageItems.map((child, childIndex) => (
-              <div
-                key={childIndex}
-                className="flex-1 h-full flex items-center justify-center"
-              >
-                {child}
-              </div>
-            ))}
-          </div>
-        );
+        // Multi-item mode - group into pages
+        const pages = [];
+        
+        for (let i = 0; i < childArray.length; i += itemsPerView) {
+          const pageItems = childArray.slice(i, i + itemsPerView);
+          
+          pages.push(
+            <div
+              key={i}
+              className={clsx(
+                "flex-shrink-0 w-full h-full flex overflow-hidden",
+                orientation === "vertical" ? "flex-col gap-4" : "flex-row gap-4"
+              )}
+            >
+              {pageItems.map((child, childIndex) => {
+                // Hardcoded calculations to avoid template literal math issues
+                let itemStyle = {};
+                
+                if (orientation === "vertical") {
+                  if (itemsPerView === 3) {
+                    itemStyle = { height: "calc((100% - 2rem) / 3)", width: "100%" };
+                  } else if (itemsPerView === 6) {
+                    itemStyle = { height: "calc((100% - 5rem) / 6)", width: "100%" };
+                  } else {
+                    itemStyle = { height: "100%", width: "100%" };
+                  }
+                } else {
+                  if (itemsPerView === 3) {
+                    itemStyle = { height: "100%", width: "calc((100% - 2rem) / 3)" };
+                  } else {
+                    itemStyle = { height: "100%", width: "100%" };
+                  }
+                }
+                
+                return (
+                  <div
+                    key={childIndex}
+                    className="flex-shrink-0 overflow-hidden"
+                    style={itemStyle}
+                  >
+                    {child}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        }
+        
+        return pages;
       }
-      
-      return pages;
     }
-  };
+
+  const canGoPrevious = loop || currentIndex > 0;
+  const canGoNext = loop || currentIndex < totalPages - 1;
 
   return (
     // Main carousel container with navigation buttons
@@ -274,8 +307,7 @@ export function CarouselContent({
   );
 }
 
-// Carousel Item Component
-
+// CarouselItem Component
 export function CarouselItem({ 
   children, 
   className,
@@ -288,6 +320,7 @@ export function CarouselItem({
     <div 
       className={clsx(
         carouselItemVariants({ orientation, basis, gap }), 
+        "flex-shrink-0 h-full",
         className
       )}
       {...props}

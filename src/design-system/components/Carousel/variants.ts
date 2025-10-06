@@ -3,8 +3,6 @@ import { ReactNode, HTMLAttributes } from "react";
 
 /**
  * Carousel Container Variants
-    * Controls the overall layout and spacing of the carousel container
-    * Note: This controls SCROLL direction, not content orientation
  */
 export const carouselContainerVariants = tv({
   base: "relative flex items-center justify-center",
@@ -40,16 +38,6 @@ export const carouselVariants = tv({
       vertical: "h-full",   // Full height, width is controlled by size variants
     },
   },
-  compoundVariants: [
-    {
-      orientation: "horizontal",
-      class: "h-64", // Default height for horizontal carousels
-    },
-    {
-      orientation: "vertical", 
-      class: "w-80 h-96", // Default dimensions for vertical carousels
-    },
-  ],
   defaultVariants: {
     orientation: "horizontal",
   },
@@ -75,19 +63,19 @@ export const carouselSizeVariants = tv({
     },
   },
   compoundVariants: [
-    // Horizontal carousel heights
-    { size: "xs", orientation: "horizontal", class: "h-30" },    
-    { size: "sm", orientation: "horizontal", class: "h-50" },    
-    { size: "md", orientation: "horizontal", class: "h-70" },    
-    { size: "lg", orientation: "horizontal", class: "h-90" },    
-    { size: "xl", orientation: "horizontal", class: "h-110" },   
+    // Horizontal carousel heights 
+    { size: "xs", orientation: "horizontal", class: "h-40" },     
+    { size: "sm", orientation: "horizontal", class: "h-48" },    
+    { size: "md", orientation: "horizontal", class: "h-64" },     
+    { size: "lg", orientation: "horizontal", class: "h-96" },  
+    { size: "xl", orientation: "horizontal", class: "h-[32rem]" }, 
     
-    // Vertical carousel dimensions (both width and height)
-    { size: "xs", orientation: "vertical", class: "w-64 h-48" },  
-    { size: "sm", orientation: "vertical", class: "w-72 h-64" },  
-    { size: "md", orientation: "vertical", class: "w-80 h-80" },  
-    { size: "lg", orientation: "vertical", class: "w-96 h-96" },  
-    { size: "xl", orientation: "vertical", class: "w-[28rem] h-[28rem]" }, 
+    // Vertical carousel dimensions
+    { size: "xs", orientation: "vertical", class: "w-64 h-72" },   
+    { size: "sm", orientation: "vertical", class: "w-80 h-96" },   
+    { size: "md", orientation: "vertical", class: "w-96 h-[32rem]" }, 
+    { size: "lg", orientation: "vertical", class: "w-[28rem] h-[40rem]" }, 
+    { size: "xl", orientation: "vertical", class: "w-[32rem] h-[48rem]" }, 
   ],
   defaultVariants: {
     size: "md",
@@ -104,8 +92,8 @@ export const carouselContentVariants = tv({
   base: "flex",
   variants: {
     orientation: {
-      horizontal: "flex-row", // Items arranged left to right
-      vertical: "flex-col",   // Items arranged top to bottom
+      horizontal: "flex-row",
+      vertical: "flex-col",
     },
     gap: {
       // Spacing between carousel items
@@ -136,14 +124,15 @@ export const carouselItemVariants = tv({
       vertical: "",
     },
     basis: {
-      full: "basis-full",   
-      "1/2": "basis-1/2",   
-      "1/3": "basis-1/3",   
-      "2/3": "basis-2/3",   
-      "1/4": "basis-1/4",   
-      "3/4": "basis-3/4",  
-      "1/5": "basis-1/5",   
-      auto: "basis-auto",   
+      full: "basis-full",      
+      "1/2": "basis-1/2",       
+      "1/3": "basis-1/3",    
+      "2/3": "basis-2/3",      
+      "1/4": "basis-1/4",      
+      "3/4": "basis-3/4",     
+      "1/5": "basis-1/5",      
+      "1/6": "basis-1/6",     
+      auto: "basis-auto",      
     },
     gap: {
       // Internal padding for each carousel item
@@ -218,15 +207,16 @@ export const carouselNavigationVariants = tv({
 // Main carousel component props
 export type CarouselProps = VariantProps<typeof carouselVariants> & 
   VariantProps<typeof carouselContainerVariants> & {
-  children: ReactNode;                    // Carousel slides/content
-  className?: string;                     // Additional CSS classes
-  showNavigation?: boolean;               // Whether to show prev/next buttons
-  autoplay?: boolean;                     // Auto-advance slides
-  autoplayDelay?: number;                 // Milliseconds between advances
-  loop?: boolean;                         // Infinite scroll behavior
-  itemsPerView?: number;                  // Number of items visible simultaneously
-  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl"; // Spacing between items
-  onSlideChange?: (index: number) => void; // Callback when active slide changes
+  children: ReactNode;
+  className?: string;
+  showNavigation?: boolean;
+  autoplay?: boolean;
+  autoplayDelay?: number;
+  loop?: boolean;
+  itemsPerView?: number;             
+  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
+  onSlideChange?: (index: number) => void;
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
 } & HTMLAttributes<HTMLDivElement>;      
 
 // Carousel content wrapper props
@@ -239,4 +229,5 @@ export type CarouselContentProps = VariantProps<typeof carouselContentVariants> 
 export type CarouselItemProps = VariantProps<typeof carouselItemVariants> & {
   children: ReactNode;
   className?: string;
+  itemsPerView?: number; // Number of items visible per page
 } & HTMLAttributes<HTMLDivElement>;

@@ -10,13 +10,13 @@ import Checkbox from "../../../design-system/primitives/Checkbox";
 import Text from "../../../design-system/primitives/Text";
 import Button from "../../../design-system/primitives/Button";
 import { ProgressSidebar } from "./components/ProgressSidebar";
+import { SourcesInput } from "./components/SourcesInput";
 
 /* IDEAS: 
     - Author selection: would be cool to have a dropdown that updates as you type system
     - Image upload: drag and drop area with preview of image
     - Need file/image upload handling component
     - Need to be able to handle multiple authors (like a checkbox in the dropdown somehow)
-    - Need to be able to add sources (add new text input when click + button)
 */
 
 type ArticleSubmissionFormValues = {
@@ -36,8 +36,10 @@ type FormProgress = {
   content: boolean;
   pullQuote: boolean;
   image: boolean;
+  sources: boolean;
 };
 
+/* FORM CONTENT COMPONENT */
 const FormContent = () => {
   const currentUser = { name: "John Doe", email: "john@nusci.org" };
 
@@ -48,6 +50,7 @@ const FormContent = () => {
     content: false,
     pullQuote: false,
     image: false,
+    sources: false,
   });
 
   // Watch all form fields
@@ -68,9 +71,12 @@ const FormContent = () => {
           !!watchedFields.pullQuote &&
           watchedFields.pullQuote.trim().length > 0,
         image: !!watchedFields.image,
+        sources:
+          Array.isArray(watchedFields.sources) &&
+          watchedFields.sources.length > 0 &&
+          watchedFields.sources[0]?.trim().length > 0,
       });
     };
-
     updateProgress();
   }, [watchedFields]);
 
@@ -78,6 +84,7 @@ const FormContent = () => {
     <Grid col span={3} gap={8}>
       <GridCol span={2}>
         <Box className="space-y-8 rounded-2xl bg-white p-8 shadow-xl ring-1 ring-black/5">
+          {/* Author */}
           <FormField<ArticleSubmissionFormValues> name="author">
             <TextInput
               placeholder={currentUser.name}
@@ -86,6 +93,7 @@ const FormContent = () => {
             />
           </FormField>
 
+          {/* Title */}
           <FormField<ArticleSubmissionFormValues> name="title">
             <TextInput
               placeholder="Enter article title"
@@ -94,24 +102,28 @@ const FormContent = () => {
             />
           </FormField>
 
+          {/* Categories */}
           <FormField<ArticleSubmissionFormValues> name="categories">
-            <Checkbox
-              options={[
-                "Biology",
-                "Chemistry",
-                "Environment",
-                "Health",
-                "Newsletter",
-                "Opinion",
-                "Physics",
-                "Psychology",
-                "Space",
-                "Technology",
-                "World",
-              ]}
-            />
+            <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
+              <Checkbox
+                options={[
+                  "Biology",
+                  "Chemistry",
+                  "Environment",
+                  "Health",
+                  "Newsletter",
+                  "Opinion",
+                  "Physics",
+                  "Psychology",
+                  "Space",
+                  "Technology",
+                  "World",
+                ]}
+              />
+            </div>
           </FormField>
 
+          {/* Content */}
           <FormField<ArticleSubmissionFormValues> name="content">
             <TextInput
               placeholder="Enter article content"
@@ -122,6 +134,7 @@ const FormContent = () => {
             />
           </FormField>
 
+          {/* Pull Quote */}
           <FormField<ArticleSubmissionFormValues> name="pullQuote">
             <TextInput
               placeholder="Enter a pull quote"
@@ -131,11 +144,39 @@ const FormContent = () => {
             />
           </FormField>
 
+          {/* Sources */}
+          <FormField<ArticleSubmissionFormValues> name="sources">
+            <SourcesInput placeholder="Enter source URL or citation" />
+          </FormField>
+
+          {/* Image Upload */}
           <Text color="black" size={12} style="bold" className="text-center">
             Image Upload Coming Soon!
           </Text>
 
-          <Button color="purple" className="w-full" onClick={onSubmit}>
+          {/* Submit */}
+          <Button
+            color={
+              !progress.author ||
+              !progress.title ||
+              !progress.content ||
+              !progress.pullQuote ||
+              !progress.categories ||
+              !progress.sources
+                ? "border"
+                : "purple"
+            }
+            className="w-full"
+            onClick={onSubmit}
+            disabled={
+              !progress.author ||
+              !progress.title ||
+              !progress.content ||
+              !progress.pullQuote ||
+              !progress.categories ||
+              !progress.sources
+            }
+          >
             Submit Article
           </Button>
         </Box>
@@ -148,10 +189,12 @@ const FormContent = () => {
   );
 };
 
+// TODO: Implement actual submission logic
 const onSubmit = () => {
   alert("Article submitted!");
 };
 
+/* PAGE EXPORT */
 export default function PublicProfilePage() {
   const currentUser = { name: "John Doe", email: "john@nusci.org" };
 

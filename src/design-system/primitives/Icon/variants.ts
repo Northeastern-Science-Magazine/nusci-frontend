@@ -14,6 +14,7 @@ import {
   Trash2,
   ZoomIn,
   ZoomOut,
+  Plus,
 } from "lucide-react";
 import { InstagramLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
 
@@ -30,7 +31,6 @@ export const iconVariants = tv({
     color: {
       black: "text-black",
       white: "text-white",
-      red: "text-red-500",
       aqua: "text-aqua",
       "aqua-light": "text-aqua-light",
       "forest-green": "text-forest-green",
@@ -73,6 +73,7 @@ export const iconMap = {
   trash: Trash2,
   zoomin: ZoomIn,
   zoomout: ZoomOut,
+  plus: Plus,
 };
 
 export type IconName = keyof typeof iconMap;

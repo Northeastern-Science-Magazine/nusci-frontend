@@ -16,8 +16,10 @@ export const buttonVariants = tv({
       lg: "px-5 py-3 text-lg",
     },
     color: {
-      black: "text-white bg-black border-black hover:bg-black hover:border-black focus:ring-black",
-      white: "text-black bg-white border-white hover:bg-white hover:border-white focus:ring-white",
+      black:
+        "text-white bg-black border-black hover:bg-black hover:border-black focus:ring-black",
+      white:
+        "text-black bg-white border-white hover:bg-white hover:border-white focus:ring-white",
       red: "text-white bg-red-500 border-red-500 hover:bg-red-500 hover:border-red-500 focus:ring-red-500",
       aqua: "text-white bg-aqua border-aqua hover:bg-aqua hover:border-aqua focus:ring-aqua",
       "aqua-light":
@@ -26,13 +28,19 @@ export const buttonVariants = tv({
         "text-white bg-forest-green border-forest-green hover:bg-forest-green hover:border-forest-green focus:ring-forest-green",
       "sage-green":
         "text-black bg-sage-green border-sage-green hover:bg-sage-green hover:border-sage-green focus:ring-sage-green",
-      border: "text-white bg-border border-border hover:bg-border hover:border-border focus:ring-border",
-      neutral: "text-black bg-neutral border-neutral hover:bg-neutral hover:border-neutral focus:ring-neutral",
-      purple: "text-white bg-purple border-purple hover:bg-purple hover:border-purple focus:ring-purple",
+      border:
+        "text-white bg-border border-border hover:bg-border hover:border-border focus:ring-border",
+      neutral:
+        "text-black bg-neutral border-neutral hover:bg-neutral hover:border-neutral focus:ring-neutral",
+      purple:
+        "text-white bg-purple border-purple hover:bg-purple hover:border-purple focus:ring-purple",
       pink: "text-black bg-pink border-pink hover:bg-pink hover:border-pink focus:ring-pink",
-      maroon: "text-white bg-maroon border-maroon hover:bg-maroon hover:border-maroon focus:ring-maroon",
-      coral: "text-black bg-coral border-coral hover:bg-coral hover:border-coral focus:ring-coral",
-      marigold: "text-black bg-marigold border-marigold hover:bg-marigold hover:border-marigold focus:ring-marigold",
+      maroon:
+        "text-white bg-maroon border-maroon hover:bg-maroon hover:border-maroon focus:ring-maroon",
+      coral:
+        "text-black bg-coral border-coral hover:bg-coral hover:border-coral focus:ring-coral",
+      marigold:
+        "text-black bg-marigold border-marigold hover:bg-marigold hover:border-marigold focus:ring-marigold",
     },
   },
   compoundVariants: [
@@ -49,7 +57,8 @@ export const buttonVariants = tv({
     {
       variant: "outline",
       color: "red",
-      class: "bg-transparent border-2 border-red-600 text-red-600 hover:text-white",
+      class:
+        "bg-transparent border-2 border-red-600 text-red-600 hover:text-white",
     },
     {
       variant: "outline",
@@ -59,32 +68,38 @@ export const buttonVariants = tv({
     {
       variant: "outline",
       color: "aqua-light",
-      class: "bg-transparent border-2 border-aqua-light text-aqua-light hover:text-black",
+      class:
+        "bg-transparent border-2 border-aqua-light text-aqua-light hover:text-black",
     },
     {
       variant: "outline",
       color: "forest-green",
-      class: "bg-transparent border-2 border-forest-green text-forest-green hover:text-white",
+      class:
+        "bg-transparent border-2 border-forest-green text-forest-green hover:text-white",
     },
     {
       variant: "outline",
       color: "sage-green",
-      class: "bg-transparent border-2 border-sage-green text-sage-green hover:text-black",
+      class:
+        "bg-transparent border-2 border-sage-green text-sage-green hover:text-black",
     },
     {
       variant: "outline",
       color: "border",
-      class: "bg-transparent border-2 border-border text-border hover:text-white",
+      class:
+        "bg-transparent border-2 border-border text-border hover:text-white",
     },
     {
       variant: "outline",
       color: "neutral",
-      class: "bg-transparent border-2 border-neutral text-neutral hover:text-black",
+      class:
+        "bg-transparent border-2 border-neutral text-neutral hover:text-black",
     },
     {
       variant: "outline",
       color: "purple",
-      class: "bg-transparent border-2 border-purple text-purple hover:text-white",
+      class:
+        "bg-transparent border-2 border-purple text-purple hover:text-white",
     },
     {
       variant: "outline",
@@ -94,7 +109,8 @@ export const buttonVariants = tv({
     {
       variant: "outline",
       color: "maroon",
-      class: "bg-transparent border-2 border-maroon text-maroon hover:text-white",
+      class:
+        "bg-transparent border-2 border-maroon text-maroon hover:text-white",
     },
     {
       variant: "outline",
@@ -104,7 +120,8 @@ export const buttonVariants = tv({
     {
       variant: "outline",
       color: "marigold",
-      class: "bg-transparent border-2 border-marigold text-marigold hover:text-white",
+      class:
+        "bg-transparent border-2 border-marigold text-marigold hover:text-white",
     },
 
     // Emphasis variant for each color
@@ -190,11 +207,13 @@ export const buttonVariants = tv({
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 /** Ascertain default HTML Button attributes (disabled, etc) */
-type HTMLButtonProps = Omit<HTMLAttributes<HTMLButtonElement>, "color"> & ClassAttributes<HTMLButtonElement>;
+type HTMLButtonProps = Omit<HTMLAttributes<HTMLButtonElement>, "color"> &
+  ClassAttributes<HTMLButtonElement>;
 
 /** Export ButtonProps as one type */
 export interface ButtonProps extends ButtonVariants, HTMLButtonProps {
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
+  disabled?: boolean;
 }

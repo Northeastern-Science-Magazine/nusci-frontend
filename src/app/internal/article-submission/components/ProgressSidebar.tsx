@@ -10,6 +10,7 @@ type FormProgress = {
   content: boolean;
   pullQuote: boolean;
   image: boolean;
+  sources: boolean;
 };
 
 const ProgressCircle = ({
@@ -91,6 +92,7 @@ export const ProgressSidebar = ({ progress }: { progress: FormProgress }) => {
         <ProgressCircle filled={progress.content} label="Content" />
         <ProgressCircle filled={progress.pullQuote} label="Pull Quote" />
         <ProgressCircle filled={progress.image} label="Image (Optional)" />
+        <ProgressCircle filled={progress.sources} label="Sources" />
       </div>
     </div>
   );

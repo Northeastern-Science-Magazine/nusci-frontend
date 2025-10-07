@@ -11,6 +11,7 @@ import clsx from "clsx";
 export default function RadioButton({
   options,
   name,
+  value,
   defaultValue,
   onChange,
   className,
@@ -22,6 +23,7 @@ export default function RadioButton({
     <RadixRadioGroup.Root
       className={clsx("flex gap-4", direction === "vertical" ? "flex-col" : "flex-row", className)}
       name={name}
+      value={value}
       defaultValue={defaultValue}
       onValueChange={onChange}
       {...props}

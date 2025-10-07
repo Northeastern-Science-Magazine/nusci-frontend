@@ -18,7 +18,7 @@ export const MediaCard = (props: MediaCardProps) => {
     rounded,
     backgroundOpacity,
     color,
-    ...boxProps
+    ...variantProps
   } = props;
 
   // Get text sizes from the configuration
@@ -26,7 +26,7 @@ export const MediaCard = (props: MediaCardProps) => {
 
   return (
     <Box
-      {...boxProps}
+      {...variantProps}
       color={color}
       className={mediaCardVariants({
         mediaDirection,

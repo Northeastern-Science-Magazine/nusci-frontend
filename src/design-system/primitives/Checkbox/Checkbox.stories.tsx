@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Checkbox } from "./Checkbox";
 import React, { useState } from "react";
 
-/* Modify this when adding variants to Avatar */
 const sizes = ["sm", "md", "lg"] as const;
 const colors = [
   "black",
@@ -21,7 +20,6 @@ const colors = [
   "marigold",
 ] as const;
 
-/** Define the control fields for Storybook */
 const meta: Meta<typeof Checkbox> = {
   component: Checkbox,
   title: "Primitives/Checkbox",
@@ -36,20 +34,19 @@ const meta: Meta<typeof Checkbox> = {
     },
   },
 };
-
 export default meta;
 type Story = StoryObj<typeof Checkbox>;
 
-/** Story for Default Checkbox */
+/** Default Checkbox */
 export const Default: Story = {
   render: (args) => {
-    const [checkedValues, setCheckedValues] = useState<string[]>(args.checkedValues || []);
+    const [checkedValues, setCheckedValues] = useState<string[]>(args.value || []);
 
-    const handleCheckedChange = (option: string, value: boolean) => {
-      setCheckedValues((prev) => (value ? [...prev, option] : prev.filter((val) => val !== option)));
+    const handleChange = (newValue: string[]) => {
+      setCheckedValues(newValue);
     };
 
-    return <Checkbox {...args} checkedValues={checkedValues} handleCheckedChange={handleCheckedChange} color={"red"} />;
+    return <Checkbox {...args} value={checkedValues} onChange={handleChange} color="red" />;
   },
   args: {
     options: ["default first option", "default second option", "default third option"],
@@ -57,16 +54,16 @@ export const Default: Story = {
   },
 };
 
-/** Story for Disabled Checkbox */
+/** Disabled Checkbox */
 export const Disabled: Story = {
   render: (args) => {
-    const [checkedValues, setCheckedValues] = useState<string[]>(args.checkedValues || []);
+    const [checkedValues, setCheckedValues] = useState<string[]>(args.value || []);
 
-    const handleCheckedChange = (option: string, value: boolean) => {
-      setCheckedValues((prev) => (value ? [...prev, option] : prev.filter((val) => val !== option)));
+    const handleChange = (newValue: string[]) => {
+      setCheckedValues(newValue);
     };
 
-    return <Checkbox {...args} checkedValues={checkedValues} handleCheckedChange={handleCheckedChange} color={"red"} />;
+    return <Checkbox {...args} value={checkedValues} onChange={handleChange} color="red" />;
   },
   args: {
     options: ["disabled first option", "disabled second option", "disabled third option"],
@@ -74,31 +71,30 @@ export const Disabled: Story = {
   },
 };
 
-/** Gallery Story for all Button Variants */
+/** Gallery */
 export const Gallery: Story = {
-  args: {},
   render: () => {
     const [checkedValues, setCheckedValues] = useState<string[]>([]);
 
-    const handleCheckedChange = (option: string, value: boolean) => {
-      setCheckedValues((prev) => (value ? [...prev, option] : prev.filter((val) => val !== option)));
+    const handleChange = (newValue: string[]) => {
+      setCheckedValues(newValue);
     };
 
     return (
-      <div>
+      <div className="space-y-4">
         {colors.map((color) => {
           const isWhiteColor = color === "white";
           return (
             <div key={color}>
               <div className={`grid grid-cols-3 gap-2 ${isWhiteColor ? "bg-zinc-300" : ""}`}>
                 {sizes.map((size) => (
-                  <div key={`${size}`} className="flex justify-left p-2">
+                  <div key={`${color}-${size}`} className="flex p-2">
                     <Checkbox
                       size={size}
                       color={color}
                       options={[`${color}-${size}`]}
-                      checkedValues={checkedValues}
-                      handleCheckedChange={handleCheckedChange}
+                      value={checkedValues}
+                      onChange={handleChange}
                     />
                   </div>
                 ))}

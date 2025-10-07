@@ -6,21 +6,21 @@ import React from "react";
 const variants = ["default", "emphasis", "outline"] as const;
 const sizes = ["lg", "md", "sm"] as const;
 const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+    "black",
+    "white",
+    "red",
+    "aqua",
+    "aqua-light",
+    "forest-green",
+    "sage-green",
+    "border",
+    "neutral",
+    "purple",
+    "pink",
+    "maroon",
+    "coral",
+    "marigold",
+  ] as const;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Button> = {

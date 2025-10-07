@@ -29,7 +29,12 @@ export const toggleVariants = tv({
 });
 
 export interface ToggleProps
-  extends Omit<React.ComponentPropsWithoutRef<typeof Switch.Root>, 'color'>,
+  extends Omit<
+      React.ComponentPropsWithoutRef<typeof Switch.Root>,
+      "color" | "checked" | "defaultChecked" | "onCheckedChange" | "defaultValue" | "value" | "onChange"
+    >,
     VariantProps<typeof toggleVariants> {
-  onChange?: () => void;
+  defaultValue?: boolean;
+  value?: boolean;
+  onChange?: (value: boolean) => void;
 }

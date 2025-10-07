@@ -14,6 +14,7 @@ import {
   Trash2,
   ZoomIn,
   ZoomOut,
+  Mail,
   Menu,
   X,
 } from "lucide-react";
@@ -75,6 +76,7 @@ export const iconMap = {
   trash: Trash2,
   zoomin: ZoomIn,
   zoomout: ZoomOut,
+  email: Mail,
   menu: Menu,
   x: X,
 };

@@ -48,6 +48,7 @@ export type RadioButtonVariants = VariantProps<typeof radioButtonVariants>;
 export interface RadioButtonProps extends RadioButtonVariants {
   options: { label: string; value: string }[];
   name: string;
+  value?: string;
   defaultValue?: string;
   onChange?: (value: string) => void;
   className?: string;

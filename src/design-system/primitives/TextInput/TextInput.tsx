@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { TextInputProps, textInputVariants } from "./variants";
+import clsx from "clsx";
 
 /**
  * Text Input Component
@@ -12,13 +13,13 @@ export const TextInput = ({
   id,
   value,
   placeholder,
-  onValueChange,
+  onChange,
   variant,
   size,
   color,
+  className,
   ...props
 }: TextInputProps) => {
-  
   const autoId = React.useId();
   const propId = id ?? autoId;
   return (
@@ -34,8 +35,8 @@ export const TextInput = ({
         id={propId}
         value={value}
         placeholder={placeholder || "Enter text"}
-        onChange={(e) => onValueChange?.(e.target.value)}
-        className={textInputVariants({ variant, size, color })}
+        onChange={(e) => onChange?.(e.target.value)}
+        className={clsx(textInputVariants({ variant, size, color }), className)}
         {...props}
       />
     </div>

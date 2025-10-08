@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { MediaCard } from "./MediaCard";
 import React from "react";
 
-const mediaDirections = ["default", "left", "top", "bottom"] as const;
+const mediaDirections = ["right", "left", "top", "bottom"] as const;
 const mediaTypes = ["image", "video"] as const;
 const sizes = ["sm", "md", "lg"] as const;
-const roundedOptions = ["default", "none"] as const;
-const shadow = ["default", "none"] as const;
-const border = ["default", "none"] as const;
+const roundedOptions = ["rounded", "none"] as const;
+const shadow = ["shadow", "none"] as const;
+const border = ["bordered", "none"] as const;
 const opacity = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, "none"] as const;
 
 const meta: Meta<typeof MediaCard> = {
@@ -59,10 +59,8 @@ const sampleVideo =
 export const Default: Story = {
   args: {
     mediaType: "image",
-    mediaDirection: "default",
+    mediaDirection: "right",
     size: "md",
-    rounded: "none",
-    shadow: "default",
     title: "Beautiful Landscape",
     subtitle: "Mountain Landscape",
     description: sampleDescription,
@@ -78,8 +76,8 @@ export const Vertical: Story = {
     mediaType: "image",
     mediaDirection: "top",
     size: "sm",
-    rounded: "default",
-    border: "default",
+    rounded: "rounded",
+    border: "bordered",
     title: "Beautiful Landscape",
     subtitle: "Mountain Landscape",
     description: sampleDescription,
@@ -99,10 +97,10 @@ export const RoundingVariants: Story = {
           <p className="mb-2 font-semibold">{r}</p>
           <MediaCard
             mediaType="image"
-            mediaDirection="default"
+            mediaDirection="right"
             size="md"
             rounded={r}
-            border="default"
+            border="bordered"
             title="Rounding Demo"
             subtitle="Demo"
             description={sampleDescription}
@@ -123,21 +121,16 @@ export const DirectionVariants: Story = {
     <div className="flex gap-8 p-4 flex-wrap">
       {mediaDirections.map((direction) => (
         <div key={direction}>
-          <p className="mb-2 font-semibold">
-            {direction === "default" ? "Horizontal Right" : direction}
-          </p>
+          <p className="mb-2 font-semibold capitalize">{direction}</p>
           <MediaCard
             mediaType="image"
             mediaDirection={direction}
             size="md"
-            rounded="default"
-            border="default"
+            rounded="rounded"
+            border="bordered"
             title="Sample Card"
             subtitle="Layout Demo"
-            description=
-            {`Media positioned ${
-              direction === "default" ? "right" : direction
-            }`}
+            description={`Media positioned ${direction}`}
             imageProps={{
               src: sampleImage,
               alt: "Sample image",
@@ -159,10 +152,8 @@ export const MediaTypeComparison: Story = {
           <p className="mb-2 font-medium">Image - Horizontal</p>
           <MediaCard
             mediaType="image"
-            mediaDirection="default"
+            mediaDirection="right"
             size="md"
-            rounded="none"
-            shadow="default"
             title="Image Card"
             subtitle="Size md"
             description={sampleDescription}
@@ -176,10 +167,8 @@ export const MediaTypeComparison: Story = {
           <p className="mb-2 font-medium">Video - Horizontal</p>
           <MediaCard
             mediaType="video"
-            mediaDirection="default"
+            mediaDirection="right"
             size="md"
-            rounded="none"
-            shadow="default"
             title="Video Card"
             subtitle="Size md"
             description={sampleDescription}
@@ -197,8 +186,6 @@ export const MediaTypeComparison: Story = {
             mediaType="image"
             mediaDirection="top"
             size="md"
-            rounded="none"
-            shadow="default"
             title="Image Card"
             subtitle="Size md"
             description={sampleDescription}
@@ -214,8 +201,6 @@ export const MediaTypeComparison: Story = {
             mediaType="video"
             mediaDirection="top"
             size="md"
-            rounded="none"
-            shadow="default"
             title="Video Card"
             subtitle="Size md"
             description={sampleDescription}
@@ -244,10 +229,10 @@ export const ImageSizesHorizontal: Story = {
               <p className="mb-2 font-medium">Media Right</p>
               <MediaCard
                 mediaType="image"
-                mediaDirection="default"
+                mediaDirection="right"
                 size={size}
-                rounded="default"
-                border="default"
+                rounded="rounded"
+                border="bordered"
                 title="Media Right"
                 subtitle={`Size ${size}`}
                 description={sampleDescription}
@@ -263,8 +248,8 @@ export const ImageSizesHorizontal: Story = {
                 mediaType="image"
                 mediaDirection="left"
                 size={size}
-                rounded="default"
-                border="default"
+                rounded="rounded"
+                border="bordered"
                 title="Media Left"
                 subtitle={`Size ${size}`}
                 description={sampleDescription}
@@ -295,8 +280,8 @@ export const ImageSizesVertical: Story = {
                 mediaType="image"
                 mediaDirection="top"
                 size={size}
-                rounded="default"
-                border="default"
+                rounded="rounded"
+                border="bordered"
                 title="Vertical Top"
                 subtitle={`Size ${size}`}
                 description={sampleDescription}
@@ -312,8 +297,8 @@ export const ImageSizesVertical: Story = {
                 mediaType="image"
                 mediaDirection="bottom"
                 size={size}
-                rounded="default"
-                border="default"
+                rounded="rounded"
+                border="bordered"
                 title="Vertical Bottom"
                 subtitle={`Size ${size}`}
                 description={sampleDescription}
@@ -341,9 +326,8 @@ export const ShadowVariants: Story = {
             <p className="mb-2 font-semibold">Shadow: {s}</p>
             <MediaCard
               mediaType="image"
-              mediaDirection="default"
+              mediaDirection="right"
               size="md"
-              rounded="none"
               shadow={s}
               title="Shadow Demo"
               subtitle="Box Container"
@@ -371,9 +355,8 @@ export const BorderVariants: Story = {
             <p className="mb-2 font-semibold">Border: {b}</p>
             <MediaCard
               mediaType="image"
-              mediaDirection="default"
+              mediaDirection="right"
               size="md"
-              rounded="none"
               border={b}
               title="Border Demo"
               subtitle="Box Container"
@@ -397,14 +380,13 @@ export const ShadowAndBorderCombination: Story = {
       <h2 className="mb-6 text-2xl font-bold">Shadow + Border Combinations</h2>
       <div className="flex gap-8 flex-wrap">
         <div>
-          <p className="mb-2 font-medium">Shadow: default, Border: default</p>
+          <p className="mb-2 font-medium">Shadow: shadow, Border: bordered</p>
           <MediaCard
             mediaType="image"
-            mediaDirection="default"
+            mediaDirection="right"
             size="md"
-            rounded="none"
-            shadow="default"
-            border="default"
+            shadow="shadow"
+            border="bordered"
             title="Combined Demo"
             subtitle="Shadow + Border"
             description={sampleDescription}
@@ -415,14 +397,12 @@ export const ShadowAndBorderCombination: Story = {
           />
         </div>
         <div>
-          <p className="mb-2 font-medium">Shadow: default, Border: none</p>
+          <p className="mb-2 font-medium">Shadow: shadow, Border: none</p>
           <MediaCard
             mediaType="image"
-            mediaDirection="default"
+            mediaDirection="right"
             size="md"
-            rounded="none"
-            shadow="default"
-            border="none"
+            shadow="shadow"
             title="Combined Demo"
             subtitle="Shadow Only"
             description={sampleDescription}
@@ -433,14 +413,13 @@ export const ShadowAndBorderCombination: Story = {
           />
         </div>
         <div>
-          <p className="mb-2 font-medium">Shadow: none, Border: default</p>
+          <p className="mb-2 font-medium">Shadow: none, Border: bordered</p>
           <MediaCard
             mediaType="image"
-            mediaDirection="default"
+            mediaDirection="right"
             size="md"
-            rounded="none"
             shadow="none"
-            border="default"
+            border="bordered"
             title="Combined Demo"
             subtitle="Border Only"
             description={sampleDescription}
@@ -454,11 +433,9 @@ export const ShadowAndBorderCombination: Story = {
           <p className="mb-2 font-medium">Shadow: none, Border: none</p>
           <MediaCard
             mediaType="image"
-            mediaDirection="default"
+            mediaDirection="right"
             size="md"
-            rounded="none"
             shadow="none"
-            border="none"
             title="Combined Demo"
             subtitle="Plain"
             description={sampleDescription}
@@ -484,9 +461,9 @@ export const OpacityVariants: Story = {
             <p className="mb-2 font-semibold">Opacity: {o}%</p>
             <MediaCard
               mediaType="image"
-              mediaDirection="default"
+              mediaDirection="right"
               size="md"
-              rounded="default"
+              rounded="rounded"
               color="aqua"
               backgroundOpacity={o}
               title="Opacity Demo"

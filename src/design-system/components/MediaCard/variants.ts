@@ -9,7 +9,7 @@ export const mediaCardVariants = tv({
   base: "flex transition-transform ease-in-out hover:-translate-y-1",
   variants: {
     mediaDirection: {
-      default: "flex-row",
+      right: "flex-row",
       left: "flex-row-reverse",
       top: "flex-col-reverse",
       bottom: "flex-col",
@@ -20,15 +20,15 @@ export const mediaCardVariants = tv({
       lg: "gap-3",
     },
     shadow: {
-      default: "shadow-lg",
+      shadow: "shadow-lg",
       none: "",
     },
     border: {
-      default: "border border-border",
+      bordered: "border border-border",
       none: "",
     },
     rounded: {
-      default: "rounded-3xl overflow-hidden",
+      rounded: "rounded-3xl overflow-hidden",
       none: "",
     },
     backgroundOpacity: {
@@ -64,25 +64,25 @@ export const mediaCardVariants = tv({
   compoundVariants: [
     // Horizontal layouts - add self-center to text content
     {
-      mediaDirection: ["default", "left"],
+      mediaDirection: ["right", "left"],
       class: "[&>div:first-child]:self-center",
     },
     // HORIZONTAL LAYOUTS
     {
       size: "sm",
-      mediaDirection: ["default", "left"],
+      mediaDirection: ["right", "left"],
       class:
         "[&_.media-container]:w-48 [&_.media-container]:h-auto [&_.media-container]:flex-shrink-0 max-w-md",
     },
     {
       size: "md",
-      mediaDirection: ["default", "left"],
+      mediaDirection: ["right", "left"],
       class:
         "[&_.media-container]:w-56 [&_.media-container]:h-auto [&_.media-container]:flex-shrink-0 max-w-lg",
     },
     {
       size: "lg",
-      mediaDirection: ["default", "left"],
+      mediaDirection: ["right", "left"],
       class:
         "[&_.media-container]:w-64 [&_.media-container]:h-auto [&_.media-container]:flex-shrink-0 max-w-xl",
     },
@@ -168,8 +168,11 @@ export const mediaCardVariants = tv({
     },
   ],
   defaultVariants: {
-    mediaDirection: "default",
+    mediaDirection: "right",
     size: "md",
+    shadow: "shadow",
+    border: "none",
+    rounded: "none",
   },
 });
 

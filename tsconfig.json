@@ -32,7 +32,6 @@
         "./src/design-system/primitives/*"
       ]
     },
-    "target": "ES2017"
     // "target": "ES2017"
   },
   "include": [

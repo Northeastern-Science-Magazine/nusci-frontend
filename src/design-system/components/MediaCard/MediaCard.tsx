@@ -5,8 +5,7 @@ import Video from "@/primitives/Video";
 import Text from "@/primitives/Text";
 import { mediaCardTextSizes } from "./variants";
 
-export const MediaCard = (props: MediaCardProps) => {
-  const {
+export const MediaCard = ({
     title,
     subtitle,
     description,
@@ -19,7 +18,7 @@ export const MediaCard = (props: MediaCardProps) => {
     backgroundOpacity,
     color,
     ...variantProps
-  } = props;
+  }: MediaCardProps) => {
 
   // Get text sizes from the configuration
   const textSizes = mediaCardTextSizes[size ?? "md"];

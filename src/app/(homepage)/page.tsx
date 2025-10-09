@@ -181,7 +181,7 @@ function LayoutA() {
                 <Overlay background="gradient-black">
                   <Box className="p-8">
                     <div className="max-w-3xl">
-                      <Text className="text-5xl sm:text-7xl lg:text-8xl font-extrabold text-white leading-tight">
+                      <Text className="text-6xl sm:text-7xl lg:text-8xl font-extrabold text-white leading-tight">
                         {hero.title}
                       </Text>
                       <div className="mt-6 flex gap-3">

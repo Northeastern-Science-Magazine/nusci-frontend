@@ -20,6 +20,7 @@ const colors = [
   "coral",
   "marigold",
 ] as const;
+const sizes = [8, 12, 14, 16, 18, 20, 24, 30, 36, 48, 60, 72, 96, 128] as const;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Badge> = {
@@ -55,6 +56,35 @@ export const Outline: Story = {
     children: "Outline",
     variant: "outline",
     color: "black",
+  },
+};
+
+export const Sizes: Story = {
+  args: {},
+  render: (args) => {
+    return (
+      <div>
+        {sizes.map((size) => {
+          return (
+            <div key={size}>
+              <div className={"grid grid-cols-3 gap-2"}>
+                {variants.map((variant) => (
+                  <React.Fragment key={variant}>
+                    <div className="flex flex-col">
+                      <div key={`${variant}`} className="flex justify-left p-2">
+                        <Badge size={size} variant={variant}>
+                          {`${variant} | ${size}`}
+                        </Badge>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
   },
 };
 

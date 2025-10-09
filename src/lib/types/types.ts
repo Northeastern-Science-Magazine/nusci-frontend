@@ -1,5 +1,15 @@
 /* Types from the backend repository */
 
+export enum Accounts {
+  None = "none",
+  Author = "author",
+  Editor = "editor",
+  Photographer = "photographer",
+  Developer = "developer",
+  Designer = "designer",
+  Admin = "admin",
+}
+
 export enum ArticleContentType {
   BodyParagraph,
   PullQuote,

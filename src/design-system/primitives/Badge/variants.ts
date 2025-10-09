@@ -2,7 +2,7 @@ import React from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const badgeVariants = tv({
-  base: "items-center justify-center font-medium rounded-3xl py-2 px-4 border-2",
+  base: "items-center justify-center font-medium rounded-3xl border-2",
   variants: {
     variant: {
       default: "bg-opacity-100",
@@ -23,6 +23,22 @@ export const badgeVariants = tv({
       maroon: "text-white bg-maroon border-maroon",
       coral: "text-black bg-coral border-coral",
       marigold: "text-black bg-marigold border-marigold",
+    },
+    size: {
+      8: "text-[8px] py-1 px-2",
+      12: "text-[12px] py-1 px-2",
+      14: "text-[14px] py-1 px-2",
+      16: "text-[16px] py-1 px-3",
+      18: "text-[18px] py-1 px-3",
+      20: "text-[20px] py-2 px-3",
+      24: "text-[24px] py-2 px-4",
+      30: "text-[30px] py-2 px-4",
+      36: "text-[36px] py-3 px-4",
+      48: "text-[48px] py-3 px-4",
+      60: "text-[60px] py-3 px-4",
+      72: "text-[72px] py-3 px-4",
+      96: "text-[96px] py-3 px-4",
+      128: "text-[128px] py-3 px-4",
     },
   },
   compoundVariants: [
@@ -100,6 +116,7 @@ export const badgeVariants = tv({
   defaultVariants: {
     variant: "default",
     color: "black",
+    size: 16,
   },
 });
 

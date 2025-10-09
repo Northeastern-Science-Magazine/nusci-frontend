@@ -1,3 +1,3 @@
 export default function AboutUsPage() {
-  return <>About Us Page</>;
+  return <>General About Us Page Highlighting Every Team</>;
 }

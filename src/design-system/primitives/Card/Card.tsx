@@ -12,7 +12,7 @@ import clsx from "clsx";
  */
 export default function Card({ className, children, ...props }: CardProps) {
   return (
-    <Box {...props} className={clsx("rounded-3xl border border-border p-4 shadow-sm", className)}>
+    <Box {...props} className={clsx("rounded-3xl border p-4 border-border shadow-sm", className)}>
       {children}
     </Box>
   );

@@ -411,7 +411,6 @@ function LayoutC() {
                       </div>
                       <div>
                         <Text className="font-semibold">{a.title}</Text>
-                        <Text className="text-sm text-zinc-600 mt-1">{a.excerpt}</Text>
                         <div className="mt-2">
                           <Link href={a.href} newWindow={false} className="text-sm">
                             Read →

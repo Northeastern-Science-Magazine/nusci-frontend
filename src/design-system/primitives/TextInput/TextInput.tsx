@@ -24,6 +24,11 @@ export const TextInput = ({
 }: TextInputProps) => {
   const autoId = React.useId();
   const propId = id ?? autoId;
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (rows === 1 && e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
   return (
     <div className="flex flex-col items-start">
       {label && (
@@ -37,12 +42,14 @@ export const TextInput = ({
         value={value}
         placeholder={placeholder || "Enter text"}
         onChange={(e) => onChange?.(e.target.value)}
+        onKeyDown={handleKeyDown}
         className={clsx(
           textInputVariants({ variant, size, color }),
           className,
-          resize ? "resize-y" : "resize-none"
+          resize ? "resize-y" : "resize-none min-h-0"
         )}
         rows={rows}
+        style={{ maxHeight: rows === 1 ? "2.5rem" : undefined }}
         {...props}
       />
     </div>

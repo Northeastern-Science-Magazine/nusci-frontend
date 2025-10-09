@@ -257,7 +257,7 @@ function LayoutB() {
                 <Image src={hero.img} alt={hero.title} width="w-full" ratio={16 / 9} />
               </div>
               <div className="p-6">
-                <Text className="text-3xl font-extrabold">{hero.title}</Text>
+                <Text className="text-4xl font-extrabold">{hero.title}</Text>
                 <div className="mt-4">
                   <Link href={hero.href} newWindow={false}>
                     <Button size="md" variant="default" color="black">

@@ -27,7 +27,7 @@ const meta: Meta<typeof Toggle> = {
       control: "select",
       options: colors,
     },
-    checked: {
+    value: {
       control: "boolean",
     },
     disabled: {
@@ -54,7 +54,7 @@ export const Gallery: Story = {
           {colors.map((color) => (
             <div key={color} className="flex flex-col items-start gap-2">
               <span className="text-sm font-medium capitalize">{color}</span>
-              <Toggle color={color} defaultChecked />
+              <Toggle color={color} defaultValue />
             </div>
           ))}
         </div>

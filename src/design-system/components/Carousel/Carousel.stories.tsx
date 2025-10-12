@@ -37,89 +37,11 @@ export default meta;
 type Story = StoryObj<typeof Carousel>;
 
 /**
- * Size Comparison
- * Shows all different sizes side by side
- */
-export const SizeComparison: Story = {
-  render: () => (
-    <Box className="space-y-12 p-8 bg-white">
-      <Box>
-        <Text className="text-lg font-bold mb-4 text-black">Extra Small (xs) - 160px height</Text>
-        <Carousel size="xs" showNavigation={true} loop={true}>
-          {[1, 2, 3].map((num) => (
-            <CarouselItem key={num} basis="full">
-              <Card className="w-full h-full flex items-center justify-center bg-coral border border-border rounded-2xl">
-                <Box className="text-center">
-                  <Text className="text-lg font-bold text-maroon">XS {num}</Text>
-                  <Text className="text-xs text-maroon">Compact</Text>
-                </Box>
-              </Card>
-            </CarouselItem>
-          ))}
-        </Carousel>
-      </Box>
-
-      <Box>
-        <Text className="text-lg font-bold mb-4 text-black">Small (sm) - 192px height</Text>
-        <Carousel size="sm" showNavigation={true} loop={true}>
-          {[1, 2, 3].map((num) => (
-            <CarouselItem key={num} basis="full">
-              <Card className="w-full h-full flex items-center justify-center bg-marigold border border-border rounded-2xl">
-                <Text className="text-xl font-bold text-maroon">SM Slide {num}</Text>
-              </Card>
-            </CarouselItem>
-          ))}
-        </Carousel>
-      </Box>
-
-      <Box>
-        <Text className="text-lg font-bold mb-4 text-black">Medium (md) - 256px height</Text>
-        <Carousel size="md" showNavigation={true} loop={true}>
-          {[1, 2, 3].map((num) => (
-            <CarouselItem key={num} basis="full">
-              <Card className="w-full h-full flex items-center justify-center bg-aqua-light border border-border rounded-2xl">
-                <Text className="text-xl font-bold text-aqua">MD Slide {num}</Text>
-              </Card>
-            </CarouselItem>
-          ))}
-        </Carousel>
-      </Box>
-
-      <Box>
-        <Text className="text-lg font-bold mb-4 text-black">Large (lg) - 384px height</Text>
-        <Carousel size="lg" showNavigation={true} loop={true}>
-          {[1, 2, 3].map((num) => (
-            <CarouselItem key={num} basis="full">
-              <Card className="w-full h-full flex items-center justify-center bg-sage-green border border-border rounded-2xl">
-                <Text className="text-xl font-bold text-forest-green">LG Slide {num}</Text>
-              </Card>
-            </CarouselItem>
-          ))}
-        </Carousel>
-      </Box>
-
-      <Box>
-        <Text className="text-lg font-bold mb-4 text-black">Extra Large (xl) - 512px height</Text>
-        <Carousel size="xl" showNavigation={true} loop={true}>
-          {[1, 2, 3].map((num) => (
-            <CarouselItem key={num} basis="full">
-              <Card className="w-full h-full flex items-center justify-center bg-pink border border-border rounded-2xl">
-                <Text className="text-xl font-bold text-purple">XL Slide {num}</Text>
-              </Card>
-            </CarouselItem>
-          ))}
-        </Carousel>
-      </Box>
-    </Box>
-  ),
-};
-
-/**
  * Basic Cards with CarouselItem
  */
 export const BasicCards: Story = {
   args: {
-    size: "lg",
+    size: "md",
     showNavigation: true,
     autoplay: true,
     autoplayDelay: 3000,
@@ -127,75 +49,35 @@ export const BasicCards: Story = {
     orientation: "horizontal",
   },
   render: (args) => (
-    <Box className="w-full max-w-4xl mx-auto p-8 bg-white">
-      <Text className="text-xl font-bold mb-6 text-black">Basic Card Carousel</Text>
-      <Carousel {...args}>
-        {[
-          { bg: "bg-aqua", text: "text-white" },
-          { bg: "bg-sage-green", text: "text-forest-green" },
-          { bg: "bg-coral", text: "text-white" },
-          { bg: "bg-pink", text: "text-purple" },
-          { bg: "bg-marigold", text: "text-maroon" },
-        ].map((card, num) => (
-          <CarouselItem key={num} basis="full">
-            <Card className={`w-full h-full flex items-center justify-center ${card.bg} border border-border rounded-2xl shadow-sm`}>
-              <Box className="text-center">
-                <Box className={`w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center ${card.text}`}>
-                  <Text className="text-2xl font-bold">{num + 1}</Text>
+    <Box className="w-full max-w-4xl mx-auto p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex items-center justify-center">
+      <Box className="w-full">
+        <Text className="text-2xl font-bold mb-2 text-center text-black">Basic Card Carousel</Text>
+        <Text className="text-sm text-center text-gray-600 mb-6">
+          {args.orientation === "vertical" ? "↕ Vertical scrolling ↕" : "← Horizontal scrolling →"}
+        </Text>
+        <Carousel {...args}>
+          {[
+            { bg: "bg-blue-500", text: "text-white", icon: "🎯" },
+            { bg: "bg-green-500", text: "text-white", icon: "🌟" },
+            { bg: "bg-purple-500", text: "text-white", icon: "💎" },
+            { bg: "bg-orange-500", text: "text-white", icon: "🚀" },
+            { bg: "bg-pink-500", text: "text-white", icon: "✨" },
+          ].map((card, num) => (
+            <CarouselItem key={num} basis="full">
+              <Card className={`w-full h-full flex items-center justify-center ${card.bg} border-0 rounded-2xl shadow-lg`}>
+                <Box className="text-center p-8">
+                  <Text className="text-6xl mb-4">{card.icon}</Text>
+                  <Box className={`w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center ${card.text}`}>
+                    <Text className="text-2xl font-bold">{num + 1}</Text>
+                  </Box>
+                  <Text className={`text-2xl font-bold ${card.text} mb-2`}>Card {num + 1}</Text>
+                  <Text className={`text-base ${card.text} opacity-90`}>Beautiful card design</Text>
                 </Box>
-                <Text className={`text-xl font-bold ${card.text}`}>Card {num + 1}</Text>
-                <Text className={`text-sm ${card.text}`}>Sample content</Text>
-              </Box>
-            </Card>
-          </CarouselItem>
-        ))}
-      </Carousel>
-    </Box>
-  ),
-};
-
-/**
- * Image Carousel
- * Images as direct children with object-contain
- */
-export const ImageCarousel: Story = {
-  args: {
-    size: "lg",
-    showNavigation: true,
-    autoplay: true,
-    autoplayDelay: 4000,
-    loop: true,
-    orientation: "horizontal",
-  },
-  render: (args) => (
-    <Box className="w-full max-w-4xl mx-auto p-8 bg-white">
-      <Text className="text-xl font-bold mb-6 text-black">Image Carousel</Text>
-      <Text className="text-sm text-black mb-4">
-        Images as direct children with object-contain
-      </Text>
-      <Carousel {...args}>
-        {[
-          { src: "/eclipse-image.png", alt: "Eclipse", fallback: "bg-coral" },
-          { src: "/insta.png", alt: "Instagram", fallback: "bg-sage-green" },
-          { src: "/linkedin.png", alt: "LinkedIn", fallback: "bg-aqua" },
-          { src: "/logo.png", alt: "Logo", fallback: "bg-purple" },
-          { src: "/tiktok.png", alt: "TikTok", fallback: "bg-marigold" },
-        ].map((image, index) => (
-          <CarouselItem key={index} basis="full">
-            <img 
-              src={image.src}
-              alt={image.alt}
-              className="w-full h-full object-contain rounded-xl"
-              onError={(e) => {
-                const fallbackDiv = document.createElement('div');
-                fallbackDiv.className = `w-full h-full ${image.fallback} rounded-xl flex items-center justify-center text-white text-xl font-bold`;
-                fallbackDiv.textContent = image.alt;
-                e.currentTarget.replaceWith(fallbackDiv);
-              }}
-            />
-          </CarouselItem>
-        ))}
-      </Carousel>
+              </Card>
+            </CarouselItem>
+          ))}
+        </Carousel>
+      </Box>
     </Box>
   ),
 };
@@ -221,131 +103,26 @@ export const MultipleItems: Story = {
       </Text>
       <Carousel {...args}>
         {[
-          { name: "Headphones", price: "$199", rating: 4.8, bg: "bg-neutral" },
-          { name: "Smart Watch", price: "$299", rating: 4.6, bg: "bg-aqua-light" },
-          { name: "Laptop Stand", price: "$79", rating: 4.9, bg: "bg-gray" },
-          { name: "Keyboard", price: "$149", rating: 4.7, bg: "bg-coral" },
-          { name: "Mouse Pad", price: "$29", rating: 4.5, bg: "bg-sage-green" },
-          { name: "Webcam", price: "$89", rating: 4.4, bg: "bg-marigold" },
+          { name: "Headphones", price: "$199", rating: 4.8, bg: "bg-gray-100" },
+          { name: "Smart Watch", price: "$299", rating: 4.6, bg: "bg-blue-50" },
+          { name: "Laptop Stand", price: "$79", rating: 4.9, bg: "bg-gray-100" },
+          { name: "Keyboard", price: "$149", rating: 4.7, bg: "bg-red-50" },
+          { name: "Mouse Pad", price: "$29", rating: 4.5, bg: "bg-green-50" },
+          { name: "Webcam", price: "$89", rating: 4.4, bg: "bg-yellow-50" },
         ].map((product, index) => (
           <CarouselItem key={index} basis="1/3" gap="sm">
-            <Card className="bg-white border border-border rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-shadow h-full">
+            <Card className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-shadow h-full">
               <Box className={`h-40 ${product.bg} flex items-center justify-center`}>
-                <Text className="text-sm text-black">Product Image</Text>
+                <Text className="text-sm text-gray-600">Product Image</Text>
               </Box>
               <Box className="p-4">
                 <Text className="text-base font-bold text-black mb-2">{product.name}</Text>
                 <Box className="flex items-center justify-between mb-2">
-                  <Text className="text-lg font-bold text-aqua">{product.price}</Text>
+                  <Text className="text-lg font-bold text-blue-600">{product.price}</Text>
                   <Box className="flex items-center">
-                    <Text className="text-marigold mr-1">★</Text>
-                    <Text className="text-sm text-black">{product.rating}</Text>
+                    <Text className="text-yellow-500 mr-1">★</Text>
+                    <Text className="text-sm text-gray-700">{product.rating}</Text>
                   </Box>
-                </Box>
-              </Box>
-            </Card>
-          </CarouselItem>
-        ))}
-      </Carousel>
-    </Box>
-  ),
-};
-
-/**
- * Vertical Carousel - Clearly Shows Vertical Scrolling
- * Shows multiple items per page with vertical navigation
- */
-export const VerticalCarousel: Story = {
-  args: {
-    orientation: "vertical",
-    size: "xl",
-    showNavigation: true,
-    autoplay: true,
-    autoplayDelay: 3000,
-    loop: true,
-    itemsPerView: 3,
-  },
-  render: (args) => (
-    <Box className="flex justify-center p-8 bg-gray">
-      <Box className="space-y-4">
-        <Text className="text-xl font-bold text-center text-black">Vertical Scrolling Carousel</Text>
-        <Text className="text-sm text-center text-black mb-6">
-          Scroll direction is VERTICAL
-        </Text>
-        <Carousel {...args}>
-          {[
-            { bg: "bg-aqua-light", text: "text-aqua", icon: "📊", title: "Analytics", subtitle: "Real-time metrics and insights" },
-            { bg: "bg-sage-green", text: "text-forest-green", icon: "👥", title: "Users", subtitle: "Admin controls and permissions" },
-            { bg: "bg-marigold", text: "text-maroon", icon: "📄", title: "Reports", subtitle: "Custom reports and exports" },
-            { bg: "bg-pink", text: "text-purple", icon: "⚙️", title: "Settings", subtitle: "Configuration and preferences" },
-            { bg: "bg-coral", text: "text-maroon", icon: "🔔", title: "Notifications", subtitle: "Alerts and updates" },
-            { bg: "bg-aqua", text: "text-white", icon: "💬", title: "Messages", subtitle: "Team communication" },
-          ].map((feature, index) => (
-            <Card key={index} className={`w-full flex items-center ${feature.bg} rounded-2xl shadow-sm border border-border`}>
-              <Box className="flex items-center px-6 w-full gap-4 py-3">
-                <Box className={`w-12 h-12 bg-white rounded-xl flex items-center justify-center ${feature.text} text-xl flex-shrink-0`}>
-                  {feature.icon}
-                </Box>
-                <Box className="flex-1">
-                  <Text className={`text-base font-bold ${feature.text}`}>{feature.title}</Text>
-                  <Text className={`text-xs ${feature.text}`}>{feature.subtitle}</Text>
-                </Box>
-              </Box>
-            </Card>
-          ))}
-        </Carousel>
-      </Box>
-    </Box>
-  ),
-};
-
-/**
- * Testimonial Cards - Responsive text that adapts to card size
- * Using XL size with proper card dimensions
- */
-export const Testimonials: Story = {
-  args: {
-    orientation: "horizontal",
-    size: "xl",
-    showNavigation: true,
-    autoplay: true,
-    autoplayDelay: 4000,
-    loop: true,
-  },
-  render: (args) => (
-    <Box className="w-full max-w-6xl mx-auto p-8 bg-white">
-      <Text className="text-xl font-bold mb-2 text-center text-black">Customer Testimonials</Text>
-      <Text className="text-sm text-center text-black mb-8">
-        Text scales responsively with card size
-      </Text>
-      <Carousel {...args}>
-        {[
-          { bg: "bg-aqua-light", text: "text-aqua", person: "Sarah Chen", role: "Lead Designer", quote: "This tool revolutionized our design workflow. The intuitive interface and powerful features have made our team significantly more productive." },
-          { bg: "bg-pink", text: "text-purple", person: "Mike Johnson", role: "Senior Developer", quote: "Clean code and excellent documentation made integration seamless. Best developer experience I've had in years." },
-          { bg: "bg-coral", text: "text-maroon", person: "Emily Davis", role: "Product Manager", quote: "Our team productivity increased by 40% within the first month. The ROI has been incredible and continues to improve." },
-          { bg: "bg-sage-green", text: "text-forest-green", person: "Alex Rivera", role: "UX Researcher", quote: "The user feedback has been overwhelmingly positive. Our customers love the new experience we've been able to create." },
-        ].map((testimonial, index) => (
-          <CarouselItem key={index} basis="full">
-            <Card className={`w-full h-full max-w-md mx-auto flex flex-col justify-between ${testimonial.bg} border border-border rounded-2xl shadow-sm p-4 sm:p-6 md:p-8`}>
-              <Box className="flex-1 flex flex-col justify-center min-h-0 overflow-auto">
-                <Text className={`text-sm sm:text-base md:text-lg ${testimonial.text} mb-3 sm:mb-4 md:mb-6 italic leading-relaxed`}>
-                  "{testimonial.quote}"
-                </Text>
-              </Box>
-              
-              <Box className="flex items-center pt-3 sm:pt-4 md:pt-6 border-t border-black/10 flex-shrink-0">
-                <Box className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center ${testimonial.text} mr-3 md:mr-4 flex-shrink-0`}>
-                  <Text className="text-xs sm:text-sm md:text-base font-bold">
-                    {testimonial.person.split(' ').map(n => n[0]).join('')}
-                  </Text>
-                </Box>
-                <Box>
-                  <Text className={`text-sm sm:text-base font-bold ${testimonial.text}`}>
-                    {testimonial.person}
-                  </Text>
-                  <Text className={`text-xs sm:text-sm ${testimonial.text}`}>
-                    {testimonial.role}
-                  </Text>
                 </Box>
               </Box>
             </Card>
@@ -376,7 +153,7 @@ export const MixedSizes: Story = {
       </Text>
       <Carousel {...args}>
         <CarouselItem basis="full">
-          <Card className="w-full h-full flex items-center justify-center bg-purple border border-border rounded-2xl p-8">
+          <Card className="w-full h-full flex items-center justify-center bg-purple-500 border border-gray-200 rounded-2xl p-8">
             <Box className="text-center">
               <Text className="text-2xl font-bold text-white">Full Width</Text>
               <Text className="text-sm text-white mt-2">basis="full"</Text>
@@ -385,7 +162,7 @@ export const MixedSizes: Story = {
         </CarouselItem>
         
         <CarouselItem basis="1/2">
-          <Card className="w-full h-full flex items-center justify-center bg-aqua border border-border rounded-2xl p-8">
+          <Card className="w-full h-full flex items-center justify-center bg-blue-500 border border-gray-200 rounded-2xl p-8">
             <Box className="text-center">
               <Text className="text-xl font-bold text-white">Half</Text>
               <Text className="text-xs text-white mt-2">basis="1/2"</Text>
@@ -394,32 +171,305 @@ export const MixedSizes: Story = {
         </CarouselItem>
         
         <CarouselItem basis="1/2">
-          <Card className="w-full h-full flex items-center justify-center bg-sage-green border border-border rounded-2xl p-8">
+          <Card className="w-full h-full flex items-center justify-center bg-green-500 border border-gray-200 rounded-2xl p-8">
             <Box className="text-center">
-              <Text className="text-xl font-bold text-forest-green">Half</Text>
-              <Text className="text-xs text-forest-green mt-2">basis="1/2"</Text>
+              <Text className="text-xl font-bold text-white">Half</Text>
+              <Text className="text-xs text-white mt-2">basis="1/2"</Text>
             </Box>
           </Card>
         </CarouselItem>
         
         <CarouselItem basis="1/3">
-          <Card className="w-full h-full flex items-center justify-center bg-coral border border-border rounded-2xl p-8">
+          <Card className="w-full h-full flex items-center justify-center bg-orange-500 border border-gray-200 rounded-2xl p-8">
             <Box className="text-center">
-              <Text className="text-lg font-bold text-maroon">Third</Text>
-              <Text className="text-xs text-maroon mt-2">1/3</Text>
+              <Text className="text-lg font-bold text-white">Third</Text>
+              <Text className="text-xs text-white mt-2">1/3</Text>
             </Box>
           </Card>
         </CarouselItem>
         
         <CarouselItem basis="2/3">
-          <Card className="w-full h-full flex items-center justify-center bg-marigold border border-border rounded-2xl p-8">
+          <Card className="w-full h-full flex items-center justify-center bg-yellow-500 border border-gray-200 rounded-2xl p-8">
             <Box className="text-center">
-              <Text className="text-xl font-bold text-maroon">Two Thirds</Text>
-              <Text className="text-xs text-maroon mt-2">basis="2/3"</Text>
+              <Text className="text-xl font-bold text-white">Two Thirds</Text>
+              <Text className="text-xs text-white mt-2">basis="2/3"</Text>
             </Box>
           </Card>
         </CarouselItem>
       </Carousel>
     </Box>
   ),
+};
+
+/**
+ * Testimonial Cards
+ */
+export const Testimonials: Story = {
+  args: {
+    orientation: "horizontal",
+    size: "xl",
+    showNavigation: true,
+    autoplay: true,
+    autoplayDelay: 4000,
+    loop: true,
+  },
+  render: (args) => (
+    <Box className="w-full max-w-6xl mx-auto p-8 bg-white">
+      <Text className="text-xl font-bold mb-2 text-center text-black">Customer Testimonials</Text>
+      <Text className="text-sm text-center text-black mb-8">
+        Hear what our customers have to say
+      </Text>
+      <Carousel {...args}>
+        {[
+          { bg: "bg-blue-50", text: "text-blue-900", person: "Sarah Chen", role: "Lead Designer", quote: "This tool revolutionized our design workflow. The intuitive interface and powerful features have made our team significantly more productive." },
+          { bg: "bg-purple-50", text: "text-purple-900", person: "Mike Johnson", role: "Senior Developer", quote: "Clean code and excellent documentation made integration seamless. Best developer experience I've had in years." },
+          { bg: "bg-orange-50", text: "text-orange-900", person: "Emily Davis", role: "Product Manager", quote: "Our team productivity increased by 40% within the first month. The ROI has been incredible and continues to improve." },
+          { bg: "bg-green-50", text: "text-green-900", person: "Alex Rivera", role: "UX Researcher", quote: "The user feedback has been overwhelmingly positive. Our customers love the new experience we've been able to create." },
+        ].map((testimonial, index) => (
+          <CarouselItem key={index} basis="full">
+            <Card className={`w-full h-full max-w-md mx-auto flex flex-col justify-between ${testimonial.bg} border border-gray-200 rounded-2xl shadow-sm p-8`}>
+              <Box className="flex-1 flex flex-col justify-center">
+                <Text className={`text-lg ${testimonial.text} mb-6 italic leading-relaxed`}>
+                  "{testimonial.quote}"
+                </Text>
+              </Box>
+              
+              <Box className="flex items-center pt-6 border-t border-gray-300">
+                <Box className={`w-14 h-14 bg-white rounded-full flex items-center justify-center ${testimonial.text} mr-4`}>
+                  <Text className="text-base font-bold">
+                    {testimonial.person.split(' ').map(n => n[0]).join('')}
+                  </Text>
+                </Box>
+                <Box>
+                  <Text className={`text-base font-bold ${testimonial.text}`}>
+                    {testimonial.person}
+                  </Text>
+                  <Text className={`text-sm ${testimonial.text} opacity-75`}>
+                    {testimonial.role}
+                  </Text>
+                </Box>
+              </Box>
+            </Card>
+          </CarouselItem>
+        ))}
+      </Carousel>
+    </Box>
+  ),
+};
+
+/**
+ * Vertical Story Feed
+ * Demonstrates vertical scrolling orientation
+ */
+export const VerticalStoryFeed: Story = {
+  args: {
+    orientation: "vertical",
+    size: "lg",
+    showNavigation: true,
+    autoplay: true,
+    autoplayDelay: 4000,
+    loop: true,
+  },
+  render: (args) => (
+    <Box className="w-full max-w-4xl mx-auto p-8 bg-gradient-to-br from-indigo-50 to-purple-50 min-h-screen flex items-center justify-center">
+      <Box className="flex items-center gap-8">
+        <Box className="text-center">
+          <Text className="text-2xl font-bold mb-2 text-black">Story Feed</Text>
+          <Text className="text-sm text-gray-600 mb-4">↕ Vertical scrolling ↕</Text>
+          <Text className="text-xs text-gray-500">Swipe up/down to navigate</Text>
+        </Box>
+        
+        <Carousel {...args}>
+          {[
+            { 
+              bg: "bg-gradient-to-br from-pink-400 to-rose-500", 
+              icon: "🎨", 
+              title: "Design Inspiration",
+              subtitle: "Creative Showcase",
+              content: "Explore stunning visual designs and creative concepts from around the world."
+            },
+            { 
+              bg: "bg-gradient-to-br from-blue-400 to-cyan-500", 
+              icon: "💻", 
+              title: "Tech Updates",
+              subtitle: "Latest News",
+              content: "Stay updated with the newest developments in technology and innovation."
+            },
+            { 
+              bg: "bg-gradient-to-br from-violet-400 to-purple-500", 
+              icon: "🚀", 
+              title: "Product Launch",
+              subtitle: "New Release",
+              content: "Discover our latest features and improvements designed for your success."
+            },
+            { 
+              bg: "bg-gradient-to-br from-amber-400 to-orange-500", 
+              icon: "⚡", 
+              title: "Power Tips",
+              subtitle: "Pro Techniques",
+              content: "Master advanced workflows and unlock hidden productivity features."
+            },
+            { 
+              bg: "bg-gradient-to-br from-emerald-400 to-green-500", 
+              icon: "🌟", 
+              title: "Success Stories",
+              subtitle: "User Highlights",
+              content: "Real stories from our community achieving amazing results every day."
+            },
+          ].map((story, index) => (
+            <CarouselItem key={index} basis="full">
+              <Card className={`w-full h-full flex flex-col justify-between ${story.bg} border-0 rounded-3xl shadow-2xl overflow-hidden`}>
+                <Box className="p-8 flex-1 flex flex-col justify-between">
+                  {/* Header */}
+                  <Box className="text-center">
+                    <Box className="w-20 h-20 mx-auto mb-4 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                      <Text className="text-4xl">{story.icon}</Text>
+                    </Box>
+                    <Text className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-2">
+                      {story.subtitle}
+                    </Text>
+                    <Text className="text-3xl font-bold text-white mb-4">
+                      {story.title}
+                    </Text>
+                  </Box>
+                  
+                  {/* Content */}
+                  <Box className="flex-1 flex items-center justify-center px-4">
+                    <Text className="text-lg text-white text-center leading-relaxed opacity-95">
+                      {story.content}
+                    </Text>
+                  </Box>
+                  
+                  {/* Footer */}
+                  <Box className="flex items-center justify-between pt-6 border-t border-white/20">
+                    <Box className="flex items-center gap-2">
+                      <Box className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
+                        <Text className="text-xs font-bold text-white">{index + 1}</Text>
+                      </Box>
+                      <Text className="text-sm text-white/80">Story {index + 1} of 5</Text>
+                    </Box>
+                    <Text className="text-sm text-white/60">Swipe for more</Text>
+                  </Box>
+                </Box>
+              </Card>
+            </CarouselItem>
+          ))}
+        </Carousel>
+      </Box>
+    </Box>
+  ),
+};
+
+/**
+ * Vertical Size Test
+ * Interactive test to verify vertical carousel properly resizes cards
+ */
+export const VerticalSizeTest: Story = {
+  args: {
+    orientation: "vertical",
+    size: "md",
+    showNavigation: true,
+    autoplay: false,
+    loop: true,
+  },
+  render: function VerticalSizeTestRender(args) {
+    const [size, setSize] = React.useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
+    
+    return (
+      <Box className="w-full min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 p-8">
+        <Box className="max-w-4xl mx-auto">
+          {/* Size Controls */}
+          <Box className="mb-8 text-center">
+            <Text className="text-3xl font-bold text-slate-900 mb-4">
+              Vertical Carousel - Size Test
+            </Text>
+            <Text className="text-base text-slate-600 mb-6">
+              Change the size to see cards resize properly
+            </Text>
+            
+            <Box className="flex items-center justify-center gap-2 mb-2">
+              <Text className="text-sm font-semibold text-slate-700">Size:</Text>
+              {(["xs", "sm", "md", "lg", "xl"] as const).map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setSize(s)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    size === s
+                      ? "bg-blue-600 text-white shadow-lg"
+                      : "bg-white text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </Box>
+            
+            <Text className="text-xs text-slate-500 mt-2">
+              Current: {size} • Cards should resize height with each selection
+            </Text>
+          </Box>
+
+          {/* Vertical Carousel */}
+          <Box className="flex justify-center">
+            <Carousel
+              {...args}
+              size={size}
+            >
+              {[
+                { bg: "from-red-400 to-pink-500", title: "Card 1", icon: "🎯" },
+                { bg: "from-blue-400 to-cyan-500", title: "Card 2", icon: "🚀" },
+                { bg: "from-purple-400 to-violet-500", title: "Card 3", icon: "💎" },
+                { bg: "from-green-400 to-emerald-500", title: "Card 4", icon: "🌟" },
+                { bg: "from-orange-400 to-amber-500", title: "Card 5", icon: "⚡" },
+              ].map((card, index) => (
+                <CarouselItem key={index} basis="full">
+                  <Card className={`
+                    w-full h-full 
+                    bg-gradient-to-br ${card.bg}
+                    border-0 rounded-2xl shadow-2xl
+                    flex flex-col items-center justify-center
+                    p-8
+                  `}>
+                    {/* Icon */}
+                    <Text className="text-7xl mb-6">{card.icon}</Text>
+                    
+                    {/* Title */}
+                    <Text className="text-4xl font-bold mb-4 text-white">
+                      {card.title}
+                    </Text>
+                    
+                    {/* Size Badge */}
+                    <Box className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-4">
+                      <Text className="text-lg font-semibold text-white">
+                        Size: {size.toUpperCase()}
+                      </Text>
+                    </Box>
+                    
+                    {/* Description */}
+                    <Text className="text-center text-white/90 max-w-md">
+                      This card should resize when you change the size above.
+                      Try switching between xs, sm, md, lg, and xl.
+                    </Text>
+                    
+                    {/* Card Number */}
+                    <Box className="mt-6 w-14 h-14 bg-white/30 rounded-full flex items-center justify-center">
+                      <Text className="text-2xl font-bold text-white">{index + 1}</Text>
+                    </Box>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </Carousel>
+          </Box>
+          
+          {/* Info */}
+          <Box className="mt-8 text-center text-sm text-slate-600">
+            <Text>Use arrow buttons to navigate • Each card fills the viewport</Text>
+            <Text className="mt-2">
+              Height sizes: xs=18rem, sm=24rem, md=32rem, lg=40rem, xl=48rem
+            </Text>
+          </Box>
+        </Box>
+      </Box>
+    );
+  },
 };

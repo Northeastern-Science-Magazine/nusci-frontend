@@ -28,14 +28,14 @@ export const carouselContainerVariants = tv({
 
 /**
  * Carousel Base Variants
-    * Core styles for the carousel viewport itself
+ * Core styles for the carousel viewport itself
  */
 export const carouselVariants = tv({
   base: "relative flex-1",
   variants: {
     orientation: {
-      horizontal: "w-full", // Full width, height is controlled by size variants
-      vertical: "h-full",   // Full height, width is controlled by size variants
+      horizontal: "w-full", // Full width, height controlled by size variants
+      vertical: "",         // Width and height controlled by size variants
     },
   },
   defaultVariants: {
@@ -45,8 +45,8 @@ export const carouselVariants = tv({
 
 /**
  * Carousel Size Variants
-    * Responsive sizing for different carousel dimensions
-    * Uses compound variants to apply different sizes based on orientation
+ * Responsive sizing for different carousel dimensions
+ * Uses compound variants to apply different sizes based on orientation
  */
 export const carouselSizeVariants = tv({
   variants: {
@@ -85,8 +85,8 @@ export const carouselSizeVariants = tv({
 
 /**
  * Carousel Content Variants 
-    * Styles for the sliding content container
-    * Controls layout direction and spacing between items
+ * Styles for the sliding content container
+ * Controls layout direction and spacing between items
  */
 export const carouselContentVariants = tv({
   base: "flex",
@@ -113,8 +113,8 @@ export const carouselContentVariants = tv({
 
 /**
  * Carousel Item Variants
-    * Individual carousel item styling with flexible basis options
-    * Allows for complex layouts with items of different sizes
+ * Individual carousel item styling with flexible basis options
+ * Allows for complex layouts with items of different sizes
  */
 export const carouselItemVariants = tv({
   base: "min-w-0 shrink-0 grow-0", // Prevents flex items from shrinking/growing unexpectedly
@@ -153,9 +153,9 @@ export const carouselItemVariants = tv({
 
 /**
  * Carousel Navigation Variants 
-    * Positioning and styling for navigation arrows
-    * Uses compound variants to position buttons correctly for each orientation
-    * Positions arrows outside the carousel content area to avoid overlap
+ * Positioning and styling for navigation arrows
+ * Uses compound variants to position buttons correctly for each orientation
+ * Positions arrows outside the carousel content area to avoid overlap
  */
 export const carouselNavigationVariants = tv({
   base: "absolute z-10 bg-white shadow-lg rounded-lg border border-gray-200 hover:shadow-xl transition-shadow",
@@ -201,7 +201,7 @@ export const carouselNavigationVariants = tv({
 
 /**
  * Type Definitions
-    * Combines variant props with standard HTML attributes
+ * Combines variant props with standard HTML attributes
  */
 
 // Main carousel component props

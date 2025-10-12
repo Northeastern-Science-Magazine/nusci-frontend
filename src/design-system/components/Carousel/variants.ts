@@ -165,12 +165,11 @@ export const carouselNavigationVariants = tv({
       vertical: "",
     },
     position: {
-      previous: "", // Previous button
-      next: "",     // Next button
+      previous: "",
+      next: "",
     },
   },
   compoundVariants: [
-    // Horizontal carousel navigation
     {
       orientation: "horizontal",
       position: "previous",
@@ -181,16 +180,15 @@ export const carouselNavigationVariants = tv({
       position: "next",
       class: "-right-6 top-1/2 -translate-y-1/2",
     },
-    // Vertical carousel navigation
     {
       orientation: "vertical",
       position: "previous", 
-      class: "-top-6 left-1/2 -translate-x-1/2", 
+      class: "-top-3 left-1/2 -translate-x-1/2",
     },
     {
       orientation: "vertical",
       position: "next",
-      class: "-bottom-6 left-1/2 -translate-x-1/2",
+      class: "-bottom-3 left-1/2 -translate-x-1/2", 
     },
   ],
   defaultVariants: {

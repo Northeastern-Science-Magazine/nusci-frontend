@@ -22,6 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className={styles.container}>
           <Header />
+          <div className="h-16" /> {/* Spacer */}
           <div className="mt-24">{children}</div>
           <Footer />
         </div>

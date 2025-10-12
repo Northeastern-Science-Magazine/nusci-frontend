@@ -22,11 +22,11 @@ import { SourcesInput } from "./components/SourcesInput";
 type ArticleSubmissionFormValues = {
   author: string;
   title: string;
-  categories?: string[];
+  categories: string[];
   content: string;
   pullQuote: string;
   image?: string | File;
-  sources?: string[];
+  sources: string[];
 };
 
 type FormProgress = {
@@ -53,11 +53,14 @@ const FormContent = () => {
     sources: false,
   });
 
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
   // Watch all form fields
   const watchedFields = useWatch<ArticleSubmissionFormValues>();
 
   useEffect(() => {
     const updateProgress = () => {
+      console.log("Watched Fields:", watchedFields);
       setProgress({
         author:
           !!watchedFields.author && watchedFields.author.trim().length > 0,
@@ -84,75 +87,101 @@ const FormContent = () => {
     <Grid col span={3} gap={8}>
       <GridCol span={2}>
         <Box className="space-y-8 rounded-2xl bg-white p-8 shadow-xl ring-1 ring-black/5">
+          <Text
+            color="sage-green"
+            size={36}
+            style="bold"
+            className="mb-8 text-left"
+          >
+            Submit an Article
+          </Text>
+
           {/* Author */}
-          <FormField<ArticleSubmissionFormValues> name="author">
-            <TextInput
-              placeholder={currentUser.name}
-              label="Author"
-              className="w-full"
-            />
-          </FormField>
+          <div id="author" className="scroll-mt-[80px]">
+            <FormField<ArticleSubmissionFormValues> name="author">
+              <TextInput
+                placeholder={currentUser.name}
+                label="Author"
+                className="w-full"
+              />
+            </FormField>
+          </div>
 
           {/* Title */}
-          <FormField<ArticleSubmissionFormValues> name="title">
-            <TextInput
-              placeholder="Enter article title"
-              label="Title"
-              className="w-full"
-            />
-          </FormField>
+          <div id="title" className="scroll-mt-[80px]">
+            <FormField<ArticleSubmissionFormValues> name="title">
+              <TextInput
+                placeholder="Enter article title"
+                label="Title"
+                className="w-full"
+              />
+            </FormField>
+          </div>
 
           {/* Categories */}
-          <FormField<ArticleSubmissionFormValues> name="categories">
-            <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
-              <Checkbox
-                options={[
-                  "Biology",
-                  "Chemistry",
-                  "Environment",
-                  "Health",
-                  "Newsletter",
-                  "Opinion",
-                  "Physics",
-                  "Psychology",
-                  "Space",
-                  "Technology",
-                  "World",
-                ]}
-              />
-            </div>
-          </FormField>
+          <div id="categories" className="scroll-mt-[80px]">
+            <FormField<ArticleSubmissionFormValues>
+              name="categories"
+              label="Categories"
+            >
+              <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
+                <Checkbox
+                  options={[
+                    "Biology",
+                    "Chemistry",
+                    "Environment",
+                    "Health",
+                    "Newsletter",
+                    "Opinion",
+                    "Physics",
+                    "Psychology",
+                    "Space",
+                    "Technology",
+                    "World",
+                  ]}
+                />
+              </div>
+            </FormField>
+          </div>
 
           {/* Content */}
-          <FormField<ArticleSubmissionFormValues> name="content">
-            <TextInput
-              placeholder="Enter article content"
-              label="Content"
-              className="w-full"
-              rows={15}
-              resize={true}
-            />
-          </FormField>
+          <div id="content" className="scroll-mt-[80px]">
+            <FormField<ArticleSubmissionFormValues> name="content">
+              <TextInput
+                placeholder="Enter article content"
+                label="Content"
+                className="w-full"
+                rows={15}
+                resize={true}
+              />
+            </FormField>
+          </div>
 
           {/* Pull Quote */}
-          <FormField<ArticleSubmissionFormValues> name="pullQuote">
-            <TextInput
-              placeholder="Enter a pull quote"
-              label="Pull Quote"
-              className="w-full"
-              rows={3}
-            />
-          </FormField>
+          <div id="pull-quote" className="scroll-mt-[80px]">
+            <FormField<ArticleSubmissionFormValues> name="pullQuote">
+              <TextInput
+                placeholder="Enter a pull quote"
+                label="Pull Quote"
+                className="w-full"
+                rows={3}
+              />
+            </FormField>
+          </div>
 
           {/* Sources */}
-          <FormField<ArticleSubmissionFormValues> name="sources">
-            <SourcesInput placeholder="Enter source URL or citation" />
-          </FormField>
+          <div id="sources" className="scroll-mt-[80px]">
+            <FormField<ArticleSubmissionFormValues> name="sources">
+              <SourcesInput placeholder="Enter source URL or citation" />
+            </FormField>
+          </div>
 
           {/* Image Upload */}
-          <Text color="black" size={12} style="bold" className="text-center">
-            Image Upload Coming Soon!
-          </Text>
+          <div id="image" className="scroll-mt-[80px]">
+            <Text color="black" size={12} style="bold" className="text-center">
+              Image Upload Coming Soon!
+            </Text>
+          </div>
 
           {/* Submit */}
           <Button
@@ -200,15 +229,6 @@ export default function PublicProfilePage() {
 
   return (
     <Box className="mx-auto w-full max-w-7xl px-4 py-8">
-      <Text
-        color="sage-green"
-        size={36}
-        style="bold"
-        className="mb-8 text-center"
-      >
-        Submit an Article
-      </Text>
-
       <Form<ArticleSubmissionFormValues>
         onSubmit={onSubmit}
         options={{

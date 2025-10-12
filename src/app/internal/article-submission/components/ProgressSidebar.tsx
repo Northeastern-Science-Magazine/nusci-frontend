@@ -16,9 +16,11 @@ type FormProgress = {
 const ProgressCircle = ({
   filled,
   label,
+  href,
 }: {
   filled: boolean;
   label: string;
+  href: string;
 }) => {
   return (
     <div className="flex items-center gap-3">
@@ -45,19 +47,21 @@ const ProgressCircle = ({
           </svg>
         )}
       </div>
-
-      <Text
-        color={filled ? "sage-green" : "neutral"}
-        size={14}
-        style={filled ? "bold" : "regular"}
-      >
-        {label}
-      </Text>
+      <a href={href}>
+        <Text
+          color={filled ? "sage-green" : "neutral"}
+          size={14}
+          style={filled ? "bold" : "regular"}
+        >
+          {label}
+        </Text>
+      </a>
     </div>
   );
 };
 
 export const ProgressSidebar = ({ progress }: { progress: FormProgress }) => {
+  console.log("Progress State:", progress);
   const totalFields = Object.keys(progress).length;
   const completedFields = Object.values(progress).filter(Boolean).length;
   const progressPercentage = Math.round((completedFields / totalFields) * 100);
@@ -86,13 +90,37 @@ export const ProgressSidebar = ({ progress }: { progress: FormProgress }) => {
       </div>
 
       <div className="space-y-4">
-        <ProgressCircle filled={progress.author} label="Author" />
-        <ProgressCircle filled={progress.title} label="Title" />
-        <ProgressCircle filled={progress.categories} label="Categories" />
-        <ProgressCircle filled={progress.content} label="Content" />
-        <ProgressCircle filled={progress.pullQuote} label="Pull Quote" />
-        <ProgressCircle filled={progress.image} label="Image (Optional)" />
-        <ProgressCircle filled={progress.sources} label="Sources" />
+        <ProgressCircle
+          filled={progress.author}
+          label="Author"
+          href="#author"
+        />
+        <ProgressCircle filled={progress.title} label="Title" href="#title" />
+        <ProgressCircle
+          filled={progress.categories}
+          label="Categories"
+          href="#categories"
+        />
+        <ProgressCircle
+          filled={progress.content}
+          label="Content"
+          href="#content"
+        />
+        <ProgressCircle
+          filled={progress.pullQuote}
+          label="Pull Quote"
+          href="#pull-quote"
+        />
+        <ProgressCircle
+          filled={progress.image}
+          label="Image (Optional)"
+          href="#image"
+        />
+        <ProgressCircle
+          filled={progress.sources}
+          label="Sources"
+          href="#sources"
+        />
       </div>
     </div>
   );

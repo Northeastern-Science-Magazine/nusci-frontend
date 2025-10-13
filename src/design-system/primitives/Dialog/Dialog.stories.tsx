@@ -3,7 +3,22 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Dialog } from "./Dialog";
 import Button from "../Button";
 
-const colors = ["blue", "neutral", "green", "red"] as const;
+const colors = [
+  "black",
+  "white",
+  "red",
+  "aqua",
+  "aqua-light",
+  "forest-green",
+  "sage-green",
+  "border",
+  "neutral",
+  "purple",
+  "pink",
+  "maroon",
+  "coral",
+  "marigold",
+] as const;
 
 const sizes = ["sm", "md", "lg"] as const;
 
@@ -24,13 +39,12 @@ type Story = StoryObj<typeof Dialog>;
 export const Default: Story = {
   args: {
     size: "md",
-    color: "blue",
+    color: "white",
     title: "Example Dialog",
-    description: "Hello World.",
+    description: "Description.",
     showClose: true,
     footer: (
       <>
-        <Button className="rounded-md border px-3 py-1">Cancel</Button>
         <Button className="rounded-md bg-black text-white px-3 py-1">
           Confirm
         </Button>
@@ -47,7 +61,7 @@ export const Default: Story = {
           open={open}
           onOpenChange={setOpen}
           trigger={
-            <Button className="inline-flex h-[35px] items-center justify-center rounded bg-violet4 px-[15px] font-medium leading-none text-violet11 outline-none outline-offset-1 hover:bg-mauve3 focus-visible:outline-2 focus-visible:outline-violet6 select-none">
+            <Button variant= "default" size = "md">
               Open Dialog
             </Button>
           }

@@ -2,7 +2,7 @@ import * as React from "react";
 import * as RDialog from "@radix-ui/react-dialog";
 
 import { DialogProps, dialogVariants } from "./variants";
-import { Cross2Icon } from "@radix-ui/react-icons";
+import Icon from "../Icon";
 
 export const Dialog = ({
   open,
@@ -16,6 +16,15 @@ export const Dialog = ({
   footer,
   children,
 }: DialogProps) => {
+
+  const isTextBlack =
+  color === "white" ||
+  color === "red" ||
+  color === "aqua-light" ||
+  color === "sage-green" ||
+  color === "border" ||
+  color === "neutral";
+
   return (
     <RDialog.Root open={open} onOpenChange={onOpenChange}>
       {!open && trigger ? (
@@ -24,8 +33,9 @@ export const Dialog = ({
 
       <RDialog.Portal>
         <RDialog.Overlay className="fixed inset-0 bg-blackA6 data-[state=open]:animate-overlayShow" />
-
-        <RDialog.Content className={dialogVariants({ size, color })}>
+        <RDialog.Content className={dialogVariants({ size, color })}
+        onInteractOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}>
           {(title || showClose) && (
             <div className="flex items-start justify-between mb-4">
               {title && (
@@ -35,18 +45,18 @@ export const Dialog = ({
               )}
               {showClose && (
                 <RDialog.Close asChild>
-                  <button
-                    className="absolute right-2.5 top-2.5 inline-flex size-[25px] appearance-none items-center justify-center rounded-full text-violet11 bg-gray3 hover:bg-violet4 focus:shadow-[0_0_0_2px] focus:shadow-violet7 focus:outline-none"
-                    aria-label="Close"
-                  >
-                    <Cross2Icon />
-                  </button>
+                  <Icon
+                    icon="cross"
+                    className="absolute right-2.5 top-2.5"
+                    onClick={() => onOpenChange(false)}
+                    size="sm"
+                    color={isTextBlack? "black" : "white"}/>
                 </RDialog.Close>
               )}
             </div>
           )}
           {description && (
-            <RDialog.Description className="mb-4 text-sm text-gray-600">
+            <RDialog.Description className="mb-4 text-sm">
               {description}
             </RDialog.Description>
           )}

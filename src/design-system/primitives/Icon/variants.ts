@@ -15,7 +15,7 @@ import {
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
-import { InstagramLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
+import { InstagramLogoIcon, LinkedInLogoIcon, Cross2Icon} from "@radix-ui/react-icons";
 
 export const iconVariants = tv({
   base: "items-center justify-center",
@@ -73,6 +73,7 @@ export const iconMap = {
   trash: Trash2,
   zoomin: ZoomIn,
   zoomout: ZoomOut,
+  cross: Cross2Icon,
 };
 
 export type IconName = keyof typeof iconMap;

@@ -39,6 +39,7 @@ const icons: IconProps["icon"][] = [
   "zoomin",
   "zoomout",
   "cross",
+  "email",
 ];
 
 const meta: Meta<typeof Icon> = {

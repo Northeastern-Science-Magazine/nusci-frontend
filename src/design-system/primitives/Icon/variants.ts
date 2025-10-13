@@ -14,6 +14,9 @@ import {
   Trash2,
   ZoomIn,
   ZoomOut,
+  Mail,
+  Menu,
+  X,
 } from "lucide-react";
 import { InstagramLogoIcon, LinkedInLogoIcon, Cross2Icon} from "@radix-ui/react-icons";
 
@@ -74,6 +77,9 @@ export const iconMap = {
   zoomin: ZoomIn,
   zoomout: ZoomOut,
   cross: Cross2Icon,
+  email: Mail,
+  menu: Menu,
+  x: X,
 };
 
 export type IconName = keyof typeof iconMap;

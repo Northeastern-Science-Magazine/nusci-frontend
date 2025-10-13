@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import TextInput from "../../../../design-system/primitives/TextInput";
-import Icon from "../../../../design-system/primitives/Icon";
-import Button from "../../../../design-system/primitives/Button";
+import TextInput from "@/design-system/primitives/TextInput";
+import Icon from "@/design-system/primitives/Icon";
+import Button from "@/design-system/primitives/Button";
 import Text from "@/design-system/primitives/Text";
 
 type SourcesInputProps = {
@@ -53,7 +53,7 @@ export function SourcesInput({
   return (
     <div className="flex flex-col gap-3">
       {sources.map((source, index) => (
-        <div key={index} className="flex items-center gap-2">
+        <div key={index} className="flex items-end gap-2">
           <div className="flex-1">
             <TextInput
               value={source}
@@ -66,17 +66,20 @@ export function SourcesInput({
           {sources.length > 1 && (
             <Button
               onClick={() => removeSource(index)}
-              className="flex h-10 w-10 items-bottom justify-bottom rounded-lg border border-gray-300 bg-white text-gray-500 transition-colors hover:text-maroon hover:bg-maroon hover:bg-opacity-20 hover:text-maroon"
               aria-label="Remove source"
+              variant="outline"
+              color="red"
             >
-              <Icon icon="trash" size="lg" />
+              <Icon icon="trash" size="sm" />
             </Button>
           )}
         </div>
       ))}
       <Button
         onClick={addSource}
-        className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:border-sage-green hover:bg-sage-green hover:text-black"
+        className="flex w-full items-center justify-center gap-2"
+        variant="outline"
+        color="sage-green"
       >
         <div className="flex items-center gap-2">
           <Icon icon="plus" size="md" />

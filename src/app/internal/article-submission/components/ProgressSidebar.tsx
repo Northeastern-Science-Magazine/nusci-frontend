@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Text from "@/design-system/primitives/Text";
+import { ProgressBar } from "@/design-system/primitives/ProgressBar";
 
 type FormProgress = {
   author: boolean;
@@ -75,16 +76,8 @@ export const ProgressSidebar = ({ progress }: { progress: FormProgress }) => {
           <Text color="neutral" size={12}>
             {completedFields} of {totalFields} completed
           </Text>
-          <Text color="sage-green" size={12} style="bold">
-            {progressPercentage}%
-          </Text>
         </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
-          <div
-            className="h-full bg-sage-green transition-all duration-300"
-            style={{ width: `${progressPercentage}%` }}
-          />
-        </div>
+        <ProgressBar percentComplete={progressPercentage} color="sage-green" />
       </div>
 
       <div className="space-y-4">

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Text from "../../../../design-system/primitives/Text";
+import Text from "@/design-system/primitives/Text";
 
 type FormProgress = {
   author: boolean;
@@ -9,7 +9,6 @@ type FormProgress = {
   categories: boolean;
   content: boolean;
   pullQuote: boolean;
-  image: boolean;
   sources: boolean;
 };
 
@@ -61,7 +60,6 @@ const ProgressCircle = ({
 };
 
 export const ProgressSidebar = ({ progress }: { progress: FormProgress }) => {
-  console.log("Progress State:", progress);
   const totalFields = Object.keys(progress).length;
   const completedFields = Object.values(progress).filter(Boolean).length;
   const progressPercentage = Math.round((completedFields / totalFields) * 100);
@@ -110,11 +108,6 @@ export const ProgressSidebar = ({ progress }: { progress: FormProgress }) => {
           filled={progress.pullQuote}
           label="Pull Quote"
           href="#pull-quote"
-        />
-        <ProgressCircle
-          filled={progress.image}
-          label="Image (Optional)"
-          href="#image"
         />
         <ProgressCircle
           filled={progress.sources}

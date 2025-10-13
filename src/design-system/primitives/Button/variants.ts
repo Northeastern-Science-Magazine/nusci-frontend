@@ -216,4 +216,5 @@ export interface ButtonProps extends ButtonVariants, HTMLButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 }

@@ -11,11 +11,13 @@ export default function Button({
   onClick,
   children,
   disabled = false,
+  type = "button",
   ...variantProps
 }: ButtonProps) {
   return (
     <button
       disabled={disabled}
+      type={type}
       onClick={onClick}
       className={`${buttonVariants(variantProps)} ${className}`}
     >

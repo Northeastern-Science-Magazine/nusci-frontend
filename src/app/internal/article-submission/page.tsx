@@ -3,14 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { Form, FormField } from "../../../design-system/primitives/Form/Form";
 import { useWatch } from "react-hook-form";
-import Box from "../../../design-system/primitives/Box";
-import { Grid, GridCol } from "../../../design-system/primitives/Grid";
-import TextInput from "../../../design-system/primitives/TextInput";
-import Checkbox from "../../../design-system/primitives/Checkbox";
-import Text from "../../../design-system/primitives/Text";
-import Button from "../../../design-system/primitives/Button";
+import Box from "@/design-system/primitives/Box";
+import { Grid, GridCol } from "@/design-system/primitives/Grid";
+import TextInput from "@/design-system/primitives/TextInput";
+import Checkbox from "@/design-system/primitives/Checkbox";
+import Text from "@/design-system/primitives/Text";
+import Button from "@/design-system/primitives/Button";
 import { ProgressSidebar } from "./components/ProgressSidebar";
 import { SourcesInput } from "./components/SourcesInput";
+import { Controller } from "react-hook-form";
 
 /* IDEAS: 
     - Author selection: would be cool to have a dropdown that updates as you type system
@@ -35,7 +36,6 @@ type FormProgress = {
   categories: boolean;
   content: boolean;
   pullQuote: boolean;
-  image: boolean;
   sources: boolean;
 };
 
@@ -49,31 +49,27 @@ const FormContent = () => {
     categories: false,
     content: false,
     pullQuote: false,
-    image: false,
     sources: false,
   });
-
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   // Watch all form fields
   const watchedFields = useWatch<ArticleSubmissionFormValues>();
 
   useEffect(() => {
     const updateProgress = () => {
-      console.log("Watched Fields:", watchedFields);
       setProgress({
         author:
           !!watchedFields.author && watchedFields.author.trim().length > 0,
         title: !!watchedFields.title && watchedFields.title.trim().length > 0,
         categories:
           Array.isArray(watchedFields.categories) &&
-          watchedFields.categories.length > 0,
+          watchedFields.categories.length > 0 &&
+          watchedFields.categories[0]?.trim().length > 0,
         content:
           !!watchedFields.content && watchedFields.content.trim().length > 0,
         pullQuote:
           !!watchedFields.pullQuote &&
           watchedFields.pullQuote.trim().length > 0,
-        image: !!watchedFields.image,
         sources:
           Array.isArray(watchedFields.sources) &&
           watchedFields.sources.length > 0 &&
@@ -120,28 +116,33 @@ const FormContent = () => {
 
           {/* Categories */}
           <div id="categories" className="scroll-mt-[80px]">
-            <FormField<ArticleSubmissionFormValues>
+            <Controller
               name="categories"
-              label="Categories"
-            >
-              <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
-                <Checkbox
-                  options={[
-                    "Biology",
-                    "Chemistry",
-                    "Environment",
-                    "Health",
-                    "Newsletter",
-                    "Opinion",
-                    "Physics",
-                    "Psychology",
-                    "Space",
-                    "Technology",
-                    "World",
-                  ]}
-                />
-              </div>
-            </FormField>
+              render={({ field }) => (
+                <div>
+                  <label>{"Categories"}</label>
+                  <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
+                    <Checkbox
+                      options={[
+                        "Biology",
+                        "Chemistry",
+                        "Environment",
+                        "Health",
+                        "Newsletter",
+                        "Opinion",
+                        "Physics",
+                        "Psychology",
+                        "Space",
+                        "Technology",
+                        "World",
+                      ]}
+                      value={field.value || []}
+                      onChange={field.onChange}
+                    />
+                  </div>
+                </div>
+              )}
+            />
           </div>
 
           {/* Content */}
@@ -185,6 +186,7 @@ const FormContent = () => {
 
           {/* Submit */}
           <Button
+            type="submit"
             color={
               !progress.author ||
               !progress.title ||
@@ -196,7 +198,6 @@ const FormContent = () => {
                 : "purple"
             }
             className="w-full"
-            onClick={onSubmit}
             disabled={
               !progress.author ||
               !progress.title ||
@@ -219,8 +220,8 @@ const FormContent = () => {
 };
 
 // TODO: Implement actual submission logic
-const onSubmit = () => {
-  alert("Article submitted!");
+const onSubmit = (data: ArticleSubmissionFormValues) => {
+  alert("Article submitted!" + JSON.stringify(data));
 };
 
 /* PAGE EXPORT */

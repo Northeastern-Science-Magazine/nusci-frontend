@@ -10,13 +10,8 @@ export const MediaCard = (props: MediaCardProps) => {
     title,
     subtitle,
     description,
-    mediaDirection,
     mediaType,
     size,
-    shadow,
-    border,
-    rounded,
-    backgroundOpacity,
     color,
     ...variantProps
   } = props;
@@ -26,17 +21,8 @@ export const MediaCard = (props: MediaCardProps) => {
 
   return (
     <Box
-      {...variantProps}
       color={color}
-      className={mediaCardVariants({
-        mediaDirection,
-        size,
-        shadow,
-        border,
-        rounded,
-        backgroundOpacity,
-        color,
-      })}
+      className={mediaCardVariants(props)}
     >
       <Box className="flex-1" p={4} pt={8} pb={8}>
         {subtitle && (

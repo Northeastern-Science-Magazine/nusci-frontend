@@ -7,23 +7,45 @@ import { Badge } from "@/design-system/primitives/Badge/Badge";
 import { Box } from "@/design-system/primitives/Box/Box";
 import { notFound } from "next/navigation";
 
+enum Roles {
+  Author = "author",
+  Editor = "editor",
+  Photographer = "photographer",
+  Developer = "developer",
+  Designer = "designer",
+  Admin = "admin"
+}
+
+interface ProfileData {
+  name: string;
+  pronouns: string;
+  graduationYear: number;
+  major: string;
+  location: string;
+  email: string;
+  roles: Roles[];
+  avatarUrl: string;
+  bannerUrl: string;
+  bio: string;
+}
+
 interface PublicProfilePageProps {
   params: { emailPrefix: string };
 }
 
 export default function PublicProfilePage({params} : PublicProfilePageProps) {
-
   const { emailPrefix } = params;
+  
 
   //Note: the below is in place of api call using emailPrefix to get data 
-  let mockData = {
+  let mockData: ProfileData = {
     name: " ",
     pronouns: " ",
     graduationYear: 0,
     major: "",
     location: "",
     email: "",
-    roles: [""],
+    roles: [],
     avatarUrl:
       "",
     bannerUrl:
@@ -39,7 +61,7 @@ export default function PublicProfilePage({params} : PublicProfilePageProps) {
     major: "Computer Science",
     location: "Boston",
     email: "jdoe@northeastern.edu",
-    roles: ["Author"],
+    roles: [Roles.Author],
     avatarUrl:
       "https://cdn.britannica.com/73/9173-050-9D9EA4BA/Surgeonfish.jpg",
     bannerUrl:
@@ -63,6 +85,7 @@ export default function PublicProfilePage({params} : PublicProfilePageProps) {
     bio,
   } = mockData;
 
+  const hasArticles = roles.includes(Roles.Author) || roles.includes(Roles.Editor)
 
   return (
     <Card color="white" className="shadow-xl ml-36 mr-36 -mt-20">
@@ -110,7 +133,7 @@ export default function PublicProfilePage({params} : PublicProfilePageProps) {
               {name}
             </Text>
             {roles.map((role) => 
-            <Badge color="aqua" variant="default" className="mt-4" key={roles.indexOf(role)}>
+            <Badge color="aqua" variant="default" className="mt-4 capitalize" key={roles.indexOf(role)}>
               {role}
             </Badge>
             )}
@@ -120,11 +143,13 @@ export default function PublicProfilePage({params} : PublicProfilePageProps) {
           </Text>
         </GridCol>
       </Grid>
+      {hasArticles && 
       <Card color="white" className="shadow-xl flex justify-center">
         <Text style="underline" color="black" size={48}>
           Articles
         </Text>
-      </Card>
+      </Card> 
+      }
     </Card>
   );
 }

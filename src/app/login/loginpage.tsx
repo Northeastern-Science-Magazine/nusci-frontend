@@ -25,17 +25,16 @@ export default function Loginpage() {
       <MediaCard
         mediaType="image"
         mediaDirection="right"
-        // title="Welcome back to NUSci!"
         imageProps={{
           src: "https://media.istockphoto.com/id/488961976/photo/exploding-nebula.jpg?s=612x612&w=0&k=20&c=QEfXvnU0ckq0SWNEXTzZnzUpjBDwmweU3a8VoIcBveA=",
           alt: "landing",
         }}
         size="lg"
         rounded="rounded"
-        className="max-w-4xl w-full [&_.media-container]:flex-1 bg-white"
+        className="max-w-5xl w-full [&_.media-container]:flex-1 bg-white"
         
       >
-        <Text size={48} style="bold" color="forest-green">
+        <Text size={48} style="bold" color="forest-green" className="p-5 pb-0">
           Welcome back to NUSci!
         </Text>
         <Form<LoginFormValues>
@@ -46,7 +45,7 @@ export default function Loginpage() {
               password: "",
             },
           }}
-          className="space-y-8 mt-6"
+          className="space-y-8 mt-6 p-5"
         >
             <FormField<LoginFormValues>
               name="email"
@@ -86,6 +85,7 @@ export default function Loginpage() {
                 label="Password"
                 placeholder="Enter your password"
                 className="w-full"
+                type="password"
               />
             </FormField>
           </Box>
@@ -101,7 +101,7 @@ export default function Loginpage() {
 
           <Box className="text-left">
             <Text size={12} color="sage-green">
-              Don&#39;t have an account? 
+              Don&#39;t have an account?{" "}
               <a href="/signup" className="underline">
                 Sign up
               </a>

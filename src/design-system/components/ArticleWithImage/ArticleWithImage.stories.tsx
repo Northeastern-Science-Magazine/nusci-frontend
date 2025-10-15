@@ -35,7 +35,7 @@ export const Default: Story = {
       emphasis: "default",
       rounded: "default",
     },
-    imageCaption: "Exploring how simple optimizations can dramatically reduce AI's energy consumption",
+    imageCaption: "Example of a caption for an image.",
     content: [
       {
         type: "paragraph",

@@ -21,10 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className={styles.container}>
-          {/* <SimpleHeader /> */}
           <Loginpage />
-          {/* {children} */}
-          {/* <Footer /> */}
         </div>
       </body>
     </html>
@@ -32,5 +29,5 @@ export default function RootLayout({
 }
 
 const styles = {
-  container: "mx-3 mt-2",
+  container: "",
 };

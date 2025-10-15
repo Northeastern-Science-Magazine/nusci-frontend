@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Header from "@/components/Header";
 import { Overlay, OverlayMedia } from "@/components/MediaOverlay";
 
 import Box from "@/primitives/Box";
@@ -74,8 +73,6 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      {/* Header */}
-      <Header forceFullMenu />
 
       {/* Spacer under fixed header */}
       <Box className="pt-20">{null}</Box>

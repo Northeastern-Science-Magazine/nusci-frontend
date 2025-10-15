@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ArticleTemplate from "./ArticleWithImage";
+import React from "react";
 
 const meta: Meta<typeof ArticleTemplate> = {
   component: ArticleTemplate,
@@ -22,7 +23,7 @@ export const Default: Story = {
       name: "Robert Beliveau",
     },
     editor: {
-      name: "Editor Name",
+      name: "Editor",
     },
     categories: ["Technology", "AI", "Sustainability"],
     publishDate: "August 7, 2025",
@@ -126,6 +127,10 @@ export const Default: Story = {
         ],
       },
       {
+        type: "quote",
+        content: "Training and serving a massive LLM can easily rival the output of an entire wind farm within a single day",
+      },
+      {
         type: "heading",
         content: "Software-First Strategies Every Developer Can Use",
       },
@@ -205,6 +210,12 @@ export const Default: Story = {
           },
         ],
       },
+    ],
+    sources: [
+      "IEEE Transactions on Circuits and Systems I: Regular Papers (2025). DOI: 10.1109/TCSI.2025.3547732",
+      "ArXiv Preprint (2025). DOI: 10.48550/arXiv.2503.05248",
+      "IEEE/ACM 32nd International Symposium on Quality of Service (2024). DOI: 10.1109/IWQoS61813.2024.10682928",
+      "ArXiv Preprint (2021). DOI: 10.48550/arXiv.2104.10350",
     ],
   },
 };

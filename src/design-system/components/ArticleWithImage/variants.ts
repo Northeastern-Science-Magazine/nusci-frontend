@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 import { ImageProps } from "@/primitives/Image";
 
 export const articleTemplateVariants = tv({
-  base: "max-w-4xl mx-auto px-4 py-8 bg-white",
+  base: "max-w-4xl mx-auto px-4 pt-24 pb-8 bg-white",
   variants: {
     width: {
       narrow: "max-w-2xl",
@@ -18,13 +18,10 @@ export const articleTemplateVariants = tv({
 
 export interface Author {
   name: string;
-  role?: string;
-  avatar?: string;
 }
 
 export interface Editor {
   name: string;
-  role?: string;
 }
 
 export type ContentSegment =
@@ -33,7 +30,8 @@ export type ContentSegment =
 
 export type ContentBlock =
   | { type: "heading"; content: string }
-  | { type: "paragraph"; segments: ContentSegment[] };
+  | { type: "paragraph"; segments: ContentSegment[] }
+  | { type: "quote"; content: string };
 
 export interface ArticleTemplateProps extends VariantProps<typeof articleTemplateVariants> {
   title: string;
@@ -45,5 +43,6 @@ export interface ArticleTemplateProps extends VariantProps<typeof articleTemplat
   featuredImage: ImageProps;
   imageCaption?: string;
   content: ContentBlock[];
+  sources?: string[];
   className?: string;
 }

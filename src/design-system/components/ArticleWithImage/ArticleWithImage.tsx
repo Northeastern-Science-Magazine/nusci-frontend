@@ -19,17 +19,51 @@ export default function ArticleTemplate({
   featuredImage,
   imageCaption,
   content,
+  sources,
   className,
   ...variantProps
 }: ArticleTemplateProps) {
   return (
     <>
-    {/* Header Section */}
-      <Header />
       <article className={clsx(articleTemplateVariants(variantProps), className)}>
-      <header className="mb-8 mt-10">
+      {/* Header Section */}
+      <header className="mb-8 mt-8">
+        {/* Title */}
+        <div className="mb-4">
+          <Text size={48} style="bold" color="black">
+            {title}
+          </Text>
+        </div>
+
+        {/* Publish Date */}
+        <div className="flex flex-wrap items-center gap-4 mb-4">
+          <Text size={14} color="black">
+            {publishDate}
+          </Text>
+        </div>
+
+        {/* Author and Editor Info */}
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <Text size={14} color="black">
+            By
+          </Text>
+          <Text size={14} style="bold" color="black">
+            {author.name}
+          </Text>
+          {editor && (
+            <>
+              <Text size={14} color="black">
+                • Edited by
+              </Text>
+              <Text size={14} style="bold" color="black">
+                {editor.name}
+              </Text>
+            </>
+          )}
+        </div>
+
         {/* Categories and Issue Number */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mb-6">
           {categories.map((category, index) => (
             <Badge key={index} color="aqua" variant="default">
               {category}
@@ -41,57 +75,24 @@ export default function ArticleTemplate({
             </Badge>
           )}
         </div>
-
-        {/* Title */}
-        <div className="mb-4">
-          <Text size={48} style="bold" color="black">
-            {title}
-          </Text>
-        </div>
-
-        {/* Publish Date */}
-        <div className="flex flex-wrap items-center gap-4 mb-6">
-          <Text size={14} color="neutral">
-            {publishDate}
-          </Text>
-        </div>
-
-        {/* Author and Editor Info */}
-        <div className="flex flex-wrap items-center gap-2">
-          <Text size={14} color="neutral">
-            By
-          </Text>
-          <Text size={14} style="bold" color="black">
-            {author.name}
-          </Text>
-          {editor && (
-            <>
-              <Text size={14} color="neutral">
-                • Edited by
-              </Text>
-              <Text size={14} style="bold" color="black">
-                {editor.name}
-              </Text>
-            </>
-          )}
-        </div>
       </header>
 
-      {/* Image with Media Overlay */}
-      <div className="mb-8 rounded-lg overflow-hidden">
+      {/* Featured Image with Media Overlay */}
+      <div className="mb-2 rounded-lg overflow-hidden">
         <OverlayMedia>
           <Image {...featuredImage} />
-          <Overlay background="gradient-black">
-            {imageCaption && (
-              <div className="flex flex-col justify-end h-full p-4">
-                <Text size={14} color="white">
-                  {imageCaption}
-                </Text>
-              </div>
-            )}
-          </Overlay>
+          <Overlay background="gradient-black" children={undefined} />
         </OverlayMedia>
       </div>
+
+      {/* Image Caption Below */}
+      {imageCaption && (
+        <div className="mb-8">
+          <Text size={14} style="italic" color="black">
+            {imageCaption}
+          </Text>
+        </div>
+      )}
 
       {/* Article Content */}
       <div className="flex flex-col gap-6">
@@ -114,7 +115,7 @@ export default function ArticleTemplate({
                     <React.Fragment key={segIndex}>
                       {segment.type === "text" && segment.content}
                       {segment.type === "link" && (
-                        <Link href={segment.href} newWindow={segment.newWindow ?? true} className="font-bold">
+                        <Link href={segment.href} newWindow={segment.newWindow ?? true} className="font-bold underline text-aqua hover:text-forest-green">
                           {segment.text}
                         </Link>
                       )}
@@ -125,12 +126,39 @@ export default function ArticleTemplate({
             );
           }
 
+          if (block.type === "quote") {
+            return (
+              <div key={index} className="my-8 border-l-4 border-aqua pl-6 py-4 bg-aqua-light/20">
+                <Text size={24} style="italic" color="black">
+                  {block.content}
+                </Text>
+              </div>
+            );
+          }
+
           return null;
         })}
       </div>
 
-      {/* Footer */}
-      <Footer />
+      {/* Sources Section */}
+      {sources && sources.length > 0 && (
+        <div className="mt-12 pt-8 border-t border-black">
+          <div className="mb-4">
+            <Text size={24} style="bold" color="black">
+              Sources
+            </Text>
+          </div>
+          <div className="flex flex-col gap-2">
+            {sources.map((source, index) => (
+              <div key={index} className="leading-relaxed">
+                <Text size={14} color="black">
+                  {source}
+                </Text>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </article>
     </>
   );

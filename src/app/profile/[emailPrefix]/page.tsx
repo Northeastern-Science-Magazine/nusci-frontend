@@ -65,7 +65,7 @@ export default function PublicProfilePage({params} : PublicProfilePageProps) {
 
 
   return (
-    <Card color="white" className="shadow-xl ml-36 mr-36">
+    <Card color="white" className="shadow-xl ml-36 mr-36 mt-24">
       <Box className="relative w-full">
         <Image
           src={bannerUrl}
@@ -106,11 +106,11 @@ export default function PublicProfilePage({params} : PublicProfilePageProps) {
         </GridCol>
         <GridCol span={2}>
           <Box className="flex items-center gap-6 ml-10">
-            <Text style="bold" size={72} color="aqua-light">
+            <Text style="bold" size={72} color="black">
               {name}
             </Text>
             {roles.map((role) => 
-            <Badge color="aqua" variant="default" className="mt-4">
+            <Badge color="aqua" variant="default" className="mt-4" key={roles.indexOf(role)}>
               {role}
             </Badge>
             )}
@@ -121,7 +121,7 @@ export default function PublicProfilePage({params} : PublicProfilePageProps) {
         </GridCol>
       </Grid>
       <Card color="white" className="shadow-xl flex justify-center">
-        <Text style="underline" color="aqua" size={48}>
+        <Text style="underline" color="black" size={48}>
           Articles
         </Text>
       </Card>

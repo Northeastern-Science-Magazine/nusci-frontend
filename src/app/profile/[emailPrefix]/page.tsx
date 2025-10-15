@@ -65,7 +65,7 @@ export default function PublicProfilePage({params} : PublicProfilePageProps) {
 
 
   return (
-    <Card color="white" className="shadow-xl ml-36 mr-36 mt-24">
+    <Card color="white" className="shadow-xl ml-36 mr-36 -mt-20">
       <Box className="relative w-full">
         <Image
           src={bannerUrl}

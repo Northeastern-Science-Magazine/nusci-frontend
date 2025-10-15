@@ -11,6 +11,7 @@ import Card from "@/primitives/Card";
 import Image from "@/primitives/Image";
 import Button from "@/primitives/Button";
 import Link from "@/primitives/Link";
+import MediaCard from "@/components/MediaCard";
 
 type Issue = { number: number; title: string; href: string };
 type Article = { title: string; href: string; img: string; category: string };
@@ -79,48 +80,8 @@ export default function Page() {
       {/* Spacer under fixed header */}
       <Box className="pt-20">{null}</Box>
 
-      {/* Layout Switcher */}
-      <Box className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <Text className="text-2xl font-bold">Homepage Layout</Text>
-            <Text className="text-sm text-zinc-600">Choose one of the three layout options to preview structure.</Text>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant={layout === "A" ? "default" : "outline"}
-              color={"black"}
-              onClick={() => setLayout("A")}
-            >
-              Layout A
-            </Button>
-            <Button
-              size="sm"
-              variant={layout === "B" ? "default" : "outline"}
-              color={"black"}
-              onClick={() => setLayout("B")}
-            >
-              Layout B
-            </Button>
-            <Button
-              size="sm"
-              variant={layout === "C" ? "default" : "outline"}
-              color={"black"}
-              onClick={() => setLayout("C")}
-            >
-              Layout C
-            </Button>
-          </div>
-        </div>
-      </Box>
-
       {/* Render selected layout */}
-      <main>
-        {layout === "A" && <LayoutA />}
-        {layout === "B" && <LayoutB />}
-        {layout === "C" && <LayoutC />}
-      </main>
+      <main>{layout === "A" && <LayoutA />}</main>
 
       {/* Footer spacer */}
       <Box className="py-24">{null}</Box>
@@ -151,20 +112,21 @@ function LayoutA() {
 
                 <div className="space-y-3">
                   {articles.slice(0, 4).map((article) => (
-                    <Card key={article.href} className="flex items-center gap-3 p-3 hover:shadow-sm transition-shadow">
-                      <div className="w-20 flex-shrink-0">
-                        <Image src={article.img} alt={article.title} width="w-full" ratio={1 / 1} />
-                      </div>
-                      <div>
-                        <Text className="text-xs font-medium text-zinc-500 uppercase tracking-wide">{article.category}</Text>
-                        <Text className="text-sm font-medium mt-1">{article.title}</Text>
-                        <div className="mt-1">
-                          <Link href={article.href} newWindow={false} className="text-xs">
-                            Read
-                          </Link>
-                        </div>
-                      </div>
-                    </Card>
+                    <Link key={article.href} href={article.href} newWindow={false} className="block">
+                      <MediaCard
+                        mediaType="image"
+                        mediaDirection="left"
+                        size="sm"
+                        shadow="none"
+                        border="none"
+                        rounded="rounded"
+                        color="white"
+                        className="h-24 overflow-hidden [&_.media-container]:h-24 [&_.media-container]:w-24"
+                        subtitle={article.category}
+                        title={article.title}
+                        imageProps={{ src: article.img, alt: article.title }}
+                      />
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -186,13 +148,13 @@ function LayoutA() {
           {/* Right: Lead article + article list (2/3 width) */}
           <div className="w-2/3">
             {/* Lead article */}
-            <div className="mb-6">
+            <div className="mb-6 mt-2">
               <OverlayMedia className="w-full">
                 <Image src={hero.img} alt={hero.title} width="w-full" ratio={16 / 9} />
                 <Overlay background="gradient-black">
-                  <Box className="p-8">
-                    <div className="max-w-3xl">
-                      <Text className="text-6xl sm:text-7xl lg:text-8xl font-extrabold text-white leading-tight">
+                  <Box className="p-8 h-full flex items-end">
+                    <div className="max-w-3xl w-full">
+                      <Text className="text-6xl sm:text-7xl lg:text-7xl font-extrabold text-white leading-tight">
                         {hero.title}
                       </Text>
                       <div className="mt-6 flex gap-3">
@@ -214,259 +176,126 @@ function LayoutA() {
             </div>
 
             {/* Below lead: article list */}
-            <div className="mt-6">
-              <Text className="text-xl font-semibold mb-3">Latest articles</Text>
-              <div className="space-y-4">
-                {articles.map((a) => (
-                  <Card key={a.href} className="p-4 hover:shadow-md transition-shadow">
-                    <div className="flex gap-4">
-                      <div className="w-36 flex-shrink-0">
-                        <Image src={a.img} alt={a.title} width="w-full" ratio={16 / 9} />
-                      </div>
-                      <div>
-                        <Text className="font-semibold">{a.title}</Text>
-                        <div className="mt-2">
-                          <Link href={a.href} newWindow={false} className="text-sm">
-                            Read →
-                          </Link>
-                        </div>
-                      </div>
+            <Box className="mt-10 border-t border-zinc-200 pt-6">
+              <Text className="text-3xl font-bold mb-4">Categories</Text>
+
+              {[
+                "Biology",
+                "Chemistry",
+                "Environment",
+                "Health",
+                "Newsletter",
+                "Opinion",
+                "Physics",
+                "Psychology",
+                "Space",
+                "Technology",
+                "World",
+              ].map((cat, i) => {
+                const items = articles.filter((a) => a.category === cat).slice(0, 4);
+                const showPlaceholders = items.length === 0;
+                const placeholders = Array.from({ length: 2 });
+
+                return (
+                  <Box key={cat} className={`${i > 0 ? "border-t border-zinc-200 mt-6 pt-6" : ""} mb-6`}>
+                    <div className="flex items-center justify-between mb-3">
+                      <Text className="text-xl font-semibold">{cat}</Text>
+                      <Link
+                        href={`/articles?category=${encodeURIComponent(cat.toLowerCase())}`}
+                        newWindow={false}
+                        className="text-sm"
+                      >
+                        See all
+                      </Link>
                     </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </Box>
-    </section>
-  );
-}
 
-/* ----------------------------------------
-   Layout B - Newspaper style: lead article left, issues rail on right, list below
-   NYTimes-style — lead story prominent, issues as right rail (prominent but secondary)
-   -----------------------------------------*/
-function LayoutB() {
-  return (
-    <section>
-      {/* Main content area with hero and featured articles side by side */}
-      <Box className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex gap-6">
-          {/* Left: Issues rail (1/3 width) */}
-          <div className="w-1/3">
-            <div className="sticky top-24 space-y-6">
-              <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <Text className="text-lg font-semibold">Recent Articles</Text>
-                  <Link href="/articles" newWindow={false} className="text-sm">
-                    All
-                  </Link>
-                </div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-2.5">
+                      {(() => {
+                        const items = articles.filter((a) => a.category === cat).slice(0, 4);
+                        const needsSinglePlaceholder = items.length === 1;
+                        const showPlaceholders = items.length === 0;
 
-                <div className="space-y-0">
-                  {articles.slice(0, 4).map((article) => (
-                    <div key={article.href} className="flex items-start gap-4 p-4 hover:bg-zinc-100 transition-colors rounded-lg">
-                      <div className="w-24 flex-shrink-0">
-                        <Image src={article.img} alt={article.title} width="w-full" ratio={1 / 1} />
-                      </div>
-                      <div className="flex-1 h-24 flex flex-col justify-between">
-                        <div>
-                          <Text className="text-xs font-medium text-zinc-500 uppercase tracking-wide">{article.category}</Text>
-                          <Text className="text-sm font-medium mt-1 line-clamp-2">{article.title}</Text>
-                        </div>
-                        <div>
-                          <Link href={article.href} newWindow={false} className="text-xs">
-                            Read
+                        // Normal items
+                        const nodes = items.map((article) => (
+                          <Link key={article.href} href={article.href} newWindow={false} className="block">
+                            <MediaCard
+                              mediaType="image"
+                              mediaDirection="top"
+                              size="sm"
+                              shadow="none"
+                              border="none"
+                              rounded="rounded"
+                              color="white"
+                              // Make the card fill the grid cell; override internal max-w-* from variants
+                              className="w-full !max-w-none [&_.media-container]:h-32"
+                              subtitle={article.category}
+                              title={article.title}
+                              imageProps={{ src: article.img, alt: article.title }}
+                            />
                           </Link>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                        ));
 
-              <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4">
-                <Text className="text-sm font-medium">Subscribe</Text>
-                <Text className="text-sm text-zinc-600 mt-2">
-                  Get new issues and feature updates delivered to your inbox.
-                </Text>
-                <div className="mt-3">
-                  <Button size="sm" variant="default" color="black">
-                    Subscribe
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+                        // Add a single placeholder to make at least 2 per row if only 1 item
+                        if (needsSinglePlaceholder) {
+                          nodes.push(
+                            <MediaCard
+                              key={`${cat}-placeholder-0`}
+                              mediaType="image"
+                              mediaDirection="top"
+                              size="sm"
+                              shadow="none"
+                              border="none"
+                              rounded="rounded"
+                              color="white"
+                              className="w-full !max-w-none [&_.media-container]:h-32 opacity-80"
+                              subtitle={cat}
+                              title="Coming soon"
+                              imageProps={{ src: "/eclipse-image.png", alt: `${cat} placeholder` }}
+                            />
+                          );
+                        }
 
-          {/* Right: Lead article + article list (2/3 width) */}
-          <div className="w-2/3">
-            {/* Lead article */}
-            <div className="mb-6">
-              <OverlayMedia className="w-full">
-                <Image src={hero.img} alt={hero.title} width="w-full" ratio={16 / 9} />
-                <Overlay background="gradient-black">
-                  <Box className="p-8">
-                    <div className="max-w-3xl">
-                      <Text className="text-6xl sm:text-7xl lg:text-8xl font-extrabold text-white leading-tight">
-                        {hero.title}
-                      </Text>
-                      <div className="mt-6 flex gap-3">
-                        <Link href={hero.href} newWindow={false} className="inline-block">
-                          <Button size="md" variant="default" color="black">
-                            Click to read!
-                          </Button>
-                        </Link>
-                        <Link href="/issues" newWindow={false} className="inline-block">
-                          <Button size="md" variant="outline" color="white">
-                            Browse issues
-                          </Button>
-                        </Link>
-                      </div>
+                        // If no items, show two placeholders so the first row is full
+                        if (showPlaceholders) {
+                          nodes.push(
+                            <MediaCard
+                              key={`${cat}-placeholder-0`}
+                              mediaType="image"
+                              mediaDirection="top"
+                              size="sm"
+                              shadow="none"
+                              border="none"
+                              rounded="rounded"
+                              color="white"
+                              className="w-full !max-w-none [&_.media-container]:h-32 opacity-80"
+                              subtitle={cat}
+                              title="Coming soon"
+                              imageProps={{ src: "/eclipse-image.png", alt: `${cat} placeholder` }}
+                            />,
+                            <MediaCard
+                              key={`${cat}-placeholder-1`}
+                              mediaType="image"
+                              mediaDirection="top"
+                              size="sm"
+                              shadow="none"
+                              border="none"
+                              rounded="rounded"
+                              color="white"
+                              className="w-full !max-w-none [&_.media-container]:h-32 opacity-80"
+                              subtitle={cat}
+                              title="Coming soon"
+                              imageProps={{ src: "/eclipse-image.png", alt: `${cat} placeholder` }}
+                            />
+                          );
+                        }
+
+                        return nodes;
+                      })()}
                     </div>
                   </Box>
-                </Overlay>
-              </OverlayMedia>
-            </div>
-
-            {/* Below lead: article list */}
-            <div className="mt-6">
-              <Text className="text-xl font-semibold mb-3">Latest articles</Text>
-              <div className="space-y-4">
-                {articles.map((a) => (
-                  <Card key={a.href} className="p-4 hover:shadow-md transition-shadow">
-                    <div className="flex gap-4">
-                      <div className="w-36 flex-shrink-0">
-                        <Image src={a.img} alt={a.title} width="w-full" ratio={16 / 9} />
-                      </div>
-                      <div>
-                        <Text className="font-semibold">{a.title}</Text>
-                        <div className="mt-2">
-                          <Link href={a.href} newWindow={false} className="text-sm">
-                            Read →
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </Box>
-    </section>
-  );
-}
-
-/* ----------------------------------------
-   Layout C - Mosaic / magazine-style grid: integrates issues into the tile mosaic
-   Science.org-style — tiles of variable sizes, issues integrated as large tiles
-   -----------------------------------------*/
-function LayoutC() {
-  return (
-    <section>
-      <Box className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex gap-6">
-          {/* Left: Lead article + article list (2/3 width) */}
-          <div className="w-2/3">
-            {/* Lead article */}
-            <div className="mb-6">
-              <OverlayMedia className="w-full">
-                <Image src={hero.img} alt={hero.title} width="w-full" ratio={16 / 9} />
-                <Overlay background="gradient-black">
-                  <Box className="p-8">
-                    <div className="max-w-3xl">
-                      <Text className="text-6xl sm:text-7xl lg:text-8xl font-extrabold text-white leading-tight">
-                        {hero.title}
-                      </Text>
-                      <div className="mt-6 flex gap-3">
-                        <Link href={hero.href} newWindow={false} className="inline-block">
-                          <Button size="md" variant="default" color="black">
-                            Click to read!
-                          </Button>
-                        </Link>
-                        <Link href="/issues" newWindow={false} className="inline-block">
-                          <Button size="md" variant="outline" color="white">
-                            Browse issues
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                  </Box>
-                </Overlay>
-              </OverlayMedia>
-            </div>
-
-            {/* Below lead: article list */}
-            <div className="mt-6">
-              <Text className="text-xl font-semibold mb-3">Latest articles</Text>
-              <div className="space-y-4">
-                {articles.map((a) => (
-                  <Card key={a.href} className="p-4 hover:shadow-md transition-shadow">
-                    <div className="flex gap-4">
-                      <div className="w-36 flex-shrink-0">
-                        <Image src={a.img} alt={a.title} width="w-full" ratio={16 / 9} />
-                      </div>
-                      <div>
-                        <Text className="font-semibold">{a.title}</Text>
-                        <div className="mt-2">
-                          <Link href={a.href} newWindow={false} className="text-sm">
-                            Read →
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Issues rail (1/3 width) */}
-          <div className="w-1/3">
-            <div className="sticky top-24 space-y-6">
-              <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <Text className="text-lg font-semibold">Recent Articles</Text>
-                  <Link href="/articles" newWindow={false} className="text-sm">
-                    All
-                  </Link>
-                </div>
-
-                <div className="space-y-3">
-                  {articles.slice(0, 4).map((article) => (
-                    <Card key={article.href} className="flex items-center gap-3 p-3 hover:shadow-sm transition-shadow">
-                      <div className="w-20 flex-shrink-0">
-                        <Image src={article.img} alt={article.title} width="w-full" ratio={1 / 1} />
-                      </div>
-                      <div>
-                        <Text className="text-xs font-medium text-zinc-500 uppercase tracking-wide">{article.category}</Text>
-                        <Text className="text-sm font-medium mt-1">{article.title}</Text>
-                        <div className="mt-1">
-                          <Link href={article.href} newWindow={false} className="text-xs">
-                            Read
-                          </Link>
-                        </div>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4">
-                <Text className="text-sm font-medium">Subscribe</Text>
-                <Text className="text-sm text-zinc-600 mt-2">
-                  Get new issues and feature updates delivered to your inbox.
-                </Text>
-                <div className="mt-3">
-                  <Button size="sm" variant="default" color="black">
-                    Subscribe
-                  </Button>
-                </div>
-              </div>
-            </div>
+                );
+              })}
+            </Box>
           </div>
         </div>
       </Box>

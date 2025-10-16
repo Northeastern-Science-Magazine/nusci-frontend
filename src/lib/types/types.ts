@@ -42,6 +42,15 @@ export enum PhotographyStatus {
   PhotoComplete,
 }
 
+export enum Roles {
+  Author = "author",
+  Editor = "editor",
+  Photographer = "photographer",
+  Developer = "developer",
+  Designer = "designer",
+  Admin = "admin"
+}
+
 export type ArticleContent = {
   contentType: ArticleContentType;
   content: string;

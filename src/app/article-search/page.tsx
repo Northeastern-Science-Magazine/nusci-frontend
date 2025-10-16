@@ -73,7 +73,6 @@ export default function FilterPage() {
               <DropdownItem value="pending">Pending</DropdownItem>
               <DropdownItem value="print">Print</DropdownItem>
               <DropdownItem value="online">Online</DropdownItem>
-              <DropdownItem value="cancelled">Cancelled</DropdownItem>
             </DropdownInput>
           </FlexChild>
           <FlexChild className="flex flex-col gap-1 min-w-[12rem]">

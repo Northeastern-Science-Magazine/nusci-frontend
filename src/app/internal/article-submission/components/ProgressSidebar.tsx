@@ -66,7 +66,7 @@ export const ProgressSidebar = ({ progress }: { progress: FormProgress }) => {
   const progressPercentage = Math.round((completedFields / totalFields) * 100);
 
   return (
-    <div className="sticky top-8 rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5">
+    <div className="pb-4">
       <Text color="sage-green" size={20} style="bold" className="mb-4">
         Progress
       </Text>

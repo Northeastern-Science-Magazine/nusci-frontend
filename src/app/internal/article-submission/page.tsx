@@ -12,6 +12,7 @@ import Button from "@/design-system/primitives/Button";
 import { ProgressSidebar } from "./components/ProgressSidebar";
 import { SourcesInput } from "./components/SourcesInput";
 import { Controller } from "react-hook-form";
+import ImageUpload from "@/design-system/components/ImageUpload";
 
 /* IDEAS: 
     - Author selection: would be cool to have a dropdown that updates as you type system
@@ -179,11 +180,14 @@ const FormContent = () => {
 
           {/* Image Upload */}
           <div id="image" className="scroll-mt-[80px]">
-            <Text color="black" size={12} style="bold" className="text-center">
-              Image Upload Coming Soon!
-            </Text>
+            <ImageUpload />
           </div>
+        </Box>
+      </GridCol>
 
+      <GridCol span={1}>
+        <Box className="sticky top-8 rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5">
+          <ProgressSidebar progress={progress} />
           {/* Submit */}
           <Button
             type="submit"
@@ -210,10 +214,6 @@ const FormContent = () => {
             Submit Article
           </Button>
         </Box>
-      </GridCol>
-
-      <GridCol span={1}>
-        <ProgressSidebar progress={progress} />
       </GridCol>
     </Grid>
   );

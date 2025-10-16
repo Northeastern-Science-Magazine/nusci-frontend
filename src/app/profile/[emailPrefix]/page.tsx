@@ -6,15 +6,7 @@ import Card from "@/design-system/primitives/Card";
 import { Badge } from "@/design-system/primitives/Badge/Badge";
 import { Box } from "@/design-system/primitives/Box/Box";
 import { notFound } from "next/navigation";
-
-enum Roles {
-  Author = "author",
-  Editor = "editor",
-  Photographer = "photographer",
-  Developer = "developer",
-  Designer = "designer",
-  Admin = "admin"
-}
+import { Roles } from "@/lib/types/types";
 
 interface ProfileData {
   name: string;
@@ -88,7 +80,7 @@ export default function PublicProfilePage({params} : PublicProfilePageProps) {
   const hasArticles = roles.includes(Roles.Author) || roles.includes(Roles.Editor)
 
   return (
-    <Card color="white" className="shadow-xl ml-36 mr-36 -mt-20">
+    <Card color="white" className="shadow-xl ml-40 mr-40 -mt-20">
       <Box className="relative w-full">
         <Image
           src={bannerUrl}

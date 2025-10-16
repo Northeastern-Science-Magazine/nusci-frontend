@@ -5,7 +5,7 @@ import { Grid, GridCol, GridRow } from "@/design-system/primitives/Grid";
 export default function AboutUsPage() {
   return (
     <Box className="flex justify-center">
-      <Grid col span={2} gap={16}>
+      <Grid col span={2} gap={32}>
         <GridCol>
           <Grid row span={3} gap={4}>
             <GridRow>

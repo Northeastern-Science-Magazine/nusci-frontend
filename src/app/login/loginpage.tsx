@@ -17,6 +17,7 @@ type LoginFormValues = {
 export default function Loginpage() {
   const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
     console.log("Login data:", data);
+    
     // Handle login logic here
   };
 
@@ -31,11 +32,11 @@ export default function Loginpage() {
         }}
         size="lg"
         rounded="rounded"
-        className="max-w-5xl w-full [&_.media-container]:flex-1 bg-white"
+        className="max-w-6xl w-full [&_.media-container]:flex-1 bg-white"
         
       >
         <Text size={48} style="bold" color="forest-green" className="p-5 pb-0">
-          Welcome back to NUSci!
+          Welcome back to NU Sci!
         </Text>
         <Form<LoginFormValues>
           onSubmit={onSubmit}

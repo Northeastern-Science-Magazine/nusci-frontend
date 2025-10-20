@@ -9,8 +9,6 @@ const gaps = [
 ] as const;
 const auto = ["base", "auto"] as const;
 const basis = ["base", "full"] as const;
-const grow = ["grow", "noGrow"] as const;
-const shrink = ["shrink", "noShrink"] as const;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Flex> = {

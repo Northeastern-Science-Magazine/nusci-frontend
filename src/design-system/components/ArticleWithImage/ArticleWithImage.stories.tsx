@@ -131,8 +131,10 @@ export const Default: Story = {
         content: "Training and serving a massive LLM can easily rival the output of an entire wind farm within a single day",
       },
       {
-        type: "heading",
-        content: "Software-First Strategies Every Developer Can Use",
+        type: "paragraph",
+        segments: [
+          {type: "text", content: "Software-First Strategies Every Developer Can Use",},
+          ],
       },
       {
         type: "paragraph",

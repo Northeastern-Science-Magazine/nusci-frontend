@@ -6,8 +6,6 @@ import Link from "@/primitives/Link";
 import Image from "@/primitives/Image";
 import Badge from "@/primitives/Badge";
 import { OverlayMedia, Overlay } from "@/components/MediaOverlay";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
 
 export default function ArticleTemplate({
   title,

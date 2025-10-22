@@ -73,7 +73,6 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
-
       {/* Spacer under fixed header */}
       <Box className="pt-20">{null}</Box>
 
@@ -96,15 +95,24 @@ function LayoutA() {
       {/* Main content area with hero and featured articles side by side */}
       <Box className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex gap-6">
-          {/* Left: Issues rail (1/3 width) */}
-          <div className="w-1/3">
-            <div className="sticky top-24 space-y-6">
+          {/* Left: Recent Articles (not sticky) */}
+          <div className="w-1/3 mt-2">
+            <div className="space-y-6">
               <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <Text className="text-lg font-semibold">Recent Articles</Text>
-                  <Link href="/articles" newWindow={false} className="text-sm">
+                  <Text size={18} style="bold">
+                    Recent Articles
+                  </Text>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    color="black"
+                    onClick={() => {
+                      window.location.href = "/articles";
+                    }}
+                  >
                     All
-                  </Link>
+                  </Button>
                 </div>
 
                 <div className="space-y-3">
@@ -118,7 +126,6 @@ function LayoutA() {
                         border="none"
                         rounded="rounded"
                         color="white"
-                        className="h-24 overflow-hidden [&_.media-container]:h-24 [&_.media-container]:w-24"
                         subtitle={article.category}
                         title={article.title}
                         imageProps={{ src: article.img, alt: article.title }}
@@ -127,31 +134,18 @@ function LayoutA() {
                   ))}
                 </div>
               </div>
-
-              <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4">
-                <Text className="text-sm font-medium">Subscribe</Text>
-                <Text className="text-sm text-zinc-600 mt-2">
-                  Get new issues and feature updates delivered to your inbox.
-                </Text>
-                <div className="mt-3">
-                  <Button size="sm" variant="default" color="black">
-                    Subscribe
-                  </Button>
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Right: Lead article + article list (2/3 width) */}
+          {/* Right: Hero Section */}
           <div className="w-2/3">
-            {/* Lead article */}
             <div className="mb-6 mt-2">
               <OverlayMedia className="w-full">
                 <Image src={hero.img} alt={hero.title} width="w-full" ratio={16 / 9} />
                 <Overlay background="gradient-black">
                   <Box className="p-8 h-full flex items-end">
                     <div className="max-w-3xl w-full">
-                      <Text className="text-6xl sm:text-7xl lg:text-7xl font-extrabold text-white leading-tight">
+                      <Text size={48} style="bold" color="white" className="sm:text-7xl lg:text-7xl leading-tight">
                         {hero.title}
                       </Text>
                       <div className="mt-6 flex gap-3">
@@ -172,129 +166,96 @@ function LayoutA() {
               </OverlayMedia>
             </div>
 
-            {/* Below lead: article list */}
-            <Box className="mt-10 border-t border-zinc-200 pt-6">
-              <Text className="text-3xl font-bold mb-4">Categories</Text>
-
-              {[
-                "Biology",
-                "Chemistry",
-                "Environment",
-                "Health",
-                "Newsletter",
-                "Opinion",
-                "Physics",
-                "Psychology",
-                "Space",
-                "Technology",
-                "World",
-              ].map((cat, i) => {
-                const items = articles.filter((a) => a.category === cat).slice(0, 4);
-                const showPlaceholders = items.length === 0;
-                const placeholders = Array.from({ length: 2 });
-
-                return (
-                  <Box key={cat} className={`${i > 0 ? "border-t border-zinc-200 mt-6 pt-6" : ""} mb-6`}>
-                    <div className="flex items-center justify-between mb-3">
-                      <Text className="text-xl font-semibold">{cat}</Text>
-                      <Link
-                        href={`/articles?category=${encodeURIComponent(cat.toLowerCase())}`}
-                        newWindow={false}
-                        className="text-sm"
-                      >
-                        See all
-                      </Link>
-                    </div>
-
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-2.5">
-                      {(() => {
-                        const items = articles.filter((a) => a.category === cat).slice(0, 4);
-                        const needsSinglePlaceholder = items.length === 1;
-                        const showPlaceholders = items.length === 0;
-
-                        // Normal items
-                        const nodes = items.map((article) => (
-                          <Link key={article.href} href={article.href} newWindow={false} className="block">
-                            <MediaCard
-                              mediaType="image"
-                              mediaDirection="top"
-                              size="sm"
-                              shadow="none"
-                              border="none"
-                              rounded="rounded"
-                              color="white"
-                              // Make the card fill the grid cell; override internal max-w-* from variants
-                              className="w-full !max-w-none [&_.media-container]:h-32"
-                              subtitle={article.category}
-                              title={article.title}
-                              imageProps={{ src: article.img, alt: article.title }}
-                            />
-                          </Link>
-                        ));
-
-                        // Add a single placeholder to make at least 2 per row if only 1 item
-                        if (needsSinglePlaceholder) {
-                          nodes.push(
-                            <MediaCard
-                              key={`${cat}-placeholder-0`}
-                              mediaType="image"
-                              mediaDirection="top"
-                              size="sm"
-                              shadow="none"
-                              border="none"
-                              rounded="rounded"
-                              color="white"
-                              className="w-full !max-w-none [&_.media-container]:h-32 opacity-80"
-                              subtitle={cat}
-                              title="Coming soon"
-                              imageProps={{ src: "/eclipse-image.png", alt: `${cat} placeholder` }}
-                            />
-                          );
-                        }
-
-                        // If no items, show two placeholders so the first row is full
-                        if (showPlaceholders) {
-                          nodes.push(
-                            <MediaCard
-                              key={`${cat}-placeholder-0`}
-                              mediaType="image"
-                              mediaDirection="top"
-                              size="sm"
-                              shadow="none"
-                              border="none"
-                              rounded="rounded"
-                              color="white"
-                              className="w-full !max-w-none [&_.media-container]:h-32 opacity-80"
-                              subtitle={cat}
-                              title="Coming soon"
-                              imageProps={{ src: "/eclipse-image.png", alt: `${cat} placeholder` }}
-                            />,
-                            <MediaCard
-                              key={`${cat}-placeholder-1`}
-                              mediaType="image"
-                              mediaDirection="top"
-                              size="sm"
-                              shadow="none"
-                              border="none"
-                              rounded="rounded"
-                              color="white"
-                              className="w-full !max-w-none [&_.media-container]:h-32 opacity-80"
-                              subtitle={cat}
-                              title="Coming soon"
-                              imageProps={{ src: "/eclipse-image.png", alt: `${cat} placeholder` }}
-                            />
-                          );
-                        }
-
-                        return nodes;
-                      })()}
-                    </div>
-                  </Box>
-                );
-              })}
-            </Box>
+            {/* Carousel Placeholder - Extended height to match Recent Articles */}
+            <div className="mb-6 h-[30.98rem] flex items-center justify-center">
+              <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 w-full h-full flex items-center justify-center">
+                <Text size={18} style="bold">
+                  Carousel coming soon
+                </Text>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Categories Section */}
+        <Box className="mt-10 border-t border-zinc-200 pt-6">
+          <Text size={24} style="bold" className="mb-4">
+            Categories
+          </Text>
+          {[
+            "Biology",
+            "Chemistry",
+            "Environment",
+            "Health",
+            "Newsletter",
+            "Opinion",
+            "Physics",
+            "Psychology",
+            "Space",
+            "Technology",
+            "World",
+          ].map((cat, i) => {
+            const items = articles.filter((a) => a.category === cat).slice(0, 4);
+            const placeholdersNeeded = 4 - items.length;
+
+            return (
+              <Box key={cat} className={`${i > 0 ? "border-t border-zinc-200 mt-6 pt-6" : ""} mb-6`}>
+                <div className="flex items-center justify-between mb-3">
+                  <Text size={20} style="bold">
+                    {cat}
+                  </Text>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    color="black"
+                    onClick={() => {
+                      window.location.href = `/articles?category=${encodeURIComponent(cat.toLowerCase())}`;
+                    }}
+                  >
+                    See all
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-2.5 justify-start">
+                  {items.map((article) => (
+                    <Link key={article.href} href={article.href} newWindow={false} className="block">
+                      <MediaCard
+                        mediaType="image"
+                        mediaDirection="top"
+                        size="sm"
+                        shadow="none"
+                        border="none"
+                        rounded="rounded"
+                        color="white"
+                        subtitle={article.category}
+                        title={article.title}
+                        imageProps={{ src: article.img, alt: article.title }}
+                      />
+                    </Link>
+                  ))}
+
+                  {Array.from({ length: placeholdersNeeded }, (_, index) => (
+                    <div key={`placeholder-${index}`} className="w-full" >
+                      <MediaCard
+                        mediaType="image"
+                        mediaDirection="top"
+                        size="sm"
+                        shadow="none"
+                        border="none"
+                        rounded="rounded"
+                        color="white"
+                        className="[&_.media-container]:h-32 opacity-80 w-full"
+                        subtitle={cat}
+                        title="Coming soon"
+                        imageProps={{ src: "/eclipse-image.png", alt: `${cat} placeholder` }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </Box>
+            );
+          })}
+        </Box>
       </Box>
     </section>
   );

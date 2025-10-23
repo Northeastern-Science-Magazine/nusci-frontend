@@ -31,7 +31,8 @@ export default function LoginPage() {
         }}
         size="lg"
         rounded="rounded"
-        className="max-w-7xl w-full [&_.media-container]:flex-1 bg-white"
+        color="white"
+        className="max-w-7xl w-full [&_.media-container]:flex-1"
         
       >
         <Text size={48} style="bold" color="forest-green" className="p-5 pb-0">

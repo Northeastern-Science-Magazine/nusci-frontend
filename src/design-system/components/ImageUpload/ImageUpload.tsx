@@ -15,20 +15,24 @@ export default function ImageUpload({
   disabled = false,
   ...variantProps
 }: ImageUploadProps) {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    onChange?.(file);
+  };
   return (
     <div>
       <label
         htmlFor="image-upload"
         className="p-4 border border-1 rounded-md cursor-pointer"
       >
-        Upload Image
+        {value ? `Selected: ${value.name}` : "Upload Image"}
       </label>
 
       <input
         id="image-upload"
         type="file"
         accept="image/*"
-        onChange={onChange}
+        onChange={handleFileChange}
         className="hidden"
       />
     </div>

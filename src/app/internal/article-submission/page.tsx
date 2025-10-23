@@ -27,7 +27,7 @@ type ArticleSubmissionFormValues = {
   categories: string[];
   content: string;
   pullQuote: string;
-  image?: string | File;
+  image?: File;
   sources: string[];
 };
 
@@ -180,7 +180,9 @@ const FormContent = () => {
 
           {/* Image Upload */}
           <div id="image" className="scroll-mt-[80px]">
-            <ImageUpload />
+            <FormField<ArticleSubmissionFormValues> name="image">
+              <ImageUpload />
+            </FormField>
           </div>
         </Box>
       </GridCol>
@@ -199,7 +201,7 @@ const FormContent = () => {
               !progress.categories ||
               !progress.sources
                 ? "border"
-                : "purple"
+                : "forest-green"
             }
             className="w-full"
             disabled={
@@ -221,7 +223,12 @@ const FormContent = () => {
 
 // TODO: Implement actual submission logic
 const onSubmit = (data: ArticleSubmissionFormValues) => {
-  alert("Article submitted!" + JSON.stringify(data));
+  alert(
+    "Article submitted!" +
+      JSON.stringify(data) +
+      " image name: " +
+      data.image?.name
+  );
 };
 
 /* PAGE EXPORT */

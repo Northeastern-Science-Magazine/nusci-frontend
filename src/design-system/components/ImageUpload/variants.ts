@@ -41,7 +41,7 @@ export type ImageUploadVariants = VariantProps<typeof imageUploadVariants>;
 /** Export ImageUploadProps as one type */
 export interface ImageUploadProps extends ImageUploadVariants {
   className?: string;
-  onChange?: () => void;
+  onChange?: (file: File | undefined) => void;
   value?: undefined | File;
   disabled?: boolean;
 }

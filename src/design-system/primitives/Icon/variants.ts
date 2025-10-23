@@ -45,6 +45,7 @@ export const iconVariants = tv({
       maroon: "text-maroon",
       coral: "text-coral",
       marigold: "text-marigold",
+      red: "text-red-500",
       text: "text",
     },
   },

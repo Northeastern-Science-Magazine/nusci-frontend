@@ -70,7 +70,7 @@ export function SourcesInput({
               variant="outline"
               color="red"
             >
-              <Icon icon="trash" size="sm" />
+              <Icon icon="trash" size="sm" color="red" />
             </Button>
           )}
         </div>

@@ -4,7 +4,6 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { Header } from "@/design-system/components/Header";
 import { Footer } from "@/design-system/components/Footer";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className={styles.container}>
-          <Header />
+           <Header />
           <div className="h-16" /> {/* Spacer */}
           <div className="mt-24">{children}</div>
           <Footer />
@@ -32,5 +31,5 @@ export default function RootLayout({
 }
 
 const styles = {
-  container: "mx-3 mt-2",
+  container: "",
 };

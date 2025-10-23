@@ -9,7 +9,7 @@ export const fontVariants = tv({
       mono: "font-mono",
       arial: "font-[Arial]",
       helvetica: 'font-[Helvetica]',
-      timesnewroman: 'font-[Times_New_Roman]',
+      "times-new-roman": 'font-[Times_New_Roman]',
       georgia: 'font-[Georgia]',
       poppins: 'font-[Poppins]'
     },

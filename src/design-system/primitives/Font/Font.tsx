@@ -1,5 +1,5 @@
 
-import { FontProps } from "./variants";
+import { fontVariants, FontProps } from "./variants";
 
 /**
  * Font Component
@@ -9,6 +9,6 @@ import { FontProps } from "./variants";
  */
 export const Font = ({ fontName, children }: FontProps) => {
   return (
-    <div className={fontName}>{children}</div>
+    <div className={fontVariants({fontName})}>{children}</div>
   );
 };

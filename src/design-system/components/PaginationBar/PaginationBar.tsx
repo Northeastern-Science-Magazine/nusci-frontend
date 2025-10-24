@@ -9,7 +9,7 @@ export function PaginationBar({
   maxItems,
   activeItem,
   onClickFunctionGenerator,
-  color,
+  ...variantProps
 }: PaginationBarProps) {
   let maxVisible = 5;
   let start = 1;
@@ -34,7 +34,10 @@ export function PaginationBar({
   for (let i = start; i <= end; i++) {
     pages.push(
       <div className={clsx(className, i !== activeItem && "opacity-50")}>
-        <Button onClick={onClickFunctionGenerator(i)} color={color}>
+        <Button
+          onClick={onClickFunctionGenerator(i)}
+          color={variantProps.color}
+        >
           {i.toString()}
         </Button>
       </div>
@@ -47,7 +50,7 @@ export function PaginationBar({
         <Icon
           icon={"arrowleft"}
           onClick={onClickFunctionGenerator(activeItem - 1)}
-          color={color}
+          color={variantProps.color}
         />
       )}
       <div className={clsx("flex items-center gap-2", className)}>{pages}</div>
@@ -55,7 +58,7 @@ export function PaginationBar({
         <Icon
           icon={"arrowright"}
           onClick={onClickFunctionGenerator(activeItem + 1)}
-          color={color}
+          color={variantProps.color}
         />
       )}
     </div>

@@ -13,6 +13,7 @@ import { ProgressSidebar } from "./components/ProgressSidebar";
 import { SourcesInput } from "./components/SourcesInput";
 import { Controller } from "react-hook-form";
 import ImageUpload from "@/design-system/components/ImageUpload";
+import ArticleInput from "./components/ArticleInput";
 
 /* IDEAS: 
     - Author selection: would be cool to have a dropdown that updates as you type system
@@ -42,7 +43,7 @@ type FormProgress = {
 
 /* FORM CONTENT COMPONENT */
 const FormContent = () => {
-  const currentUser = { name: "John Doe", email: "john@nusci.org" };
+  const currentUser = { name: "John Doe", email: "john@nusci.org" }; // TODO: Fetch current user
 
   const [progress, setProgress] = useState<FormProgress>({
     author: true, // Pre-filled with current user
@@ -67,7 +68,12 @@ const FormContent = () => {
           watchedFields.categories.length > 0 &&
           watchedFields.categories[0]?.trim().length > 0,
         content:
-          !!watchedFields.content && watchedFields.content.trim().length > 0,
+          !!watchedFields.content &&
+          watchedFields.content
+            .replace(/<[^>]+>/g, " ")
+            .replace(/\u200B/g, "")
+            .replace(/\s+/g, " ")
+            .trim().length > 0,
         pullQuote:
           !!watchedFields.pullQuote &&
           watchedFields.pullQuote.trim().length > 0,
@@ -149,13 +155,7 @@ const FormContent = () => {
           {/* Content */}
           <div id="content" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="content">
-              <TextInput
-                placeholder="Enter article content"
-                label="Content"
-                className="w-full"
-                rows={15}
-                resize={true}
-              />
+              <ArticleInput />
             </FormField>
           </div>
 

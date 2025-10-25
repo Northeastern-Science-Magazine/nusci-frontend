@@ -7,7 +7,7 @@ export default function Link({
   className,
   children,
   href,
-  newWindow,
+  newWindow = false,
   ...variantProps
 }: LinkProps) {
   const targetParameter = newWindow ? "_blank" : "";

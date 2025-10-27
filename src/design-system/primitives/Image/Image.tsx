@@ -2,14 +2,20 @@ import * as AspectRatio from "@radix-ui/react-aspect-ratio";
 import { ImageProps, imageVariants } from "./variants";
 
 /**
- * Image component
+ * Image component.
+ *
+ * Use boolean prop `raw` to get an image without
+ * Radix Aspect Ratio
  *
  * @param { ImageProps } props
  * @returns Image Component
  */
 export const Image = ({ ratio, src, alt, width, raw = false, ...props }: ImageProps) => {
   return raw ? (
-    <img className={imageVariants(props)} src={src} alt={alt} />
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className={imageVariants(props)} src={src} alt={alt} />
+    </>
   ) : (
     <div className={width}>
       <AspectRatio.Root ratio={ratio}>

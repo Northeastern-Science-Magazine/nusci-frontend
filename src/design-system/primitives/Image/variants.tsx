@@ -23,6 +23,7 @@ export type ImageVariants = VariantProps<typeof imageVariants>;
 
 export interface ImageProps extends ImageVariants {
   ratio?: number;
+  raw?: boolean;
   src: string;
   alt: string;
   width: string;

@@ -6,24 +6,13 @@ import Text from "@/primitives/Text";
 import { mediaCardTextSizes } from "./variants";
 
 export const MediaCard = (props: MediaCardProps) => {
-  const {
-    title,
-    subtitle,
-    description,
-    mediaType,
-    size,
-    color,
-    ...variantProps
-  } = props;
+  const { title, subtitle, description, mediaType, size, color, ...variantProps } = props;
 
   // Get text sizes from the configuration
   const textSizes = mediaCardTextSizes[size ?? "md"];
 
   return (
-    <Box
-      color={color}
-      className={mediaCardVariants(props)}
-    >
+    <Box color={color} className={mediaCardVariants(props)}>
       <Box className="flex-1" p={4} pt={8} pb={8}>
         {subtitle && (
           <Text size={textSizes.subtitle} className="font-light text-inherit">
@@ -43,11 +32,11 @@ export const MediaCard = (props: MediaCardProps) => {
       </Box>
       <Box className="media-container flex-shrink-0">
         {props.mediaType === "image" && (
-          <Image {...props.imageProps} width="w-full h-full object-cover" />
+          <div className="w-full h-full object-cover">
+            <Image {...props.imageProps} raw width="w-full h-full object-cover" />
+          </div>
         )}
-        {props.mediaType === "video" && (
-          <Video {...props.videoProps} width="w-full h-full object-cover" />
-        )}
+        {props.mediaType === "video" && <Video {...props.videoProps} width="w-full h-full object-cover" />}
       </Box>
     </Box>
   );

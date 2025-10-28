@@ -1,5 +1,3 @@
-"use client";
-
 import { Form, FormField } from "@/primitives/Form";
 import { SubmitHandler } from "react-hook-form";
 import MediaCard from "@/design-system/components/MediaCard";
@@ -72,10 +70,6 @@ export default function LoginPage() {
               name="password"
               rules={{
                 required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
               }}
             >
               <TextInput

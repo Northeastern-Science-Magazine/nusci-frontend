@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className={styles.container}>
-           <Header />
+          <Header />
           <div className="h-16" /> {/* Spacer */}
           <div className="mt-24">{children}</div>
           <Footer />

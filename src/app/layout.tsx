@@ -31,5 +31,5 @@ export default function RootLayout({
 }
 
 const styles = {
-  container: "",
+  container: "mx-3 mt-2",
 };

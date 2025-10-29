@@ -1,12 +1,12 @@
 import { Select } from "radix-ui";
 import clsx from "clsx";
 
-import { dropdownItemVariants, DropdownInputProps, DropdownItemProps } from "./variants";
+import { dropdownItemVariants, DropdownInputProps, DropdownItemProps, dropdownInputVariants } from "./variants";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
 export function DropdownItem({ className, value, children, disabled, ...variantProps }: DropdownItemProps) {
   return (
-    <Select.Item value={value} disabled={disabled} className={clsx(dropdownItemVariants(variantProps), className)}>
+    <Select.Item value={value} disabled={disabled} className={clsx(dropdownItemVariants(variantProps), "relative flex h-[25px] select-none items-center pl-[25px] pr-[35px] text-[13px] leading-none data-[disabled]:pointer-events-none data-[disabled]:text-neutral data-[highlighted]:outline-none", className)}>
       <Select.ItemText>{children}</Select.ItemText>
       <Select.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
         <CheckIcon />
@@ -20,9 +20,9 @@ export function DropdownInput({ onChange, className, children, placeholder, ...v
     <Select.Root onValueChange={onChange}>
       <Select.Trigger
         className={clsx(
-          "inline-flex h-[35px] min-w-[150px] items-center justify-between gap-[5px] rounded bg-white px-[15px] text-[13px] leading-none text-violet11 shadow-[0_2px_10px] shadow-black/10 outline-none hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black border-2 border-black",
+          "inline-flex h-[35px] min-w-[150px] items-center justify-between gap-[5px] rounded px-[15px] text-[13px] leading-none shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] border-2",
           className
-        )}
+        , dropdownInputVariants(variantProps))}
       >
         <Select.Value placeholder={placeholder} />
         <Select.Icon>

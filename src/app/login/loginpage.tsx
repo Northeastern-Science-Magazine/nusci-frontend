@@ -14,9 +14,10 @@ type LoginFormValues = {
   password: string;
 };
 
-export default function LoginPage() {
+export default function Loginpage() {
   const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
     console.log("Login data:", data);
+    
     // Handle login logic here
   };
 
@@ -31,8 +32,7 @@ export default function LoginPage() {
         }}
         size="lg"
         rounded="rounded"
-        color="white"
-        className="max-w-7xl w-full [&_.media-container]:flex-1"
+        className="max-w-6xl w-full [&_.media-container]:flex-1 bg-white"
         
       >
         <Text size={48} style="bold" color="forest-green" className="p-5 pb-0">
@@ -53,7 +53,7 @@ export default function LoginPage() {
               rules={{
                 required: "Email is required",
                 pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  value: /^\S+@\S+$/i,
                   message: "Please enter a valid email",
                 },
               }}

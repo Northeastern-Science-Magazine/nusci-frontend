@@ -17,6 +17,9 @@ import {
   Mail,
   Menu,
   X,
+  Check,
+  Minus,
+  ChevronDown,
 } from "lucide-react";
 import { InstagramLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
 
@@ -79,6 +82,9 @@ export const iconMap = {
   email: Mail,
   menu: Menu,
   x: X,
+  check: Check,
+  minus: Minus,
+  chevrondown: ChevronDown,
 };
 
 export type IconName = keyof typeof iconMap;

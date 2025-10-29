@@ -6,7 +6,11 @@ import React from "react";
 const positions = ["static", "fixed", "absolute", "relative", "sticky"] as const;
 const displays = ["inline", "block", "inline-block", "hidden"] as const;
 const widths = ["full", "screen", "auto", "min", "max"] as const;
+const minWidths = ["full", "screen", "auto", "min", "max"] as const;
+const maxWidths = ["full", "screen", "auto", "min", "max"] as const;
 const heights = ["full", "screen", "auto", "min", "max", "fit"] as const;
+const minHeights = ["full", "screen", "auto", "min", "max", "fit"] as const;
+const maxHeights = ["full", "screen", "auto", "min", "max", "fit"] as const;
 const tops = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const bottoms = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const lefts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
@@ -59,9 +63,25 @@ const meta: Meta<typeof Box> = {
       control: "select",
       options: widths,
     },
+    minWidth: {
+      control: "select",
+      options: minWidths,
+    },
+    maxWidth: {
+      control: "select", 
+      options: maxWidths,
+    },
     height: {
       control: "select",
       options: heights,
+    },
+    minHeight: {
+      control: "select",
+      options: minHeights
+    },
+    maxHeight: {
+      control: "select",
+      options: maxHeights
     },
     top: {
       control: "select",

@@ -25,6 +25,20 @@ export const boxVariants = tv({
       min: "w-min",
       max: "w-max",
     },
+    minWidth: {
+      full: "min-w-full",
+      screen: "min-w-screen", 
+      auto: "min-w-auto",
+      min: "min-w-min",
+      max: "min-w-max",
+    },
+    maxWidth: {
+      full: "max-w-full",
+      screen: "max-w-screen",
+      auto: "max-w-auto", 
+      min: "max-w-min",
+      max: "max-w-max",
+    },
     height: {
       full: "h-full",
       screen: "h-screen",
@@ -32,6 +46,22 @@ export const boxVariants = tv({
       min: "h-min",
       max: "h-max",
       fit: "h-fit",
+    },
+    minHeight: {
+      full: "min-h-full",
+      screen: "min-h-screen",
+      auto: "min-h-auto",
+      min: "min-h-min",
+      max: "min-h-max",
+      fit: "min-h-fit",
+    },
+    maxHeight: {
+      full: "max-h-full",
+      screen: "max-h-screen",
+      auto: "max-h-auto",
+      min: "max-h-min",
+      max: "max-h-max",
+      fit: "max-h-fit",
     },
     top: {
       0: "top-0",

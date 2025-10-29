@@ -3,19 +3,57 @@ import { tv, type VariantProps } from "tailwind-variants";
 /** Define Font Variants using Tailwind Variant Definitions */
 export const fontVariants = tv({
   variants: {
-    fontName: {
-      sans: "font-sans",
-      serif: "font-serif",
-      mono: "font-mono",
-      arial: "font-[Arial]",
-      helvetica: 'font-[Helvetica]',
-      "times-new-roman": 'font-[Times_New_Roman]',
-      georgia: 'font-[Georgia]',
-      poppins: 'font-[Poppins]'
+    sans: {
+      true: "font-sans",
+      false: ""
+    },
+    serif: {
+      true: "font-serif",
+      false: ""
+    },
+    mono: {
+      true: "font-mono",
+      false: ""
+    },
+    arial: {
+      true: "font-[Arial]",
+      false: ""
+    },
+    georgia: {
+      true: "font-[Georgia]",
+      false: ""
+    },
+    poppins: {
+      true: "font-[Poppins]",
+      false: ""
+    },
+    "comic-sans": {
+      true: "font-[\"Comic Sans MS\",cursive,sans-serif]",
+      false: ""
+    },
+    verdana: {
+      true: "font-[Verdana,sans-serif]",
+      false: ""
+    },
+    tahoma: {
+      true: "font-[Tahoma,sans-serif]",
+      false: ""
+    },
+    courier: {
+      true: "font-[Courier,monospace]",
+      false: ""
+    },
+    "lucida-console": {
+      true: "font-[\"Lucida Console\",monospace]",
+      false: ""
+    },
+    futura: {
+      true: "font-[Futura,sans-serif]",
+      false: ""
     },
   },
   defaultVariants: {
-    fontName: "sans",
+    sans: true,
   },
 });
 

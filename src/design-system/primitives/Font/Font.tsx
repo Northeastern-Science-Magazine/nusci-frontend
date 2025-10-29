@@ -7,8 +7,8 @@ import { fontVariants, FontProps } from "./variants";
  * @param { FontProps } props
  * @returns Font Component
  */
-export const Font = ({ fontName, children }: FontProps) => {
+export const Font = ({ children, ...variantProps }: FontProps) => {
   return (
-    <div className={fontVariants({fontName})}>{children}</div>
+    <div className={fontVariants(variantProps)}>{children}</div>
   );
 };

@@ -46,7 +46,7 @@ export default function ArticleTemplate({
             By
           </Text>
           <Text size={14} style="bold" color="black">
-            {author.name}
+            {author}
           </Text>
           {editor && (
             <>
@@ -54,7 +54,7 @@ export default function ArticleTemplate({
                 • Edited by
               </Text>
               <Text size={14} style="bold" color="black">
-                {editor.name}
+                {editor}
               </Text>
             </>
           )}
@@ -149,9 +149,11 @@ export default function ArticleTemplate({
           <div className="flex flex-col gap-2">
             {sources.map((source, index) => (
               <div key={index} className="leading-relaxed">
-                <Text size={14} color="black">
-                  {source}
-                </Text>
+                <Link href={source.href} newWindow={true} className="underline text-aqua hover:text-forest-green">
+                  <Text size={14} color="black">
+                    {source.text}
+                  </Text>
+                </Link>
               </div>
             ))}
           </div>

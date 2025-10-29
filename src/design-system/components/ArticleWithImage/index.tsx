@@ -1,1 +1,3 @@
-export { default } from './ArticleWithImage';
+import ArticleTemplate from "./ArticleWithImage";
+
+export { ArticleTemplate };

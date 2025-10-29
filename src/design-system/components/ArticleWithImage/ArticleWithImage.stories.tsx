@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ArticleTemplate from "./ArticleWithImage";
-import React from "react";
 
 const meta: Meta<typeof ArticleTemplate> = {
   component: ArticleTemplate,
@@ -19,12 +18,8 @@ type Story = StoryObj<typeof ArticleTemplate>;
 export const Default: Story = {
   args: {
     title: "Demystifying AI's Energy Gluttony: How Simple Optimizations Can Keep LLMs Thirsty for Knowledge, Not Energy",
-    author: {
-      name: "Robert Beliveau",
-    },
-    editor: {
-      name: "Editor",
-    },
+    author: "Robert Beliveau",
+    editor: "Editor",
     categories: ["Technology", "AI", "Sustainability"],
     publishDate: "August 7, 2025",
     featuredImage: {
@@ -214,10 +209,22 @@ export const Default: Story = {
       },
     ],
     sources: [
-      "IEEE Transactions on Circuits and Systems I: Regular Papers (2025). DOI: 10.1109/TCSI.2025.3547732",
-      "ArXiv Preprint (2025). DOI: 10.48550/arXiv.2503.05248",
-      "IEEE/ACM 32nd International Symposium on Quality of Service (2024). DOI: 10.1109/IWQoS61813.2024.10682928",
-      "ArXiv Preprint (2021). DOI: 10.48550/arXiv.2104.10350",
+      {
+        text: "IEEE Transactions on Circuits and Systems I: Regular Papers (2025). DOI: 10.1109/TCSI.2025.3547732",
+        href: "https://doi.org/10.1109/TCSI.2025.3547732",
+      },
+      {
+        text: "ArXiv Preprint (2025). DOI: 10.48550/arXiv.2503.05248",
+        href: "https://doi.org/10.48550/arXiv.2503.05248",
+      },
+      {
+        text: "IEEE/ACM 32nd International Symposium on Quality of Service (2024). DOI: 10.1109/IWQoS61813.2024.10682928",
+        href: "https://doi.org/10.1109/IWQoS61813.2024.10682928",
+      },
+      {
+        text: "ArXiv Preprint (2021). DOI: 10.48550/arXiv.2104.10350",
+        href: "https://doi.org/10.48550/arXiv.2104.10350",
+      },
     ],
   },
 };

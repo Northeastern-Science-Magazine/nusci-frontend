@@ -16,14 +16,6 @@ export const articleTemplateVariants = tv({
   },
 });
 
-export interface Author {
-  name: string;
-}
-
-export interface Editor {
-  name: string;
-}
-
 export type ContentSegment =
   | { type: "text"; content: string }
   | { type: "link"; text: string; href: string; newWindow?: boolean };
@@ -33,16 +25,21 @@ export type ContentBlock =
   | { type: "paragraph"; segments: ContentSegment[] }
   | { type: "quote"; content: string };
 
+export interface Source {
+    text: string;
+    href: string;
+  }
+
 export interface ArticleTemplateProps extends VariantProps<typeof articleTemplateVariants> {
   title: string;
-  author: Author;
-  editor?: Editor;
+  author: string;
+  editor?: string;
   categories?: string[];
   issueNumber?: string;
   publishDate: string;
   featuredImage: ImageProps;
   imageCaption?: string;
   content: ContentBlock[];
-  sources?: string[];
+  sources?: Source[]
   className?: string;
 }

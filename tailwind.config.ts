@@ -29,12 +29,66 @@ const config: Config = {
         coral: "#EE7A51",
         marigold: "#FFC443",
       },
-    },
+      keyframes: {
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'fade-in-down': {
+          '0%': { opacity: '0', transform: 'translate3d(0, -100%, 0)' },
+          '100%': { opacity: '1', transform: 'translate3d(0, 0, 0)' },
+        },
+        'fade-in-up': {
+          '0%': { opacity: '0', transform: 'translate3d(0, 100%, 0)' },
+          '100%': { opacity: '1', transform: 'translate3d(0, 0, 0)' },
+        },
+        'fade-in-left': {
+          '0%': { opacity: '0', transform: 'translate3d(-100%, 0, 0)' },
+          '100%': { opacity: '1', transform: 'translate3d(0, 0, 0)' },
+        },
+        'fade-in-right': {
+          '0%': { opacity: '0', transform: 'translate3d(100%, 0, 0)' },
+          '100%': { opacity: '1', transform: 'translate3d(0, 0, 0)' },
+        },
+        moveUp: {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-0.25rem)" }, 
+        },
+        moveDown: {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(0.25rem)" },
+        },
+        moveRight: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(0.25rem)" }, 
+        },
+        moveLeft: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-0.25rem)" }, 
+        }, 
+        scaleUp: {
+          "0%": { transform: "scale(1)" },    
+          "100%": { transform: "scale(1.05)" },
+        },
+      },
+      animation: {
+        'fade-in': 'fade-in 500ms ease-out forwards',
+        'fade-in-down': 'fade-in-down 500ms ease-out forwards',
+        'fade-in-up': 'fade-in-up 500ms ease-out forwards',
+        'fade-in-left': 'fade-in-left 500ms ease-out forwards',
+        'fade-in-right': 'fade-in-right 500ms ease-out forwards',
+        moveUp: "moveUp 500ms ease-out",
+        moveDown: "moveDown 500ms ease-out",
+        moveRight: "moveRight 500ms ease-out",
+        moveLeft: "moveLeft 500ms ease-out",
+        scaleUp: "scaleUp 500ms ease-out"
+      },
     screens: {
       tablet: "768px",
       laptop: "1024px",
     },
   },
+},
   plugins: [],
 };
 export default config;

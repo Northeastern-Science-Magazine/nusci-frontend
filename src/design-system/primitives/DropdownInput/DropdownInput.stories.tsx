@@ -3,7 +3,7 @@ import { DropdownInput, DropdownItem } from "./DropdownInput";
 import React from "react";
 import Image from "../Image";
 
-const sizes = ["lg", "md", "sm"] as const;
+const sizes = ["xl", "lg", "md", "sm", "xs"] as const;
 const colors = [
     "black",
     "white",
@@ -77,13 +77,31 @@ export const DropdownGallery: Story = {
 
         <div>
           {colors.map((color) => (
-            <div key={color} className="grid grid-cols-3 my-2">
+            <div key={color} className="flex flex-col gap-y-2 my-2">
               {sizes.map((size) => (
                 <div key={`${color}-${size}`}>
                   <DropdownInput size={size} color={color} placeholder="select here">
-                    <DropdownItem color={color} value="item1">{`${color} | ${size} (1)`}</DropdownItem>
-                    <DropdownItem color={color} value="item2">{`${color} | ${size} (2)`}</DropdownItem>
-                    <DropdownItem color={color} value="item3">{`${color} | ${size} (3)`}</DropdownItem>
+                    <DropdownItem size={size} color={color} value="item1">{`${color} | ${size} (1)`}</DropdownItem>
+                    <DropdownItem size={size} color={color} value="item2">{`${color} | ${size} (2)`}</DropdownItem>
+                    <DropdownItem size={size} color={color} value="item3" disabled={true}>
+                      <Image
+                        ratio={16 / 9}
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
+                        alt="cat"
+                        width="w-[20px]"
+                      />
+                    </DropdownItem>
+                    <DropdownItem size={size} color={color} value="item4">{`${color} | ${size} (3)`}</DropdownItem>
+                    <DropdownItem size={size} color={color} value="item5">{`${color} | ${size} (4)`}</DropdownItem>
+                    <DropdownItem size={size} color={color} value="item6">{`${color} | ${size} (5)`}</DropdownItem>
+                    <DropdownItem size={size} color={color} value="item7" disabled={true}>
+                      <Image
+                        ratio={16 / 9}
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
+                        alt="cat"
+                        width="w-[80px]"
+                      />
+                    </DropdownItem>
                   </DropdownInput>
                 </div>
               ))}

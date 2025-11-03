@@ -43,7 +43,7 @@ const articles: Article[] = [
     category: "Physics",
   },
   {
-    title: "Arctic Melting: The Tipping Points",
+    title: "Arctic Melting: The Tipping Points and other such things in order to get a long title",
     href: "/articles/3",
     img: "/eclipse-image.png",
     category: "Environment",
@@ -124,7 +124,7 @@ function LayoutA() {
                         size="sm"
                         shadow="none"
                         border="none"
-                        rounded="rounded"
+                        rounded="none"
                         color="white"
                         subtitle={article.category}
                         title={article.title}
@@ -167,7 +167,7 @@ function LayoutA() {
             </div>
 
             {/* Carousel Placeholder - Extended height to match Recent Articles */}
-            <div className="mb-6 h-[30.98rem] flex items-center justify-center">
+            <div className="mb-6 h-[31.1rem] flex items-center justify-center">
               <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 w-full h-full flex items-center justify-center">
                 <Text size={18} style="bold">
                   Carousel coming soon

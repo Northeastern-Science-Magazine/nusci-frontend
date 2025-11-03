@@ -45,7 +45,7 @@ export const MediaCard = (props: MediaCardProps) => {
           </Text>
         )}
         {title && (
-          <Text size={textSizes.title} className="font-semibold text-inherit">
+          <Text size={textSizes.title} className="font-semibold text-inherit line-clamp-5">
             {title}
           </Text>
         )}
@@ -56,12 +56,8 @@ export const MediaCard = (props: MediaCardProps) => {
         )}
       </Box>
       <Box className="media-container flex-shrink-0">
-        {props.mediaType === "image" && (
-          <Image {...props.imageProps} width="w-full h-full object-cover" />
-        )}
-        {props.mediaType === "video" && (
-          <Video {...props.videoProps} width="w-full h-full object-cover" />
-        )}
+        {props.mediaType === "image" && <Image {...props.imageProps} width="w-full h-full object-cover" />}
+        {props.mediaType === "video" && <Video {...props.videoProps} width="w-full h-full object-cover" />}
       </Box>
     </Box>
   );

@@ -2,7 +2,7 @@ import { tv, VariantProps } from "tailwind-variants";
 import { ReactElement } from "react";
 
 export const dropdownInputVariants = tv({
-  base: "px-3 py-2",
+  base: "px-3 py-2 text-black bg-white hover:bg-stone-100",
   variants: {
     size : {
       xs: "px-2 py-1 text-xs",
@@ -40,7 +40,7 @@ export interface DropdownInputProps extends DropdownInputVariants {
 }
 
 export const dropdownItemVariants = tv({
-  base: "px-3 py-2",
+  base: "px-3 py-2 text-black bg-white hover:bg-stone-100",
   variants: {
     size : {
       xs: "px-2 py-1 text-xs",

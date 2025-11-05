@@ -40,11 +40,16 @@ export const Default: Story = {
           <DropdownItem value="item1">Item 1</DropdownItem>
           <DropdownItem value="item2">Item 2</DropdownItem>
           <DropdownItem value="item3" disabled={true}>
-            Item 3
+            <Image
+              ratio={16 / 9}
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
+              alt="cat"
+              width="w-[40px]"
+            />
           </DropdownItem>
           <DropdownItem value="item4">Item 4</DropdownItem>
           <DropdownItem value="item5">Item 5</DropdownItem>
-          <DropdownItem value="item6">Item 6</DropdownItem>
+          <DropdownItem value="item6">Item 6 With a Really Long Name</DropdownItem>
         </DropdownInput>
       </div>
     );
@@ -56,59 +61,39 @@ export const DropdownGallery: Story = {
   args: {},
   render: (args) => {
     return (
-      <>
-        <div className="grid grid-cols-1 gap-2">
-          <DropdownInput placeholder="select here">
-            <DropdownItem value="item1">Item 1</DropdownItem>
-            <DropdownItem value="item2">Item 2</DropdownItem>
-            <DropdownItem value="item3" disabled={true}>
-              <Image
-                ratio={16 / 9}
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
-                alt="cat"
-                width="w-[40px]"
-              />
-            </DropdownItem>
-            <DropdownItem value="item4">Item 4</DropdownItem>
-            <DropdownItem value="item5">Item 5</DropdownItem>
-            <DropdownItem value="item6">Item 6 With a Really Long Name</DropdownItem>
-          </DropdownInput>
-        </div>
-
-        <div>
-          {colors.map((color) => (
-            <div key={color} className="flex flex-col gap-y-2 my-2">
-              {sizes.map((size) => (
-                <div key={`${color}-${size}`}>
-                  <DropdownInput size={size} color={color} placeholder="select here">
-                    <DropdownItem size={size} color={color} value="item1">{`${color} | ${size} (1)`}</DropdownItem>
-                    <DropdownItem size={size} color={color} value="item2">{`${color} | ${size} (2)`}</DropdownItem>
-                    <DropdownItem size={size} color={color} value="item3" disabled={true}>
-                      <Image
-                        ratio={16 / 9}
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
-                        alt="cat"
-                        width="w-[20px]"
-                      />
-                    </DropdownItem>
-                    <DropdownItem size={size} color={color} value="item4">{`${color} | ${size} (3)`}</DropdownItem>
-                    <DropdownItem size={size} color={color} value="item5">{`${color} | ${size} (4)`}</DropdownItem>
-                    <DropdownItem size={size} color={color} value="item6">{`${color} | ${size} (5)`}</DropdownItem>
-                    <DropdownItem size={size} color={color} value="item7" disabled={true}>
-                      <Image
-                        ratio={16 / 9}
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
-                        alt="cat"
-                        width="w-[80px]"
-                      />
-                    </DropdownItem>
-                  </DropdownInput>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </>
+      <div>
+        {colors.map((color) => (
+          <div key={color} className="flex flex-col gap-y-2 my-2">
+            {sizes.map((size) => (
+              <div key={`${color}-${size}`}>
+                <DropdownInput size={size} color={color} placeholder="select here">
+                  <DropdownItem size={size} color={color} value="item1">{`${color} | ${size} (1)`}</DropdownItem>
+                  <DropdownItem size={size} color={color} value="item2">{`${color} | ${size} (2)`}</DropdownItem>
+                  <DropdownItem size={size} color={color} value="item3" disabled={true}>
+                    <Image
+                      ratio={16 / 9}
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
+                      alt="cat"
+                      width="w-[20px]"
+                    />
+                  </DropdownItem>
+                  <DropdownItem size={size} color={color} value="item4">{`${color} | ${size} (3)`}</DropdownItem>
+                  <DropdownItem size={size} color={color} value="item5">{`${color} | ${size} (4)`}</DropdownItem>
+                  <DropdownItem size={size} color={color} value="item6">{`${color} | ${size} (5)`}</DropdownItem>
+                  <DropdownItem size={size} color={color} value="item7" disabled={true}>
+                    <Image
+                      ratio={16 / 9}
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"
+                      alt="cat"
+                      width="w-[80px]"
+                    />
+                  </DropdownItem>
+                </DropdownInput>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     );
   },
 };

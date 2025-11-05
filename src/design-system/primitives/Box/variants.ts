@@ -39,14 +39,6 @@ export const boxVariants = tv({
       min: "max-w-min",
       max: "max-w-max",
     },
-    height: {
-      full: "h-full",
-      screen: "h-screen",
-      auto: "h-auto",
-      min: "h-min",
-      max: "h-max",
-      fit: "h-fit",
-    },
     minHeight: {
       full: "min-h-full",
       screen: "min-h-screen",
@@ -62,6 +54,14 @@ export const boxVariants = tv({
       min: "max-h-min",
       max: "max-h-max",
       fit: "max-h-fit",
+    },
+    height: {
+      full: "h-full",
+      screen: "h-screen",
+      auto: "h-auto",
+      min: "h-min",
+      max: "h-max",
+      fit: "h-fit",
     },
     top: {
       0: "top-0",
@@ -472,4 +472,9 @@ type HTMLBoxProps = Omit<HTMLAttributes<HTMLDivElement>, "color">;
 export interface BoxProps extends HTMLBoxProps, BoxVariants {
   className?: string;
   children: React.ReactNode;
+  
+  customMinWidth?: string;
+  customMaxWidth?: string;
+  customMinHeight?: string;
+  customMaxHeight?: string;
 }

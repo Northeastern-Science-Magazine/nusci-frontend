@@ -16,19 +16,15 @@ export const fontVariants = tv({
       false: ""
     },
     arial: {
-      true: "font-[Arial]",
+      true: "font-[Arial, sans-serif]",
       false: ""
     },
     georgia: {
-      true: "font-[Georgia]",
+      true: "font-[Georgia, serif]",
       false: ""
     },
     poppins: {
-      true: "font-[Poppins]",
-      false: ""
-    },
-    "comic-sans": {
-      true: "font-[\"Comic Sans MS\",cursive,sans-serif]",
+      true: "font-[Poppins, sans-serif]",
       false: ""
     },
     verdana: {

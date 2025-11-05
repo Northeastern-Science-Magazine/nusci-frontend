@@ -13,7 +13,7 @@ export const dropdownInputVariants = tv({
     },
     color: {
       black: "text-white bg-black hover:bg-black hover:bg-opacity-75",
-      white: "text-black bg-white hover:bg-white hover:bg-opacity-75",
+      white: "text-black bg-white hover:bg-stone-100",
       red: "text-white bg-red-500 hover:bg-red-500 hover:bg-opacity-75",
       aqua: "text-white bg-aqua hover:bg-aqua hover:bg-opacity-75",
       "aqua-light": "text-black bg-aqua-light hover:bg-aqua-light hover:bg-opacity-75",
@@ -51,7 +51,7 @@ export const dropdownItemVariants = tv({
     },
     color: {
       black: "text-white bg-black hover:bg-black hover:bg-opacity-75",
-      white: "text-black bg-white hover:bg-white hover:bg-opacity-75",
+      white: "text-black bg-white hover:bg-stone-100",
       red: "text-white bg-red-500 hover:bg-red-500 hover:bg-opacity-75",
       aqua: "text-white bg-aqua hover:bg-aqua hover:bg-opacity-75",
       "aqua-light": "text-black bg-aqua-light hover:bg-aqua-light hover:bg-opacity-75",

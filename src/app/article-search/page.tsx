@@ -71,7 +71,8 @@ export default function FilterPage() {
     if (title.trim()) filters.push(`Title: “${title.trim()}”`);
     if (contributor.trim())
       filters.push(`Contributor: “${contributor.trim()}”`);
-    if (issueNumber.trim()) filters.push(`Issue #: ${issueNumber.trim()}`);
+    if (issueNumber)
+       filters.push(`Issue #: ${issueNumber}`);
     if (category && category !== "all")
       filters.push(`Category: ${categoryLabel[category]}`);
     if (date !== "any") filters.push(`Date: ${dateLabel[date]}`);
@@ -195,7 +196,6 @@ export default function FilterPage() {
               onChange={setIssueNumber}
             >
               <>
-                <DropdownItem value="all">All issue numbers</DropdownItem>
                 {Array.from(
                   { length: mostRecentIssueNum },
                   (_, i) => i + 1

@@ -7,52 +7,91 @@ import TextInput from "@/design-system/primitives/TextInput";
 import { FlexChild, Flex } from "@/design-system/primitives/Flex";
 import Text from "@/design-system/primitives/Text";
 import MediaCard from "@/components/MediaCard";
-
-type Article = {
-  id: string;
-  title: string;
-  slug: string;
-  createdAt: string;
-  status: string;
-};
+import { PaginationBar } from "@/design-system/components/PaginationBar";
+import { GridRow } from "@/design-system/primitives/Grid";
 
 export default function FilterPage() {
+  const mostRecentIssueNum = 60;
+
   const [title, setTitle] = useState("");
-  const [status, setStatus] = useState("all");
+  const [contributor, setContributor] = useState("");
   const [date, setDate] = useState("any");
   const [sort, setSort] = useState("created_desc");
 
-  const [issueNumber, setIssueNumber] = useState("");
-  const [slug, setSlug] = useState("");
+  const [issueNumber, setIssueNumber] = useState<string>("all");
   const [category, setCategory] = useState<string>("all");
 
-  const [results, setResults] = useState<Article[] | null>(null);
   const [loading, setLoading] = useState(false);
-  
+  const [applied, setApplied] = useState<string[]>([]);
+
   // to handle value for uncontrolled dropdown input
   const [keys, setKeys] = useState({
     category: 0,
-    status: 0,
+    issueNum: 0,
     date: 0,
     sort: 0,
   });
 
-  // need to connect to articles
   const onSearch = async () => {
     setLoading(true);
+    const categoryLabel: Record<string, string> = {
+      all: "All categories",
+      ArtificialIntelligence: "Artificial Intelligence",
+      Biology: "Biology",
+      Chemistry: "Chemistry",
+      ComputerScience: "Computer Science",
+      Culture: "Culture",
+      Health: "Health",
+      Environment: "Environment",
+      Medicine: "Medicine",
+      Newsletter: "Newsletter",
+      Opinion: "Opinion",
+      Physics: "Physics",
+      Psychology: "Psychology",
+      Science: "Science",
+      Space: "Space",
+      Technology: "Technology",
+    };
+
+    const dateLabel: Record<string, string> = {
+      any: "Any time",
+      "7d": "Last 7 days",
+      "30d": "Last 30 days",
+      ytd: "This year",
+    };
+
+    const sortLabel: Record<string, string> = {
+      created_desc: "Most recent",
+      created_asc: "Oldest",
+      title_asc: "Title A–Z",
+      title_desc: "Title Z–A",
+    };
+
+    const filters: string[] = [];
+    if (title.trim()) filters.push(`Title: “${title.trim()}”`);
+    if (contributor.trim())
+      filters.push(`Contributor: “${contributor.trim()}”`);
+    if (issueNumber.trim()) filters.push(`Issue #: ${issueNumber.trim()}`);
+    if (category && category !== "all")
+      filters.push(`Category: ${categoryLabel[category]}`);
+    if (date !== "any") filters.push(`Date: ${dateLabel[date]}`);
+    if (sort !== "created_desc") filters.push(`Sort: ${sortLabel[sort]}`);
+
+    setApplied(filters);
+    setLoading(false);
   };
 
   const onReset = () => {
     setTitle("");
-    setStatus("all");
+    setContributor("");
     setDate("any");
     setSort("created_desc");
     setIssueNumber("");
-    setSlug("");
-    setCategory("");
+    setCategory("all");
+    setApplied([]);
     setKeys((k) => ({
       category: k.category + 1,
-      status: k.status + 1,
+      issueNum: k.issueNum + 1,
       date: k.date + 1,
       sort: k.sort + 1,
     }));
@@ -71,7 +110,7 @@ export default function FilterPage() {
           gap={4}
           className="justify-center items-end"
         >
-          <FlexChild className="flex flex-col gap-1">
+          <FlexChild className="flex-col gap-1">
             <TextInput
               variant="filled"
               size="md"
@@ -82,20 +121,18 @@ export default function FilterPage() {
               placeholder="Enter article title..."
             />
           </FlexChild>
-          <FlexChild className="flex flex-col gap-1">
+          <FlexChild className="flex-col gap-1">
             <TextInput
               variant="filled"
               size="md"
               color="white"
-              type="number"
-              label="Issue #"
-              value={issueNumber}
-              onChange={(value) => setIssueNumber(value)}
-              placeholder="e.g. 42"
+              label="Search by contributor"
+              value={contributor}
+              onChange={(value) => setContributor(value)}
+              placeholder="author, photographer, etc."
             />
           </FlexChild>
-
-          <FlexChild className="flex gap-2 items-end">
+          <FlexChild className="gap-2 items-end">
             <Button
               variant="default"
               size="md"
@@ -116,8 +153,10 @@ export default function FilterPage() {
         </Flex>
 
         <Flex direction="row" wrap="wrap" gap={4} className="justify-center">
-          <FlexChild className="flex flex-col gap-1 min-w-[16rem]">
-            <Text className="text-sm text-neutral-600">Category</Text>
+          <FlexChild className="flex-col gap-1 min-w-[16rem]">
+            <Text size={12} color="black">
+              Category
+            </Text>
             <DropdownInput
               placeholder="Select category"
               key={keys.category}
@@ -145,25 +184,35 @@ export default function FilterPage() {
               <DropdownItem value="Technology">Technology</DropdownItem>
             </DropdownInput>
           </FlexChild>
+          <FlexChild className="flex-col gap-1">
+            <Text size={12} color="black">
+              Issue Number
+            </Text>
 
-          <FlexChild className="flex flex-col gap-1 min-w-[12rem]">
-            <Text className="text-sm text-neutral-600">Status</Text>
             <DropdownInput
-              key={keys.status}
-              placeholder="Select status"
-              onChange={setStatus}
+              placeholder="Select issue"
+              key={keys.issueNum}
+              onChange={setIssueNumber}
             >
-              <DropdownItem value="all">All statuses</DropdownItem>
-              <DropdownItem value="pending">Pending</DropdownItem>
-              <DropdownItem value="print">Print</DropdownItem>
-              <DropdownItem value="online">Online</DropdownItem>
+              <>
+                <DropdownItem value="all">All issue numbers</DropdownItem>
+                {Array.from(
+                  { length: mostRecentIssueNum },
+                  (_, i) => i + 1
+                ).map((n) => (
+                  <DropdownItem key={n} value={String(n)}>
+                    {n}
+                  </DropdownItem>
+                ))}
+              </>
             </DropdownInput>
           </FlexChild>
-
-          <FlexChild className="flex flex-col gap-1 min-w-[12rem]">
-            <Text className="text-sm text-neutral-600">Date</Text>
+          <FlexChild className="flex-col gap-1 min-w-[12rem]">
+            <Text size={12} color="black">
+              Date
+            </Text>
             <DropdownInput
-              key="keys.date"
+              key={keys.date}
               placeholder="Any time"
               onChange={setDate}
             >
@@ -174,8 +223,10 @@ export default function FilterPage() {
             </DropdownInput>
           </FlexChild>
 
-          <FlexChild className="flex flex-col gap-1 min-w-[14rem]">
-            <Text className="text-sm text-neutral-600">Sort</Text>
+          <FlexChild className="flex-col gap-1 min-w-[14rem]">
+            <Text size={12} color="black">
+              Sort
+            </Text>
             <DropdownInput
               key={keys.sort}
               placeholder="Most recent"
@@ -190,7 +241,23 @@ export default function FilterPage() {
         </Flex>
       </Flex>
       <div className="mx-auto max-w-[1216px] rounded-xl border bg-neutral p-6">
-        <Flex direction="row" gap={4} wrap="wrap" className="justify-center">
+        <Flex wrap="wrap" gap={2}>
+          {applied.map((f, i) => (
+            <GridRow
+              key={i}
+              span={1}
+              className="rounded-full px-3 py-1 text-sm border border-neutral-300 bg-white"
+            >
+              {f}
+            </GridRow>
+          ))}
+        </Flex>
+        <Flex
+          direction="row"
+          gap={4}
+          wrap="wrap"
+          className="justify-center p-6"
+        >
           <MediaCard
             className="h-full"
             mediaType="image"
@@ -207,21 +274,6 @@ export default function FilterPage() {
             }}
           ></MediaCard>
           <MediaCard
-            className="h-full"  
-            mediaType="image"
-            mediaDirection="top"
-            rounded="rounded"
-            border="bordered"
-            title="Vertical Top"
-            size="sm"
-            subtitle={""}
-            description={""}
-            imageProps={{
-              src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop",
-              alt: "Sample image",
-            }}
-          ></MediaCard>
-          <MediaCard
             className="h-full"
             mediaType="image"
             mediaDirection="top"
@@ -252,7 +304,7 @@ export default function FilterPage() {
             }}
           ></MediaCard>
           <MediaCard
-            className="h-full"  
+            className="h-full"
             mediaType="image"
             mediaDirection="top"
             rounded="rounded"
@@ -284,29 +336,15 @@ export default function FilterPage() {
             ‹
           </Button>
         </FlexChild>
-
         <FlexChild className="gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="px-3"
-            aria-current="page"
-          >
-            1
-          </Button>
-          <Button variant="outline" size="sm" className="px-3">
-            2
-          </Button>
-          <Button variant="outline" size="sm" className="px-3">
-            3
-          </Button>
-          <Button variant="outline" size="sm" className="px-3">
-            4
-          </Button>
-          <span className="px-2 text-neutral-400 select-none">…</span>
-          <Button variant="outline" size="sm" className="px-3">
-            10
-          </Button>
+          <PaginationBar
+            maxItems={5}
+            activeItem={1}
+            onClickFunctionGenerator={(index) => () =>
+              alert(`Clicked on page ${index}`)}
+            onClickLeft={() => alert("Clicked Left")}
+            onClickRight={() => alert("Clicked Right")}
+          ></PaginationBar>
         </FlexChild>
 
         <FlexChild>

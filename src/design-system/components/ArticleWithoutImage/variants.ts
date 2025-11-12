@@ -16,7 +16,7 @@ export const articleTemplateVariants = tv({
   },
 });
 
-// Reuse Icon component's color type
+// Using the colors from the Icon primitive
 export type IconColor = NonNullable<IconProps["color"]>;
 export type IconType = IconName;
 

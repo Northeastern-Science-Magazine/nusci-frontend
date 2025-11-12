@@ -22,7 +22,6 @@ export default function ArticleWithoutImage({
   return (
     <>
       <article className={clsx(articleTemplateVariants(variantProps), className)}>
-      {/* Header Section */}
       <header className="mb-8 mt-8">
         {/* Title */}
         <div className="mb-4">
@@ -146,7 +145,6 @@ export default function ArticleWithoutImage({
         </div>
       )}
 
-      {/* Footer */}
     </article>
     </>
   );

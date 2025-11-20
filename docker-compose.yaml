@@ -1,4 +1,9 @@
 services:
+  backend:
+    build: .
+    container_name: nusci-backend
+    ports:
+      - 9999:9999
   app:
     build: .
     container_name: nusci-frontend

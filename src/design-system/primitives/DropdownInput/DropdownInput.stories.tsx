@@ -111,12 +111,7 @@ export const DropdownGallery: Story = {
                     color={color}
                     value="item6"
                   >{`${color} | ${size} (5)`}</DropdownItem>
-                  <DropdownItem
-                    size={size}
-                    color={color}
-                    value="item7"
-                    disabled={true}
-                  >
+                  <DropdownItem size={size} color={color} value="item7">
                     <Image
                       ratio={16 / 9}
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"

@@ -46,7 +46,7 @@ export function DropdownInput({
       <Select.Trigger
         className={clsx(
           dropdownInputVariants(variantProps),
-          "flex h-[35px] justify-between items-center gap-[12px] rounded leading-none outline-none",
+          "flex justify-between items-center gap-[12px] rounded leading-none outline-none",
           className
         )}
       >

@@ -22,7 +22,8 @@ export const imageVariants = tv({
 export type ImageVariants = VariantProps<typeof imageVariants>;
 
 export interface ImageProps extends ImageVariants {
-  ratio: number;
+  ratio?: number;
+  raw?: boolean;
   src: string;
   alt: string;
   width: string;

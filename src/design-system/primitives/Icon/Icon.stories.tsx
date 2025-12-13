@@ -40,6 +40,8 @@ const icons: IconProps["icon"][] = [
   "trash",
   "zoomin",
   "zoomout",
+  "cross",
+  "email",
 ];
 
 const meta: Meta<typeof Icon> = {

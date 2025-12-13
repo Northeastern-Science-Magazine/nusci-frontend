@@ -1,7 +1,10 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Dialog } from "./Dialog";
+import { Dialog, DialogTrigger, DialogWindow } from "./Dialog";
 import Button from "../Button";
+import Box from "../Box";
+import Text from "../Text";
+import { Grid, GridCol, GridRow } from "../Grid";
 
 const colors = [
   "black",
@@ -20,55 +23,90 @@ const colors = [
   "marigold",
 ] as const;
 
-const sizes = ["sm", "md", "lg"] as const;
+const sizes = ["xs", "sm", "md", "lg", "xl"] as const;
 
-const meta: Meta<typeof Dialog> = {
+type DialogStoryArgs = {
+  windowSize: (typeof sizes)[number];
+  windowColor: (typeof colors)[number];
+};
+
+const meta: Meta<DialogStoryArgs> = {
   component: Dialog,
   title: "Primitives/Dialog",
   argTypes: {
-    size: { control: "select", options: sizes },
-    color: { control: "select", options: colors },
-    showClose: { control: "boolean" },
+    windowSize: {
+      control: "select",
+      options: sizes,
+    },
+    windowColor: {
+      control: "select",
+      options: colors,
+    },
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof Dialog>;
+type Story = StoryObj<DialogStoryArgs>;
 
-// default story
 export const Default: Story = {
   args: {
-    size: "md",
-    color: "white",
-    title: "Example Dialog",
-    description: "Description.",
-    showClose: true,
-    footer: (
-      <>
-        <Button className="rounded-md bg-black text-white px-3 py-1">
-          Confirm
-        </Button>
-      </>
-    ),
+    windowSize: "md",
+    windowColor: "white",
   },
   render: (args) => {
-    const [open, setOpen] = React.useState(true);
-
     return (
-      <div style={{ minHeight: 300 }}>
-        <Dialog
-          {...args}
-          open={open}
-          onOpenChange={setOpen}
-          trigger={
-            <Button variant= "default" size = "md">
-              Open Dialog
-            </Button>
-          }
-        >
-          <div className="mt-4">Body content goes here.</div>
-        </Dialog>
-      </div>
+      <Dialog>
+        <DialogTrigger>
+          <Button>Open Dialog</Button>
+        </DialogTrigger>
+
+        <DialogWindow size={args.windowSize} color={args.windowColor}>
+          <Box p={4}>
+            <Text size={16}>Customizable Dialog Content</Text>
+            <Text>
+              Size: <strong>{args.windowSize}</strong>
+            </Text>
+            <Text>
+              Color: <strong>{args.windowColor}</strong>
+            </Text>
+          </Box>
+        </DialogWindow>
+      </Dialog>
+    );
+  },
+};
+
+export const Gallery: Story = {
+  render: () => {
+    return (
+      <>
+        {colors.map((color, i) => (
+          <Grid col span={5} key={i}>
+            {sizes.map((size) => (
+              <GridCol key={`${color}-${size}`} span={1}>
+                <Box px={1} py={2}>
+                  <Dialog>
+                    <DialogTrigger>
+                      <Button color={color} className="w-full">
+                        {size.toUpperCase()}
+                      </Button>
+                    </DialogTrigger>
+
+                    <DialogWindow size={size} color={color}>
+                      <Box p={4}>
+                        <Text size={16}>{size.toUpperCase()} Dialog</Text>
+                        <Text>
+                          Window color: <strong>{color}</strong>
+                        </Text>
+                      </Box>
+                    </DialogWindow>
+                  </Dialog>
+                </Box>
+              </GridCol>
+            ))}
+          </Grid>
+        ))}
+      </>
     );
   },
 };

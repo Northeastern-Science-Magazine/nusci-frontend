@@ -1,22 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Font } from "./Font";
 import React from "react";
-import Card from "../Card"
+import Card from "../Card";
+import Box from "../Box";
 
-const fontNames = 
-["sans",
-"serif", 
-"mono",
-"arial",
-"georgia",
-"poppins",
-"comic-sans",
-"verdana",
-"tahoma",
-"lucida-console",
-"futura",
+const fontNames = [
+  "sans",
+  "serif",
+  "mono",
+  "arial",
+  "georgia",
+  "poppins",
+  "verdana",
+  "tahoma",
+  "lucida-console",
+  "futura",
 ] as const;
-
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Font> = {
@@ -29,12 +28,11 @@ const meta: Meta<typeof Font> = {
     arial: { control: "boolean" },
     georgia: { control: "boolean" },
     poppins: { control: "boolean" },
-    "comic-sans": {control:"boolean"},
-    verdana: {control:"boolean"},
-    tahoma: {control:"boolean"},
-    courier: {control:"boolean"},
-    "lucida-console": {control:"boolean"},
-    futura: {control:"boolean"},
+    verdana: { control: "boolean" },
+    tahoma: { control: "boolean" },
+    courier: { control: "boolean" },
+    "lucida-console": { control: "boolean" },
+    futura: { control: "boolean" },
   },
 };
 
@@ -45,25 +43,41 @@ type Story = StoryObj<typeof Font>;
 export const Default: Story = {
   args: {
     children: "Hello",
-    sans: true
+    sans: true,
   },
   render: (args) => <Font {...args}>{args.children}</Font>,
-}
+};
+
+/** Scoped Fonts */
+export const NestedFonts: Story = {
+  args: {},
+  render: () => {
+    return (
+      <Box>
+        <Font arial>
+          This should be arial font.
+          <Font courier> This should be courier font.</Font>
+          This should be arial font.
+        </Font>
+      </Box>
+    );
+  },
+};
 
 /** Gallery Story for all Button Variants */
 export const Gallery: Story = {
   args: {},
   render: () => {
     return (
-      <div>
+      <Box>
         {fontNames.map((font) => {
-            return (
-            <Font {...{ [font]: true }}>
-                <Card height="auto" width="auto" color="red"> {font} </Card>
+          return (
+            <Font {...{ [font]: true }} key={font}>
+              <Card>{font}</Card>
             </Font>
-            );
+          );
         })}
-        </div>
+      </Box>
     );
   },
 };

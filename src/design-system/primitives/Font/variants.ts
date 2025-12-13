@@ -5,47 +5,47 @@ export const fontVariants = tv({
   variants: {
     sans: {
       true: "font-sans",
-      false: ""
+      false: "",
     },
     serif: {
       true: "font-serif",
-      false: ""
+      false: "",
     },
     mono: {
       true: "font-mono",
-      false: ""
+      false: "",
     },
     arial: {
-      true: "font-[Arial, sans-serif]",
-      false: ""
+      true: "font-[Arial,sans-serif]",
+      false: "",
     },
     georgia: {
-      true: "font-[Georgia, serif]",
-      false: ""
+      true: "font-[Georgia,serif]",
+      false: "",
     },
     poppins: {
-      true: "font-[Poppins, sans-serif]",
-      false: ""
+      true: "font-[Poppins,sans-serif]",
+      false: "",
     },
     verdana: {
       true: "font-[Verdana,sans-serif]",
-      false: ""
+      false: "",
     },
     tahoma: {
       true: "font-[Tahoma,sans-serif]",
-      false: ""
+      false: "",
     },
     courier: {
       true: "font-[Courier,monospace]",
-      false: ""
+      false: "",
     },
     "lucida-console": {
-      true: "font-[\"Lucida Console\",monospace]",
-      false: ""
+      true: 'font-["Lucida Console",monospace]',
+      false: "",
     },
     futura: {
       true: "font-[Futura,sans-serif]",
-      false: ""
+      false: "",
     },
   },
   defaultVariants: {
@@ -54,5 +54,5 @@ export const fontVariants = tv({
 });
 
 export interface FontProps extends VariantProps<typeof fontVariants> {
-  children: React.ReactNode
+  children: React.ReactNode;
 }

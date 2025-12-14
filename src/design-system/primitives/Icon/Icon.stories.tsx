@@ -38,6 +38,7 @@ const icons: IconProps["icon"][] = [
   "trash",
   "zoomin",
   "zoomout",
+  "cross",
   "email",
 ];
 

@@ -26,7 +26,7 @@ export const buttonVariants = tv({
         "text-white bg-forest-green border-forest-green hover:bg-forest-green hover:border-forest-green focus:ring-forest-green",
       "sage-green":
         "text-black bg-sage-green border-sage-green hover:bg-sage-green hover:border-sage-green focus:ring-sage-green",
-      border: "text-white bg-border border-border hover:bg-border hover:border-border focus:ring-border",
+      border: "text-black bg-border border-border hover:bg-border hover:border-border focus:ring-border",
       neutral: "text-black bg-neutral border-neutral hover:bg-neutral hover:border-neutral focus:ring-neutral",
       purple: "text-white bg-purple border-purple hover:bg-purple hover:border-purple focus:ring-purple",
       pink: "text-black bg-pink border-pink hover:bg-pink hover:border-pink focus:ring-pink",

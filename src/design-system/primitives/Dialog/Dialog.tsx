@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as RDialog from "@radix-ui/react-dialog";
 
-import { DialogProps, DialogTriggerProps, DialogWindowProps, dialogWindowVariants } from "./variants";
+import { DialogProps, DialogTriggerProps, DialogWindowProps, dialogWindowVariantsCN } from "./variants";
 import clsx from "clsx";
 import Icon from "../Icon";
 import Box from "../Box";
@@ -19,7 +19,7 @@ export function DialogWindow({ children, className, ...variantProps }: DialogWin
     <RDialog.Portal>
       <Box animation="fadeIn" duration={200}>
         <RDialog.Overlay className="fixed inset-0 bg-black/50" />
-        <RDialog.Content className={clsx(dialogWindowVariants(variantProps), className)}>
+        <RDialog.Content className={clsx(dialogWindowVariantsCN(variantProps), className)}>
           {children}
           <RDialog.Close asChild>
             {/* Need Button Close For Accessibility */}

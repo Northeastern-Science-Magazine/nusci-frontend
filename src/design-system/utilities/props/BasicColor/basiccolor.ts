@@ -10,7 +10,7 @@ export const basicColorVariants = tv({
       "aqua-light": "text-black bg-aqua-light",
       "forest-green": "text-white bg-forest-green",
       "sage-green": "text-black bg-sage-green",
-      border: "text-white bg-border",
+      border: "text-black bg-border",
       neutral: "text-black bg-neutral",
       purple: "text-white bg-purple",
       pink: "text-black bg-pink",

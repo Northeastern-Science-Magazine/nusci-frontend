@@ -1,7 +1,6 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const animationVariants = tv({
-  base: "",
   variants: {
     animation: {
       fadeIn: "opacity-0 animate-fadeIn",
@@ -25,7 +24,6 @@ export const animationVariants = tv({
       700: "[animation-duration:700ms]",
     },
   },
-  defaultVariants: {},
 });
 
 export type AnimationProps = VariantProps<typeof animationVariants>;

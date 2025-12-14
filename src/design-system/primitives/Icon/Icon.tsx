@@ -1,6 +1,6 @@
 import { type IconProps, iconMap, iconVariants } from "./variants";
 import clsx from "clsx";
-import { type AnimationProps, animationVariants } from "../../utilities/animation"
+import { type AnimationProps, animationVariants } from "../../utilities/props/Animation/animation";
 
 /**
  * Icon Component
@@ -21,7 +21,7 @@ export default function Icon({ icon, color, size, className, onClick, animation 
       onClick={onClick}
       className={clsx(
         iconVariants({ color, size }), // text color + w/h
-        animationVariants({animation}),
+        animationVariants({ animation }),
         className
       )}
     />

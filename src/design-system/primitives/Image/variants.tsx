@@ -9,7 +9,7 @@ export const imageVariants = tv({
     },
     emphasis: {
       default: "",
-      emphasis: "shadow-[0_2px_10px] shadow-blackA4",
+      emphasis: "shadow-lg",
     },
   },
   defaultVariants: {

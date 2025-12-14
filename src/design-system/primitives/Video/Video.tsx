@@ -2,29 +2,22 @@ import * as AspectRatio from "@radix-ui/react-aspect-ratio";
 import { VideoProps, videoVariants } from "./variants";
 
 /**
- * Video component
+ * Video component.
  *
- * @param { VideoProps } props
+ * Use boolean prop `raw` to render a video without
+ * Radix Aspect Ratio.
+ *
+ * @param {VideoProps} props
  * @returns Video Component
  */
-export const Video = ({src, alt, width, ratio, poster, ...props}: VideoProps) => {
-  return (
-    <div className="w-full h-full object-cover">
-      {ratio ?
-      <AspectRatio.Root ratio={ratio}>
-        <video 
-        className={videoVariants(props)} 
-         
-          {...props}
-        />
-      </AspectRatio.Root>
-      : 
-       <video 
-        className={videoVariants(props)} 
-         
-          {...props}
-        />
-       }
+export const Video = ({ ratio, src, poster, width, raw = false, ...props }: VideoProps) => {
+  const video = <video src={src} poster={poster} className={videoVariants(props)} {...props} />;
+
+  return raw ? (
+    video
+  ) : (
+    <div className={width}>
+      <AspectRatio.Root ratio={ratio}>{video}</AspectRatio.Root>
     </div>
   );
 };

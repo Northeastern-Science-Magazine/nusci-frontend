@@ -46,7 +46,6 @@ export const textVariants = tv({
     },
   },
   defaultVariants: {
-    color: "black",
     size: 12,
   },
 });

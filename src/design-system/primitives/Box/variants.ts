@@ -1,5 +1,6 @@
 import { tv, type VariantProps } from "tailwind-variants";
 import React, { HTMLAttributes } from "react";
+import { AnimationProps } from "@/design-system/utilities/animation";
 
 // Tailwind Variants Object
 export const boxVariants = tv({
@@ -469,7 +470,7 @@ export type BoxVariants = VariantProps<typeof boxVariants>;
 type HTMLBoxProps = Omit<HTMLAttributes<HTMLDivElement>, "color">;
 
 /** Export ButtonProps as one type */
-export interface BoxProps extends HTMLBoxProps, BoxVariants {
+export interface BoxProps extends HTMLBoxProps, BoxVariants, AnimationProps {
   className?: string;
   children: React.ReactNode;
   

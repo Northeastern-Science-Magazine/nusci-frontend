@@ -1,5 +1,6 @@
 import { type IconProps, iconMap, iconVariants } from "./variants";
 import clsx from "clsx";
+import { type AnimationProps, animationVariants } from "../../utilities/animation"
 
 /**
  * Icon Component
@@ -7,7 +8,7 @@ import clsx from "clsx";
  * @param { IconProps } props
  * @returns Icon Component
  */
-export default function Icon({ icon, color, size, className, onClick }: IconProps) {
+export default function Icon({ icon, color, size, className, onClick, animation }: IconProps & AnimationProps) {
   const LucideIcon = iconMap[icon];
 
   if (!LucideIcon) {
@@ -20,6 +21,7 @@ export default function Icon({ icon, color, size, className, onClick }: IconProp
       onClick={onClick}
       className={clsx(
         iconVariants({ color, size }), // text color + w/h
+        animationVariants({animation}),
         className
       )}
     />

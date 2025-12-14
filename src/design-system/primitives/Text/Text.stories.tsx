@@ -49,8 +49,6 @@ type Story = StoryObj<typeof Text>;
 export const Default: Story = {
   args: {
     children: "The Quick Brown Fox Jumps Over The Lazy Dog",
-    size: 12,
-    color: "black",
   },
 };
 

@@ -27,6 +27,8 @@ const icons: IconProps["icon"][] = [
   "share",
   "arrowright",
   "arrowleft",
+  "arrowup", 
+  "arrowdown",  
   "bookmark",
   "user",
   "ellipsis",

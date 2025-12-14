@@ -1,3 +1,4 @@
+import { AnimationVariants } from "@/design-system/utilities/animation";
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const dialogTriggerVariants = tv({});

@@ -1,6 +1,6 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
-export const imageVariants = tv({
+export const videoVariants = tv({
   base: "w-full h-full object-cover",
   variants: {
     rounded: {
@@ -13,18 +13,22 @@ export const imageVariants = tv({
     },
   },
   defaultVariants: {
-    ratio: "1/1",
     rounded: "default",
     emphasis: "default",
   },
 });
 
-export type ImageVariants = VariantProps<typeof imageVariants>;
+export type VideoVariants = VariantProps<typeof videoVariants>;
 
-export interface ImageProps extends ImageVariants {
+export interface VideoProps extends VideoVariants {
+  src: string;
   ratio?: number;
   raw?: boolean;
-  src: string;
-  alt: string;
   width: string;
+  controls?: boolean;
+  muted?: boolean;
+  autoPlay?: boolean;
+  loop?: boolean;
+  preload?: string;
+  poster?: string;
 }

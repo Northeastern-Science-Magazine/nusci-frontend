@@ -38,6 +38,7 @@ const icons: IconProps["icon"][] = [
   "trash",
   "zoomin",
   "zoomout",
+  "cross",
   "email",
 ];
 
@@ -69,6 +70,7 @@ export const Default: Story = {
     icon: "search",
     color: "black",
     size: "md",
+    animation: "scale125Hover"
   },
 };
 

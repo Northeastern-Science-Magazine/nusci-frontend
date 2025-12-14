@@ -70,6 +70,7 @@ export const Default: Story = {
     icon: "search",
     color: "black",
     size: "md",
+    animation: "scale125Hover"
   },
 };
 

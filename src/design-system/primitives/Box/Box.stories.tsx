@@ -69,35 +69,19 @@ const meta: Meta<typeof Box> = {
     },
     minWidth: {
       control: "select",
-      options: minWidths
+      options: minWidths,
     },
     maxWidth: {
-      control: "select", 
-      options: maxWidths
+      control: "select",
+      options: maxWidths,
     },
     minHeight: {
       control: "select",
-      options: minHeights
+      options: minHeights,
     },
     maxHeight: {
       control: "select",
-      options: maxHeights
-    },
-    customMinWidth: {
-      control: "text",
-      description: "Custom min-width (ex: '100px', '50%', '1fr')"
-    },
-    customMaxWidth: {
-      control: "text", 
-      description: "Custom max-width (ex: '100px', '50%', '1fr')"
-    },
-    customMinHeight: {
-      control: "text",
-      description: "Custom min-height (ex: '100px', '50%', '1fr')"
-    },
-    customMaxHeight: {
-      control: "text",
-      description: "Custom max-height (ex: '100px', '50%', '1fr')"
+      options: maxHeights,
     },
     top: {
       control: "select",
@@ -207,12 +191,7 @@ export const MinMaxGallery: Story = {
                   <div className="flex flex-col">
                     {maxWidths.map((maxWidth) => (
                       <div key={`min-${minWidth}-max-${maxWidth}`} className="flex justify-left p-2">
-                        <Box
-                          minWidth={minWidth}
-                          maxWidth={maxWidth}
-                          color={backgroundColor}
-                          p={4}
-                        >
+                        <Box minWidth={minWidth} maxWidth={maxWidth} color={backgroundColor} p={4}>
                           min-w: {minWidth}, max-w: {maxWidth}
                         </Box>
                       </div>
@@ -227,12 +206,7 @@ export const MinMaxGallery: Story = {
                   <div className="flex flex-col">
                     {maxHeights.map((maxHeight) => (
                       <div key={`minH-${minHeight}-maxH-${maxHeight}`} className="flex justify-left p-2">
-                        <Box
-                          minHeight={minHeight}
-                          maxHeight={maxHeight}
-                          color={backgroundColor}
-                          p={4}
-                        >
+                        <Box minHeight={minHeight} maxHeight={maxHeight} color={backgroundColor} p={4}>
                           min-h: {minHeight}, max-h: {maxHeight}
                         </Box>
                       </div>
@@ -247,7 +221,6 @@ export const MinMaxGallery: Story = {
     );
   },
 };
-
 
 /** Gallery Story for some box variants with ranging background color, width, and height */
 export const Gallery: Story = {

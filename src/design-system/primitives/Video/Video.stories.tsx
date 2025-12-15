@@ -47,7 +47,7 @@ export const Default: Story = {
   args: {
     ratio: 16 / 9,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-    width: "w-[400px]",
+    width: 400,
     emphasis: "default",
     rounded: "default",
     controls: true,
@@ -59,7 +59,7 @@ export const AspectRatio: Story = {
   args: {
     ratio: 1,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-    width: "w-[300px]",
+    width: 324,
     emphasis: "default",
     rounded: "default",
     controls: true,
@@ -71,7 +71,7 @@ export const Rounded: Story = {
   args: {
     ratio: 16 / 9,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-    width: "w-[400px]",
+    width: 400,
     emphasis: "default",
     rounded: "rounded",
     controls: true,
@@ -83,7 +83,7 @@ export const WithEmphasis: Story = {
   args: {
     ratio: 16 / 9,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-    width: "w-[400px]",
+    width: 400,
     emphasis: "emphasis",
     rounded: "default",
     controls: true,
@@ -95,7 +95,7 @@ export const AutoplayLoop: Story = {
   args: {
     ratio: 16 / 9,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-    width: "w-[400px]",
+    width: 400,
     emphasis: "default",
     rounded: "default",
     controls: false,
@@ -109,7 +109,7 @@ export const WithPoster: Story = {
   args: {
     ratio: 16 / 9,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-    width: "w-[400px]",
+    width: 400,
     emphasis: "default",
     rounded: "default",
     controls: true,
@@ -133,7 +133,7 @@ export const Gallery: Story = {
                   rounded={roundedVariant}
                   emphasis={emphasisVariant}
                   src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-                  width="w-[200px]"
+                  width={256}
                   controls={true}
                   muted={true}
                   preload="metadata"

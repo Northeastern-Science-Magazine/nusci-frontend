@@ -1,4 +1,11 @@
+import { animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
 import * as Switch from "@radix-ui/react-switch";
+import clsx from "clsx";
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const toggleVariants = tv({
@@ -33,8 +40,25 @@ export interface ToggleProps
       React.ComponentPropsWithoutRef<typeof Switch.Root>,
       "color" | "checked" | "defaultChecked" | "onCheckedChange" | "defaultValue" | "value" | "onChange"
     >,
-    VariantProps<typeof toggleVariants> {
+    VariantProps<typeof toggleVariants>,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    SizeProps {
   defaultValue?: boolean;
   value?: boolean;
   onChange?: (value: boolean) => void;
 }
+
+export const toggleVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    toggleVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );

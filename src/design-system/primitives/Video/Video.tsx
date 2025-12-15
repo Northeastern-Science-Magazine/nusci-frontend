@@ -1,5 +1,6 @@
 import * as AspectRatio from "@radix-ui/react-aspect-ratio";
-import { VideoProps, videoVariants } from "./variants";
+import { VideoProps, videoVariantsCN } from "./variants";
+import Box from "../Box";
 
 /**
  * Video component.
@@ -10,14 +11,45 @@ import { VideoProps, videoVariants } from "./variants";
  * @param {VideoProps} props
  * @returns Video Component
  */
-export const Video = ({ ratio, src, poster, width, raw = false, ...props }: VideoProps) => {
-  const video = <video src={src} poster={poster} className={videoVariants(props)} {...props} />;
-
+export const Video = ({
+  ratio,
+  src,
+  raw = false,
+  controls,
+  muted,
+  autoPlay,
+  loop,
+  preload,
+  poster,
+  className,
+  width,
+  ...props
+}: VideoProps) => {
   return raw ? (
-    video
+    <video
+      src={src}
+      controls={controls}
+      muted={muted}
+      autoPlay={autoPlay}
+      loop={loop}
+      preload={preload}
+      poster={poster}
+      className={videoVariantsCN({ ...props, width }, className)}
+    />
   ) : (
-    <div className={width}>
-      <AspectRatio.Root ratio={ratio}>{video}</AspectRatio.Root>
-    </div>
+    <Box width={width}>
+      <AspectRatio.Root ratio={ratio}>
+        <video
+          src={src}
+          controls={controls}
+          muted={muted}
+          autoPlay={autoPlay}
+          loop={loop}
+          preload={preload}
+          poster={poster}
+          className={videoVariantsCN(props, className)}
+        />
+      </AspectRatio.Root>
+    </Box>
   );
 };

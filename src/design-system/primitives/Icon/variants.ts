@@ -18,7 +18,14 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { InstagramLogoIcon, LinkedInLogoIcon, Cross2Icon} from "@radix-ui/react-icons";
+import { InstagramLogoIcon, LinkedInLogoIcon, Cross2Icon } from "@radix-ui/react-icons";
+import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
+import clsx from "clsx";
 
 export const iconVariants = tv({
   base: "items-center justify-center",
@@ -85,8 +92,27 @@ export const iconMap = {
 export type IconName = keyof typeof iconMap;
 
 /** Export IconProps as one type */
-export interface IconProps extends IconVariants {
+export interface IconProps
+  extends IconVariants,
+    AnimationProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    SizeProps {
   icon: IconName;
   className?: string;
   onClick?: () => void;
 }
+
+export const iconVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    iconVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );

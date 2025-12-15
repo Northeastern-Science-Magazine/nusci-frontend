@@ -36,7 +36,7 @@ export const MediaCard = (props: MediaCardProps) => {
             <Image {...props.imageProps} raw width="w-full h-full object-cover" />
           </div>
         )}
-        {props.mediaType === "video" && <Video {...props.videoProps} width="w-full h-full object-cover" />}
+        {props.mediaType === "video" && <Video {...props.videoProps} className="w-full h-full object-cover" />}
       </Box>
     </Box>
   );

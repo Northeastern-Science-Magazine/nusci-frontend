@@ -1,5 +1,12 @@
 import { tv, VariantProps } from "tailwind-variants";
 import { ReactElement } from "react";
+import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
+import clsx from "clsx";
 
 export const dropdownInputVariants = tv({
   base: "px-3 py-2 text-black bg-white hover:bg-stone-100",
@@ -16,12 +23,9 @@ export const dropdownInputVariants = tv({
       white: "text-black bg-white hover:bg-stone-100",
       red: "text-white bg-red-500 hover:bg-red-500 hover:bg-opacity-75",
       aqua: "text-white bg-aqua hover:bg-aqua hover:bg-opacity-75",
-      "aqua-light":
-        "text-black bg-aqua-light hover:bg-aqua-light hover:bg-opacity-75",
-      "forest-green":
-        "text-white bg-forest-green hover:bg-forest-green hover:bg-opacity-75",
-      "sage-green":
-        "text-black bg-sage-green hover:bg-sage-green hover:bg-opacity-75",
+      "aqua-light": "text-black bg-aqua-light hover:bg-aqua-light hover:bg-opacity-75",
+      "forest-green": "text-white bg-forest-green hover:bg-forest-green hover:bg-opacity-75",
+      "sage-green": "text-black bg-sage-green hover:bg-sage-green hover:bg-opacity-75",
       border: "text-black bg-border hover:bg-border hover:bg-opacity-75",
       neutral: "text-black bg-neutral hover:bg-neutral hover:bg-opacity-75",
       purple: "text-white bg-purple hover:bg-purple hover:bg-opacity-75",
@@ -35,12 +39,31 @@ export const dropdownInputVariants = tv({
 
 export type DropdownInputVariants = VariantProps<typeof dropdownInputVariants>;
 
-export interface DropdownInputProps extends DropdownInputVariants {
+export interface DropdownInputProps
+  extends DropdownInputVariants,
+    AnimationProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    SizeProps {
   onChange?: (value: string) => void;
   className?: string;
   children: ReactElement<DropdownItemProps> | ReactElement<DropdownItemProps>[];
   placeholder?: string;
 }
+
+export const dropdownInputVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    dropdownInputVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );
 
 export const dropdownItemVariants = tv({
   base: "px-3 py-2 text-black bg-white hover:bg-stone-100",
@@ -57,12 +80,9 @@ export const dropdownItemVariants = tv({
       white: "text-black bg-white hover:bg-stone-100",
       red: "text-white bg-red-500 hover:bg-red-500 hover:bg-opacity-75",
       aqua: "text-white bg-aqua hover:bg-aqua hover:bg-opacity-75",
-      "aqua-light":
-        "text-black bg-aqua-light hover:bg-aqua-light hover:bg-opacity-75",
-      "forest-green":
-        "text-white bg-forest-green hover:bg-forest-green hover:bg-opacity-75",
-      "sage-green":
-        "text-black bg-sage-green hover:bg-sage-green hover:bg-opacity-75",
+      "aqua-light": "text-black bg-aqua-light hover:bg-aqua-light hover:bg-opacity-75",
+      "forest-green": "text-white bg-forest-green hover:bg-forest-green hover:bg-opacity-75",
+      "sage-green": "text-black bg-sage-green hover:bg-sage-green hover:bg-opacity-75",
       border: "text-black bg-border hover:bg-border hover:bg-opacity-75",
       neutral: "text-black bg-neutral hover:bg-neutral hover:bg-opacity-75",
       purple: "text-white bg-purple hover:bg-purple hover:bg-opacity-75",
@@ -76,9 +96,28 @@ export const dropdownItemVariants = tv({
 
 export type DropdownItemVariants = VariantProps<typeof dropdownItemVariants>;
 
-export interface DropdownItemProps extends DropdownItemVariants {
+export interface DropdownItemProps
+  extends DropdownItemVariants,
+    AnimationProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    SizeProps {
   className?: string;
   value: string;
   children: React.ReactNode;
   disabled?: boolean;
 }
+
+export const dropdownItemVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    dropdownItemVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );

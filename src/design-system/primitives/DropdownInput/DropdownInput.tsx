@@ -1,27 +1,16 @@
 import { Select } from "radix-ui";
 import clsx from "clsx";
 
-import {
-  dropdownItemVariants,
-  DropdownInputProps,
-  DropdownItemProps,
-  dropdownInputVariants,
-} from "./variants";
+import { DropdownInputProps, DropdownItemProps, dropdownInputVariantsCN, dropdownItemVariantsCN } from "./variants";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
-export function DropdownItem({
-  className,
-  value,
-  children,
-  disabled,
-  ...variantProps
-}: DropdownItemProps) {
+export function DropdownItem({ className, value, children, disabled, ...variantProps }: DropdownItemProps) {
   return (
     <Select.Item
       value={value}
       disabled={disabled}
       className={clsx(
-        dropdownItemVariants(variantProps),
+        dropdownItemVariantsCN(variantProps),
         "relative flex px-[25px] text-[13px] select-none items-center leading-none data-[disabled]:pointer-events-none data-[disabled]:text-neutral data-[highlighted]:outline-none",
         className
       )}
@@ -34,18 +23,12 @@ export function DropdownItem({
   );
 }
 
-export function DropdownInput({
-  onChange,
-  className,
-  children,
-  placeholder,
-  ...variantProps
-}: DropdownInputProps) {
+export function DropdownInput({ onChange, className, children, placeholder, ...props }: DropdownInputProps) {
   return (
     <Select.Root onValueChange={onChange}>
       <Select.Trigger
         className={clsx(
-          dropdownInputVariants(variantProps),
+          dropdownInputVariantsCN(props),
           "flex justify-between items-center gap-[12px] rounded leading-none outline-none",
           className
         )}
@@ -56,11 +39,7 @@ export function DropdownInput({
         </Select.Icon>
       </Select.Trigger>
       <Select.Portal>
-        <Select.Content
-          position="popper"
-          sideOffset={5}
-          className="z-[60] max-h-[250px] overflow-y-auto rounded-md bg-white"
-        >
+        <Select.Content position="popper" sideOffset={5} className="z-[60] max-h-[250px] overflow-y-auto rounded-md bg-white">
           <Select.ScrollUpButton />
           <Select.Viewport>{children}</Select.Viewport>
           <Select.ScrollDownButton />

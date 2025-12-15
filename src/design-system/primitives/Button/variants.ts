@@ -1,3 +1,10 @@
+import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
+import clsx from "clsx";
 import React, { ClassAttributes, HTMLAttributes } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
@@ -193,8 +200,28 @@ export type ButtonVariants = VariantProps<typeof buttonVariants>;
 type HTMLButtonProps = Omit<HTMLAttributes<HTMLButtonElement>, "color"> & ClassAttributes<HTMLButtonElement>;
 
 /** Export ButtonProps as one type */
-export interface ButtonProps extends ButtonVariants, HTMLButtonProps {
+export interface ButtonProps
+  extends ButtonVariants,
+    HTMLButtonProps,
+    AnimationProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    SizeProps {
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
 }
+
+export const buttonVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    buttonVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );

@@ -1,5 +1,5 @@
 import * as AspectRatio from "@radix-ui/react-aspect-ratio";
-import { ImageProps, imageVariants } from "./variants";
+import { ImageProps, imageVariantsCN } from "./variants";
 
 /**
  * Image component.
@@ -14,13 +14,13 @@ export const Image = ({ ratio, src, alt, width, raw = false, ...props }: ImagePr
   return raw ? (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className={imageVariants(props)} src={src} alt={alt} />
+      <img className={imageVariantsCN(props)} src={src} alt={alt} />
     </>
   ) : (
     <div className={width}>
       <AspectRatio.Root ratio={ratio}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={imageVariants(props)} src={src} alt={alt} />
+        <img className={imageVariantsCN(props)} src={src} alt={alt} />
       </AspectRatio.Root>
     </div>
   );

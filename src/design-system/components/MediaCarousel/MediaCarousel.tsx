@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "@/design-system/primitives/Image";
 
-export default function LayeredCarousel({
+export default function MediaCarousel({
   media,
   visibleCount = 5,
   width = "w-[320px]",

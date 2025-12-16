@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import LayeredCarousel from "./MediaCarousel";
+import MediaCarousel from "./MediaCarousel";
 
-const meta: Meta<typeof LayeredCarousel> = {
+const meta: Meta<typeof MediaCarousel> = {
   title: "Components/Carousel/LayeredCarousel",
-  component: LayeredCarousel,
+  component: MediaCarousel,
   argTypes: {
     visibleCount: {
       control: { type: "number", min: 1, step: 2 },
@@ -13,7 +13,7 @@ const meta: Meta<typeof LayeredCarousel> = {
 
 export default meta;
 
-type Story = StoryObj<typeof LayeredCarousel>;
+type Story = StoryObj<typeof MediaCarousel>;
 
 const imageUrls = [
   "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=1200&fit=crop",
@@ -37,7 +37,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
-      <LayeredCarousel {...args} />
+      <MediaCarousel {...args} />
     </div>
   ),
 };
@@ -51,7 +51,7 @@ export const ThreePanels: Story = {
   },
   render: (args) => (
     <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
-      <LayeredCarousel {...args} />
+      <MediaCarousel {...args} />
     </div>
   ),
 };
@@ -65,7 +65,7 @@ export const SevenPanels: Story = {
   },
   render: (args) => (
     <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
-      <LayeredCarousel {...args} />
+      <MediaCarousel {...args} />
     </div>
   ),
 };
@@ -79,7 +79,7 @@ export const SinglePanel: Story = {
   },
   render: (args) => (
     <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
-      <LayeredCarousel {...args} />
+      <MediaCarousel {...args} />
     </div>
   ),
 };

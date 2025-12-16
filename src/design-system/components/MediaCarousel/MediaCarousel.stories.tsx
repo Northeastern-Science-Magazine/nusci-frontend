@@ -82,10 +82,23 @@ const imageUrls = [
   "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue59.png",
 ];
 
-export const Small: Story = {
+export const Default: Story = {
   args: {
     media: imageUrls,
-    visibleCount: 5,
+    visibleCount: 7,
+    size: "lg",
+  },
+  render: (args) => (
+    <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
+      <MediaCarousel {...args} />
+    </div>
+  ),
+};
+
+export const Size: Story = {
+  args: {
+    media: imageUrls,
+    visibleCount: 7,
     size: "sm",
   },
   render: (args) => (
@@ -95,59 +108,7 @@ export const Small: Story = {
   ),
 };
 
-export const Medium: Story = {
-  args: {
-    media: imageUrls,
-    visibleCount: 5,
-    size: "md",
-  },
-  render: (args) => (
-    <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
-      <MediaCarousel {...args} />
-    </div>
-  ),
-};
-
-export const Large: Story = {
-  args: {
-    media: imageUrls,
-    visibleCount: 5,
-    size: "lg",
-  },
-  render: (args) => (
-    <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
-      <MediaCarousel {...args} />
-    </div>
-  ),
-};
-
-export const Default: Story = {
-  args: {
-    media: imageUrls,
-    visibleCount: 5,
-    size: "lg",
-  },
-  render: (args) => (
-    <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
-      <MediaCarousel {...args} />
-    </div>
-  ),
-};
-
-export const OnePanel: Story = {
-  args: {
-    media: imageUrls,
-    visibleCount: 1,
-    size: "lg",
-  },
-  render: (args) => (
-    <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
-      <MediaCarousel {...args} />
-    </div>
-  ),
-};
-
-export const ThreePanels: Story = {
+export const VisiblePanels: Story = {
   args: {
     media: imageUrls,
     visibleCount: 3,
@@ -160,15 +121,27 @@ export const ThreePanels: Story = {
   ),
 };
 
-export const SevenPanels: Story = {
-  args: {
-    media: imageUrls,
-    visibleCount: 7,
-    size: "lg",
+export const Gallery: Story = {
+  render: () => {
+    const sizes = ["sm", "md", "lg"] as const;
+    const visibleCounts = [1, 3, 7] as const;
+
+    return (
+      <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
+        <div className="flex flex-col gap-16">
+          {sizes.flatMap((size) =>
+            visibleCounts.map((visibleCount) => (
+              <section key={`${size}-${visibleCount}`} className="flex flex-col gap-6">
+                <div className="flex flex-col gap-1">
+                  <div className="text-lg font-semibold">{`size=${size}`}</div>
+                  <div className="text-sm opacity-70">{`visibleCount=${visibleCount}`}</div>
+                </div>
+                <MediaCarousel media={imageUrls} size={size} visibleCount={visibleCount} />
+              </section>
+            ))
+          )}
+        </div>
+      </div>
+    );
   },
-  render: (args) => (
-    <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
-      <MediaCarousel {...args} />
-    </div>
-  ),
 };

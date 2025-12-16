@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "@/design-system/primitives/Image";
 import { mediaCarouselSizes, type MediaCarouselSize } from "./variants";
 
@@ -41,38 +40,18 @@ export default function MediaCarousel({
 
   return (
     <div className="relative w-full" style={{ minHeight: `${sizeConfig.minHeight}px`, padding: "40px 0" }}>
-      <div className="pointer-events-none absolute inset-0 z-30 flex">
-        {/* Left */}
-        <button
-          onClick={() => paginate(1)}
-          aria-label="Previous"
-          className="group pointer-events-auto relative flex w-1/2 items-center justify-start"
-        >
-          <div className="absolute inset-y-0 left-0 w-[500px] bg-gradient-to-r to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-        </button>
-
-        {/* Right */}
-        <button
-          onClick={() => paginate(-1)}
-          aria-label="Next"
-          className="group pointer-events-auto relative flex w-1/2 items-center justify-end"
-        >
-          <div className="absolute inset-y-0 right-0 w-[500px] bg-gradient-to-l to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-        </button>
-      </div>
-
+      {/* Carousel panels */}
       <div
         className="relative w-full flex items-center justify-center"
-        style={{
-          perspective: "1000px",
-          height: `${sizeConfig.containerHeight}px`,
-        }}
+        style={{ perspective: "1000px", height: `${sizeConfig.containerHeight}px` }}
       >
         {visibleItems.map(({ url, index: itemIndex, offset }) => {
           const scale = 1 - Math.abs(offset) * 0.08;
           const x = offset * sizeConfig.offset;
           const rotateY = offset * -15;
           const zIndex = 20 - Math.abs(offset);
+
+          const isInteractive = offset !== 0;
 
           return (
             <motion.div
@@ -89,10 +68,12 @@ export default function MediaCarousel({
                 rotateY,
                 scale,
               }}
-              transition={{
-                duration: 0.6,
-                ease: [0.4, 0, 0.2, 1],
+              whileHover={{
+                scale: 1.05,
+                cursor: "pointer",
               }}
+              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              onClick={() => isInteractive && paginate(offset > 0 ? 1 : -1)}
               style={{
                 position: "absolute",
                 left: "50%",

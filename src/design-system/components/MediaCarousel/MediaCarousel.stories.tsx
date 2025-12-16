@@ -64,6 +64,51 @@ const panels = [
       </div>
     ),
   },
+  {
+    id: "mountains",
+    content: (
+      <div className="h-full w-full bg-gradient-to-b from-slate-400 to-slate-800 text-white p-6">
+        <h2 className="text-3xl font-bold">MOUNTAINS</h2>
+        <p className="mt-2 opacity-80">Peak Adventures</p>
+      </div>
+    ),
+  },
+  {
+    id: "forest",
+    content: (
+      <div className="h-full w-full bg-gradient-to-b from-lime-400 to-green-700 text-black p-6">
+        <h2 className="text-3xl font-bold">FORESTS</h2>
+        <p className="mt-2 opacity-80">Ancient Trees</p>
+      </div>
+    ),
+  },
+  {
+    id: "coral",
+    content: (
+      <div className="h-full w-full bg-gradient-to-b from-pink-400 to-rose-600 text-white p-6">
+        <h2 className="text-3xl font-bold">CORAL REEFS</h2>
+        <p className="mt-2 opacity-80">Underwater Gardens</p>
+      </div>
+    ),
+  },
+  {
+    id: "savanna",
+    content: (
+      <div className="h-full w-full bg-gradient-to-b from-yellow-300 to-amber-600 text-black p-6">
+        <h2 className="text-3xl font-bold">SAVANNA</h2>
+        <p className="mt-2 opacity-80">Wide Open Plains</p>
+      </div>
+    ),
+  },
+  {
+    id: "volcano",
+    content: (
+      <div className="h-full w-full bg-gradient-to-b from-red-500 to-orange-900 text-white p-6">
+        <h2 className="text-3xl font-bold">VOLCANOES</h2>
+        <p className="mt-2 opacity-80">Fire and Earth</p>
+      </div>
+    ),
+  },
 ];
 
 export const Default: Story = {
@@ -110,7 +155,7 @@ export const SevenPanels: Story = {
 
 export const SinglePanel: Story = {
   args: {
-    items: panels.slice(0, 1),
+    items: panels,
     visibleCount: 1,
     width: "w-[360px]",
     height: "h-[560px]",

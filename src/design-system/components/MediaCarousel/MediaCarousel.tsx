@@ -38,12 +38,15 @@ export default function LayeredCarousel({
     return {
       ...items[itemIndex],
       offset,
+      position: i, // Stable position identifier for animation
     };
   });
 
   const paginate = (dir: number) => {
     setDirection(dir);
     setIndex((prev) => mod(prev + dir, items.length));
+    // Reset direction after animation
+    setTimeout(() => setDirection(0), 600);
   };
 
   return (
@@ -66,23 +69,36 @@ export default function LayeredCarousel({
           minHeight: "600px",
         }}
       >
-        {visibleItems.map(({ id, content, offset }) => {
+        {visibleItems.map(({ id, content, offset, position }) => {
           const scale = 1 - Math.abs(offset) * 0.08;
           const x = offset * 120;
           const rotateY = offset * -15;
           const z = 20 - Math.abs(offset);
           const opacity = Math.abs(offset) > half ? 0 : 1;
 
+          // Calculate previous position based on direction
+          // When going left (dir=-1), items were one position to the right (offset+1)
+          // When going right (dir=1), items were one position to the left (offset-1)
+          const prevOffset = direction === 0 ? offset : offset - direction;
+          const prevX = prevOffset * 120;
+          const prevRotateY = prevOffset * -15;
+          const prevScale = 1 - Math.abs(prevOffset) * 0.08;
+          const prevOpacity = Math.abs(prevOffset) > half ? 0 : 1;
+
           return (
             <motion.div
-              key={`${id}-${index}`}
-              initial={{
-                x: `calc(-50% + ${x}px)`,
-                y: "-50%",
-                rotateY,
-                opacity,
-                scale,
-              }}
+              key={id}
+              initial={
+                direction === 0
+                  ? false
+                  : {
+                      x: `calc(-50% + ${prevX}px)`,
+                      y: "-50%",
+                      rotateY: prevRotateY,
+                      opacity: prevOpacity,
+                      scale: prevScale,
+                    }
+              }
               animate={{
                 x: `calc(-50% + ${x}px)`,
                 y: "-50%",
@@ -91,8 +107,8 @@ export default function LayeredCarousel({
                 scale,
               }}
               transition={{
-                duration: 0.45,
-                ease: "easeInOut",
+                duration: 0.6,
+                ease: [0.4, 0, 0.2, 1],
               }}
               style={{
                 position: "absolute",

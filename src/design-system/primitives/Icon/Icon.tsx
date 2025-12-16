@@ -14,5 +14,5 @@ export default function Icon({ icon, color, size, className, onClick, ...props }
     return null;
   }
 
-  return <LucideIcon onClick={onClick} className={iconVariantsCN(props, className)} />;
+  return <LucideIcon onClick={onClick} className={iconVariantsCN({ color, size, ...props }, className)} />;
 }

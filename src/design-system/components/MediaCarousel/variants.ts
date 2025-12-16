@@ -1,37 +1,77 @@
-export type MediaCarouselSize = "sm" | "md" | "lg";
+import { tv, type VariantProps } from "tailwind-variants";
+import type { IconProps } from "@/primitives/Icon/variants";
 
-export interface MediaCarouselSizeConfig {
-  width: string;
-  height: string;
-  offset: number;
-  containerHeight: number;
-  minHeight: number;
-  buttonSize: number;
-}
+export const mediaCarouselRootVariants = tv({
+  base: "relative w-full py-10",
+  variants: {
+    size: {
+      sm: "min-h-[440px]",
+      md: "min-h-[560px]",
+      lg: "min-h-[640px]",
+    },
+  },
+  defaultVariants: {
+    size: "lg",
+  },
+});
 
-export const mediaCarouselSizes: Record<MediaCarouselSize, MediaCarouselSizeConfig> = {
-  sm: {
-    width: "w-[150px]",
-    height: "h-[200px]",
-    offset: 60,
-    containerHeight: 400,
-    minHeight: 440,
-    buttonSize: 20,
+export const mediaCarouselViewportVariants = tv({
+  base: "relative w-full flex items-center justify-center [perspective:1000px]",
+  variants: {
+    size: {
+      sm: "h-[400px]",
+      md: "h-[520px]",
+      lg: "h-[600px]",
+    },
   },
-  md: {
-    width: "w-[225px]",
-    height: "h-[300px]",
-    offset: 80,
-    containerHeight: 520,
-    minHeight: 560,
-    buttonSize: 22,
+  defaultVariants: {
+    size: "lg",
   },
-  lg: {
-    width: "w-[300px]",
-    height: "h-[400px]",
-    offset: 120,
-    containerHeight: 600,
-    minHeight: 640,
-    buttonSize: 24,
+});
+
+export const mediaCarouselPanelVariants = tv({
+  base: "shadow-2xl bg-neutral-900 overflow-hidden rounded-2xl",
+  variants: {
+    size: {
+      sm: "w-[150px] h-[200px]",
+      md: "w-[225px] h-[300px]",
+      lg: "w-[300px] h-[400px]",
+    },
   },
+  defaultVariants: {
+    size: "lg",
+  },
+});
+
+export const mediaCarouselEmptyStateVariants = tv({
+  base: "p-8 text-center text-gray-500",
+});
+
+export type MediaCarouselVariants = VariantProps<typeof mediaCarouselRootVariants>;
+export type MediaCarouselSize = NonNullable<MediaCarouselVariants["size"]>;
+
+export const mediaCarouselLayoutBySize: Record<
+  MediaCarouselSize,
+  {
+    offsetPx: number;
+    navIconSize: NonNullable<IconProps["size"]>;
+  }
+> = {
+  sm: { offsetPx: 60, navIconSize: "sm" },
+  md: { offsetPx: 80, navIconSize: "md" },
+  lg: { offsetPx: 120, navIconSize: "lg" },
 };
+
+export interface MediaCarouselProps extends MediaCarouselVariants {
+  /** Image URLs (strings) */
+  media: string[];
+  /** Number of visible panels. (Odd numbers look best: 3, 5, 7) */
+  visibleCount?: number;
+  /** Optional starting index. */
+  initialIndex?: number;
+  /** Optional callback when the active index changes. */
+  onIndexChange?: (index: number) => void;
+  /** Show left/right controls (in addition to clicking side panels). */
+  showControls?: boolean;
+  className?: string;
+}

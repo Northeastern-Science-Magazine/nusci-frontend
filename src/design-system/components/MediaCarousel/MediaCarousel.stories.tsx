@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import MediaCarousel from "./MediaCarousel";
 
 const meta: Meta<typeof MediaCarousel> = {
-  title: "Components/Carousel/MediaCarousel",
+  title: "Components/MediaCarousel",
   component: MediaCarousel,
   argTypes: {
     visibleCount: {
@@ -124,7 +124,7 @@ export const VisiblePanels: Story = {
 export const Gallery: Story = {
   render: () => {
     const sizes = ["sm", "md", "lg"] as const;
-    const visibleCounts = [1, 3, 7] as const;
+    const visibleCounts = [3, 5, 7] as const;
 
     return (
       <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>

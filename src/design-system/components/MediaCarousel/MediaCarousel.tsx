@@ -14,7 +14,7 @@ export default function MediaCarousel({
 }) {
   const sizeConfig = mediaCarouselSizes[size];
   const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // -1 = left, +1 = right
+  const [direction, setDirection] = useState(0); // -1 = left, +1 = right (used for animation)
 
   if (!media.length) {
     return <div className="p-8 text-center text-gray-500">No items to display</div>;
@@ -26,16 +26,13 @@ export default function MediaCarousel({
   const visibleItems = Array.from({ length: visibleCount }, (_, i) => {
     const offset = i - half;
     const itemIndex = mod(index + offset, media.length);
-    return {
-      url: media[itemIndex],
-      index: itemIndex,
-      offset,
-    };
+    return { url: media[itemIndex], index: itemIndex, offset };
   });
 
-  const paginate = (dir: number) => {
-    setDirection(dir);
-    setIndex((prev) => mod(prev + dir, media.length));
+  const paginate = (steps: number) => {
+    if (steps === 0) return;
+    setDirection(steps > 0 ? 1 : -1);
+    setIndex((prev) => mod(prev + steps, media.length));
   };
 
   return (
@@ -73,7 +70,7 @@ export default function MediaCarousel({
                 cursor: "pointer",
               }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              onClick={() => isInteractive && paginate(offset > 0 ? 1 : -1)}
+              onClick={() => isInteractive && paginate(offset)}
               style={{
                 position: "absolute",
                 left: "50%",

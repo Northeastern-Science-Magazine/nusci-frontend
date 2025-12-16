@@ -128,19 +128,17 @@ export const Gallery: Story = {
 
     return (
       <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
-        <div className="flex flex-col gap-16">
-          {sizes.flatMap((size) =>
-            visibleCounts.map((visibleCount) => (
-              <section key={`${size}-${visibleCount}`} className="flex flex-col gap-6">
-                <div className="flex flex-col gap-1">
-                  <div className="text-lg font-semibold">{`size=${size}`}</div>
-                  <div className="text-sm opacity-70">{`visibleCount=${visibleCount}`}</div>
-                </div>
-                <MediaCarousel media={imageUrls} size={size} visibleCount={visibleCount} />
-              </section>
-            ))
-          )}
-        </div>
+        {sizes.flatMap((size) =>
+          visibleCounts.map((visibleCount) => (
+            <section key={`${size}-${visibleCount}`} className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1">
+                <div className="text-lg font-semibold">{`size=${size}`}</div>
+                <div className="text-sm">{`visibleCount=${visibleCount}`}</div>
+              </div>
+              <MediaCarousel media={imageUrls} size={size} visibleCount={visibleCount} />
+            </section>
+          ))
+        )}
       </div>
     );
   },

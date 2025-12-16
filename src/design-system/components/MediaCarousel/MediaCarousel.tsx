@@ -14,7 +14,7 @@ export default function MediaCarousel({
 }) {
   const sizeConfig = mediaCarouselSizes[size];
   const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // -1 = left, +1 = right (used for animation)
+  const [direction, setDirection] = useState(0); // -1 = left, +1 = right
 
   if (!media.length) {
     return <div className="p-8 text-center text-gray-500">No items to display</div>;

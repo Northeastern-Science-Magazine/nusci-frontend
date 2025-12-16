@@ -2,11 +2,15 @@ import type { Meta, StoryObj } from "@storybook/react";
 import MediaCarousel from "./MediaCarousel";
 
 const meta: Meta<typeof MediaCarousel> = {
-  title: "Components/Carousel/LayeredCarousel",
+  title: "Components/Carousel/MediaCarousel",
   component: MediaCarousel,
   argTypes: {
     visibleCount: {
       control: { type: "number", min: 1, step: 2 },
+    },
+    size: {
+      control: { type: "select" },
+      options: ["sm", "md", "lg"],
     },
   },
 };
@@ -28,12 +32,63 @@ const imageUrls = [
   "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=800&h=1200&fit=crop",
 ];
 
+export const Small: Story = {
+  args: {
+    media: imageUrls,
+    visibleCount: 5,
+    size: "sm",
+  },
+  render: (args) => (
+    <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
+      <MediaCarousel {...args} />
+    </div>
+  ),
+};
+
+export const Medium: Story = {
+  args: {
+    media: imageUrls,
+    visibleCount: 5,
+    size: "md",
+  },
+  render: (args) => (
+    <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
+      <MediaCarousel {...args} />
+    </div>
+  ),
+};
+
+export const Large: Story = {
+  args: {
+    media: imageUrls,
+    visibleCount: 5,
+    size: "lg",
+  },
+  render: (args) => (
+    <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
+      <MediaCarousel {...args} />
+    </div>
+  ),
+};
+
 export const Default: Story = {
   args: {
     media: imageUrls,
     visibleCount: 5,
-    width: "w-[360px]",
-    height: "h-[560px]",
+    size: "lg",
+  },
+  render: (args) => (
+    <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
+      <MediaCarousel {...args} />
+    </div>
+  ),
+};
+
+export const OnePanel: Story = {
+  args: {
+    media: imageUrls,
+    visibleCount: 1,
+    size: "lg",
   },
   render: (args) => (
     <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
@@ -46,8 +101,7 @@ export const ThreePanels: Story = {
   args: {
     media: imageUrls,
     visibleCount: 3,
-    width: "w-[360px]",
-    height: "h-[560px]",
+    size: "lg",
   },
   render: (args) => (
     <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
@@ -60,22 +114,7 @@ export const SevenPanels: Story = {
   args: {
     media: imageUrls,
     visibleCount: 7,
-    width: "w-[320px]",
-    height: "h-[520px]",
-  },
-  render: (args) => (
-    <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>
-      <MediaCarousel {...args} />
-    </div>
-  ),
-};
-
-export const SinglePanel: Story = {
-  args: {
-    media: imageUrls,
-    visibleCount: 1,
-    width: "w-[360px]",
-    height: "h-[560px]",
+    size: "lg",
   },
   render: (args) => (
     <div className="w-full" style={{ minHeight: "100vh", padding: "40px" }}>

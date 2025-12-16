@@ -2,18 +2,18 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "@/design-system/primitives/Image";
+import { mediaCarouselSizes, type MediaCarouselSize } from "./variants";
 
 export default function MediaCarousel({
   media,
   visibleCount = 5,
-  width = "w-[320px]",
-  height = "h-[520px]",
+  size = "lg",
 }: {
   visibleCount: number;
   media: Array<string>;
-  width: string;
-  height: string;
+  size?: MediaCarouselSize;
 }) {
+  const sizeConfig = mediaCarouselSizes[size];
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0); // -1 = left, +1 = right
 
@@ -40,25 +40,25 @@ export default function MediaCarousel({
   };
 
   return (
-    <div className="relative w-full" style={{ minHeight: "600px", padding: "40px 0" }}>
+    <div className="relative w-full" style={{ minHeight: `${sizeConfig.minHeight}px`, padding: "40px 0" }}>
       <button
         onClick={() => paginate(-1)}
         className="absolute left-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-black/60 p-3 text-white hover:bg-black"
         aria-label="Previous panel"
       >
-        <ChevronRight size={24} />
+        <ChevronRight size={sizeConfig.buttonSize} />
       </button>
 
       <div
         className="relative w-full flex items-center justify-center"
         style={{
           perspective: "1000px",
-          height: "600px",
+          height: `${sizeConfig.containerHeight}px`,
         }}
       >
         {visibleItems.map(({ url, index: itemIndex, offset }) => {
           const scale = 1 - Math.abs(offset) * 0.08;
-          const x = offset * 150;
+          const x = offset * sizeConfig.offset;
           const rotateY = offset * -15;
           const zIndex = 20 - Math.abs(offset);
 
@@ -88,9 +88,9 @@ export default function MediaCarousel({
                 zIndex,
                 transformStyle: "preserve-3d",
               }}
-              className={`${width} ${height} shadow-2xl bg-neutral-900 overflow-hidden rounded-2xl`}
+              className={`${sizeConfig.width} ${sizeConfig.height} shadow-2xl bg-neutral-900 overflow-hidden rounded-2xl`}
             >
-              <Image src={url} alt={`Carousel image ${itemIndex + 1}`} ratio={1080 / 1920} width={"full"} />
+              <Image src={url} alt={`Carousel image ${itemIndex + 1}`} raw width="w-full h-full object-cover" />
             </motion.div>
           );
         })}
@@ -101,7 +101,7 @@ export default function MediaCarousel({
         className="absolute right-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-black/60 p-3 text-white hover:bg-black"
         aria-label="Next panel"
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={sizeConfig.buttonSize} />
       </button>
     </div>
   );

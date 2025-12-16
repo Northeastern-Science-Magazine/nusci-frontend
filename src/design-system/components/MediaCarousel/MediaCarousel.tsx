@@ -6,7 +6,7 @@ import { mediaCarouselSizes, type MediaCarouselSize } from "./variants";
 
 export default function MediaCarousel({
   media,
-  visibleCount = 5,
+  visibleCount = 7,
   size = "lg",
 }: {
   visibleCount: number;
@@ -90,7 +90,7 @@ export default function MediaCarousel({
               }}
               className={`${sizeConfig.width} ${sizeConfig.height} shadow-2xl bg-neutral-900 overflow-hidden rounded-2xl`}
             >
-              <Image src={url} alt={`Carousel image ${itemIndex + 1}`} raw width="w-full h-full object-cover" />
+              <Image src={url} alt={`Carousel image ${itemIndex + 1}`} raw width="auto" />
             </motion.div>
           );
         })}

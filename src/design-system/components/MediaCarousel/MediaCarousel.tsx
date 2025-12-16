@@ -57,7 +57,7 @@ export default function LayeredCarousel({
         className="absolute left-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-black/60 p-3 text-white hover:bg-black transition-colors"
         aria-label="Previous panel"
       >
-        <ChevronLeft size={24} />
+        <ChevronRight size={24} />
       </button>
 
       {/* Panels */}
@@ -131,7 +131,7 @@ export default function LayeredCarousel({
         className="absolute right-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-black/60 p-3 text-white hover:bg-black transition-colors"
         aria-label="Next panel"
       >
-        <ChevronRight size={24} />
+        <ChevronLeft size={24} />
       </button>
     </div>
   );

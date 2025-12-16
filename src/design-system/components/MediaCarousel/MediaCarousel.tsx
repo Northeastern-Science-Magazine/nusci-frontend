@@ -1,25 +1,23 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "@/design-system/primitives/Image";
 
 export default function LayeredCarousel({
-  items,
+  media,
   visibleCount = 5,
   width = "w-[320px]",
   height = "h-[520px]",
 }: {
   visibleCount: number;
-  items: Array<{ id: string; content: React.ReactNode }>;
+  media: Array<string>;
   width: string;
   height: string;
 }) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0); // -1 = left, +1 = right
 
-  // Track previous visible ids to detect entering panel
-  const prevIds = useRef<string[]>([]);
-
-  if (!items.length) {
+  if (!media.length) {
     return <div className="p-8 text-center text-gray-500">No items to display</div>;
   }
 
@@ -28,21 +26,21 @@ export default function LayeredCarousel({
 
   const visibleItems = Array.from({ length: visibleCount }, (_, i) => {
     const offset = i - half;
-    const itemIndex = mod(index + offset, items.length);
+    const itemIndex = mod(index + offset, media.length);
     return {
-      ...items[itemIndex],
+      url: media[itemIndex],
+      index: itemIndex,
       offset,
     };
   });
 
   const paginate = (dir: number) => {
     setDirection(dir);
-    setIndex((prev) => mod(prev + dir, items.length));
+    setIndex((prev) => mod(prev + dir, media.length));
   };
 
   return (
     <div className="relative w-full" style={{ minHeight: "600px", padding: "40px 0" }}>
-      {/* Previous */}
       <button
         onClick={() => paginate(-1)}
         className="absolute left-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-black/60 p-3 text-white hover:bg-black"
@@ -58,28 +56,21 @@ export default function LayeredCarousel({
           height: "600px",
         }}
       >
-        {visibleItems.map(({ id, content, offset }) => {
+        {visibleItems.map(({ url, index: itemIndex, offset }) => {
           const scale = 1 - Math.abs(offset) * 0.08;
-          const x = offset * 120;
+          const x = offset * 150;
           const rotateY = offset * -15;
           const zIndex = 20 - Math.abs(offset);
 
-          // Detect newly entered panel
-          const isEntering = !prevIds.current.includes(id);
-
           return (
             <motion.div
-              key={id}
-              initial={
-                isEntering
-                  ? {
-                      x: `calc(-50% + ${-direction * 240}px)`,
-                      y: "-50%",
-                      rotateY: -direction * 25,
-                      scale: 0.85,
-                    }
-                  : false
-              }
+              key={`${url}-${itemIndex}`}
+              initial={{
+                x: `calc(-50% + ${-direction}px)`,
+                y: "-50%",
+                rotateY: -direction * 25,
+                scale: 0.85,
+              }}
               animate={{
                 x: `calc(-50% + ${x}px)`,
                 y: "-50%",
@@ -97,18 +88,14 @@ export default function LayeredCarousel({
                 zIndex,
                 transformStyle: "preserve-3d",
               }}
-              className={`${width} ${height} rounded-2xl shadow-2xl bg-neutral-900 overflow-hidden`}
+              className={`${width} ${height} shadow-2xl bg-neutral-900 overflow-hidden rounded-2xl`}
             >
-              {content}
+              <Image src={url} alt={`Carousel image ${itemIndex + 1}`} ratio={1080 / 1920} width={"full"} />
             </motion.div>
           );
         })}
-
-        {/* update previous ids AFTER render */}
-        {(prevIds.current = visibleItems.map((i) => i.id)) && null}
       </div>
 
-      {/* Next */}
       <button
         onClick={() => paginate(1)}
         className="absolute right-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-black/60 p-3 text-white hover:bg-black"

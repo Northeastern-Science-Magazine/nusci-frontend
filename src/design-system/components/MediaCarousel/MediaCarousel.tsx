@@ -41,13 +41,25 @@ export default function MediaCarousel({
 
   return (
     <div className="relative w-full" style={{ minHeight: `${sizeConfig.minHeight}px`, padding: "40px 0" }}>
-      <button
-        onClick={() => paginate(-1)}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-black/60 p-3 text-white hover:bg-black"
-        aria-label="Previous panel"
-      >
-        <ChevronRight size={sizeConfig.buttonSize} />
-      </button>
+      <div className="pointer-events-none absolute inset-0 z-30 flex">
+        {/* Left */}
+        <button
+          onClick={() => paginate(1)}
+          aria-label="Previous"
+          className="group pointer-events-auto relative flex w-1/2 items-center justify-start"
+        >
+          <div className="absolute inset-y-0 left-0 w-[500px] bg-gradient-to-r to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+        </button>
+
+        {/* Right */}
+        <button
+          onClick={() => paginate(-1)}
+          aria-label="Next"
+          className="group pointer-events-auto relative flex w-1/2 items-center justify-end"
+        >
+          <div className="absolute inset-y-0 right-0 w-[500px] bg-gradient-to-l to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+        </button>
+      </div>
 
       <div
         className="relative w-full flex items-center justify-center"
@@ -95,14 +107,6 @@ export default function MediaCarousel({
           );
         })}
       </div>
-
-      <button
-        onClick={() => paginate(1)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-black/60 p-3 text-white hover:bg-black"
-        aria-label="Next panel"
-      >
-        <ChevronLeft size={sizeConfig.buttonSize} />
-      </button>
     </div>
   );
 }

@@ -161,7 +161,7 @@ export default function Homepage() {
                 Our Magazines
               </Text>
               <Text size={16} className="mt-2 max-w-2xl text-black/70">
-                Spin through our print archive—click a cover to bring it front and center.
+                Look through our print archive - click a cover to bring it front and center.
               </Text>
             </Box>
 
@@ -180,8 +180,11 @@ export default function Homepage() {
 
           <MediaCarousel media={issueThumbnails} visibleCount={7} initialIndex={0} onIndexChange={setActiveIssueIndex} />
 
-          <Text size={14} className="mt-2 text-center text-black/60">
-            Tip: click side covers to navigate • click center to open
+          <Text size={14} className="text-center text-black/60">
+            <Text style="bold" as="span">
+              Controls:
+            </Text>{" "}
+            click side covers to navigate • click center to open
           </Text>
         </Box>
       </Box>
@@ -189,7 +192,7 @@ export default function Homepage() {
       {/* CTA OVERLAY */}
       <Box className="bg-white pb-16">
         <OverlayMedia className="mx-auto w-full max-w-6xl overflow-hidden rounded-3xl">
-          <Image src="/moss.png" alt="A textured green moss background" width="w-full" ratio={1920 / 700} />
+          <Image src="/icy.png" alt="A textured green moss background" width="w-full" ratio={1920 / 700} />
           <Overlay background="gradient-black">
             <Box className="flex h-full w-full items-end">
               <Box className="w-full px-6 pb-10 pt-24 md:px-10 md:pb-12">
@@ -200,7 +203,7 @@ export default function Homepage() {
                   Want to write, design, photograph, or build with us? NU Sci is a community for curious people.
                 </Text>
                 <Box className="mt-6 flex flex-wrap gap-3">
-                  <Button className="inline-flex" color="marigold" size="lg" onClick={() => router.push("/about-us")}>
+                  <Button className="inline-flex" color="aqua-light" size="lg" onClick={() => router.push("/about-us")}>
                     Learn about NU Sci
                   </Button>
                   <Button

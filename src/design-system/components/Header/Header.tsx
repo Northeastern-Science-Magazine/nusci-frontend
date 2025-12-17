@@ -71,16 +71,9 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
           {/* Logo */}
           <Box className="flex-shrink-0">
             <Link href="/" newWindow={false} className="flex items-center">
-              {isScrolled ? (
-                <Box className="transition-all duration-300 h-8 w-8">
-                  <Image src="/logo.png" alt="NU Sci Magazine" width="w-8" ratio={1} />
-                </Box>
-              ) : (
-                <Box className="ml-3">
-                  <Box className="text-xl font-bold text-black">NU Sci</Box>
-                  <Box className="text-sm text-gray-600">Magazine</Box>
-                </Box>
-              )}
+              <Box className="transition-all duration-300 w-12 border-2 border-black">
+                <Image src="/logo.png" alt="NU Sci Magazine" width="w-12" ratio={1} />
+              </Box>
             </Link>
           </Box>
 

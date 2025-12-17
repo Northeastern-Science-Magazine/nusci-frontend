@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import MediaCarousel from "@/design-system/components/MediaCarousel";
+import MediaCard from "@/design-system/components/MediaCard";
 import { Overlay, OverlayMedia } from "@/design-system/components/MediaOverlay";
 import Box from "@/design-system/primitives/Box";
 import Text from "@/design-system/primitives/Text";
@@ -236,12 +237,135 @@ export default function Homepage() {
 
           <MediaCarousel media={issueThumbnails} visibleCount={7} initialIndex={0} />
 
-          <hr className="mb-8" />
+          {/* <hr className="mb-8" /> */}
+        </Box>
+      </Box>
+
+      {/* ARTICLE SPREAD MOCKUP */}
+      <Box className="bg-aqua-light" py={12}>
+        <Box className="mx-auto w-full max-w-6xl px-6 pb-14">
+          <Box className="flex flex-col gap-2">
+            <Text size={36} className="tracking-tight">
+              Recent Articles
+            </Text>
+            <Text size={16} className="text-black/70">
+              A quick mockup of what a featured spread could look like—hero story + supporting cards.
+            </Text>
+          </Box>
+
+          <hr className="mt-8" />
+
+          {/* Structured layout: featured spread + supporting column + a 3-up grid */}
+          <Box className="mt-8 grid gap-6 lg:grid-cols-12">
+            <Box className="lg:col-span-8">
+              <OverlayMedia className="mt-3 overflow-hidden rounded-3xl border border-black/10 shadow-sm">
+                <Image src="/eclipse-image.png" alt="A dramatic solar eclipse" width="w-full" ratio={16 / 10} />
+                <Overlay background="gradient-black">
+                  <Box className="flex h-full w-full items-end">
+                    <Box className="w-full px-6 pb-6 pt-28 md:px-8 md:pb-8">
+                      <Box className="inline-flex items-center rounded-full bg-white/15 px-3 py-1 backdrop-blur">
+                        <Text size={12} color="white" className="uppercase tracking-[0.25em]">
+                          Feature
+                        </Text>
+                      </Box>
+                      <Text size={36} color="white" className="mt-3 tracking-tight max-sm:text-[28px]">
+                        Chasing Totality
+                      </Text>
+                      <Text size={16} color="white" className="mt-2 max-w-xl font-light opacity-95">
+                        A photo-led story about the science (and spectacle) behind eclipses—built to read like a print spread.
+                      </Text>
+                      <Box className="mt-5 flex flex-wrap gap-3">
+                        <Button className="inline-flex" color="marigold" size="md" onClick={() => router.push("/articles")}>
+                          Read article
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Overlay>
+              </OverlayMedia>
+            </Box>
+
+            <Box className="lg:col-span-4">
+              <Box className="mt-3 grid gap-6">
+                <MediaCard
+                  mediaType="image"
+                  imageProps={{ src: "/london.png", alt: "A misty city skyline" }}
+                  subtitle="Science + Society"
+                  title="Urban Heat Islands, Explained"
+                  description="A tight, two-sentence dek that fits alongside a lead spread."
+                  mediaDirection="top"
+                  size="sm"
+                  rounded="rounded"
+                  shadow="shadow"
+                  color="white"
+                  className="w-full max-w-none"
+                />
+
+                <MediaCard
+                  mediaType="image"
+                  imageProps={{ src: "/moss.png", alt: "Green moss texture" }}
+                  subtitle="Research Spotlight"
+                  title="How Microbiomes Shape Our World"
+                  description="A vertical card with room for a pull quote or a quick explainer."
+                  mediaDirection="top"
+                  size="sm"
+                  rounded="rounded"
+                  shadow="shadow"
+                  color="white"
+                  className="w-full max-w-none"
+                />
+              </Box>
+            </Box>
+          </Box>
+
+          <Box className="mt-10">
+            <Box className="mt-3 grid gap-6 md:grid-cols-3">
+              <MediaCard
+                mediaType="image"
+                imageProps={{ src: "/icy.png", alt: "Icy texture" }}
+                subtitle="Quick Read"
+                title="5 Questions About CRISPR"
+                description="Compact, fast-moving, and skimmable."
+                mediaDirection="top"
+                size="sm"
+                rounded="rounded"
+                shadow="shadow"
+                color="white"
+                className="w-full max-w-none"
+              />
+              <MediaCard
+                mediaType="image"
+                imageProps={{ src: "/eclipse-image.png", alt: "Solar eclipse" }}
+                subtitle="Opinion"
+                title="Why Science Needs Better Stories"
+                description="A strong voice piece to balance the spread."
+                mediaDirection="top"
+                size="sm"
+                rounded="rounded"
+                shadow="shadow"
+                color="white"
+                className="w-full max-w-none"
+              />
+              <MediaCard
+                mediaType="image"
+                imageProps={{ src: "/logo.png", alt: "NU Sci logo mark" }}
+                subtitle="Behind the Scenes"
+                title="Designing an Issue Cover"
+                description="A process piece that's perfect for a sidebar."
+                mediaDirection="top"
+                size="sm"
+                rounded="rounded"
+                shadow="shadow"
+                color="white"
+                className="w-full max-w-none"
+              />
+            </Box>
+          </Box>
         </Box>
       </Box>
 
       {/* CTA OVERLAY */}
-      <Box className="bg-white pb-16">
+      <Box className="bg-white py-16">
         <OverlayMedia className="mx-auto w-full max-w-6xl overflow-hidden rounded-3xl">
           <Image src="/icy.png" alt="A textured green moss background" width="w-full" ratio={1920 / 700} />
           <Overlay background="gradient-black">

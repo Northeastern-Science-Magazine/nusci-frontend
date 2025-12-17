@@ -3,14 +3,12 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import MediaCarousel from "@/design-system/components/MediaCarousel";
-import MediaCard from "@/design-system/components/MediaCard";
 import { Overlay, OverlayMedia } from "@/design-system/components/MediaOverlay";
 import Box from "@/design-system/primitives/Box";
 import Text from "@/design-system/primitives/Text";
 import Image from "@/design-system/primitives/Image";
 import Button from "@/design-system/primitives/Button";
 import Link from "@/design-system/primitives/Link";
-import { Grid, GridCol } from "@/design-system/primitives/Grid";
 
 export default function Homepage() {
   const router = useRouter();
@@ -18,17 +16,65 @@ export default function Homepage() {
   const issueThumbnails = useMemo(
     () => [
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue60.png",
-      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue59.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue58.png",
-      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue57.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue56.png",
-      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue55.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue54.png",
-      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue53.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue52.png",
-      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue51.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue50.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue48.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue46.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue44.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue42.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue40.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue38.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue36.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue34.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue32.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue30.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue28.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue26.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue24.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue22.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue20.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue18.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue16.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue14.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue12.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue10.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue8.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue6.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue4.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue2.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue1.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue3.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue5.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue7.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue9.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue11.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue13.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue15.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue17.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue19.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue21.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue23.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue25.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue27.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue29.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue31.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue33.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue35.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue37.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue39.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue41.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue43.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue45.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue47.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue49.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue51.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue53.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue55.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue57.png",
+      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue59.png",
     ],
     []
   );
@@ -47,11 +93,12 @@ export default function Homepage() {
   return (
     <main className="bg-gradient-to-b from-black via-black to-white">
       {/* HERO */}
-      <OverlayMedia className="w-full">
-        <img src="/moss.png" alt="" height={"50%"} className="object-cover" />
+      <OverlayMedia className="w-full h-[620px] md:h-[700px] lg:h-[760px] overflow-hidden">
+        {/* Fixed-height hero image: height stays consistent regardless of viewport width */}
+        <Image raw src="/moss.png" alt="Moss texture background" width="w-full" />
         <Overlay background="gradient-black">
           <Box className="h-full w-full">
-            <Box className="mx-auto w-full max-w-6xl px-6 pt-20 pb-14 md:pt-24 md:pb-20">
+            <Box className="mx-auto w-full max-w-6xl px-6 py-16 md:py-20">
               <Text size={12} color="white" className="uppercase tracking-[0.35em] opacity-90">
                 Northeastern University's student-run science magazine
               </Text>
@@ -61,22 +108,16 @@ export default function Homepage() {
                   NU Sci
                 </Text>
                 <Text size={30} color="white" className="mt-4 max-w-2xl font-light opacity-95 max-sm:text-[20px]">
-                  Stories that translate research into wonder—written, designed, and photographed by students.
+                  Science communication for the community. Written, designed, photographed, and built by students.
                 </Text>
               </Box>
 
               <Box className="mt-10 flex flex-wrap gap-3">
                 <Button className="inline-flex" color="aqua" size="lg" onClick={scrollToFeatured}>
-                  Explore featured issues
-                </Button>
-                <Button
-                  className="inline-flex"
-                  variant="outline"
-                  color="white"
-                  size="lg"
-                  onClick={() => router.push("/articles")}
-                >
                   Browse articles
+                </Button>
+                <Button className="inline-flex" variant="outline" color="white" size="lg" onClick={() => router.push("/")}>
+                  Print Archive
                 </Button>
               </Box>
 
@@ -86,23 +127,23 @@ export default function Homepage() {
                     Legacy
                   </Text>
                   <Text size={24} color="white" className="mt-1 font-semibold">
-                    16+ years
+                    17 Years
                   </Text>
                 </Box>
                 <Box className="rounded-2xl bg-white/10 px-5 py-4 backdrop-blur">
                   <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
-                    Print
+                    Published
                   </Text>
                   <Text size={24} color="white" className="mt-1 font-semibold">
-                    60+ issues
+                    66 Issues
                   </Text>
                 </Box>
                 <Box className="rounded-2xl bg-white/10 px-5 py-4 backdrop-blur">
                   <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
-                    Topics
+                    Reach
                   </Text>
                   <Text size={24} color="white" className="mt-1 font-semibold">
-                    from labs to life
+                    1300+ Articles
                   </Text>
                 </Box>
               </Box>

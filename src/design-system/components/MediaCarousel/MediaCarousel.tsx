@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 import Image from "@/primitives/Image";
@@ -24,6 +24,10 @@ export function MediaCarousel({
   const [index, setIndex] = useState(() => (media.length ? mod(initialIndex, media.length) : 0));
   const [direction, setDirection] = useState<-1 | 0 | 1>(0); // -1 = left, +1 = right
 
+  useEffect(() => {
+    onIndexChange?.(index);
+  }, [index, onIndexChange]);
+
   if (!media.length) {
     return <div className={mediaCarouselEmptyStateVariants()}>No items to display</div>;
   }
@@ -42,7 +46,6 @@ export function MediaCarousel({
     setDirection(steps > 0 ? 1 : -1);
     setIndex((prev) => {
       const next = mod(prev + steps, media.length);
-      onIndexChange?.(next);
       return next;
     });
   };

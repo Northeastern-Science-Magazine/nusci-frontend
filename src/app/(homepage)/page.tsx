@@ -10,10 +10,6 @@ import Image from "@/design-system/primitives/Image";
 import Button from "@/design-system/primitives/Button";
 import Link from "@/design-system/primitives/Link";
 
-function easeOutCubic(t: number) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
 function useCountUp(target: number, durationMs: number) {
   const [value, setValue] = useState(0);
 
@@ -31,7 +27,7 @@ function useCountUp(target: number, durationMs: number) {
 
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / durationMs);
-      const next = Math.round(target * easeOutCubic(t));
+      const next = Math.round(target * (1 - Math.pow(1 - t, 3)));
       setValue(next);
       if (t < 1) rafId = requestAnimationFrame(tick);
     };
@@ -111,13 +107,6 @@ export default function Homepage() {
     ],
     []
   );
-
-  const [activeIssueIndex, setActiveIssueIndex] = useState(0);
-  const activeIssueNumber = useMemo(() => {
-    const url = issueThumbnails[activeIssueIndex] ?? "";
-    const m = url.match(/issue(\d+)\.png/i);
-    return m?.[1] ?? "Latest";
-  }, [activeIssueIndex, issueThumbnails]);
 
   const scrollToFeatured = () => {
     document.getElementById("featured-issues")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -245,14 +234,9 @@ export default function Homepage() {
 
           <hr className="mt-8" />
 
-          <MediaCarousel media={issueThumbnails} visibleCount={7} initialIndex={0} onIndexChange={setActiveIssueIndex} />
+          <MediaCarousel media={issueThumbnails} visibleCount={7} initialIndex={0} />
 
-          <Text size={14} className="text-center text-black/60">
-            <Text style="bold" as="span">
-              Controls:
-            </Text>{" "}
-            click side covers to navigate • click center to open
-          </Text>
+          <hr className="mb-8" />
         </Box>
       </Box>
 

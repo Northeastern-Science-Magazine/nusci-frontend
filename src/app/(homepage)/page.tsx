@@ -10,6 +10,7 @@ import Text from "@/design-system/primitives/Text";
 import Image from "@/design-system/primitives/Image";
 import Button from "@/design-system/primitives/Button";
 import Link from "@/design-system/primitives/Link";
+import Divider from "@/design-system/primitives/Divider";
 
 function useCountUp(target: number, durationMs: number) {
   const [value, setValue] = useState(0);
@@ -118,12 +119,12 @@ export default function Homepage() {
   const reachArticles = useCountUp(1300, 3000);
 
   return (
-    <main className="bg-gradient-to-b from-black via-black to-white">
+    <main>
       {/* HERO */}
       <OverlayMedia className="w-full h-[620px] md:h-[700px] lg:h-[760px] overflow-hidden">
         {/* Fixed-height hero image: height stays consistent regardless of viewport width */}
         <Image raw src="/moss.png" alt="Moss texture background" width="w-full" />
-        <Overlay background="gradient-black">
+        <Overlay background="solid-black">
           <Box className="h-full w-full">
             <Box className="mx-auto w-full max-w-6xl px-6 py-16 md:py-20">
               <Text size={12} color="white" className="uppercase tracking-[0.35em] opacity-90">
@@ -233,7 +234,7 @@ export default function Homepage() {
             </Box>
           </Box>
 
-          <hr className="mt-8" />
+          <Divider mt={8} />
 
           <MediaCarousel media={issueThumbnails} visibleCount={7} initialIndex={0} />
 

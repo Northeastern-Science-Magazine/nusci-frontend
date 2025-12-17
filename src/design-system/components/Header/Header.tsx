@@ -62,7 +62,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
       className={`
         z-50 transition-all duration-300 ease-in-out
         ${isScrolled ? "shadow-lg py-2" : "py-4"}
-        border-b border-gray-200
+        border-b border-black
       `}
     >
       <Box className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import MediaCarousel from "@/design-system/components/MediaCarousel";
 import { Overlay, OverlayMedia } from "@/design-system/components/MediaOverlay";
@@ -9,6 +9,39 @@ import Text from "@/design-system/primitives/Text";
 import Image from "@/design-system/primitives/Image";
 import Button from "@/design-system/primitives/Button";
 import Link from "@/design-system/primitives/Link";
+
+function easeOutCubic(t: number) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+function useCountUp(target: number, durationMs: number) {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    const prefersReducedMotion =
+      typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+    if (prefersReducedMotion || durationMs <= 0) {
+      setValue(target);
+      return;
+    }
+
+    let rafId = 0;
+    const start = performance.now();
+
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / durationMs);
+      const next = Math.round(target * easeOutCubic(t));
+      setValue(next);
+      if (t < 1) rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [target, durationMs]);
+
+  return value;
+}
 
 export default function Homepage() {
   const router = useRouter();
@@ -90,6 +123,10 @@ export default function Homepage() {
     document.getElementById("featured-issues")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const legacyYears = useCountUp(17, 1000);
+  const publishedIssues = useCountUp(66, 2000);
+  const reachArticles = useCountUp(1300, 3000);
+
   return (
     <main className="bg-gradient-to-b from-black via-black to-white">
       {/* HERO */}
@@ -100,7 +137,7 @@ export default function Homepage() {
           <Box className="h-full w-full">
             <Box className="mx-auto w-full max-w-6xl px-6 py-16 md:py-20">
               <Text size={12} color="white" className="uppercase tracking-[0.35em] opacity-90">
-                Northeastern University's student-run science magazine
+                Northeastern University&apos;s student-run science magazine
               </Text>
 
               <Box className="mt-4">
@@ -126,25 +163,55 @@ export default function Homepage() {
                   <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
                     Legacy
                   </Text>
-                  <Text size={24} color="white" className="mt-1 font-semibold">
-                    17 Years
-                  </Text>
+                  <Box className="mt-1 flex items-baseline gap-2">
+                    <Text
+                      as="span"
+                      size={24}
+                      color="white"
+                      className="inline-block min-w-[2ch] text-right font-semibold tabular-nums"
+                    >
+                      {legacyYears.toLocaleString()}
+                    </Text>
+                    <Text as="span" size={24} color="white">
+                      Years
+                    </Text>
+                  </Box>
                 </Box>
                 <Box className="rounded-2xl bg-white/10 px-5 py-4 backdrop-blur">
                   <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
                     Published
                   </Text>
-                  <Text size={24} color="white" className="mt-1 font-semibold">
-                    66 Issues
-                  </Text>
+                  <Box className="mt-1 flex items-baseline gap-2">
+                    <Text
+                      as="span"
+                      size={24}
+                      color="white"
+                      className="inline-block min-w-[2ch] text-right font-semibold tabular-nums"
+                    >
+                      {publishedIssues.toLocaleString()}
+                    </Text>
+                    <Text as="span" size={24} color="white">
+                      Issues
+                    </Text>
+                  </Box>
                 </Box>
                 <Box className="rounded-2xl bg-white/10 px-5 py-4 backdrop-blur">
                   <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
                     Reach
                   </Text>
-                  <Text size={24} color="white" className="mt-1 font-semibold">
-                    1300+ Articles
-                  </Text>
+                  <Box className="mt-1 flex items-baseline gap-2">
+                    <Text
+                      as="span"
+                      size={24}
+                      color="white"
+                      className="inline-block min-w-[6ch] text-right font-semibold tabular-nums"
+                    >
+                      {reachArticles.toLocaleString()}+
+                    </Text>
+                    <Text as="span" size={24} color="white">
+                      Articles
+                    </Text>
+                  </Box>
                 </Box>
               </Box>
             </Box>

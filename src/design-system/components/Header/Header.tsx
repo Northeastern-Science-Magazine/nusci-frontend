@@ -71,8 +71,8 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
           {/* Logo */}
           <Box className="flex-shrink-0">
             <Link href="/" newWindow={false} className="flex items-center">
-              <Box className="transition-all duration-300 w-12 border-2 border-black">
-                <Image src="/logo.png" alt="NU Sci Magazine" width="w-12" ratio={1} />
+              <Box className="transition-all duration-300 w-12">
+                <Image src="/logo.png" alt="NU Sci Magazine" width="w-12" ratio={1} borderColor="black" borderWidth={2} />
               </Box>
             </Link>
           </Box>

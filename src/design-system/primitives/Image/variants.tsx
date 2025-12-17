@@ -1,4 +1,5 @@
 import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { BorderProps, borderVariants } from "@/design-system/utilities/props/Border/border";
 import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
 import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
 import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
@@ -28,7 +29,14 @@ export const imageVariants = tv({
 
 export type ImageVariants = VariantProps<typeof imageVariants>;
 
-export interface ImageProps extends ImageVariants, AnimationProps, DisplayProps, MarginProps, PaddingProps, PositionProps {
+export interface ImageProps
+  extends ImageVariants,
+    AnimationProps,
+    BorderProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps {
   ratio?: number;
   raw?: boolean;
   src: string;
@@ -41,6 +49,7 @@ export const imageVariantsCN = (variantProps: VariantProps<any>, className?: str
   clsx(
     imageVariants(variantProps),
     animationVariants(variantProps),
+    borderVariants(variantProps),
     displayVariants(variantProps),
     marginVariants(variantProps),
     paddingVariants(variantProps),

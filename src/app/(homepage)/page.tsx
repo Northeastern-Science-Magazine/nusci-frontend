@@ -166,11 +166,6 @@ export default function Homepage() {
             </Box>
 
             <Box className="flex items-center gap-3">
-              <Box className="rounded-full bg-black/5 px-4 py-2">
-                <Text size={14} className="text-black/70">
-                  Currently viewing: <span className="font-semibold text-black">Issue {activeIssueNumber}</span>
-                </Text>
-              </Box>
               <Link
                 href="https://northeasternsciencemagazine.github.io/nusci-issuu/"
                 newWindow
@@ -181,10 +176,12 @@ export default function Homepage() {
             </Box>
           </Box>
 
+          <hr className="mt-8" />
+
           <MediaCarousel media={issueThumbnails} visibleCount={7} initialIndex={0} onIndexChange={setActiveIssueIndex} />
 
           <Text size={14} className="mt-2 text-center text-black/60">
-            Tip: click side covers to navigate • hover to zoom
+            Tip: click side covers to navigate • click center to open
           </Text>
         </Box>
       </Box>

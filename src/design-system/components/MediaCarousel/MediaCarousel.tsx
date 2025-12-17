@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import clsx from "clsx";
 import Image from "@/primitives/Image";
 import {
@@ -23,6 +23,8 @@ export function MediaCarousel({
   const mod = (n: number, m: number) => ((n % m) + m) % m;
   const [index, setIndex] = useState(() => (media.length ? mod(initialIndex, media.length) : 0));
   const [direction, setDirection] = useState<-1 | 0 | 1>(0); // -1 = left, +1 = right
+  const rootRef = useRef<HTMLDivElement>(null);
+  const hasEnteredView = useInView(rootRef, { once: true, amount: 0.25 });
 
   useEffect(() => {
     onIndexChange?.(index);
@@ -51,7 +53,7 @@ export function MediaCarousel({
   };
 
   return (
-    <div className={clsx(mediaCarouselRootVariants({ size }), className)} aria-roledescription="carousel">
+    <div ref={rootRef} className={clsx(mediaCarouselRootVariants({ size }), className)} aria-roledescription="carousel">
       <div className={mediaCarouselViewportVariants({ size })}>
         {visibleItems.map(({ url, index: itemIndex, offset }) => {
           const scale = 1 - Math.abs(offset) * 0.08;
@@ -61,21 +63,34 @@ export function MediaCarousel({
 
           const isInteractive = offset !== 0;
 
+          const entranceInitial = {
+            x: "calc(-50% + 0px)",
+            y: "-50%",
+            rotateY: 0,
+            scale: 0.85,
+          };
+
+          const paginateInitial = {
+            x: `calc(-50% + ${-direction}px)`,
+            y: "-50%",
+            rotateY: -direction * 25,
+            scale: 0.85,
+          };
+
           return (
             <motion.div
               key={`${url}-${itemIndex}`}
-              initial={{
-                x: `calc(-50% + ${-direction}px)`,
-                y: "-50%",
-                rotateY: -direction * 25,
-                scale: 0.85,
-              }}
-              animate={{
-                x: `calc(-50% + ${x}px)`,
-                y: "-50%",
-                rotateY,
-                scale,
-              }}
+              initial={hasEnteredView ? paginateInitial : entranceInitial}
+              animate={
+                hasEnteredView
+                  ? {
+                      x: `calc(-50% + ${x}px)`,
+                      y: "-50%",
+                      rotateY,
+                      scale,
+                    }
+                  : entranceInitial
+              }
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               onClick={isInteractive ? () => paginate(offset) : undefined}

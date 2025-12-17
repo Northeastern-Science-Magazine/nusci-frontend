@@ -204,7 +204,7 @@ export default function Homepage() {
                       as="span"
                       size={24}
                       color="white"
-                      className="inline-block min-w-[6ch] text-right font-semibold tabular-nums"
+                      className="inline-block min-w-[5.5ch] text-right font-semibold tabular-nums"
                     >
                       {reachArticles.toLocaleString()}+
                     </Text>

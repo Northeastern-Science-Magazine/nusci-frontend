@@ -30,7 +30,7 @@ export const mediaCarouselViewportVariants = tv({
 });
 
 export const mediaCarouselPanelVariants = tv({
-  base: "shadow-2xl bg-neutral-900 overflow-hidden rounded-2xl",
+  base: "shadow-2xl bg-neutral-900 overflow-hidden rounded",
   variants: {
     size: {
       sm: "w-[150px] h-[200px]",

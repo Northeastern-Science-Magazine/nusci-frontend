@@ -10,11 +10,11 @@ import { ImageProps, imageVariantsCN } from "./variants";
  * @param { ImageProps } props
  * @returns Image Component
  */
-export const Image = ({ ratio, src, alt, width, raw = false, ...props }: ImageProps) => {
+export const Image = ({ ratio, src, alt, width, height, raw = false, ...props }: ImageProps) => {
   return raw ? (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className={imageVariantsCN(props)} src={src} alt={alt} />
+      <img className={imageVariantsCN(props)} src={src} alt={alt} width={width} height={height} />
     </>
   ) : (
     <div className={width}>

@@ -83,7 +83,7 @@ export function MediaCarousel({
                 isInteractive && "cursor-pointer"
               )}
             >
-              <Image src={url} alt={`Carousel image ${itemIndex + 1}`} raw width="w-full h-full object-cover" />
+              <Image src={url} alt={`Carousel image ${itemIndex + 1}`} raw width="auto" />
             </motion.div>
           );
         })}

@@ -34,6 +34,7 @@ export interface ImageProps extends ImageVariants, AnimationProps, DisplayProps,
   src: string;
   alt: string;
   width: string;
+  height?: string;
 }
 
 export const imageVariantsCN = (variantProps: VariantProps<any>, className?: string) =>

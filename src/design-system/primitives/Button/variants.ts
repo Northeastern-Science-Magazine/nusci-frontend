@@ -13,8 +13,8 @@ export const buttonVariants = tv({
   base: "items-center justify-center font-medium transition-all duration-200 rounded focus:outline-none focus:ring-2 focus:ring-offset-2",
   variants: {
     variant: {
-      default: "shadow bg-opacity-100 hover:bg-opacity-75",
-      emphasis: "shadow-lg bg-opacity-100 hover:shadow-xl hover:bg-opacity-75",
+      default: "shadow bg-opacity-100 hover:brightness-125",
+      emphasis: "shadow-lg bg-opacity-100 hover:shadow-xl hover:brightness-125",
       outline: "",
     },
     size: {

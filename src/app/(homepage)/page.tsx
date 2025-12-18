@@ -12,6 +12,7 @@ import Button from "@/design-system/primitives/Button";
 import Link from "@/design-system/primitives/Link";
 import Divider from "@/design-system/primitives/Divider";
 import useWindowSize from "@/lib/hooks/useWindowSize";
+import { breakpoints } from "../../../tailwind.config";
 
 function useCountUp(target: number, durationMs: number) {
   const [value, setValue] = useState(0);
@@ -239,14 +240,13 @@ export default function Homepage() {
 
           <Divider mt={8} />
 
+          {/* Technically responsive - renders w/ different props at breakpoint laptop */}
           <MediaCarousel
             media={issueThumbnails}
-            size={width && width > 834 ? "lg" : "md"}
-            visibleCount={width && width > 834 ? 7 : 3}
+            size={width && width > breakpoints.laptop ? "lg" : "md"}
+            visibleCount={width && width > breakpoints.laptop ? 7 : 3}
             initialIndex={0}
           />
-
-          {/* <hr className="mb-8" /> */}
         </Box>
       </Box>
 

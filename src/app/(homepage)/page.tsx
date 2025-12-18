@@ -154,7 +154,7 @@ export default function Homepage() {
 
               {/* Stats Badges */}
               <Box mt={10} className="grid grid-cols-3 gap-3 max-sm:grid-cols-1 mobile:invisible laptop:visible">
-                <Box py={4} className="rounded-2xl bg-white/10 px-5 backdrop-blur">
+                <Box className="rounded-2xl bg-white/10 backdrop-blur" px={4} py={4}>
                   <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
                     Legacy
                   </Text>
@@ -172,7 +172,7 @@ export default function Homepage() {
                     </Text>
                   </Box>
                 </Box>
-                <Box className="rounded-2xl bg-white/10 px-5 py-4 backdrop-blur">
+                <Box className="rounded-2xl bg-white/10 backdrop-blur" px={4} py={4}>
                   <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
                     Published
                   </Text>
@@ -190,7 +190,7 @@ export default function Homepage() {
                     </Text>
                   </Box>
                 </Box>
-                <Box className="rounded-2xl bg-white/10 px-5 py-4 backdrop-blur">
+                <Box className="rounded-2xl bg-white/10 backdrop-blur" px={4} py={4}>
                   <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
                     Reach
                   </Text>

@@ -1,13 +1,10 @@
 import type { Config } from "tailwindcss";
 
-// Breakpoint constants - export for use in JavaScript/TypeScript
 export const breakpoints = {
   mobile: 0,
   laptop: 834,
 } as const;
-
-// Helper function to convert pixel value to Tailwind screen format
-const pxToScreen = (px: number) => `${px}px`;
+const px = (px: number) => `${px}px`;
 
 const config: Config = {
   content: [
@@ -39,8 +36,8 @@ const config: Config = {
         marigold: "#FFC443",
       },
       screens: {
-        mobile: pxToScreen(breakpoints.mobile),
-        laptop: pxToScreen(breakpoints.laptop),
+        mobile: px(breakpoints.mobile),
+        laptop: px(breakpoints.laptop),
       },
       keyframes: {
         fadeIn: {

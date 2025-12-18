@@ -239,7 +239,12 @@ export default function Homepage() {
 
           <Divider mt={8} />
 
-          <MediaCarousel media={issueThumbnails} visibleCount={7} initialIndex={0} />
+          <MediaCarousel
+            media={issueThumbnails}
+            size={width && width > 834 ? "lg" : "md"}
+            visibleCount={width && width > 834 ? 7 : 3}
+            initialIndex={0}
+          />
 
           {/* <hr className="mb-8" /> */}
         </Box>

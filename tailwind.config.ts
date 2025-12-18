@@ -31,7 +31,7 @@ const config: Config = {
       },
       screens: {
         mobile: "0px",
-        laptop: "1024px",
+        laptop: "834px",
       },
       keyframes: {
         fadeIn: {

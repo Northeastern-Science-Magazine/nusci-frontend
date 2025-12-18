@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import MediaCarousel from "@/design-system/components/MediaCarousel";
 import MediaCard from "@/design-system/components/MediaCard";
 import { Overlay, OverlayMedia } from "@/design-system/components/MediaOverlay";
@@ -13,6 +14,206 @@ import Link from "@/design-system/primitives/Link";
 import Divider from "@/design-system/primitives/Divider";
 import useWindowSize from "@/lib/hooks/useWindowSize";
 import { breakpoints } from "../../../tailwind.config";
+
+// Parallax Divider Component
+function ParallaxDivider() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  return (
+    <div ref={ref} className="relative h-[400px] overflow-hidden laptop:h-[300px]">
+      <motion.div style={{ y }} className="absolute inset-0">
+        <div className="absolute inset-0 bg-[url('/icy.png')] bg-cover bg-center" />
+      </motion.div>
+    </div>
+  );
+}
+
+// Newspaper Articles Section Component
+function NewspaperArticlesSection({ router }: { router: ReturnType<typeof useRouter> }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 100, rotateX: 15 }}
+      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 100, rotateX: 15 }}
+      transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+      style={{ perspective: "1000px" }}
+      className="relative bg-white py-16 shadow-2xl laptop:py-24"
+    >
+      {/* Newspaper texture overlay */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iYSIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTAgNTBIMTAwTTUwIDBWMTAwIiBzdHJva2U9IiNmNWY1ZjUiIHN0cm9rZS13aWR0aD0iMC41Ii8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNhKSIgb3BhY2l0eT0iMC4wMyIvPjwvc3ZnPg==')] opacity-30" />
+
+      <Box className="relative mx-auto w-full max-w-7xl px-6">
+        {/* Newspaper Header */}
+        <Box className="mb-12 border-b-2 border-black pb-6">
+          <Box className="flex flex-col items-start justify-between gap-4 laptop:flex-row laptop:items-end">
+            <Box>
+              <Text size={14} className="uppercase tracking-[0.3em] text-black/60">
+                Featured Stories
+              </Text>
+              <Text size={48} className="mt-2 font-serif tracking-tight laptop:text-[56px]">
+                Recent Articles
+              </Text>
+            </Box>
+            <Link
+              href="/articles"
+              className="group inline-flex items-center gap-2 border-b-2 border-black/20 pb-1 text-[14px] font-medium text-black/80 transition-all hover:border-black/40 hover:text-black"
+            >
+              View all articles
+              <svg
+                className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </Box>
+        </Box>
+
+        {/* Newspaper Layout - Multi-column */}
+        <Box className="grid gap-8 laptop:grid-cols-12">
+          {/* Main Feature Article - Left Column */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="laptop:col-span-8"
+          >
+            <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
+              <Image src="/eclipse-image.png" alt="A dramatic solar eclipse" width="w-full" ratio={16 / 10} />
+              <Overlay background="gradient-black">
+                <Box className="flex h-full w-full items-end">
+                  <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
+                    <Box className="mb-3 inline-flex items-center border border-white/30 bg-white/10 px-3 py-1 backdrop-blur">
+                      <Text size={12} color="white" className="uppercase tracking-[0.3em]">
+                        Cover Story
+                      </Text>
+                    </Box>
+                    <Text
+                      size={48}
+                      color="white"
+                      className="mt-4 font-serif tracking-tight max-laptop:text-[36px] max-sm:text-[28px]"
+                    >
+                      Chasing Totality
+                    </Text>
+                    <Text
+                      size={18}
+                      color="white"
+                      className="mt-3 max-w-2xl font-light leading-relaxed opacity-95 max-sm:text-[16px]"
+                    >
+                      A photo-led story about the science (and spectacle) behind eclipses—built to read like a print spread.
+                    </Text>
+                    <Box className="mt-6">
+                      <Button className="inline-flex" color="marigold" size="lg" onClick={() => router.push("/articles")}>
+                        Read article
+                      </Button>
+                    </Box>
+                  </Box>
+                </Box>
+              </Overlay>
+            </OverlayMedia>
+          </motion.div>
+
+          {/* Sidebar Articles - Right Column */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="laptop:col-span-4"
+          >
+            <Box className="space-y-6 border-l-2 border-black/10 pl-6 laptop:pl-8">
+              <MediaCard
+                mediaType="image"
+                imageProps={{ src: "/london.png", alt: "A misty city skyline" }}
+                subtitle="Science + Society"
+                title="Urban Heat Islands, Explained"
+                description="How cities trap heat and what we can do about it—a deep dive into urban climate science."
+                mediaDirection="top"
+                size="sm"
+                rounded="none"
+                shadow="none"
+                color="white"
+                className="w-full max-w-none border-b border-black/10 pb-6"
+              />
+
+              <MediaCard
+                mediaType="image"
+                imageProps={{ src: "/moss.png", alt: "Green moss texture" }}
+                subtitle="Research Spotlight"
+                title="How Microbiomes Shape Our World"
+                description="Exploring the invisible ecosystems that influence everything from our health to our environment."
+                mediaDirection="top"
+                size="sm"
+                rounded="none"
+                shadow="none"
+                color="white"
+                className="w-full max-w-none border-b border-black/10 pb-6"
+              />
+            </Box>
+          </motion.div>
+        </Box>
+
+        {/* Secondary Articles Grid - Newspaper Style */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-12 border-t-2 border-black/10 pt-12"
+        >
+          <Box className="grid gap-6 laptop:grid-cols-3">
+            <MediaCard
+              mediaType="image"
+              imageProps={{ src: "/icy.png", alt: "Icy texture" }}
+              subtitle="Quick Read"
+              title="5 Questions About CRISPR"
+              description="A concise guide to understanding gene editing technology."
+              mediaDirection="top"
+              size="sm"
+              rounded="none"
+              shadow="none"
+              color="white"
+              className="w-full max-w-none border border-black/10"
+            />
+            <MediaCard
+              mediaType="image"
+              imageProps={{ src: "/eclipse-image.png", alt: "Solar eclipse" }}
+              subtitle="Opinion"
+              title="Why Science Needs Better Stories"
+              description="How narrative can bridge the gap between research and public understanding."
+              mediaDirection="top"
+              size="sm"
+              rounded="none"
+              shadow="none"
+              color="white"
+              className="w-full max-w-none border border-black/10"
+            />
+            <MediaCard
+              mediaType="image"
+              imageProps={{ src: "/logo.png", alt: "NU Sci logo mark" }}
+              subtitle="Behind the Scenes"
+              title="Designing an Issue Cover"
+              description="A look into the creative process behind our magazine design."
+              mediaDirection="top"
+              size="sm"
+              rounded="none"
+              shadow="none"
+              color="white"
+              className="w-full max-w-none border border-black/10"
+            />
+          </Box>
+        </motion.div>
+      </Box>
+    </motion.div>
+  );
+}
 
 function useCountUp(target: number, durationMs: number) {
   const [value, setValue] = useState(0);
@@ -250,128 +451,11 @@ export default function Homepage() {
         </Box>
       </Box>
 
-      {/* ARTICLE SPREAD MOCKUP */}
-      <Box className="bg-aqua-light" py={12}>
-        <Box className="mx-auto w-full max-w-6xl px-6 pb-14">
-          <Box className="flex flex-col gap-2">
-            <Text size={36} className="tracking-tight">
-              Recent Articles
-            </Text>
-            <Text size={16} className="text-black/70">
-              A quick mockup of what a featured spread could look like—hero story + supporting cards.
-            </Text>
-          </Box>
+      {/* Parallax Scrolling Divider */}
+      <ParallaxDivider />
 
-          <Divider mt={8} />
-
-          {/* Structured layout: featured spread + supporting column + a 3-up grid */}
-          <Box className="grid gap-6 lg:grid-cols-12" mt={8}>
-            <Box className="lg:col-span-8">
-              <OverlayMedia className="mt-3 overflow-hidden rounded border border-black/10 shadow-sm">
-                <Image src="/eclipse-image.png" alt="A dramatic solar eclipse" width="w-full" ratio={16 / 10} />
-                <Overlay background="gradient-black">
-                  <Box className="flex h-full w-full items-end">
-                    <Box className="w-full px-6 pb-6 pt-28 laptop:px-8 laptop:pb-8">
-                      <Box className="inline-flex items-center rounded-full bg-white/15 px-3 py-1 backdrop-blur">
-                        <Text size={12} color="white" className="uppercase tracking-[0.25em]">
-                          Feature
-                        </Text>
-                      </Box>
-                      <Text size={36} color="white" className="mt-3 tracking-tight max-sm:text-[28px]">
-                        Chasing Totality
-                      </Text>
-                      <Text size={16} color="white" className="mt-2 max-w-xl font-light opacity-95">
-                        A photo-led story about the science (and spectacle) behind eclipses—built to read like a print spread.
-                      </Text>
-                      <Box className="mt-5 flex flex-wrap gap-3">
-                        <Button className="inline-flex" color="marigold" size="md" onClick={() => router.push("/articles")}>
-                          Read article
-                        </Button>
-                      </Box>
-                    </Box>
-                  </Box>
-                </Overlay>
-              </OverlayMedia>
-            </Box>
-
-            <Box className="lg:col-span-4">
-              <Box className="mt-3 grid gap-6">
-                <MediaCard
-                  mediaType="image"
-                  imageProps={{ src: "/london.png", alt: "A misty city skyline" }}
-                  subtitle="Science + Society"
-                  title="Urban Heat Islands, Explained"
-                  description="A tight, two-sentence dek that fits alongside a lead spread."
-                  mediaDirection="top"
-                  size="sm"
-                  rounded="rounded"
-                  shadow="shadow"
-                  color="white"
-                  className="w-full max-w-none"
-                />
-
-                <MediaCard
-                  mediaType="image"
-                  imageProps={{ src: "/moss.png", alt: "Green moss texture" }}
-                  subtitle="Research Spotlight"
-                  title="How Microbiomes Shape Our World"
-                  description="A vertical card with room for a pull quote or a quick explainer."
-                  mediaDirection="top"
-                  size="sm"
-                  rounded="rounded"
-                  shadow="shadow"
-                  color="white"
-                  className="w-full max-w-none"
-                />
-              </Box>
-            </Box>
-          </Box>
-
-          <Box className="mt-10">
-            <Box className="mt-3 grid gap-6 laptop:grid-cols-3">
-              <MediaCard
-                mediaType="image"
-                imageProps={{ src: "/icy.png", alt: "Icy texture" }}
-                subtitle="Quick Read"
-                title="5 Questions About CRISPR"
-                description="Compact, fast-moving, and skimmable."
-                mediaDirection="top"
-                size="sm"
-                rounded="rounded"
-                shadow="shadow"
-                color="white"
-                className="w-full max-w-none"
-              />
-              <MediaCard
-                mediaType="image"
-                imageProps={{ src: "/eclipse-image.png", alt: "Solar eclipse" }}
-                subtitle="Opinion"
-                title="Why Science Needs Better Stories"
-                description="A strong voice piece to balance the spread."
-                mediaDirection="top"
-                size="sm"
-                rounded="rounded"
-                shadow="shadow"
-                color="white"
-                className="w-full max-w-none"
-              />
-              <MediaCard
-                mediaType="image"
-                imageProps={{ src: "/logo.png", alt: "NU Sci logo mark" }}
-                subtitle="Behind the Scenes"
-                title="Designing an Issue Cover"
-                description="A process piece that's perfect for a sidebar."
-                mediaDirection="top"
-                size="sm"
-                rounded="rounded"
-                shadow="shadow"
-                color="white"
-                className="w-full max-w-none"
-              />
-            </Box>
-          </Box>
-        </Box>
-      </Box>
+      {/* ARTICLE SPREAD - Newspaper/Editorial Style */}
+      <NewspaperArticlesSection router={router} />
 
       {/* CTA OVERLAY */}
       <Box className="bg-white py-16">

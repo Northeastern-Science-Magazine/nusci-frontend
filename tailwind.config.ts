@@ -29,44 +29,44 @@ const config: Config = {
         coral: "#EE7A51",
         marigold: "#FFC443",
       },
-    screens: {
-      tablet: "768px",
-      laptop: "1024px",
-    },
-    keyframes: {
-      fadeIn: {
-        "0%": { opacity: "0" },
-        "100%": { opacity: "1" },
+      screens: {
+        mobile: "0px",
+        laptop: "1024px",
       },
-      fadeInRight: {
-        "0%": { opacity: "0", transform: "translateX(1rem)" },
-        "100%": { opacity: "1", transform: "translateX(0)" },
-      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        fadeInRight: {
+          "0%": { opacity: "0", transform: "translateX(1rem)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
 
-      fadeInLeft: {
-        "0%": { opacity: "0", transform: "translateX(-1rem)" },
-        "100%": { opacity: "1", transform: "translateX(0)" },
-      },
+        fadeInLeft: {
+          "0%": { opacity: "0", transform: "translateX(-1rem)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
 
-      fadeInTop: {
-        "0%": { opacity: "0", transform: "translateY(-1rem)" },
-        "100%": { opacity: "1", transform: "translateY(0)" },
-      },
+        fadeInTop: {
+          "0%": { opacity: "0", transform: "translateY(-1rem)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
 
-      fadeInBottom: {
-        "0%": { opacity: "0", transform: "translateY(1rem)" },
-        "100%": { opacity: "1", transform: "translateY(0)" },
+        fadeInBottom: {
+          "0%": { opacity: "0", transform: "translateY(1rem)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
       },
-    },
-    animation: {
-      fadeIn: "fadeIn 0.7s ease-out forwards",
-      fadeInRight: "fadeInRight 0.7s ease-out forwards",
-      fadeInLeft: "fadeInLeft 0.7s ease-out forwards",
-      fadeInTop: "fadeInTop 0.7s ease-out forwards",
-      fadeInBottom: "fadeInBottom 0.7s ease-out forwards",
+      animation: {
+        fadeIn: "fadeIn 0.7s ease-out forwards",
+        fadeInRight: "fadeInRight 0.7s ease-out forwards",
+        fadeInLeft: "fadeInLeft 0.7s ease-out forwards",
+        fadeInTop: "fadeInTop 0.7s ease-out forwards",
+        fadeInBottom: "fadeInBottom 0.7s ease-out forwards",
+      },
     },
   },
-},
   plugins: [],
 };
 export default config;

@@ -11,6 +11,7 @@ import Image from "@/design-system/primitives/Image";
 import Button from "@/design-system/primitives/Button";
 import Link from "@/design-system/primitives/Link";
 import Divider from "@/design-system/primitives/Divider";
+import useWindowSize from "@/lib/hooks/useWindowSize";
 
 function useCountUp(target: number, durationMs: number) {
   const [value, setValue] = useState(0);
@@ -43,6 +44,7 @@ function useCountUp(target: number, durationMs: number) {
 
 export default function Homepage() {
   const router = useRouter();
+  const { width } = useWindowSize();
 
   const issueThumbnails = useMemo(
     () => [
@@ -121,36 +123,37 @@ export default function Homepage() {
   return (
     <main>
       {/* HERO */}
-      <OverlayMedia className="w-full h-[620px] md:h-[700px] lg:h-[760px] overflow-hidden">
+      <OverlayMedia className="w-full h-[620px] laptop:h-[700px] overflow-hidden">
         {/* Fixed-height hero image: height stays consistent regardless of viewport width */}
         <Image raw src="/moss.png" alt="Moss texture background" width="w-full" />
         <Overlay background="solid-black">
           <Box className="h-full w-full">
-            <Box className="mx-auto w-full max-w-6xl px-6 py-16 md:py-20">
+            <Box className="mx-auto w-full max-w-6xl px-6 py-16 laptop:py-20">
               <Text size={12} color="white" className="uppercase tracking-[0.35em] opacity-90">
                 Northeastern University&apos;s student-run science magazine
               </Text>
 
-              <Box className="mt-4">
-                <Text size={96} color="white" className="leading-none tracking-tight max-md:text-[72px] max-sm:text-[56px]">
+              <Box mt={4}>
+                <Text size={96} color="white" className="leading-none tracking-tight max-laptop:text-[72px] max-sm:text-[56px]">
                   NU Sci
                 </Text>
                 <Text size={30} color="white" className="mt-4 max-w-2xl font-light opacity-95 max-sm:text-[20px]">
-                  Science communication for the community. Written, designed, photographed, and built by students.
+                  Science communication for the community. Written, designed, photographed, and developed by students.
                 </Text>
               </Box>
 
-              <Box className="mt-10 flex flex-wrap gap-3">
+              <Box mt={10} className="flex flex-wrap gap-3">
                 <Button className="inline-flex" color="aqua" size="lg" onClick={scrollToFeatured}>
                   Browse articles
                 </Button>
                 <Button className="inline-flex" variant="outline" color="white" size="lg" onClick={() => router.push("/")}>
-                  Print Archive
+                  Learn more
                 </Button>
               </Box>
 
-              <Box className="mt-10 grid grid-cols-3 gap-3 max-sm:grid-cols-1">
-                <Box className="rounded-2xl bg-white/10 px-5 py-4 backdrop-blur">
+              {/* Stats Badges */}
+              <Box mt={10} className="grid grid-cols-3 gap-3 max-sm:grid-cols-1 mobile:invisible laptop:visible">
+                <Box py={4} className="rounded-2xl bg-white/10 px-5 backdrop-blur">
                   <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
                     Legacy
                   </Text>
@@ -213,7 +216,7 @@ export default function Homepage() {
       {/* FEATURED ISSUES (carousel is first featured item) */}
       <Box id="featured-issues" className="scroll-mt-24 bg-white">
         <Box className="mx-auto w-full max-w-6xl px-6 pt-14 pb-10">
-          <Box className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+          <Box className="flex flex-col items-start justify-between gap-6 laptop:flex-row laptop:items-end">
             <Box>
               <Text size={36} className="tracking-tight">
                 Our Magazines
@@ -254,16 +257,16 @@ export default function Homepage() {
             </Text>
           </Box>
 
-          <hr className="mt-8" />
+          <Divider mt={8} />
 
           {/* Structured layout: featured spread + supporting column + a 3-up grid */}
-          <Box className="mt-8 grid gap-6 lg:grid-cols-12">
+          <Box className="grid gap-6 lg:grid-cols-12" mt={8}>
             <Box className="lg:col-span-8">
-              <OverlayMedia className="mt-3 overflow-hidden rounded-3xl border border-black/10 shadow-sm">
+              <OverlayMedia className="mt-3 overflow-hidden rounded border border-black/10 shadow-sm">
                 <Image src="/eclipse-image.png" alt="A dramatic solar eclipse" width="w-full" ratio={16 / 10} />
                 <Overlay background="gradient-black">
                   <Box className="flex h-full w-full items-end">
-                    <Box className="w-full px-6 pb-6 pt-28 md:px-8 md:pb-8">
+                    <Box className="w-full px-6 pb-6 pt-28 laptop:px-8 laptop:pb-8">
                       <Box className="inline-flex items-center rounded-full bg-white/15 px-3 py-1 backdrop-blur">
                         <Text size={12} color="white" className="uppercase tracking-[0.25em]">
                           Feature
@@ -320,7 +323,7 @@ export default function Homepage() {
           </Box>
 
           <Box className="mt-10">
-            <Box className="mt-3 grid gap-6 md:grid-cols-3">
+            <Box className="mt-3 grid gap-6 laptop:grid-cols-3">
               <MediaCard
                 mediaType="image"
                 imageProps={{ src: "/icy.png", alt: "Icy texture" }}
@@ -371,7 +374,7 @@ export default function Homepage() {
           <Image src="/icy.png" alt="A textured green moss background" width="w-full" ratio={1920 / 700} />
           <Overlay background="gradient-black">
             <Box className="flex h-full w-full items-end">
-              <Box className="w-full px-6 pb-10 pt-24 md:px-10 md:pb-12">
+              <Box className="w-full px-6 pb-10 pt-24 laptop:px-10 laptop:pb-12">
                 <Text size={36} color="white" className="tracking-tight max-sm:text-[30px]">
                   Made by students. Read by everyone.
                 </Text>

@@ -80,16 +80,16 @@ function ParallaxDividerWithNewspaper({ router }: { router: ReturnType<typeof us
                         <Text
                           size={48}
                           color="white"
-                          className="mt-4 font-serif tracking-tight max-laptop:text-[36px] max-sm:text-[28px]"
+                          className="mt-4 font-serif tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
                         >
-                          Chasing Totality
+                          Siberian Permafrost
                         </Text>
                         <Text
                           size={18}
                           color="white"
                           className="mt-3 max-w-2xl font-light leading-relaxed opacity-95 max-sm:text-[16px]"
                         >
-                          A photo-led story about the science (and spectacle) behind eclipses—built to read like a print spread.
+                          A photo-led story about the science (and spectacle) behind ice—built to read like a print spread.
                         </Text>
                         <Box className="mt-6">
                           <Button className="inline-flex" color="marigold" size="lg" onClick={() => router.push("/articles")}>
@@ -108,7 +108,7 @@ function ParallaxDividerWithNewspaper({ router }: { router: ReturnType<typeof us
                         <Text
                           size={48}
                           color="white"
-                          className="mt-4 font-serif tracking-tight max-laptop:text-[36px] max-sm:text-[28px]"
+                          className="mt-4 font-serif tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
                         >
                           Chasing Totality
                         </Text>

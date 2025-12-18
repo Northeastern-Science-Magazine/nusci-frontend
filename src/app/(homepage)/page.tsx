@@ -14,6 +14,7 @@ import Link from "@/design-system/primitives/Link";
 import Divider from "@/design-system/primitives/Divider";
 import useWindowSize from "@/lib/hooks/useWindowSize";
 import { breakpoints } from "../../../tailwind.config";
+import { ChevronRight } from "lucide-react";
 
 // Integrated Parallax Divider and Newspaper Section
 function ParallaxDividerWithNewspaper({ router }: { router: ReturnType<typeof useRouter> }) {
@@ -50,7 +51,7 @@ function ParallaxDividerWithNewspaper({ router }: { router: ReturnType<typeof us
       >
         {/* Paper container with defined width */}
         <div className="relative bg-white shadow-2xl border border-black/10">
-          <Box className="relative px-16 py-16">
+          <Box className="relative px-4 laptop:px-16 py-16">
             <Box className="flex flex-col items-start justify-between gap-4 laptop:flex-row laptop:items-end">
               <Text size={48} className="mt-2 font-serif tracking-tight laptop:text-[56px]">
                 Recent Articles
@@ -61,14 +62,7 @@ function ParallaxDividerWithNewspaper({ router }: { router: ReturnType<typeof us
                 className="group inline-flex items-center gap-2 border-b-2 border-black/20 pb-1 text-[14px] font-medium text-black/80 transition-all hover:border-black/40 hover:text-black"
               >
                 View all articles
-                <svg
-                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Box>
 
@@ -77,22 +71,12 @@ function ParallaxDividerWithNewspaper({ router }: { router: ReturnType<typeof us
             {/* Newspaper Layout - Multi-column */}
             <Box className="grid gap-8 laptop:grid-cols-12">
               {/* Main Feature Article - Left Column */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="laptop:col-span-8"
-              >
+              <div className="laptop:col-span-8 space-y-8">
                 <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
-                  <Image src="/eclipse-image.png" alt="A dramatic solar eclipse" width="w-full" ratio={16 / 10} />
+                  <Image src="/icy.png" alt="A dramatic solar eclipse" width="w-full" ratio={16 / 10} />
                   <Overlay background="gradient-black">
                     <Box className="flex h-full w-full items-end">
                       <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
-                        <Box className="mb-3 inline-flex items-center border border-white/30 bg-white/10 px-3 py-1 backdrop-blur">
-                          <Text size={12} color="white" className="uppercase tracking-[0.3em]">
-                            Cover Story
-                          </Text>
-                        </Box>
                         <Text
                           size={48}
                           color="white"
@@ -116,15 +100,38 @@ function ParallaxDividerWithNewspaper({ router }: { router: ReturnType<typeof us
                     </Box>
                   </Overlay>
                 </OverlayMedia>
-              </motion.div>
+                <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
+                  <Image src="/succulent.png" alt="A dramatic solar eclipse" width="w-full" ratio={16 / 10} />
+                  <Overlay background="gradient-black">
+                    <Box className="flex h-full w-full items-end">
+                      <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
+                        <Text
+                          size={48}
+                          color="white"
+                          className="mt-4 font-serif tracking-tight max-laptop:text-[36px] max-sm:text-[28px]"
+                        >
+                          Chasing Totality
+                        </Text>
+                        <Text
+                          size={18}
+                          color="white"
+                          className="mt-3 max-w-2xl font-light leading-relaxed opacity-95 max-sm:text-[16px]"
+                        >
+                          A photo-led story about the science (and spectacle) behind eclipses—built to read like a print spread.
+                        </Text>
+                        <Box className="mt-6">
+                          <Button className="inline-flex" color="marigold" size="lg" onClick={() => router.push("/articles")}>
+                            Read article
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Overlay>
+                </OverlayMedia>
+              </div>
 
               {/* Sidebar Articles - Right Column */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="laptop:col-span-4"
-              >
+              <div className="laptop:col-span-4">
                 <Box className="space-y-6 border-l-2 border-black/10 pl-6 laptop:pl-8">
                   <MediaCard
                     mediaType="image"
@@ -154,16 +161,11 @@ function ParallaxDividerWithNewspaper({ router }: { router: ReturnType<typeof us
                     className="w-full max-w-none border-b border-black/10 pb-6"
                   />
                 </Box>
-              </motion.div>
+              </div>
             </Box>
 
             {/* Secondary Articles Grid - Newspaper Style */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-12 border-t-2 border-black/10 pt-12"
-            >
+            <div className="mt-12 border-t-2 border-black/10 pt-12">
               <Box className="grid gap-6 laptop:grid-cols-3">
                 <MediaCard
                   mediaType="image"
@@ -205,7 +207,7 @@ function ParallaxDividerWithNewspaper({ router }: { router: ReturnType<typeof us
                   className="w-full max-w-none border border-black/10"
                 />
               </Box>
-            </motion.div>
+            </div>
           </Box>
         </div>
       </motion.div>

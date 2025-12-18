@@ -22,11 +22,14 @@ function ParallaxDivider() {
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+
+  // Image moves within fixed container - using negative values to move image up as we scroll down
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+
   return (
-    <div ref={ref} className="relative h-[400px] overflow-hidden laptop:h-[300px]">
-      <motion.div style={{ y }} className="absolute inset-0">
-        <div className="absolute inset-0 bg-[url('/icy.png')] bg-cover bg-center" />
+    <div ref={ref} className="relative h-[400px] overflow-hidden laptop:h-[400px]">
+      <motion.div style={{ y: imageY }} className="absolute inset-0">
+        <div className="absolute -inset-[20%] bg-[url('/icy.png')] bg-cover bg-center" />
       </motion.div>
     </div>
   );
@@ -35,7 +38,7 @@ function ParallaxDivider() {
 // Newspaper Articles Section Component
 function NewspaperArticlesSection({ router }: { router: ReturnType<typeof useRouter> }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const isInView = useInView(ref, { once: true, amount: 0.05 });
 
   return (
     <motion.div
@@ -50,7 +53,7 @@ function NewspaperArticlesSection({ router }: { router: ReturnType<typeof useRou
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iYSIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTAgNTBIMTAwTTUwIDBWMTAwIiBzdHJva2U9IiNmNWY1ZjUiIHN0cm9rZS13aWR0aD0iMC41Ii8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNhKSIgb3BhY2l0eT0iMC4wMyIvPjwvc3ZnPg==')] opacity-30" />
 
       <Box className="relative mx-auto w-full max-w-7xl px-6">
-        {/* Newspaper Header */}
+        {/* Newspaper Header - Overlaps with divider */}
         <Box className="mb-12 border-b-2 border-black pb-6">
           <Box className="flex flex-col items-start justify-between gap-4 laptop:flex-row laptop:items-end">
             <Box>
@@ -448,6 +451,8 @@ export default function Homepage() {
             visibleCount={width && width > breakpoints.laptop ? 7 : 3}
             initialIndex={0}
           />
+
+          <Divider mt={8} />
         </Box>
       </Box>
 

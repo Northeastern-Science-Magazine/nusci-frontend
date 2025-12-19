@@ -1,8 +1,8 @@
-import { GridColProps, GridProps, GridRowProps, gridVariants, gridColVariants, gridRowVariants } from "./variants";
+import { GridColProps, GridProps, GridRowProps, gridColVariants, gridRowVariants, gridVariantsCN } from "./variants";
 import clsx from "clsx";
 
-export function Grid({ className, children, ...variantProps }: GridProps) {
-  return <div className={clsx(gridVariants(variantProps), className)}>{children}</div>;
+export function Grid({ className, children, ...props }: GridProps) {
+  return <div className={gridVariantsCN(props, className)}>{children}</div>;
 }
 
 export function GridCol({ className, children, ...variantProps }: GridColProps) {

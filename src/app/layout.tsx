@@ -19,17 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className={styles.container}>
-           <Header />
-          <div className="h-16" /> {/* Spacer */}
-          <div className="mt-24">{children}</div>
-          <Footer />
-        </div>
+        <Header />
+        <div className="h-16" /> {/* Spacer */}
+        {children}
+        <Footer />
       </body>
     </html>
   );
 }
-
-const styles = {
-  container: "",
-};

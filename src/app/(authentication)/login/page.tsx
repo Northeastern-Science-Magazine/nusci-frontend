@@ -19,7 +19,7 @@ export default function LoginPage() {
   };
 
   return (
-    <Flex className="min-h-screen items-center justify-center p-4 bg-sage-green" >
+    <Flex className="min-h-screen items-center justify-center p-4 bg-sage-green">
       <MediaCard
         mediaType="image"
         mediaDirection="right"
@@ -45,25 +45,25 @@ export default function LoginPage() {
           }}
           className="space-y-8 mt-6 p-5"
         >
-            <FormField<LoginFormValues>
-              name="email"
-              rules={{
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                  message: "Please enter a valid email",
-                },
-              }}
-            >
-              <TextInput
-                variant="outline"
-                size="md"
-                color="black"
-                label="Email"
-                placeholder="name@company.com"
-                 className="w-full"
-              />
-            </FormField>
+          <FormField<LoginFormValues>
+            name="email"
+            rules={{
+              required: "Email is required",
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                message: "Please enter a valid email",
+              },
+            }}
+          >
+            <TextInput
+              variant="outline"
+              size="md"
+              color="black"
+              label="Email"
+              placeholder="name@company.com"
+              className="w-full"
+            />
+          </FormField>
 
           <Box>
             <FormField<LoginFormValues>
@@ -84,12 +84,7 @@ export default function LoginPage() {
             </FormField>
           </Box>
 
-          <Button 
-            variant="default"
-            size="md"
-            color="forest-green"
-             className="w-full"
-          >
+          <Button variant="default" size="md" color="forest-green" className="w-full">
             Sign In
           </Button>
 

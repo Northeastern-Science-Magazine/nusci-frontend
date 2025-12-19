@@ -1,3 +1,5 @@
+"use client";
+
 import { Form, FormField } from "@/primitives/Form";
 import { SubmitHandler } from "react-hook-form";
 import MediaCard from "@/design-system/components/MediaCard";

@@ -6,7 +6,16 @@ import Text from "@/primitives/Text";
 import { mediaCardTextSizes } from "./variants";
 
 export const MediaCard = (props: MediaCardProps) => {
-  const { title, subtitle, description, mediaType, size, color, ...variantProps } = props;
+  const {
+    title,
+    subtitle,
+    description,
+    mediaType,
+    size,
+    color,
+    children,
+    ...variantProps
+  } = props;
 
   // Get text sizes from the configuration
   const textSizes = mediaCardTextSizes[size ?? "md"];
@@ -29,6 +38,7 @@ export const MediaCard = (props: MediaCardProps) => {
             {description}
           </Text>
         )}
+        {children}
       </Box>
       <Box className="media-container flex-shrink-0">
         {props.mediaType === "image" && (

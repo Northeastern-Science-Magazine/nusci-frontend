@@ -1,18 +1,7 @@
 import React from "react";
-import { TextProps } from "./variants";
-import { textVariants } from "./variants";
-import clsx from "clsx";
+import { TextProps, textVariantsCN } from "./variants";
 
-export default function Text({
-  className,
-  as = "p",
-  children,
-  ...variantProps
-}: TextProps) {
+export default function Text({ className, as = "p", children, ...props }: TextProps) {
   const Component = as === "p" ? "p" : "span";
-  return (
-    <Component className={clsx(textVariants(variantProps), className)}>
-      {children}
-    </Component>
-  );
+  return <Component className={textVariantsCN(props, className)}>{children}</Component>;
 }

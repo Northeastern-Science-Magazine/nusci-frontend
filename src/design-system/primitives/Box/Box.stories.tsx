@@ -5,8 +5,195 @@ import React from "react";
 /* Modify this when adding variants to Box */
 const positions = ["static", "fixed", "absolute", "relative", "sticky"] as const;
 const displays = ["inline", "block", "inline-block", "hidden"] as const;
-const widths = ["full", "screen", "auto", "min", "max"] as const;
-const heights = ["full", "screen", "auto", "min", "max", "fit"] as const;
+const widths = [
+  "full",
+  "screen",
+  "auto",
+  "min",
+  "max",
+  4,
+  8,
+  12,
+  14,
+  16,
+  18,
+  20,
+  24,
+  30,
+  36,
+  48,
+  60,
+  72,
+  96,
+  128,
+  256,
+  324,
+  400,
+  500,
+  600,
+  700,
+  700,
+  900,
+  1000,
+] as const;
+const minWidths = [
+  "full",
+  "screen",
+  "auto",
+  "min",
+  "max",
+  4,
+  8,
+  12,
+  14,
+  16,
+  18,
+  20,
+  24,
+  30,
+  36,
+  48,
+  60,
+  72,
+  96,
+  128,
+  256,
+  324,
+  400,
+  500,
+  600,
+  700,
+  700,
+  900,
+  1000,
+] as const;
+const maxWidths = [
+  "full",
+  "screen",
+  "auto",
+  "min",
+  "max",
+  4,
+  8,
+  12,
+  14,
+  16,
+  18,
+  20,
+  24,
+  30,
+  36,
+  48,
+  60,
+  72,
+  96,
+  128,
+  256,
+  324,
+  400,
+  500,
+  600,
+  700,
+  700,
+  900,
+  1000,
+] as const;
+const heights = [
+  "full",
+  "screen",
+  "auto",
+  "min",
+  "max",
+  "fit",
+  4,
+  8,
+  12,
+  14,
+  16,
+  18,
+  20,
+  24,
+  30,
+  36,
+  48,
+  60,
+  72,
+  96,
+  128,
+  256,
+  324,
+  400,
+  500,
+  600,
+  700,
+  700,
+  900,
+  1000,
+] as const;
+const minHeights = [
+  "full",
+  "screen",
+  "auto",
+  "min",
+  "max",
+  "fit",
+  4,
+  8,
+  12,
+  14,
+  16,
+  18,
+  20,
+  24,
+  30,
+  36,
+  48,
+  60,
+  72,
+  96,
+  128,
+  256,
+  324,
+  400,
+  500,
+  600,
+  700,
+  700,
+  900,
+  1000,
+] as const;
+const maxHeights = [
+  "full",
+  "screen",
+  "auto",
+  "min",
+  "max",
+  "fit",
+  4,
+  8,
+  12,
+  14,
+  16,
+  18,
+  20,
+  24,
+  30,
+  36,
+  48,
+  60,
+  72,
+  96,
+  128,
+  256,
+  324,
+  400,
+  500,
+  600,
+  700,
+  700,
+  900,
+  1000,
+] as const;
 const tops = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const bottoms = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const lefts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
@@ -62,6 +249,22 @@ const meta: Meta<typeof Box> = {
     height: {
       control: "select",
       options: heights,
+    },
+    minWidth: {
+      control: "select",
+      options: minWidths,
+    },
+    maxWidth: {
+      control: "select",
+      options: maxWidths,
+    },
+    minHeight: {
+      control: "select",
+      options: minHeights,
+    },
+    maxHeight: {
+      control: "select",
+      options: maxHeights,
     },
     top: {
       control: "select",
@@ -154,6 +357,51 @@ export const Default: Story = {
     m: 8,
     height: "full",
     p: 4,
+  },
+};
+
+/** Gallery story for some box variants with ranging background colors, min/max width and height */
+export const MinMaxGallery: Story = {
+  args: {},
+  render: (args) => {
+    return (
+      <div>
+        {colors.map((backgroundColor) => (
+          <div key={backgroundColor}>
+            <div className="grid grid-cols-3 gap-2">
+              {minWidths.map((minWidth) => (
+                <React.Fragment key={`minWidth-${minWidth}`}>
+                  <div className="flex flex-col">
+                    {maxWidths.map((maxWidth) => (
+                      <div key={`min-${minWidth}-max-${maxWidth}`} className="flex justify-left p-2">
+                        <Box minWidth={minWidth} maxWidth={maxWidth} color={backgroundColor} p={4}>
+                          min-w: {minWidth}, max-w: {maxWidth}
+                        </Box>
+                      </div>
+                    ))}
+                  </div>
+                </React.Fragment>
+              ))}
+            </div>
+            <div className="grid grid-cols-3 gap-2 mt-4">
+              {minHeights.map((minHeight) => (
+                <React.Fragment key={`minHeight-${minHeight}`}>
+                  <div className="flex flex-col">
+                    {maxHeights.map((maxHeight) => (
+                      <div key={`minH-${minHeight}-maxH-${maxHeight}`} className="flex justify-left p-2">
+                        <Box minHeight={minHeight} maxHeight={maxHeight} color={backgroundColor} p={4}>
+                          min-h: {minHeight}, max-h: {maxHeight}
+                        </Box>
+                      </div>
+                    ))}
+                  </div>
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   },
 };
 

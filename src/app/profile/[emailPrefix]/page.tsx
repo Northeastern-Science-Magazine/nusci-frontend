@@ -3,6 +3,7 @@ import Text from "@/design-system/primitives/Text/Text";
 import Card from "@/design-system/primitives/Card";
 import { Badge } from "@/design-system/primitives/Badge/Badge";
 import { Box } from "@/design-system/primitives/Box/Box";
+import MediaCard from "@/design-system/components/MediaCard";
 import { notFound } from "next/navigation";
 import { Roles } from "@/lib/types/types";
 
@@ -170,11 +171,73 @@ export default function PublicProfilePage({ params }: PublicProfilePageProps) {
             <Text style="bold" color="black" size={36} className="tracking-tight mb-8">
               Articles
             </Text>
-            <Box className="grid grid-cols-1 laptop:grid-cols-3 gap-6">
-              {/* Placeholder for articles - can be replaced with actual article components */}
-              <div className="h-64 bg-gray rounded-lg" />
-              <div className="h-64 bg-gray rounded-lg" />
-              <div className="h-64 bg-gray rounded-lg" />
+            <Box className="flex flex-col gap-6">
+              {/* Top row: 3 articles */}
+              <Box className="flex flex-col laptop:flex-row gap-6">
+                <Box className="flex-1">
+                  <MediaCard
+                    mediaType="image"
+                    imageProps={{ src: "/icy.png", alt: "Icy texture" }}
+                    subtitle="Research Spotlight"
+                    title="Siberian Permafrost"
+                    description="A photo-led story about the science (and spectacle) behind ice—built to read like a print spread."
+                    mediaDirection="top"
+                    size="sm"
+                    rounded="none"
+                    shadow="none"
+                    color="white"
+                    className="w-full max-w-none border border-black/10"
+                  />
+                </Box>
+                <Box className="flex-1">
+                  <MediaCard
+                    mediaType="image"
+                    imageProps={{ src: "/succulent.png", alt: "Succulent plant" }}
+                    subtitle="Science + Society"
+                    title="Urban Heat Islands, Explained"
+                    description="How cities trap heat and what we can do about it—a deep dive into urban climate science."
+                    mediaDirection="top"
+                    size="sm"
+                    rounded="none"
+                    shadow="none"
+                    color="white"
+                    className="w-full max-w-none border border-black/10"
+                  />
+                </Box>
+                <Box className="flex-1">
+                  <MediaCard
+                    mediaType="image"
+                    imageProps={{ src: "/moss.png", alt: "Green moss texture" }}
+                    subtitle="Quick Read"
+                    title="5 Questions About CRISPR"
+                    description="A concise guide to understanding gene editing technology."
+                    mediaDirection="top"
+                    size="sm"
+                    rounded="none"
+                    shadow="none"
+                    color="white"
+                    className="w-full max-w-none border border-black/10"
+                  />
+                </Box>
+              </Box>
+              {/* Bottom row: 1 article */}
+              <Box className="flex flex-col laptop:flex-row gap-6">
+                <Box className="flex-1 laptop:max-w-[calc(33.333%-1rem)]">
+                  <MediaCard
+                    mediaType="image"
+                    imageProps={{ src: "/eclipse-image.png", alt: "Solar eclipse" }}
+                    subtitle="Opinion"
+                    title="Why Science Needs Better Stories"
+                    description="How narrative can bridge the gap between research and public understanding."
+                    mediaDirection="top"
+                    size="sm"
+                    rounded="none"
+                    shadow="none"
+                    color="white"
+                    className="w-full max-w-none border border-black/10"
+                  />
+                </Box>
+              </Box>
             </Box>
           </Box>
         </Box>

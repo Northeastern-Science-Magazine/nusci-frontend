@@ -4,7 +4,7 @@ import React from "react";
 import Image from "@/primitives/Image";
 import Text from "@/primitives/Text";
 
-const options = [true, false] as const;
+const options = [true, false, undefined] as const;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Link> = {
@@ -25,7 +25,6 @@ export const Default: Story = {
       </Text>
     ),
     href: "https://www.google.com",
-    newWindow: false,
   },
 };
 

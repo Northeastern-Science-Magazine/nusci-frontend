@@ -64,99 +64,119 @@ export default function PublicProfilePage({ params }: PublicProfilePageProps) {
   return (
     <>
       {/* Banner */}
-      <Box className="relative w-full h-[400px] overflow-hidden">
+      <Box className="relative w-full h-[300px] overflow-hidden">
         <img src={bannerUrl} alt="Banner" className="w-full h-full object-cover" />
       </Box>
 
       {/* Header: Avatar, Name and Role */}
       <Box className="bg-white relative">
-        <Box className="max-w-6xl mx-auto px-4 laptop:px-8 py-6">
-          <Box className="flex items-center gap-12 flex-wrap">
-            {/* Avatar with negative margin to overlap banner */}
-            <Box className="-mt-40 laptop:-mt-40 flex-shrink-0 z-10">
-              <Avatar src={avatarUrl} alt="A blue surgeonfish avatar" fallback="SX" size={"xl"} />
+        <Box className="max-w-6xl mx-auto px-4 laptop:px-8 pt-8 pb-10">
+          <Box className="grid grid-cols-1 laptop:grid-cols-12 gap-8 items-end">
+            {/* Left column: Avatar centered over auxiliary info card */}
+            <Box className="col-span-1 laptop:col-span-4 flex justify-center">
+              <Box className="-mt-40 laptop:-mt-40 flex-shrink-0 z-10">
+                <Avatar src={avatarUrl} alt="A blue surgeonfish avatar" fallback="SX" size={"xl"} />
+              </Box>
             </Box>
-            <Box className="flex items-center gap-4 flex-wrap">
-              <Text style="bold" size={48} color="black" className="tracking-tight laptop:text-[56px]">
-                {name}
-              </Text>
-              {roles.map((role) => (
-                <Badge color="aqua" variant="default" className="capitalize" key={roles.indexOf(role)}>
-                  {role}
-                </Badge>
-              ))}
+            {/* Right column: Name aligned with About section */}
+            <Box className="col-span-1 laptop:col-span-8 pb-2 pl-4">
+              <Box className="flex items-center gap-4 flex-wrap mb-3">
+                <Text style="bold" size={48} color="black" className="tracking-tight laptop:text-[56px]">
+                  {name}
+                </Text>
+              </Box>
+              <Box className="flex items-center gap-2 flex-wrap">
+                {roles.map((role) => (
+                  <Badge color="aqua" variant="default" className="capitalize" key={roles.indexOf(role)}>
+                    {role}
+                  </Badge>
+                ))}
+              </Box>
             </Box>
           </Box>
         </Box>
       </Box>
 
       {/* Main content grid */}
-      <Box className="px-4 laptop:px-8 py-8 bg-gray">
-        <Box className="max-w-6xl mx-auto grid grid-cols-1 laptop:grid-cols-12 gap-6">
-          {/* Left column: Auxiliary info */}
-          <Box className="col-span-1 laptop:col-span-4">
-            <Card color="white" className="shadow-xl p-6">
-              <Box className="space-y-4">
-                <Box className="flex items-center gap-3">
-                  <Text style="regular" size={16} color="sage-green">
-                    Pronouns:
-                  </Text>
-                  <Text style="regular" size={16} color="black">
-                    {pronouns}
-                  </Text>
+      <Box className="bg-gray min-h-screen">
+        <Box className="max-w-6xl mx-auto px-4 laptop:px-8 py-4">
+          <Box className="grid grid-cols-1 laptop:grid-cols-12 gap-8">
+            {/* Left column: Auxiliary info */}
+            <Box className="col-span-1 laptop:col-span-4">
+              <Card color="white" className="shadow-lg p-8 sticky top-8">
+                <Box className="space-y-6">
+                  <Box>
+                    <Text style="regular" size={14} color="sage-green" className="uppercase tracking-wide mb-1">
+                      Pronouns
+                    </Text>
+                    <Text style="regular" size={18} color="black">
+                      {pronouns}
+                    </Text>
+                  </Box>
+                  <Box>
+                    <Text style="regular" size={14} color="sage-green" className="uppercase tracking-wide mb-1">
+                      Graduation Year
+                    </Text>
+                    <Text style="regular" size={18} color="black">
+                      {graduationYear}
+                    </Text>
+                  </Box>
+                  <Box>
+                    <Text style="regular" size={14} color="sage-green" className="uppercase tracking-wide mb-1">
+                      Major
+                    </Text>
+                    <Text style="regular" size={18} color="black">
+                      {major}
+                    </Text>
+                  </Box>
+                  <Box>
+                    <Text style="regular" size={14} color="sage-green" className="uppercase tracking-wide mb-1">
+                      Location
+                    </Text>
+                    <Text style="regular" size={18} color="black">
+                      {location}
+                    </Text>
+                  </Box>
+                  <Box>
+                    <Text style="regular" size={14} color="sage-green" className="uppercase tracking-wide mb-1">
+                      Email
+                    </Text>
+                    <Text style="regular" size={18} color="black" className="break-all">
+                      {email}
+                    </Text>
+                  </Box>
                 </Box>
-                <Box className="flex items-center gap-3">
-                  <Text style="regular" size={16} color="sage-green">
-                    Graduation Year:
-                  </Text>
-                  <Text style="regular" size={16} color="black">
-                    {graduationYear}
-                  </Text>
-                </Box>
-                <Box className="flex items-center gap-3">
-                  <Text style="regular" size={16} color="sage-green">
-                    Major:
-                  </Text>
-                  <Text style="regular" size={16} color="black">
-                    {major}
-                  </Text>
-                </Box>
-                <Box className="flex items-center gap-3">
-                  <Text style="regular" size={16} color="sage-green">
-                    Location:
-                  </Text>
-                  <Text style="regular" size={16} color="black">
-                    {location}
-                  </Text>
-                </Box>
-                <Box className="flex items-center gap-3">
-                  <Text style="regular" size={16} color="sage-green">
-                    Email:
-                  </Text>
-                  <Text style="regular" size={16} color="black">
-                    {email}
-                  </Text>
-                </Box>
-              </Box>
-            </Card>
-          </Box>
+              </Card>
+            </Box>
 
-          {/* Right column: Bio */}
-          <Box className="col-span-1 laptop:col-span-8">
-            <Text style="regular" size={16} color="black" className="leading-relaxed">
-              {bio}
-            </Text>
+            {/* Right column: Bio */}
+            <Box className="col-span-1 laptop:col-span-8">
+              <Card color="white" className="shadow-lg p-8">
+                <Text style="regular" size={14} color="sage-green" className="uppercase tracking-wide mb-1">
+                  Biography
+                </Text>
+                <Text style="regular" size={16} color="black" className="leading-relaxed">
+                  {bio}
+                </Text>
+              </Card>
+            </Box>
           </Box>
         </Box>
       </Box>
 
       {hasArticles && (
-        <Box className="px-4 laptop:px-8 pb-8">
-          <Card color="white" className="shadow-xl flex justify-center p-8 max-w-7xl mx-auto">
-            <Text style="bold" color="black" size={36} className="tracking-tight">
+        <Box className="bg-white border-t border-border">
+          <Box className="max-w-6xl mx-auto px-4 laptop:px-8 py-16">
+            <Text style="bold" color="black" size={36} className="tracking-tight mb-8">
               Articles
             </Text>
-          </Card>
+            <Box className="grid grid-cols-1 laptop:grid-cols-3 gap-6">
+              {/* Placeholder for articles - can be replaced with actual article components */}
+              <div className="h-64 bg-gray rounded-lg" />
+              <div className="h-64 bg-gray rounded-lg" />
+              <div className="h-64 bg-gray rounded-lg" />
+            </Box>
+          </Box>
         </Box>
       )}
     </>

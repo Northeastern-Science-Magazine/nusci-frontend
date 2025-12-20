@@ -29,7 +29,7 @@ export default function FeaturedArticles() {
     <Font serif>
       <div className="relative">
         {/* Parallax Divider Background */}
-        <div ref={dividerRef} className="relative h-[400px] overflow-hidden laptop:h-[400px]">
+        <div ref={dividerRef} className="relative h-[400px] overflow-hidden">
           <motion.div style={{ y: imageY }} className="absolute inset-0">
             <div className="absolute -inset-[20%] bg-[url('/succulent.png')] bg-cover bg-center" />
           </motion.div>
@@ -45,7 +45,7 @@ export default function FeaturedArticles() {
           className="relative -mt-32 mx-auto w-full max-w-6xl px-6 laptop:px-8"
         >
           {/* Paper container with defined width */}
-          <div className="relative bg-white shadow-2xl border border-black/10">
+          <div className="relative bg-white shadow-2xl border border-border">
             <Box className="relative px-4 laptop:px-16 py-16">
               <Box className="flex flex-col items-start justify-between gap-4 laptop:flex-row laptop:items-end">
                 <Text size={48} className="mt-2 tracking-tight laptop:text-[56px]">

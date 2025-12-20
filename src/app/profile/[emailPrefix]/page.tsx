@@ -49,7 +49,7 @@ export default function PublicProfilePage({ params }: PublicProfilePageProps) {
       location: "Boston",
       email: "jdoe@northeastern.edu",
       roles: [Roles.Author, Roles.Designer, Roles.Editor],
-      avatarUrl: "https://cdn.britannica.com/73/9173-050-9D9EA4BA/Surgeonfish.jpg",
+      avatarUrl: "/profil.png",
       bannerUrl: "/icy.png",
       bio: `Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.`,
     };
@@ -165,7 +165,7 @@ export default function PublicProfilePage({ params }: PublicProfilePageProps) {
       </Box>
 
       {hasArticles && (
-        <Box className="bg-white border-t border-border">
+        <Box className="bg-white shadow-md-top">
           <Box className="max-w-6xl mx-auto px-4 laptop:px-8 py-16">
             <Text style="bold" color="black" size={36} className="tracking-tight mb-8">
               Articles

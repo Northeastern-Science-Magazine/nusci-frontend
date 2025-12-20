@@ -42,7 +42,7 @@ export default function PublicProfilePage({ params }: PublicProfilePageProps) {
 
   if (emailPrefix == "jdoe") {
     mockData = {
-      name: "John Doe",
+      name: "Jonathan Doemeterez",
       pronouns: "He/Him",
       graduationYear: 2027,
       major: "Computer Science",
@@ -69,7 +69,7 @@ export default function PublicProfilePage({ params }: PublicProfilePageProps) {
       </Box>
 
       {/* Header: Avatar, Name and Role */}
-      <Box className="bg-white relative">
+      <Box className="bg-white relative shadow-md">
         <Box className="max-w-6xl mx-auto px-4 laptop:px-8 pt-8 pb-10">
           <Box className="grid grid-cols-1 laptop:grid-cols-12 gap-8 items-end">
             {/* Left column: Avatar centered over auxiliary info card */}
@@ -98,13 +98,13 @@ export default function PublicProfilePage({ params }: PublicProfilePageProps) {
       </Box>
 
       {/* Main content grid */}
-      <Box className="bg-gray min-h-screen">
-        <Box className="max-w-6xl mx-auto px-4 laptop:px-8 py-4">
-          <Box className="grid grid-cols-1 laptop:grid-cols-12 gap-8">
+      <Box className="bg-gray">
+        <Box className="max-w-6xl mx-auto px-4 laptop:px-8 py-8">
+          <Box className="grid grid-cols-1 laptop:grid-cols-12 gap-8 items-stretch">
             {/* Left column: Auxiliary info */}
-            <Box className="col-span-1 laptop:col-span-4">
-              <Card color="white" className="shadow-lg p-8 sticky top-8">
-                <Box className="space-y-6">
+            <Box className="col-span-1 laptop:col-span-4 flex">
+              <Card color="white" className="shadow-xl p-8 sticky top-8 w-full flex flex-col">
+                <Box className="space-y-6 flex-1">
                   <Box>
                     <Text style="regular" size={14} color="sage-green" className="uppercase tracking-wide mb-1">
                       Pronouns
@@ -150,12 +150,12 @@ export default function PublicProfilePage({ params }: PublicProfilePageProps) {
             </Box>
 
             {/* Right column: Bio */}
-            <Box className="col-span-1 laptop:col-span-8">
-              <Card color="white" className="shadow-lg p-8">
+            <Box className="col-span-1 laptop:col-span-8 flex">
+              <Card color="white" className="shadow-xl p-8 w-full flex flex-col">
                 <Text style="regular" size={14} color="sage-green" className="uppercase tracking-wide mb-1">
                   Biography
                 </Text>
-                <Text style="regular" size={16} color="black" className="leading-relaxed">
+                <Text style="regular" size={16} color="black" className="leading-relaxed flex-1">
                   {bio}
                 </Text>
               </Card>

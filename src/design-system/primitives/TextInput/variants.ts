@@ -7,7 +7,6 @@ import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/si
 import clsx from "clsx";
 import { ClassAttributes, InputHTMLAttributes } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
-import { toggleVariants } from "../Toggle/variants";
 
 /** Define Basic Text Variants using Tailwind Variant Definitions */
 export const textInputVariants = tv({

@@ -1,6 +1,6 @@
 import { TextInput } from "./TextInput";
-import { type TextInputProps } from "./variants";
+import { type TextInputProps, type SingleLineTextInputProps, type MultiLineTextInputProps } from "./variants";
 
 /** Define safe exports for this component folder */
-export { TextInputProps };
+export type { TextInputProps, SingleLineTextInputProps, MultiLineTextInputProps };
 export default TextInput;

@@ -17,6 +17,7 @@ import {
   Mail,
   Menu,
   X,
+  Plus,
 } from "lucide-react";
 import { InstagramLogoIcon, LinkedInLogoIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
@@ -40,7 +41,6 @@ export const iconVariants = tv({
     color: {
       black: "text-black",
       white: "text-white",
-      red: "text-red-500",
       aqua: "text-aqua",
       "aqua-light": "text-aqua-light",
       "forest-green": "text-forest-green",
@@ -52,6 +52,7 @@ export const iconVariants = tv({
       maroon: "text-maroon",
       coral: "text-coral",
       marigold: "text-marigold",
+      red: "text-red-500",
       text: "text",
     },
   },
@@ -87,6 +88,7 @@ export const iconMap = {
   email: Mail,
   menu: Menu,
   x: X,
+  plus: Plus,
 };
 
 export type IconName = keyof typeof iconMap;

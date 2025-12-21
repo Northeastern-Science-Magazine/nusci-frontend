@@ -21,11 +21,11 @@ interface ProfileData {
 }
 
 interface PublicProfilePageProps {
-  params: { emailPrefix: string };
+  params: Promise<{ emailPrefix: string }>;
 }
 
-export default function PublicProfilePage({ params }: PublicProfilePageProps) {
-  const { emailPrefix } = params;
+export default async function PublicProfilePage({ params }: PublicProfilePageProps) {
+  const { emailPrefix } = await params;
 
   //Note: the below is in place of api call using emailPrefix to get data
   let mockData: ProfileData = {

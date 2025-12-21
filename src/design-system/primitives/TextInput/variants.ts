@@ -216,16 +216,16 @@ type HTMLTextareaProps = Omit<
 > &
   ClassAttributes<HTMLTextAreaElement>;
 
-/** Single-line input variant (multiline: false) */
+/** Single-line input variant (multiline: false or undefined, rows not provided) */
 export interface SingleLineTextInputProps extends BaseTextInputProps, HTMLInputProps {
   multiline?: false;
   rows?: never;
   resize?: never;
 }
 
-/** Multi-line textarea variant (multiline: true) */
+/** Multi-line textarea variant - multiline can be true or undefined (inferred from rows) */
 export interface MultiLineTextInputProps extends BaseTextInputProps, HTMLTextareaProps {
-  multiline: true;
+  multiline?: true;
   rows?: number;
   resize?: boolean;
 }

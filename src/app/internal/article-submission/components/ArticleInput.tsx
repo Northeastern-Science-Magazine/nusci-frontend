@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import ReactQuill from "react-quill";
+import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 type ArticleInputProps = {
   value?: string;
@@ -11,7 +13,6 @@ type ArticleInputProps = {
 
 export function ArticleInput({ value = "", onChange }: ArticleInputProps) {
   const [localValue, setLocalValue] = useState<string>(value);
-  const quillRef = useRef<any>(null);
 
   // keep local state in sync with incoming prop
   useEffect(() => {
@@ -22,7 +23,6 @@ export function ArticleInput({ value = "", onChange }: ArticleInputProps) {
     <div>
       <label className="mb-1">Content</label>
       <ReactQuill
-        ref={quillRef}
         value={localValue}
         onChange={(v) => {
           setLocalValue(v);

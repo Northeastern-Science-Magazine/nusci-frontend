@@ -13,7 +13,8 @@ export const TextInput = (props: TextInputProps) => {
 
   const autoId = React.useId();
   const propId = id ?? autoId;
-  const multiline = props.multiline ?? false;
+  // Default to multiline=true if rows is provided, otherwise false
+  const multiline = props.multiline ?? ("rows" in props && props.rows !== undefined ? true : false);
 
   const baseClassName = clsx(textInputVariantsCN({ variant, size, color, ...restProps }), className);
 
@@ -26,7 +27,7 @@ export const TextInput = (props: TextInputProps) => {
       )}
       {multiline ? (
         (() => {
-          const textareaProps = props as Extract<TextInputProps, { multiline: true }>;
+          const textareaProps = props as Extract<TextInputProps, { multiline?: true }> & { rows?: number };
           const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             if (textareaProps.rows === 1 && e.key === "Enter") {
               e.preventDefault();

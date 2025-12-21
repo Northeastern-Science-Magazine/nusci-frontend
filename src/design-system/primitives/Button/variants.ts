@@ -1,3 +1,10 @@
+import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
+import clsx from "clsx";
 import React, { ClassAttributes, HTMLAttributes } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
@@ -6,8 +13,8 @@ export const buttonVariants = tv({
   base: "items-center justify-center font-medium transition-all duration-200 rounded focus:outline-none focus:ring-2 focus:ring-offset-2",
   variants: {
     variant: {
-      default: "shadow bg-opacity-100 hover:bg-opacity-75",
-      emphasis: "shadow-lg bg-opacity-100 hover:shadow-xl hover:bg-opacity-75",
+      default: "shadow bg-opacity-100 hover:brightness-125",
+      emphasis: "shadow-lg bg-opacity-100 hover:shadow-xl hover:brightness-125",
       outline: "",
     },
     size: {
@@ -28,12 +35,9 @@ export const buttonVariants = tv({
         "text-white bg-forest-green border-forest-green hover:bg-forest-green hover:border-forest-green focus:ring-forest-green",
       "sage-green":
         "text-black bg-sage-green border-sage-green hover:bg-sage-green hover:border-sage-green focus:ring-sage-green",
-      border:
-        "text-white bg-border border-border hover:bg-border hover:border-border focus:ring-border",
-      neutral:
-        "text-black bg-neutral border-neutral hover:bg-neutral hover:border-neutral focus:ring-neutral",
-      purple:
-        "text-white bg-purple border-purple hover:bg-purple hover:border-purple focus:ring-purple",
+      border: "text-black bg-border border-border hover:bg-border hover:border-border focus:ring-border",
+      neutral: "text-black bg-neutral border-neutral hover:bg-neutral hover:border-neutral focus:ring-neutral",
+      purple: "text-white bg-purple border-purple hover:bg-purple hover:border-purple focus:ring-purple",
       pink: "text-black bg-pink border-pink hover:bg-pink hover:border-pink focus:ring-pink",
       maroon:
         "text-white bg-maroon border-maroon hover:bg-maroon hover:border-maroon focus:ring-maroon",
@@ -211,10 +215,30 @@ type HTMLButtonProps = Omit<HTMLAttributes<HTMLButtonElement>, "color"> &
   ClassAttributes<HTMLButtonElement>;
 
 /** Export ButtonProps as one type */
-export interface ButtonProps extends ButtonVariants, HTMLButtonProps {
+export interface ButtonProps
+  extends ButtonVariants,
+    HTMLButtonProps,
+    AnimationProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    SizeProps {
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
 }
+
+export const buttonVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    buttonVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );

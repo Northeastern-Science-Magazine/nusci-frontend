@@ -1,5 +1,13 @@
-import React, { ClassAttributes, InputHTMLAttributes } from "react";
+import { animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
+import clsx from "clsx";
+import { ClassAttributes, InputHTMLAttributes } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
+import { toggleVariants } from "../Toggle/variants";
 
 /** Define Basic Text Variants using Tailwind Variant Definitions */
 export const textInputVariants = tv({
@@ -186,14 +194,18 @@ export const textInputVariants = tv({
 export type TextInputVariants = VariantProps<typeof textInputVariants>;
 
 /** Utilize HTML Text attributes excluding size and color */
-type HTMLTextProps = Omit<
-  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-  "size" | "color" | "value" | "onChange"
-> &
+type HTMLTextProps = Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "size" | "color" | "value" | "onChange" | "height" | "width"> &
   ClassAttributes<HTMLTextAreaElement>;
 
 /** Export the text props as one type */
-export interface TextInputProps extends TextInputVariants, HTMLTextProps {
+export interface TextInputProps
+  extends TextInputVariants,
+    HTMLTextProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    SizeProps {
   className?: string;
   placeholder?: string;
   label: string;
@@ -203,3 +215,15 @@ export interface TextInputProps extends TextInputVariants, HTMLTextProps {
   rows?: number;
   resize?: boolean;
 }
+
+export const textInputVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    textInputVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );

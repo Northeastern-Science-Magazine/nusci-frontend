@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { TextInputProps, textInputVariants } from "./variants";
+import React from "react";
+import { TextInputProps, textInputVariantsCN } from "./variants";
 import clsx from "clsx";
 
 /**
@@ -44,7 +44,7 @@ export const TextInput = ({
         onChange={(e) => onChange?.(e.target.value)}
         onKeyDown={handleKeyDown}
         className={clsx(
-          textInputVariants({ variant, size, color }),
+          textInputVariantsCN({ variant, size, color, ...props }),
           className,
           resize ? "resize-y" : "resize-none min-h-0"
         )}

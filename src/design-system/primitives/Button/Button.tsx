@@ -1,4 +1,4 @@
-import { ButtonProps, buttonVariants } from "./variants";
+import { ButtonProps, buttonVariantsCN } from "./variants";
 
 /**
  * Button Component
@@ -6,21 +6,9 @@ import { ButtonProps, buttonVariants } from "./variants";
  * @param { ButtonProps } props
  * @returns Button Component
  */
-export default function Button({
-  className,
-  onClick,
-  children,
-  disabled = false,
-  type = "button",
-  ...variantProps
-}: ButtonProps) {
+export default function Button({ className, onClick, children, type = "button", ...props }: ButtonProps) {
   return (
-    <button
-      disabled={disabled}
-      type={type}
-      onClick={onClick}
-      className={`${buttonVariants(variantProps)} ${className}`}
-    >
+    <button onClick={onClick} disabled={disabled} className={buttonVariantsCN(props, className)}>
       {children}
     </button>
   );

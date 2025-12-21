@@ -29,9 +29,9 @@ export default function FeaturedArticles() {
     <Font serif>
       <div className="relative">
         {/* Parallax Divider Background */}
-        <div ref={dividerRef} className="relative h-[400px] overflow-hidden">
-          <motion.div style={{ y: imageY }} className="absolute inset-0">
-            <div className="absolute -inset-[20%] bg-[url('/succulent.png')] bg-cover bg-center" />
+        <div ref={dividerRef} className="relative w-full h-[400px] overflow-hidden">
+          <motion.div style={{ y: imageY }} className="absolute inset-0 w-full">
+            <img src="/succulent.png" alt="" className="absolute inset-0 w-full h-full object-cover object-center" />
           </motion.div>
         </div>
 

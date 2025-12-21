@@ -60,8 +60,7 @@ const FormContent = () => {
   useEffect(() => {
     const updateProgress = () => {
       setProgress({
-        author:
-          !!watchedFields.author && watchedFields.author.trim().length > 0,
+        author: !!watchedFields.author && watchedFields.author.trim().length > 0,
         title: !!watchedFields.title && watchedFields.title.trim().length > 0,
         categories:
           Array.isArray(watchedFields.categories) &&
@@ -74,13 +73,9 @@ const FormContent = () => {
             .replace(/\u200B/g, "")
             .replace(/\s+/g, " ")
             .trim().length > 0,
-        pullQuote:
-          !!watchedFields.pullQuote &&
-          watchedFields.pullQuote.trim().length > 0,
+        pullQuote: !!watchedFields.pullQuote && watchedFields.pullQuote.trim().length > 0,
         sources:
-          Array.isArray(watchedFields.sources) &&
-          watchedFields.sources.length > 0 &&
-          watchedFields.sources[0]?.trim().length > 0,
+          Array.isArray(watchedFields.sources) && watchedFields.sources.length > 0 && watchedFields.sources[0]?.trim().length > 0,
       });
     };
     updateProgress();
@@ -90,34 +85,21 @@ const FormContent = () => {
     <Grid col span={3} gap={8}>
       <GridCol span={2}>
         <Box className="space-y-8 rounded-2xl bg-white p-8 shadow-xl ring-1 ring-black/5">
-          <Text
-            color="sage-green"
-            size={36}
-            style="bold"
-            className="mb-8 text-left"
-          >
+          <Text color="sage-green" size={36} style="bold" className="mb-8 text-left">
             Submit an Article
           </Text>
 
           {/* Author */}
           <div id="author" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="author">
-              <TextInput
-                placeholder={currentUser.name}
-                label="Author"
-                className="w-full"
-              />
+              <TextInput placeholder={currentUser.name} label="Author" className="w-full" />
             </FormField>
           </div>
 
           {/* Title */}
           <div id="title" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="title">
-              <TextInput
-                placeholder="Enter article title"
-                label="Title"
-                className="w-full"
-              />
+              <TextInput placeholder="Enter article title" label="Title" className="w-full" />
             </FormField>
           </div>
 
@@ -162,12 +144,7 @@ const FormContent = () => {
           {/* Pull Quote */}
           <div id="pull-quote" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="pullQuote">
-              <TextInput
-                placeholder="Enter a pull quote"
-                label="Pull Quote"
-                className="w-full"
-                rows={3}
-              />
+              <TextInput placeholder="Enter a pull quote" label="Pull Quote" className="w-full" rows={3} />
             </FormField>
           </div>
 
@@ -223,12 +200,7 @@ const FormContent = () => {
 
 // TODO: Implement actual submission logic
 const onSubmit = (data: ArticleSubmissionFormValues) => {
-  alert(
-    "Article submitted!" +
-      JSON.stringify(data) +
-      " image name: " +
-      data.image?.name
-  );
+  alert("Article submitted!" + JSON.stringify(data) + " image name: " + data.image?.name);
 };
 
 /* PAGE EXPORT */

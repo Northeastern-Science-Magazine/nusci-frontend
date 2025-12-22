@@ -1,6 +1,6 @@
-import { dividerVariants, DividerProps } from "./Variants";
 import clsx from "clsx";
+import { DividerProps, dividerVariantsCN } from "./Variants";
 
-export function Divider({className, ...props}: DividerProps) {
-  return <div className={clsx(dividerVariants(props), className)}/>
+export function Divider({ className, ...props }: DividerProps) {
+  return <div className={clsx(dividerVariantsCN(props), className)} />;
 }

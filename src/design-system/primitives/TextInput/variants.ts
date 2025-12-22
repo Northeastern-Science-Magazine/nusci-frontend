@@ -1,4 +1,11 @@
-import React, { ClassAttributes, InputHTMLAttributes } from "react";
+import { animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
+import clsx from "clsx";
+import { ClassAttributes, InputHTMLAttributes } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 /** Define Basic Text Variants using Tailwind Variant Definitions */
@@ -185,12 +192,8 @@ export const textInputVariants = tv({
 /** Create TextInputProp types for variants */
 export type TextInputVariants = VariantProps<typeof textInputVariants>;
 
-/** Utilize HTML Text attributes excluding size and color */
-type HTMLTextProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "color" | "value" | "onChange"> &
-  ClassAttributes<HTMLInputElement>;
-
-/** Export the text props as one type */
-export interface TextInputProps extends TextInputVariants, HTMLTextProps {
+/** Base props shared by both input and textarea variants */
+interface BaseTextInputProps extends TextInputVariants, DisplayProps, MarginProps, PaddingProps, PositionProps, SizeProps {
   className?: string;
   placeholder?: string;
   label: string;
@@ -198,3 +201,46 @@ export interface TextInputProps extends TextInputVariants, HTMLTextProps {
   value?: string;
   onChange?: (value: string) => void;
 }
+
+/** HTML Input attributes excluding size and color */
+type HTMLInputProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "size" | "color" | "value" | "onChange" | "height" | "width"
+> &
+  ClassAttributes<HTMLInputElement>;
+
+/** HTML Textarea attributes excluding size and color */
+type HTMLTextareaProps = Omit<
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+  "size" | "color" | "value" | "onChange" | "height" | "width"
+> &
+  ClassAttributes<HTMLTextAreaElement>;
+
+/** Single-line input variant (multiline: false or undefined, rows not provided) */
+export interface SingleLineTextInputProps extends BaseTextInputProps, HTMLInputProps {
+  multiline?: false;
+  rows?: never;
+  resize?: never;
+}
+
+/** Multi-line textarea variant - multiline can be true or undefined (inferred from rows) */
+export interface MultiLineTextInputProps extends BaseTextInputProps, HTMLTextareaProps {
+  multiline?: true;
+  rows?: number;
+  resize?: boolean;
+}
+
+/** Discriminated union type for TextInput */
+export type TextInputProps = SingleLineTextInputProps | MultiLineTextInputProps;
+
+export const textInputVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    textInputVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );

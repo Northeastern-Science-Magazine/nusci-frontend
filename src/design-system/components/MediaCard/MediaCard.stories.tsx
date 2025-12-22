@@ -50,10 +50,8 @@ type Story = StoryObj<typeof MediaCard>;
 
 const sampleDescription =
   "A paragraph is a distinct section of writing, consisting of one or more sentences, that focuses on a single, unified idea or topic.";
-const sampleImage = 
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop";
-const sampleVideo =
-  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+const sampleImage = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop";
+const sampleVideo = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
 // Basic Examples
 export const Default: Story = {
@@ -174,7 +172,6 @@ export const MediaTypeComparison: Story = {
             description={sampleDescription}
             videoProps={{
               src: sampleVideo,
-              alt: "Sample video",
               controls: true,
               muted: true,
             }}
@@ -206,7 +203,6 @@ export const MediaTypeComparison: Story = {
             description={sampleDescription}
             videoProps={{
               src: sampleVideo,
-              alt: "Sample video",
               controls: true,
               muted: true,
             }}

@@ -62,7 +62,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
       className={`
         z-50 transition-all duration-300 ease-in-out
         ${isScrolled ? "shadow-lg py-2" : "py-4"}
-        border-b border-gray-200
+        border-b border-black
       `}
     >
       <Box className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -71,16 +71,9 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
           {/* Logo */}
           <Box className="flex-shrink-0">
             <Link href="/" newWindow={false} className="flex items-center">
-              {isScrolled ? (
-                <Box className="transition-all duration-300 h-8 w-8">
-                  <Image src="/logo.png" alt="NU Sci Magazine" width="w-8" ratio={1} />
-                </Box>
-              ) : (
-                <Box className="ml-3">
-                  <Box className="text-xl font-bold text-black">NU Sci</Box>
-                  <Box className="text-sm text-gray-600">Magazine</Box>
-                </Box>
-              )}
+              <Box className="transition-all duration-300 w-12">
+                <Image src="/logo.png" alt="NU Sci Magazine" width="w-12" ratio={1} borderColor="black" borderWidth={2} />
+              </Box>
             </Link>
           </Box>
 

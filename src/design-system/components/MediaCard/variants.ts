@@ -193,6 +193,7 @@ interface BaseMediaCardProps
   subtitle?: string;
   title?: string;
   description?: string;
+  children?: React.ReactNode;
 }
 
 // Image-specific media card

@@ -1,3 +1,10 @@
+import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
+import clsx from "clsx";
 import React from "react";
 import { tv, VariantProps } from "tailwind-variants";
 
@@ -82,7 +89,25 @@ export interface GridPropsBase {
 type GridColOnly = GridPropsBase & { col: true; row?: never };
 type GridRowOnly = GridPropsBase & { row: true; col?: never };
 
-export type GridProps = GridColOnly | GridRowOnly;
+export type GridProps = (GridColOnly | GridRowOnly) &
+  AnimationProps &
+  DisplayProps &
+  MarginProps &
+  PaddingProps &
+  PositionProps &
+  SizeProps;
+
+export const gridVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    gridVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );
 
 export const gridColVariants = tv({
   base: "",

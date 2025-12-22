@@ -1,10 +1,16 @@
+import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
+import clsx from "clsx";
 import { tv, type VariantProps } from "tailwind-variants";
 
 /** Define RadioButton Variants
  * applies dynamic styling for checked/unchecked state using Radix data-state
  */
 export const radioButtonVariants = tv({
-  base: "border bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2",
   variants: {
     color: {
       black: "border-black data-[state=checked]:bg-black focus:ring-black",
@@ -45,7 +51,14 @@ export type RadioButtonVariants = VariantProps<typeof radioButtonVariants>;
  * color: styling variant
  */
 
-export interface RadioButtonProps extends RadioButtonVariants {
+export interface RadioButtonProps
+  extends RadioButtonVariants,
+    AnimationProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    SizeProps {
   options: { label: string; value: string }[];
   name: string;
   value?: string;
@@ -53,3 +66,15 @@ export interface RadioButtonProps extends RadioButtonVariants {
   onChange?: (value: string) => void;
   className?: string;
 }
+
+export const radioButtonVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    radioButtonVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );

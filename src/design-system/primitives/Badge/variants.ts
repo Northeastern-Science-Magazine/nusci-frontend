@@ -2,11 +2,12 @@ import React from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const badgeVariants = tv({
-  base: "items-center justify-center font-medium rounded-3xl py-2 px-4 border-2",
+  base: "items-center justify-center font-medium py-2 px-4 border-2",
   variants: {
     variant: {
       default: "bg-opacity-100",
       outline: "",
+      blur: "",
     },
     color: {
       black: "text-white bg-black border-black",
@@ -23,6 +24,11 @@ export const badgeVariants = tv({
       maroon: "text-white bg-maroon border-maroon",
       coral: "text-black bg-coral border-coral",
       marigold: "text-black bg-marigold border-marigold",
+    },
+    rounded: {
+      sm: "rounded",
+      md: "rounded-2xl",
+      lg: "rounded-3xl",
     },
   },
   compoundVariants: [
@@ -96,10 +102,81 @@ export const badgeVariants = tv({
       color: "marigold",
       class: "bg-transparent border-2 border-marigold text-marigold",
     },
+    {
+      variant: "blur",
+      color: "black",
+      class: "bg-black/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "white",
+      class: "bg-white/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "red",
+      class: "bg-red-600/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "aqua",
+      class: "bg-aqua/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "aqua-light",
+      class: "bg-aqua-light/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "forest-green",
+      class: "bg-forest-green/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "sage-green",
+      class: "bg-sage-green/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "border",
+      class: "bg-border/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "neutral",
+      class: "bg-neutral/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "purple",
+      class: "bg-purple/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "pink",
+      class: "bg-pink/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "maroon",
+      class: "bg-maroon/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "coral",
+      class: "bg-coral/10 backdrop-blur text-white",
+    },
+    {
+      variant: "blur",
+      color: "marigold",
+      class: "bg-marigold/10 backdrop-blur text-white",
+    },
   ],
   defaultVariants: {
     variant: "default",
     color: "black",
+    rounded: "lg",
   },
 });
 

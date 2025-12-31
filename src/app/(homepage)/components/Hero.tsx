@@ -35,9 +35,9 @@ function useCountUp(target: number, durationMs: number) {
 }
 
 export default function Hero() {
-  const legacyYears = useCountUp(17, 1000);
-  const publishedIssues = useCountUp(66, 2000);
-  const reachArticles = useCountUp(1300, 3000);
+  const legacyYears = useCountUp(17, 1500);
+  const publishedIssues = useCountUp(66, 2500);
+  const reachArticles = useCountUp(1300, 3500);
 
   return (
     <OverlayMedia className="w-full h-[620px] laptop:h-[700px] overflow-hidden">

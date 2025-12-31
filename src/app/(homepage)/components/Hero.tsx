@@ -47,12 +47,12 @@ export default function Hero() {
       <Overlay background="solid-black">
         <Box className="h-full w-full">
           <Box className="mx-auto w-full max-w-6xl px-6 py-16 laptop:py-20">
-            <Text size={12} color="white" className="uppercase tracking-[0.35em] opacity-90">
+            <Text size={12} color="white" spacing="xl" className="uppercase opacity-90">
               Northeastern University&apos;s student-run science magazine
             </Text>
 
             <Box mt={4}>
-              <Text size={96} color="white" className="leading-none tracking-tight max-laptop:text-[72px] max-sm:text-[56px]">
+              <Text size={96} color="white" spacing="sm" className="leading-none max-laptop:text-[72px] max-sm:text-[56px]">
                 NU Sci
               </Text>
               <Text size={30} color="white" className="mt-4 max-w-2xl font-light opacity-95 max-sm:text-[20px]">
@@ -72,7 +72,7 @@ export default function Hero() {
             {/* Stats Badges */}
             <Box mt={10} className="grid grid-cols-3 gap-3 max-sm:grid-cols-1 mobile:invisible laptop:visible">
               <Badge rounded="md" color="white" variant="blur" py={4}>
-                <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
+                <Text size={12} color="white" spacing="lg" className="uppercase opacity-80">
                   Legacy
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">
@@ -90,7 +90,7 @@ export default function Hero() {
                 </Box>
               </Badge>
               <Badge rounded="md" color="white" variant="blur" py={4}>
-                <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
+                <Text size={12} color="white" spacing="lg" className="uppercase opacity-80">
                   Published
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">
@@ -108,7 +108,7 @@ export default function Hero() {
                 </Box>
               </Badge>
               <Badge rounded="md" color="white" variant="blur" py={4}>
-                <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
+                <Text size={12} color="white" spacing="lg" className="uppercase opacity-80">
                   Reach
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">

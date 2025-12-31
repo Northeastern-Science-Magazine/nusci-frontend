@@ -50,9 +50,17 @@ export const textVariants = tv({
       96: "text-[96px]",
       128: "text-[128px]",
     },
+    spacing: {
+      xs: "tracking-tighter",
+      sm: "tracking-tight",
+      md: "tracking-normal",
+      lg: "tracking-[0.25em]",
+      xl: "tracking-[0.35em]",
+    },
   },
   defaultVariants: {
     size: 12,
+    spacing: "md",
   },
 });
 

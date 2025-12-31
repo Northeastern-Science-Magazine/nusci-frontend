@@ -4,6 +4,7 @@ import Box from "@/design-system/primitives/Box";
 import Image from "@/design-system/primitives/Image";
 import Text from "@/design-system/primitives/Text";
 import { useEffect, useState } from "react";
+import Badge from "@/design-system/primitives/Badge";
 
 function useCountUp(target: number, durationMs: number) {
   const [value, setValue] = useState(0);
@@ -70,7 +71,7 @@ export default function Hero() {
 
             {/* Stats Badges */}
             <Box mt={10} className="grid grid-cols-3 gap-3 max-sm:grid-cols-1 mobile:invisible laptop:visible">
-              <Box className="rounded-2xl bg-white/10 backdrop-blur" px={4} py={4}>
+              <Badge rounded="md" color="white" variant="blur" py={4}>
                 <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
                   Legacy
                 </Text>
@@ -87,8 +88,8 @@ export default function Hero() {
                     Years
                   </Text>
                 </Box>
-              </Box>
-              <Box className="rounded-2xl bg-white/10 backdrop-blur" px={4} py={4}>
+              </Badge>
+              <Badge rounded="md" color="white" variant="blur" py={4}>
                 <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
                   Published
                 </Text>
@@ -105,8 +106,8 @@ export default function Hero() {
                     Issues
                   </Text>
                 </Box>
-              </Box>
-              <Box className="rounded-2xl bg-white/10 backdrop-blur" px={4} py={4}>
+              </Badge>
+              <Badge rounded="md" color="white" variant="blur" py={4}>
                 <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
                   Reach
                 </Text>
@@ -123,7 +124,7 @@ export default function Hero() {
                     Articles
                   </Text>
                 </Box>
-              </Box>
+              </Badge>
             </Box>
           </Box>
         </Box>

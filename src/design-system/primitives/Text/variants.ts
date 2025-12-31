@@ -1,6 +1,7 @@
 import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
 import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
 import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { OpacityProps, opacityVariants } from "@/design-system/utilities/props/Opacity/opacity";
 import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
 import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
 import clsx from "clsx";
@@ -68,7 +69,14 @@ export const textVariants = tv({
 export type TextVariants = VariantProps<typeof textVariants>;
 
 /** Export TextProps as one type */
-export interface TextProps extends TextVariants, AnimationProps, DisplayProps, MarginProps, PaddingProps, PositionProps {
+export interface TextProps
+  extends TextVariants,
+    AnimationProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    OpacityProps {
   className?: string;
   as?: "p" | "span";
   children: React.ReactNode;
@@ -82,5 +90,6 @@ export const textVariantsCN = (variantProps: VariantProps<any>, className?: stri
     marginVariants(variantProps),
     paddingVariants(variantProps),
     positionVariants(variantProps),
+    opacityVariants(variantProps),
     className
   );

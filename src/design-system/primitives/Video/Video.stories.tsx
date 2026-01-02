@@ -23,7 +23,7 @@ const meta: Meta<typeof Video> = {
     controls: {
       control: "boolean",
     },
-    autoplay: {
+    autoPlay: {
       control: "boolean",
     },
     muted: {
@@ -47,8 +47,7 @@ export const Default: Story = {
   args: {
     ratio: 16 / 9,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-    alt: "Big Buck Bunny video",
-    width: "w-[400px]",
+    width: 400,
     emphasis: "default",
     rounded: "default",
     controls: true,
@@ -60,8 +59,7 @@ export const AspectRatio: Story = {
   args: {
     ratio: 1,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-    alt: "Square aspect ratio video",
-    width: "w-[300px]",
+    width: 324,
     emphasis: "default",
     rounded: "default",
     controls: true,
@@ -73,8 +71,7 @@ export const Rounded: Story = {
   args: {
     ratio: 16 / 9,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-    alt: "Rounded video",
-    width: "w-[400px]",
+    width: 400,
     emphasis: "default",
     rounded: "rounded",
     controls: true,
@@ -86,8 +83,7 @@ export const WithEmphasis: Story = {
   args: {
     ratio: 16 / 9,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-    alt: "Video with emphasis shadow",
-    width: "w-[400px]",
+    width: 400,
     emphasis: "emphasis",
     rounded: "default",
     controls: true,
@@ -99,12 +95,11 @@ export const AutoplayLoop: Story = {
   args: {
     ratio: 16 / 9,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-    alt: "Autoplay looping video",
-    width: "w-[400px]",
+    width: 400,
     emphasis: "default",
     rounded: "default",
     controls: false,
-    autoplay: true,
+    autoPlay: true,
     muted: true, // Required for autoplay in most browsers
     loop: true,
   },
@@ -114,8 +109,7 @@ export const WithPoster: Story = {
   args: {
     ratio: 16 / 9,
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-    alt: "Video with poster image",
-    width: "w-[400px]",
+    width: 400,
     emphasis: "default",
     rounded: "default",
     controls: true,
@@ -139,8 +133,7 @@ export const Gallery: Story = {
                   rounded={roundedVariant}
                   emphasis={emphasisVariant}
                   src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-                  alt={`Video with ${roundedVariant} rounded and ${emphasisVariant} emphasis`}
-                  width="w-[200px]"
+                  width={256}
                   controls={true}
                   muted={true}
                   preload="metadata"

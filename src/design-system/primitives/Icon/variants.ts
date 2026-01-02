@@ -17,11 +17,19 @@ import {
   Mail,
   Menu,
   X,
+  Plus,
   Check,
   Minus,
   ChevronDown,
 } from "lucide-react";
-import { InstagramLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
+import { InstagramLogoIcon, LinkedInLogoIcon, Cross2Icon } from "@radix-ui/react-icons";
+import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
+import clsx from "clsx";
 
 export const iconVariants = tv({
   base: "items-center justify-center",
@@ -36,7 +44,6 @@ export const iconVariants = tv({
     color: {
       black: "text-black",
       white: "text-white",
-      red: "text-red-500",
       aqua: "text-aqua",
       "aqua-light": "text-aqua-light",
       "forest-green": "text-forest-green",
@@ -48,6 +55,7 @@ export const iconVariants = tv({
       maroon: "text-maroon",
       coral: "text-coral",
       marigold: "text-marigold",
+      red: "text-red-500",
       text: "text",
     },
   },
@@ -79,9 +87,11 @@ export const iconMap = {
   trash: Trash2,
   zoomin: ZoomIn,
   zoomout: ZoomOut,
+  cross: Cross2Icon,
   email: Mail,
   menu: Menu,
   x: X,
+  plus: Plus,
   check: Check,
   minus: Minus,
   chevrondown: ChevronDown,
@@ -90,8 +100,27 @@ export const iconMap = {
 export type IconName = keyof typeof iconMap;
 
 /** Export IconProps as one type */
-export interface IconProps extends IconVariants {
+export interface IconProps
+  extends IconVariants,
+    AnimationProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    SizeProps {
   icon: IconName;
   className?: string;
   onClick?: () => void;
 }
+
+export const iconVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    iconVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );

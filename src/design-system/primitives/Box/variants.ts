@@ -8,6 +8,7 @@ import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/P
 import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
 import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
 import clsx from "clsx";
+import { OpacityProps, opacityVariants } from "@/design-system/utilities/props/Opacity/opacity";
 
 /** Tailwind Variants Declaration */
 export const boxVariants = tv({
@@ -32,7 +33,8 @@ export interface BoxProps
     MarginProps,
     PaddingProps,
     PositionProps,
-    SizeProps {
+    SizeProps,
+    OpacityProps {
   className?: string;
   children: React.ReactNode;
 }
@@ -47,5 +49,6 @@ export const boxVariantsCN = (variantProps: VariantProps<any>) =>
     marginVariants(variantProps),
     paddingVariants(variantProps),
     positionVariants(variantProps),
-    sizeVariants(variantProps)
+    sizeVariants(variantProps),
+    opacityVariants(variantProps)
   );

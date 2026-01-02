@@ -20,7 +20,7 @@ export default function Homepage() {
       <FeaturedArticles />
 
       {/* CTA OVERLAY */}
-      <Box className="bg-white py-16">
+      <Box py={16} className="bg-white">
         <OverlayMedia className="mx-auto w-full max-w-6xl overflow-hidden rounded-3xl">
           <Image src="/icy.png" alt="A textured green moss background" width="w-full" ratio={1920 / 700} />
           <Overlay background="gradient-black">

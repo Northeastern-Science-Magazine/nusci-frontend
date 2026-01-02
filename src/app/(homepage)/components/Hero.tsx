@@ -4,6 +4,7 @@ import Box from "@/design-system/primitives/Box";
 import Image from "@/design-system/primitives/Image";
 import Text from "@/design-system/primitives/Text";
 import { useEffect, useState } from "react";
+import Badge from "@/design-system/primitives/Badge";
 
 function useCountUp(target: number, durationMs: number) {
   const [value, setValue] = useState(0);
@@ -35,26 +36,26 @@ function useCountUp(target: number, durationMs: number) {
 }
 
 export default function Hero() {
-  const legacyYears = useCountUp(17, 1000);
-  const publishedIssues = useCountUp(66, 2000);
-  const reachArticles = useCountUp(1300, 3000);
+  const legacyYears = useCountUp(17, 1500);
+  const publishedIssues = useCountUp(66, 2500);
+  const reachArticles = useCountUp(1300, 3500);
 
   return (
     <OverlayMedia className="w-full h-[620px] laptop:h-[700px] overflow-hidden">
       {/* Fixed-height hero image: height stays consistent regardless of viewport width */}
       <Image raw src="/moss.png" alt="Moss texture background" width="w-full" />
       <Overlay background="solid-black">
-        <Box className="h-full w-full">
+        <Box height="full" width="full">
           <Box className="mx-auto w-full max-w-6xl px-6 py-16 laptop:py-20">
-            <Text size={12} color="white" className="uppercase tracking-[0.35em] opacity-90">
+            <Text size={12} color="white" spacing="xl" opacity={90} className="uppercase">
               Northeastern University&apos;s student-run science magazine
             </Text>
 
             <Box mt={4}>
-              <Text size={96} color="white" className="leading-none tracking-tight max-laptop:text-[72px] max-sm:text-[56px]">
+              <Text size={96} color="white" spacing="sm" className="leading-none max-laptop:text-[72px] max-sm:text-[56px]">
                 NU Sci
               </Text>
-              <Text size={30} color="white" className="mt-4 max-w-2xl font-light opacity-95 max-sm:text-[20px]">
+              <Text size={30} color="white" opacity={95} className="mt-4 max-w-2xl font-light max-sm:text-[20px]">
                 Science communication for the community. Written, designed, photographed, and developed by students.
               </Text>
             </Box>
@@ -70,8 +71,8 @@ export default function Hero() {
 
             {/* Stats Badges */}
             <Box mt={10} className="grid grid-cols-3 gap-3 max-sm:grid-cols-1 mobile:invisible laptop:visible">
-              <Box className="rounded-2xl bg-white/10 backdrop-blur" px={4} py={4}>
-                <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
+              <Badge rounded="md" color="white" variant="blur" py={4}>
+                <Text size={12} color="white" spacing="lg" opacity={80} className="uppercase">
                   Legacy
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">
@@ -87,9 +88,9 @@ export default function Hero() {
                     Years
                   </Text>
                 </Box>
-              </Box>
-              <Box className="rounded-2xl bg-white/10 backdrop-blur" px={4} py={4}>
-                <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
+              </Badge>
+              <Badge rounded="md" color="white" variant="blur" py={4}>
+                <Text size={12} color="white" spacing="lg" opacity={80} className="uppercase">
                   Published
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">
@@ -105,9 +106,9 @@ export default function Hero() {
                     Issues
                   </Text>
                 </Box>
-              </Box>
-              <Box className="rounded-2xl bg-white/10 backdrop-blur" px={4} py={4}>
-                <Text size={12} color="white" className="uppercase tracking-[0.25em] opacity-80">
+              </Badge>
+              <Badge rounded="md" color="white" variant="blur" py={4}>
+                <Text size={12} color="white" spacing="lg" opacity={80} className="uppercase">
                   Reach
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">
@@ -123,7 +124,7 @@ export default function Hero() {
                     Articles
                   </Text>
                 </Box>
-              </Box>
+              </Badge>
             </Box>
           </Box>
         </Box>

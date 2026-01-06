@@ -14,7 +14,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -35,7 +35,6 @@
         "./src/design-system/primitives/*"
       ]
     },
-    // "target": "ES2017"
     "target": "ES2017"
   },
   "include": [

@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -22,18 +18,10 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/ds/utilities": [
-        "./src/design-system/utilities/*"
-      ],
-      "@/components/*": [
-        "./src/design-system/components/*"
-      ],
-      "@/primitives/*": [
-        "./src/design-system/primitives/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/ds/utilities": ["./src/design-system/utilities/*"],
+      "@/components/*": ["./src/design-system/components/*"],
+      "@/primitives/*": ["./src/design-system/primitives/*"]
     },
     "target": "ES2017"
   },
@@ -44,7 +32,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

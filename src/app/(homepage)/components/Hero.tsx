@@ -1,3 +1,5 @@
+"use client";
+
 import { OverlayMedia, Overlay } from "@/design-system/components/MediaOverlay";
 import Button from "@/design-system/primitives/Button";
 import Box from "@/design-system/primitives/Box";

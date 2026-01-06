@@ -10,7 +10,7 @@ type HttpMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 
 export async function api<T>(method: HttpMethod, endpoint: string, body?: any, isFormData?: boolean): Promise<ApiResponse<T>> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const cookieString = cookieStore.toString();
 
     const headers: HeadersInit = {};
@@ -24,6 +24,7 @@ export async function api<T>(method: HttpMethod, endpoint: string, body?: any, i
       body: isFormData ? body : body ? JSON.stringify(body) : undefined,
     };
 
+    console.log(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, options);
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, options);
     const rawText = await res.text();
 

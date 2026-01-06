@@ -48,7 +48,7 @@ export enum Roles {
   Photographer = "photographer",
   Developer = "developer",
   Designer = "designer",
-  Admin = "admin"
+  Admin = "admin",
 }
 
 export type ArticleContent = {

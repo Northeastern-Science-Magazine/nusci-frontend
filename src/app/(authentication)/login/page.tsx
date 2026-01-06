@@ -8,6 +8,7 @@ import Button from "@/primitives/Button";
 import Box from "@/primitives/Box";
 import Text from "@/primitives/Text";
 import { Flex } from "@/primitives/Flex";
+import { apiLogin } from "@/lib/api/users";
 
 type LoginFormValues = {
   email: string;
@@ -15,9 +16,16 @@ type LoginFormValues = {
 };
 
 export default function LoginPage() {
-  const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
+  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     console.log("Login data:", data);
-    // Handle login logic here
+    const result = await apiLogin(data);
+    if (result.ok) {
+      console.log("Login process happened");
+    } else {
+      console.log("Login process failed");
+      console.log(result);
+    }
+    console.log("Fin");
   };
 
   return (

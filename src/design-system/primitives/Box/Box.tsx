@@ -1,5 +1,5 @@
 import React from "react";
-import { BoxProps, boxVariants } from "./variants";
+import { BoxProps, boxVariantsCN } from "./variants";
 import clsx from "clsx";
 
 /**
@@ -10,6 +10,6 @@ import clsx from "clsx";
  * @param { BoxProps } props
  * @returns Box Component
  */
-export const Box = ({ className, ...props }: BoxProps) => {
-  return <div className={clsx(boxVariants(props), className)}>{props.children}</div>;
+export const Box = ({ className, children, ...variantProps }: BoxProps) => {
+  return <div className={clsx(boxVariantsCN(variantProps), className)}>{children}</div>;
 };

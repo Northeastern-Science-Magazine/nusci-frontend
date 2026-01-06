@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as RadixRadioGroup from "@radix-ui/react-radio-group";
-import { RadioButtonProps, radioButtonVariants } from "./variants";
+import { RadioButtonProps, radioButtonVariantsCN } from "./variants";
 import clsx from "clsx";
 
 /**
@@ -21,7 +21,7 @@ export default function RadioButton({
 }: RadioButtonProps) {
   return (
     <RadixRadioGroup.Root
-      className={clsx("flex gap-4", direction === "vertical" ? "flex-col" : "flex-row", className)}
+      className={clsx("flex gap-4", direction === "vertical" ? "flex-col" : "flex-row", radioButtonVariantsCN(props, className))}
       name={name}
       value={value}
       defaultValue={defaultValue}
@@ -36,8 +36,8 @@ export default function RadioButton({
               id={id}
               value={option.value}
               className={clsx(
-                "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors",
-                radioButtonVariants({ color })
+                "border bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors",
+                radioButtonVariantsCN({ color })
               )}
             >
               <RadixRadioGroup.Indicator

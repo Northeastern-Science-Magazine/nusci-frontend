@@ -4,7 +4,6 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { Header } from "@/design-system/components/Header";
 import { Footer } from "@/design-system/components/Footer";
-import DebugDialog from "./components/DebugDialog";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -24,7 +23,6 @@ export default function RootLayout({
         <div className="h-16" /> {/* Spacer */}
         {children}
         <Footer />
-        <DebugDialog />
       </body>
     </html>
   );

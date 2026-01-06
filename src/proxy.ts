@@ -21,7 +21,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 
   // Create new request headers and add the x-user-roles header
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-user-roles", JSON.stringify({ roles }));
+  requestHeaders.set("X-User-Roles", JSON.stringify({ roles }));
 
   const response = NextResponse.next({
     request: {

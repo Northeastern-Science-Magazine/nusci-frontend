@@ -3,8 +3,8 @@
 import { cookies } from "next/headers";
 
 export type ApiResponse<T> =
-  | { ok: true; data: T; headers?: Response["headers"] }
-  | { ok: false; error: string; headers?: Response["headers"] };
+  | { ok: true; data: T; headers?: Response["headers"]; setCookieHeaders?: string[] }
+  | { ok: false; error: string; headers?: Response["headers"]; setCookieHeaders?: string[] };
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 
@@ -33,6 +33,9 @@ export async function api<T>(method: HttpMethod, endpoint: string, body?: any, i
       parsed = JSON.parse(rawText);
     } catch {}
 
+    // Extract Set-Cookie headers
+    const setCookieHeaders = res.headers.getSetCookie();
+
     if (!res.ok) {
       const message = typeof parsed === "string" ? parsed : parsed?.message || "Request failed";
 
@@ -40,6 +43,7 @@ export async function api<T>(method: HttpMethod, endpoint: string, body?: any, i
         ok: false,
         error: message,
         headers: res.headers,
+        setCookieHeaders,
       };
     }
 
@@ -47,6 +51,7 @@ export async function api<T>(method: HttpMethod, endpoint: string, body?: any, i
       ok: true,
       data: parsed as T,
       headers: res.headers,
+      setCookieHeaders,
     };
   } catch (e) {
     return {

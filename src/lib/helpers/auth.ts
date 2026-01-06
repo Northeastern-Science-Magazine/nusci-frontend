@@ -10,7 +10,7 @@ import { apiLogin } from "../api/users";
  * @returns Promise<string[]>
  */
 export async function getUserRoles(): Promise<string[]> {
-  const headersList = await headers();
+  const headersList = headers();
   const userRolesHeader = headersList.get("X-User-Roles");
 
   if (!userRolesHeader) {

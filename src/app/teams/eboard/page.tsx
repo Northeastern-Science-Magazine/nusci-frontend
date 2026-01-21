@@ -9,7 +9,7 @@ import { TeamMember, TeamMemberProps } from "./components/TeamMember";
 export default function EboardPage() {
     const [activeTab, setActiveTab] = useState<"eboard" | "editors">("eboard");
 
-    const TeamMembers: TeamMemberProps[] = [
+    const eboardMembers: TeamMemberProps[] = [
         {
             name: "Reshika Sai Devarajan",
             pronouns: "She/Her",
@@ -242,7 +242,7 @@ export default function EboardPage() {
         },
     ];
 
-    const currentMembers = activeTab === "eboard" ? TeamMembers : editorMembers;
+    const currentMembers = activeTab === "eboard" ? eboardMembers : editorMembers;
 
     return (
         <Box className="min-h-screen bg-neutral/10">

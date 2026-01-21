@@ -1,5 +1,4 @@
-import clsx from "clsx";
-import { BadgeProps, badgeVariants } from "./variants";
+import { BadgeProps, badgeVariantsCN } from "./variants";
 
 /**
  * Badge Component
@@ -7,6 +6,6 @@ import { BadgeProps, badgeVariants } from "./variants";
  * @param { BadgeProps } props
  * @returns Badge Component
  */
-export const Badge = ({ className, color, variant, children }: BadgeProps) => {
-  return <span className={clsx(badgeVariants({ color, variant }), className)}>{children}</span>;
+export const Badge = ({ className, color, variant, rounded, children, ...props }: BadgeProps) => {
+  return <span className={badgeVariantsCN({ color, variant, rounded, ...props }, className)}>{children}</span>;
 };

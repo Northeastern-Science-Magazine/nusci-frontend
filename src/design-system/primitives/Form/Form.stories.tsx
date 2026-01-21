@@ -17,6 +17,7 @@ type ExampleFormValues = {
   interests: string[];
   color: string;
   gender: string;
+  bio: string;
   notifications: boolean;
 };
 
@@ -47,6 +48,7 @@ export const BasicForm: Story = {
               interests: [],
               color: "",
               gender: "",
+              bio: "",
               notifications: false,
             },
           }}
@@ -70,8 +72,15 @@ export const BasicForm: Story = {
                     This is how you’ll appear across the app.
                   </Text>
                 </Box>
-                <FormField<ExampleFormValues> name="username" rules={{ required: "Please tell us your username" }}>
-                  <TextInput label="Username" placeholder="Choose a unique username" className="w-full" />
+                <FormField<ExampleFormValues>
+                  name="username"
+                  rules={{ required: "Please tell us your username" }}
+                >
+                  <TextInput
+                    label="Username"
+                    placeholder="Choose a unique username"
+                    className="w-full"
+                  />
                 </FormField>
               </Box>
 
@@ -87,10 +96,17 @@ export const BasicForm: Story = {
                   name="email"
                   rules={{
                     required: "We need your email address",
-                    pattern: { value: /^\S+@\S+$/i, message: "Please enter a valid email" },
+                    pattern: {
+                      value: /^\S+@\S+$/i,
+                      message: "Please enter a valid email",
+                    },
                   }}
                 >
-                  <TextInput label="Email" placeholder="name@company.com" className="w-full" />
+                  <TextInput
+                    label="Email"
+                    placeholder="name@company.com"
+                    className="w-full"
+                  />
                 </FormField>
               </Box>
 
@@ -106,10 +122,17 @@ export const BasicForm: Story = {
                   name="password"
                   rules={{
                     required: "Please set a password",
-                    minLength: { value: 6, message: "Use at least 6 characters" },
+                    minLength: {
+                      value: 6,
+                      message: "Use at least 6 characters",
+                    },
                   }}
                 >
-                  <TextInput label="Password" placeholder="Create a secure password" className="w-full" />
+                  <TextInput
+                    label="Password"
+                    placeholder="Create a secure password"
+                    className="w-full"
+                  />
                 </FormField>
               </Box>
             </Box>
@@ -140,10 +163,16 @@ export const BasicForm: Story = {
                 <FormField<ExampleFormValues>
                   name="interests"
                   rules={{
-                    validate: (value) => (Array.isArray(value) && value.length > 0 ? true : "Pick at least one interest"),
+                    validate: (value) =>
+                      Array.isArray(value) && value.length > 0
+                        ? true
+                        : "Pick at least one interest",
                   }}
                 >
-                  <Checkbox options={["Sports", "Music", "Travel"]} color="sage-green" />
+                  <Checkbox
+                    options={["Sports", "Music", "Travel"]}
+                    color="sage-green"
+                  />
                 </FormField>
               </Box>
 
@@ -155,7 +184,10 @@ export const BasicForm: Story = {
                     We’ll use it to personalize certain accents.
                   </Text>
                 </Box>
-                <FormField<ExampleFormValues> name="color" rules={{ required: "Select a favorite color" }}>
+                <FormField<ExampleFormValues>
+                  name="color"
+                  rules={{ required: "Select a favorite color" }}
+                >
                   <RadioButton
                     name="color"
                     options={[
@@ -175,7 +207,10 @@ export const BasicForm: Story = {
                     Optional—choose the option you’re most comfortable with.
                   </Text>
                 </Box>
-                <FormField<ExampleFormValues> name="gender" rules={{ required: "Please choose an option" }}>
+                <FormField<ExampleFormValues>
+                  name="gender"
+                  rules={{ required: "Please choose an option" }}
+                >
                   <RadioButton
                     name="gender"
                     options={[
@@ -187,10 +222,35 @@ export const BasicForm: Story = {
                 </FormField>
               </Box>
 
+              <Box className="md:col-span-2">
+                <Box className="mb-2">
+                  <Text size={16}>Tell us about yourself</Text>
+                </Box>
+                <FormField<ExampleFormValues>
+                  name="bio"
+                  rules={{
+                    required: "Please tell us about yourself",
+                    minLength: {
+                      value: 6,
+                      message: "Use at least 6 characters",
+                    },
+                  }}
+                >
+                  <TextInput
+                    label="Bio"
+                    placeholder="Tell us about yourself"
+                    className="w-full"
+                    rows={4}
+                  />
+                </FormField>
+              </Box>
+
               {/* Notifications */}
               <Box className="flex items-center justify-between rounded-xl border border-slate-200 p-4">
                 <Box className="pr-4">
-                  <Text size={16}>Would you like to receive notifications?</Text>
+                  <Text size={16}>
+                    Would you like to receive notifications?
+                  </Text>
                   <Text size={12} color="sage-green">
                     Get product updates, tips, and important alerts.
                   </Text>
@@ -220,14 +280,16 @@ export const BasicForm: Story = {
             <Box className="rounded-xl border border-slate-200 p-4">
               <Text size={16}>Do you agree to the Terms & Conditions?</Text>
               <Text size={12} color="sage-green">
-                Please confirm you’ve read and agree to our Terms & Conditions and Privacy Policy.
+                Please confirm you’ve read and agree to our Terms & Conditions
+                and Privacy Policy.
               </Text>
               <Box className="mt-3">
                 <FormField<ExampleFormValues>
                   name="terms"
                   rules={{
                     validate: (value) =>
-                      Array.isArray(value) && value.includes("Agree to terms and conditions")
+                      Array.isArray(value) &&
+                      value.includes("Agree to terms and conditions")
                         ? true
                         : "You must agree before continuing",
                   }}
@@ -247,7 +309,8 @@ export const BasicForm: Story = {
               Create account
             </button>
             <Text size={12} color="sage-green" className="mt-2 text-center">
-              By continuing, you confirm your information is accurate and agree to receive account-related communications.
+              By continuing, you confirm your information is accurate and agree
+              to receive account-related communications.
             </Text>
           </Box>
         </Form>

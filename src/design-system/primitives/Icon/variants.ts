@@ -18,6 +18,7 @@ import {
   Menu,
   X,
   Plus,
+  Check,
 } from "lucide-react";
 import { InstagramLogoIcon, LinkedInLogoIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
@@ -89,6 +90,7 @@ export const iconMap = {
   menu: Menu,
   x: X,
   plus: Plus,
+  check: Check,
 };
 
 export type IconName = keyof typeof iconMap;

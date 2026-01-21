@@ -7,7 +7,7 @@ import { sizeVariants, SizeProps } from "@/design-system/utilities/props/Size/si
 import clsx from "clsx";
 import { tv, type VariantProps } from "tailwind-variants";
 
-export const flexVariants = tv({
+const flexVariants = tv({
   base: "flex",
   variants: {
     wrap: {
@@ -50,7 +50,7 @@ export const flexVariants = tv({
   },
 });
 
-export const flexChildVariants = tv({
+const flexChildVariants = tv({
   base: "flex",
   variants: {
     auto: {
@@ -86,6 +86,17 @@ export const flexVariantsCN = (variantProps: VariantProps<any>, className?: stri
   );
 
 type FlexChildVariants = VariantProps<typeof flexChildVariants>;
+export const flexChildVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    flexChildVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );
 
 export interface FlexProps
   extends FlexVariants,

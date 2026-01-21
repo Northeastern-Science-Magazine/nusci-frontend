@@ -12,7 +12,99 @@ import Link from "@/design-system/primitives/Link";
 import Font from "@/design-system/primitives/Font";
 import { ParallaxScrollSection } from "@/design-system/components/ParallaxScrollSection";
 
-export default function FeaturedArticles() {
+interface Article {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  subtitle?: string;
+  category?: string;
+  slug: string;
+}
+
+interface FeaturedArticlesProps {
+  featuredArticles: Article[];
+  recentArticles: Article[];
+}
+
+export default function FeaturedArticles({
+  featuredArticles = [],
+  recentArticles = [],
+}: FeaturedArticlesProps) {
+  // Use first featured article, else fallback
+  const mainArticle1 = featuredArticles[0] || {
+    title: "Siberian Permafrost",
+    description:
+      "A photo-led story about the science (and spectacle) behind ice—built to read like a print spread.",
+    imageUrl: "/icy.png",
+  };
+
+  const mainArticle2 = featuredArticles[1] || {
+    title: "Chasing Totality",
+    description:
+      "A photo-led story about the science (and spectacle) behind eclipses—built to read like a print spread.",
+    imageUrl: "/succulent.png",
+  };
+
+  const hasRecentArticles = recentArticles.length > 0;
+
+  // Sidebar articles: first 2 recent articles, else fallback
+  const sidebarArticles = hasRecentArticles
+    ? recentArticles.slice(0, 2)
+    : [
+        {
+          id: "fallback-1",
+          title: "Urban Heat Islands, Explained",
+          description:
+            "How cities trap heat and what we can do about it—a deep dive into urban climate science.",
+          imageUrl: "/london.png",
+          subtitle: "Science + Society",
+          slug: "urban-heat-islands",
+        },
+        {
+          id: "fallback-2",
+          title: "How Microbiomes Shape Our World",
+          description:
+            "Exploring the invisible ecosystems that influence everything from our health to our environment.",
+          imageUrl: "/moss.png",
+          subtitle: "Research Spotlight",
+          slug: "microbiomes",
+        },
+      ];
+
+  // Grid articles: next 3 recent articles, else fallback
+  const gridArticles = hasRecentArticles
+    ? recentArticles.slice(2, 5)
+    : [
+        {
+          id: "fallback-3",
+          title: "5 Questions About CRISPR",
+          description:
+            "A concise guide to understanding gene editing technology.",
+          imageUrl: "/icy.png",
+          subtitle: "Quick Read",
+          slug: "crispr-questions",
+        },
+        {
+          id: "fallback-4",
+          title: "Why Science Needs Better Stories",
+          description:
+            "How narrative can bridge the gap between research and public understanding.",
+          imageUrl: "/eclipse-image.png",
+          subtitle: "Opinion",
+          slug: "science-stories",
+        },
+        {
+          id: "fallback-5",
+          title: "Designing an Issue Cover",
+          description:
+            "A look into the creative process behind our magazine design.",
+          imageUrl: "/logo.png",
+          subtitle: "Behind the Scenes",
+          slug: "issue-cover-design",
+        },
+      ];
+
   return (
     <Font serif>
       <ParallaxScrollSection imageSrc={"/succulent.png"}>
@@ -35,25 +127,39 @@ export default function FeaturedArticles() {
 
           {/* Newspaper Layout - Multi-column */}
           <Box className="grid gap-8 laptop:grid-cols-12">
-            {/* Main Feature Article - Left Column */}
+            {/* Main Feature Articles - Left Column */}
             <div className="laptop:col-span-8 space-y-8">
+              {/* First Main Article */}
               <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
-                <Image src="/icy.png" alt="A dramatic solar eclipse" width="w-full" ratio={16 / 10} />
+                <Image
+                  src={mainArticle1.imageUrl}
+                  alt={mainArticle1.title}
+                  width="w-full"
+                  ratio={16 / 10}
+                />
                 <Overlay background="gradient-black">
                   <Box className="flex h-full w-full items-end">
                     <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
-                      <Text size={48} color="white" className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]">
-                        Siberian Permafrost
+                      <Text
+                        size={48}
+                        color="white"
+                        className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
+                      >
+                        {mainArticle1.title}
                       </Text>
                       <Text
                         size={18}
                         color="white"
                         className="mt-3 max-w-2xl font-light leading-relaxed opacity-95 max-sm:text-[16px]"
                       >
-                        A photo-led story about the science (and spectacle) behind ice—built to read like a print spread.
+                        {mainArticle1.description}
                       </Text>
                       <Box className="mt-6">
-                        <Button className="inline-flex" color="marigold" size="lg">
+                        <Button
+                          className="inline-flex"
+                          color="marigold"
+                          size="lg"
+                        >
                           Read article
                         </Button>
                       </Box>
@@ -61,23 +167,38 @@ export default function FeaturedArticles() {
                   </Box>
                 </Overlay>
               </OverlayMedia>
+
+              {/* Second Main Article */}
               <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
-                <Image src="/succulent.png" alt="A dramatic solar eclipse" width="w-full" ratio={16 / 10} />
+                <Image
+                  src={mainArticle2.imageUrl}
+                  alt={mainArticle2.title}
+                  width="w-full"
+                  ratio={16 / 10}
+                />
                 <Overlay background="gradient-black">
                   <Box className="flex h-full w-full items-end">
                     <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
-                      <Text size={48} color="white" className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]">
-                        Chasing Totality
+                      <Text
+                        size={48}
+                        color="white"
+                        className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
+                      >
+                        {mainArticle2.title}
                       </Text>
                       <Text
                         size={18}
                         color="white"
                         className="mt-3 max-w-2xl font-light leading-relaxed opacity-95 max-sm:text-[16px]"
                       >
-                        A photo-led story about the science (and spectacle) behind eclipses—built to read like a print spread.
+                        {mainArticle2.description}
                       </Text>
                       <Box className="mt-6">
-                        <Button className="inline-flex" color="marigold" size="lg">
+                        <Button
+                          className="inline-flex"
+                          color="marigold"
+                          size="lg"
+                        >
                           Read article
                         </Button>
                       </Box>
@@ -90,33 +211,22 @@ export default function FeaturedArticles() {
             {/* Sidebar Articles - Right Column */}
             <div className="laptop:col-span-4">
               <Box className="space-y-6 border-l-2 border-black/10 pl-6 laptop:pl-8">
-                <MediaCard
-                  mediaType="image"
-                  imageProps={{ src: "/london.png", alt: "A misty city skyline" }}
-                  subtitle="Science + Society"
-                  title="Urban Heat Islands, Explained"
-                  description="How cities trap heat and what we can do about it—a deep dive into urban climate science."
-                  mediaDirection="top"
-                  size="sm"
-                  rounded="none"
-                  shadow="none"
-                  color="white"
-                  className="w-full max-w-none border-b border-black/10 pb-6"
-                />
-
-                <MediaCard
-                  mediaType="image"
-                  imageProps={{ src: "/moss.png", alt: "Green moss texture" }}
-                  subtitle="Research Spotlight"
-                  title="How Microbiomes Shape Our World"
-                  description="Exploring the invisible ecosystems that influence everything from our health to our environment."
-                  mediaDirection="top"
-                  size="sm"
-                  rounded="none"
-                  shadow="none"
-                  color="white"
-                  className="w-full max-w-none border-b border-black/10 pb-6"
-                />
+                {sidebarArticles.map((article) => (
+                  <MediaCard
+                    key={article.id}
+                    mediaType="image"
+                    imageProps={{ src: article.imageUrl, alt: article.title }}
+                    subtitle={article.subtitle || "Article"}
+                    title={article.title}
+                    description={article.description}
+                    mediaDirection="top"
+                    size="sm"
+                    rounded="none"
+                    shadow="none"
+                    color="white"
+                    className="w-full max-w-none border-b border-black/10 pb-6"
+                  />
+                ))}
               </Box>
             </div>
           </Box>
@@ -124,45 +234,22 @@ export default function FeaturedArticles() {
           {/* Secondary Articles Grid - Newspaper Style */}
           <div className="mt-12 border-t-2 border-black/10 pt-12">
             <Box className="grid gap-6 laptop:grid-cols-3">
-              <MediaCard
-                mediaType="image"
-                imageProps={{ src: "/icy.png", alt: "Icy texture" }}
-                subtitle="Quick Read"
-                title="5 Questions About CRISPR"
-                description="A concise guide to understanding gene editing technology."
-                mediaDirection="top"
-                size="sm"
-                rounded="none"
-                shadow="none"
-                color="white"
-                className="w-full max-w-none border border-black/10"
-              />
-              <MediaCard
-                mediaType="image"
-                imageProps={{ src: "/eclipse-image.png", alt: "Solar eclipse" }}
-                subtitle="Opinion"
-                title="Why Science Needs Better Stories"
-                description="How narrative can bridge the gap between research and public understanding."
-                mediaDirection="top"
-                size="sm"
-                rounded="none"
-                shadow="none"
-                color="white"
-                className="w-full max-w-none border border-black/10"
-              />
-              <MediaCard
-                mediaType="image"
-                imageProps={{ src: "/logo.png", alt: "NU Sci logo mark" }}
-                subtitle="Behind the Scenes"
-                title="Designing an Issue Cover"
-                description="A look into the creative process behind our magazine design."
-                mediaDirection="top"
-                size="sm"
-                rounded="none"
-                shadow="none"
-                color="white"
-                className="w-full max-w-none border border-black/10"
-              />
+              {gridArticles.map((article) => (
+                <MediaCard
+                  key={article.id}
+                  mediaType="image"
+                  imageProps={{ src: article.imageUrl, alt: article.title }}
+                  subtitle={article.subtitle || "Article"}
+                  title={article.title}
+                  description={article.description}
+                  mediaDirection="top"
+                  size="sm"
+                  rounded="none"
+                  shadow="none"
+                  color="white"
+                  className="w-full max-w-none border border-black/10"
+                />
+              ))}
             </Box>
           </div>
         </Box>

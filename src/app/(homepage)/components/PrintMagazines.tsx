@@ -9,11 +9,28 @@ import { breakpoints } from "../../../../tailwind.config";
 import useWindowSize from "@/lib/hooks/useWindowSize";
 import { useMemo } from "react";
 
-export default function PrintMagazines() {
+interface Magazine {
+  id: string;
+  issueNumber: number;
+  thumbnailUrl: string;
+  title: string;
+  date: string;
+}
+
+interface PrintMagazinesProps {
+  magazines: Magazine[];
+}
+
+export default function PrintMagazines({ magazines }: PrintMagazinesProps) {
   const { width } = useWindowSize();
 
-  const issueThumbnails = useMemo(
-    () => [
+  const issueThumbnails = useMemo(() => {
+    if (magazines && magazines.length > 0) {
+      return magazines.map((magazine) => magazine.thumbnailUrl);
+    }
+
+    // Fallback magazines
+    return [
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue60.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue58.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue56.png",
@@ -74,9 +91,8 @@ export default function PrintMagazines() {
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue55.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue57.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue59.png",
-    ],
-    []
-  );
+    ];
+  }, [magazines]);
 
   return (
     <Box id="featured-issues" className="scroll-mt-24 bg-white">
@@ -87,7 +103,8 @@ export default function PrintMagazines() {
               Our Magazines
             </Text>
             <Text size={16} className="mt-2 max-w-2xl text-black/70">
-              Look through our print archive - click a cover to bring it front and center.
+              Look through our print archive - click a cover to bring it front
+              and center.
             </Text>
           </Box>
 

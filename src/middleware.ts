@@ -16,6 +16,12 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // if accessing internal page as unauthenticated, redirect to login page
+  // commented out for internal page testing
+  if (request.url.includes('/internal/') && roles.length == 0) {
+    return NextResponse.redirect(new URL('/login', request.url))  
+  }
+
   // Create new request headers and add the x-user-roles header
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("X-User-Roles", JSON.stringify({ roles }));

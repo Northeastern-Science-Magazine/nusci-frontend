@@ -33,9 +33,8 @@ export default async function DashboardPage({
       <Card color="white" className="h-[80vh] w-full max-w-[95vw] shadow-2xl">
         <Card color="gray-light" className="max-w-7xl w-full shadow-2xl">
           <Font playfair-display>
-            <Text size={30} mx={6} style="bold" >
-              {" "}
-              Dashboard{" "}
+            <Text size={30} mx={6} style="bold">
+              Dashboard
             </Text>
           </Font>
         </Card>
@@ -55,7 +54,6 @@ export default async function DashboardPage({
             <DashboardCard text="Create an Article" />
             </div>
           );
-            return <DashboardCard text="Approve Submission" />;
           } else if (role == Roles.Photographer) {
             return <DashboardCard text="Upload Photos" />;
           }

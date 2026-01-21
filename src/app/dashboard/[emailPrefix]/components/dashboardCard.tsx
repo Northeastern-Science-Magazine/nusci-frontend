@@ -9,8 +9,8 @@ import Text from "@/design-system/primitives/Text"
 export default function DashboardCard ({ text }: { text: string }) {
     return (
         <Button color = "gray-light" width = {256} height = {128} mx = {10} my={12} animation="scale110Hover"
-        className="flex items-center justify-center shadow-lg" opacity = {60}>
-            <Text size={24} className="text-center whitespace-normal break-words" opacity = {100}> {text} </Text>
+        className="flex items-center justify-center shadow-lg backdrop-blur bg-white/10" opacity = {60}>
+            <Text size={24} className="text-center whitespace-normal break-words"> {text} </Text>
         </Button>
     )
 }

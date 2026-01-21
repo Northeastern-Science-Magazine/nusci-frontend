@@ -17,6 +17,7 @@ export const basicColorVariants = tv({
       maroon: "text-white bg-maroon",
       coral: "text-black bg-coral",
       marigold: "text-black bg-marigold",
+      "gray-light": "text-black bg-gray-light"
     },
   },
 });

@@ -289,7 +289,7 @@ export default function EboardPage() {
                     </button>
                 </Box>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Box className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {currentMembers.map((member, index) => (
                         <TeamMember
                             key={`${activeTab}-${index}`}
@@ -303,7 +303,7 @@ export default function EboardPage() {
                             avatarUrl={member.avatarUrl}
                         />
                     ))}
-                </div>
+                </Box>
             </Box>
         </Box>
     );

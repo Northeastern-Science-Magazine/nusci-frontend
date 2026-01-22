@@ -35,7 +35,7 @@ export function MultiselectTypeaheadDropdown({
     if (isOpen && inputRef.current && containerRef.current) {
       const inputRect = inputRef.current.getBoundingClientRect();
       setPopupPosition({
-        top: inputRect.bottom + 5,
+        top: inputRect.bottom,
         left: inputRect.left,
         width: inputRect.width,
       });
@@ -186,7 +186,7 @@ export function MultiselectTypeaheadDropdown({
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           placeholder={placeholder}
-          className={clsx(baseClassName, "w-full pr-10")}
+          className={clsx(baseClassName, "w-full pr-10", isOpen && "rounded-b-none")}
         />
         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
           <Icon icon="search" size="xs" />
@@ -232,15 +232,17 @@ const Popup = React.forwardRef<HTMLDivElement, PopupProps>(
     const popupContent = (
       <div
         ref={ref}
-        className="fixed z-[60] bg-white rounded-md shadow-lg border border-gray-200 overflow-hidden"
+        className="fixed z-[60] bg-white shadow-lg border-l border-r border-b border-gray-200 overflow-hidden rounded-b-md"
         style={{
           top: `${position.top}px`,
           left: `${position.left}px`,
           width: `${position.width}px`,
           maxHeight: `${maxHeight}px`,
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
         }}
       >
-        <div className="overflow-y-auto" style={{ maxHeight: `${maxHeight}px` }}>
+        <div className="overflow-y-auto p-1" style={{ maxHeight: `${maxHeight}px` }}>
           {/* Selected options */}
           {selectedOptions.length > 0 && (
             <>
@@ -293,17 +295,14 @@ function OptionItem({ option, isSelected, onToggle, onItemClick }: OptionItemPro
       type="button"
       onClick={handleClick}
       onMouseDown={handleMouseDown}
-      className={clsx(
-        "w-full px-4 py-2 text-left flex items-center gap-3 hover:bg-gray-100 transition-colors",
-        isSelected && "bg-gray-50"
-      )}
+      className={clsx("w-full px-4 py-2 text-left flex items-center gap-3 transition-colors hover:bg-border rounded-lg")}
     >
       {isSelected && (
-        <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
+        <div className="flex-shrink-0 w-4 h-4 flex items-center justify-center">
           <Icon icon="check" size="xs" color="black" />
         </div>
       )}
-      {!isSelected && <div className="flex-shrink-0 w-5 h-5" />}
+      {!isSelected && <div className="flex-shrink-0 w-4 h-4" />}
       <span className="flex-1">{option}</span>
     </button>
   );

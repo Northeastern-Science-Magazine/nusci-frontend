@@ -138,7 +138,6 @@ export const gridColVariantsCN = (variantProps: VariantProps<any>, className?: s
     marginVariants(variantProps),
     paddingVariants(variantProps),
     positionVariants(variantProps),
-    sizeVariants(variantProps),
     className
   );
 
@@ -176,7 +175,6 @@ export const gridRowVariantsCN = (variantProps: VariantProps<any>, className?: s
     marginVariants(variantProps),
     paddingVariants(variantProps),
     positionVariants(variantProps),
-    sizeVariants(variantProps),
     className
   );
 

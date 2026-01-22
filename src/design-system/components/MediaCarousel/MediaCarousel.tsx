@@ -87,7 +87,7 @@ export function MediaCarousel({
             rotateY: -direction * 25,
             scale: 0.85,
           };
-          const linkHref = centerLink ? centerLink(itemIndex) : "";
+          const href = centerLink ? centerLink(itemIndex) : "";
 
           return (
             <motion.div
@@ -107,14 +107,14 @@ export function MediaCarousel({
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               onClick={
                 isCenter
-                  ? () => (window.location.href = linkHref)
+                  ? () => (window.open(href))
                   : () => paginate(offset)
               }
               style={{ zIndex }}
               className={clsx(
                 "absolute left-1/2 top-1/2 [transform-style:preserve-3d]",
                 mediaCarouselPanelVariants({ size }),
-                !isCenter && "cursor-pointer",
+                "cursor-pointer",
               )}
             >
               <Image

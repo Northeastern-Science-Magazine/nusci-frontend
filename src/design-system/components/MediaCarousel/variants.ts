@@ -77,5 +77,5 @@ export interface MediaCarouselProps extends MediaCarouselVariants {
   showControls?: boolean;
   className?: string;
   //** If the center link brings you somewhere**/
-  centerLink?: (index : number) => string;
+  centerLink?: (index: number) => string;
 }

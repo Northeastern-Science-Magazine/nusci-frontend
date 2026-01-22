@@ -15,7 +15,7 @@ export interface TeamMemberProps {
     email?: string;
     avatarUrl: string;
 }
-
+// TODO: link each card to user's profile on click
 export function TeamMember(props: TeamMemberProps) {
     return (
         <Box className="bg-white rounded-2xl shadow-md p-6 flex flex-col gap-4">

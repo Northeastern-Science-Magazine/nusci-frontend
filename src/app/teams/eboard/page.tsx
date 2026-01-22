@@ -245,6 +245,7 @@ export default function EboardPage() {
     const currentMembers = activeTab === "eboard" ? eboardMembers : editorMembers;
 
     return (
+        // TODO: Consider adding an image behind this to make the page less white
         <Box className="min-h-screen bg-neutral/10">
             <Box className="mx-auto max-w-6xl px-6 py-16">
                 <Box className="mb-8">
@@ -270,6 +271,7 @@ export default function EboardPage() {
                     <button
                         onClick={() => setActiveTab("eboard")}
                         className={`px-6 py-3 rounded-full text-base font-medium transition-colors ${
+                            // TODO: make the buttons more buttony when not selected
                             activeTab === "eboard"
                                 ? "bg-black text-white"
                                 : "bg-white text-black border border-neutral/30 hover:bg-neutral/10"

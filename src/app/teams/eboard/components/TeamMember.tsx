@@ -57,7 +57,7 @@ export function TeamMember(props: TeamMemberProps) {
             </Box>
 
             {props.bio && (
-                <Text size={14} color="neutral" className="leading-relaxed">
+                <Text size={14} color="black" className="leading-relaxed">
                     {props.bio}
                 </Text>
             )}

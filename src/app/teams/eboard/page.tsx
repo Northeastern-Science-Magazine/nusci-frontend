@@ -251,7 +251,7 @@ export default function EboardPage() {
                     <Text size={48} style="bold" color="black" className="mb-4">
                         About NU Sci
                     </Text>
-                    <Text size={18} color="neutral" className="max-w-3xl leading-relaxed">
+                    <Text size={18} color="black" className="max-w-3xl leading-relaxed">
                         NU Sci is Northeastern's student-run, student-written science magazine. We publish
                         with the goal of informing our audience of the wonders of human discovery and
                         progress in the world around us. Our magazine seeks to disseminate the latest

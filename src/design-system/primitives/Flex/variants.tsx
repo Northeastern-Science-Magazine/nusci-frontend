@@ -94,7 +94,6 @@ export const flexChildVariantsCN = (variantProps: VariantProps<any>, className?:
     marginVariants(variantProps),
     paddingVariants(variantProps),
     positionVariants(variantProps),
-    sizeVariants(variantProps),
     className
   );
 

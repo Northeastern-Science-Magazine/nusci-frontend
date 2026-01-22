@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import clsx from "clsx";
 import Image from "@/primitives/Image";
-import Link from "@/primitives/Link";
 import {
   mediaCarouselEmptyStateVariants,
   mediaCarouselLayoutBySize,
@@ -88,8 +87,9 @@ export function MediaCarousel({
             rotateY: -direction * 25,
             scale: 0.85,
           };
+          const linkHref = centerLink ? centerLink(itemIndex) : "";
 
-          const content = (
+          return (
             <motion.div
               key={`${url}-${itemIndex}`}
               initial={hasEnteredView ? paginateInitial : entranceInitial}
@@ -105,7 +105,11 @@ export function MediaCarousel({
               }
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              onClick={isCenter ? undefined : () => paginate(offset)}
+              onClick={
+                isCenter
+                  ? () => (window.location.href = linkHref)
+                  : () => paginate(offset)
+              }
               style={{ zIndex }}
               className={clsx(
                 "absolute left-1/2 top-1/2 [transform-style:preserve-3d]",
@@ -120,12 +124,6 @@ export function MediaCarousel({
                 width="auto"
               />
             </motion.div>
-          );
-          const linkHref = centerLink ? centerLink(itemIndex) : "";
-          return isCenter && centerLink ? (
-            <Link href={linkHref}>{content}</Link>
-          ) : (
-            content
           );
         })}
       </div>

@@ -75,7 +75,7 @@ export default function PrintMagazines() {
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue57.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue59.png",
     ],
-    []
+    [],
   );
 
   return (
@@ -87,7 +87,8 @@ export default function PrintMagazines() {
               Our Magazines
             </Text>
             <Text size={16} className="mt-2 max-w-2xl text-black/70">
-              Look through our print archive - click a cover to bring it front and center.
+              Look through our print archive - click a cover to bring it front
+              and center.
             </Text>
           </Box>
 
@@ -110,6 +111,12 @@ export default function PrintMagazines() {
           size={width && width > breakpoints.laptop ? "lg" : "md"}
           visibleCount={width && width > breakpoints.laptop ? 7 : 3}
           initialIndex={0}
+          centerLink={() => {
+            const url = issueThumbnails[1];
+            const match = url.match(/\/([^/]+)\.png$/);
+            const issueId = match ? match[1] : "";
+            return `/issues/${issueId}`;
+          }}
         />
 
         <Divider mt={8} />

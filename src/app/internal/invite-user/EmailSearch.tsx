@@ -5,10 +5,15 @@ import { Grid, GridCol } from "@/design-system/primitives/Grid";
 import Icon from "@/design-system/primitives/Icon";
 import Text from "@/design-system/primitives/Text";
 import TextInput from "@/design-system/primitives/TextInput";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
-export default function EmailSearch() {
-  const [emails, setEmails] = useState<string[]>([]);
+export default function EmailSearch({
+  emails,
+  setEmails,
+}: {
+  emails: string[];
+  setEmails: Dispatch<SetStateAction<string[]>>;
+}) {
   const [email, setEmail] = useState<string>("");
 
   const addEmail = () => {
@@ -20,22 +25,23 @@ export default function EmailSearch() {
 
   const renderEmailBadge = (email: string) => {
     return (
-      <GridCol>
-        <Card color="white" className="rounded-3xl size-fit m-2">
-          <Grid span={2} gap={2} col>
-            <GridCol>
+      <GridCol span={2}>
+        <Card color="white" className="rounded-3xl size-fit">
+          <Grid span={4} gap={2} col>
+            <GridCol span={3}>
               <Text
                 as="span"
-                className="justify-self-center align-middle"
+                className="justify-self-center align-middle h-fit"
                 size={16}
               >
                 {email}
               </Text>
             </GridCol>
-            <GridCol>
+            <GridCol span={1} className="align-middle text-left pr-2 w-fit h-full">
               <Button
                 color="black"
-                className="rounded-full justify-self-center"
+                type="button"
+                className="rounded-full "
                 size="sm"
                 onClick={() => {
                   emails.splice(emails.indexOf(email), 1);
@@ -60,8 +66,9 @@ export default function EmailSearch() {
 
   return (
     <div>
-      <div className="email-search">
+      <div className="email-search p-2">
         <TextInput
+          size="lg"
           label="Email"
           placeholder="Enter email(s)"
           value={email}
@@ -75,7 +82,9 @@ export default function EmailSearch() {
         />
       </div>
       {/* put in flex grid eventually */}
-      {renderedEmails}
+      <Grid col span={8} gap={2}>
+        {renderedEmails}
+      </Grid>
     </div>
   );
 }

@@ -16,10 +16,10 @@ export default function InviteUser() {
     roles: string[];
   };
 
+  const [emails, setEmails] = useState<string[]>([]);
   const [roles, setRoles] = useState<string[]>([]);
-  // todo: implement
-  
-  const canSend: boolean = false;
+
+  const canSend: boolean = emails.length !== 0 && roles.length !== 0;
 
   // todo: implement submission
   const onSubmit: SubmitHandler<InviteUserFormValues> = (
@@ -30,12 +30,11 @@ export default function InviteUser() {
     return null;
   };
 
-  
   return (
-    <div id="invite-user" className="mt-4 py-4 h-max">
+    <div id="invite-user" className="my-4 py-4 h-fit">
       <Card color="sage-green" className="p-4 my-2.5 w-full align-middle">
         <Box className="space-y-8 rounded-2xl bg-white p-4 shadow-xl ring-1 ring-black/5 w-4/5">
-          <Text color="sage-green" size={36} style="bold" className="text-left">
+          <Text color="sage-green" size={36} style="bold" className="text-left p-2">
             Invite a user
           </Text>
 
@@ -62,12 +61,13 @@ export default function InviteUser() {
             </FormField>
              */}
             <FormField name="emails">
-              <EmailSearch></EmailSearch>
+              <EmailSearch emails={emails} setEmails={setEmails}></EmailSearch>
             </FormField>
             <br />
             <FormField<InviteUserFormValues>
               name="roles"
               rules={{
+                // idk why but when you click the delete button, even typed as button this shows up
                 required: "Please assign at least one role",
               }}
               label="Select User Roles:"
@@ -89,6 +89,7 @@ export default function InviteUser() {
             >
               Invite
             </Button>
+            {/* <Button type="button" onClick={() => {console.log(emails, roles)}}> Test Data</Button> */}
           </Form>
         </Box>
       </Card>

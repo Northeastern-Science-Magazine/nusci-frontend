@@ -8,7 +8,7 @@ import { ButtonProps, buttonVariantsCN } from "./variants";
  */
 export default function Button({ className, onClick, children, type = "button", disabled, ...props }: ButtonProps) {
   return (
-    <button onClick={onClick} disabled={disabled} className={buttonVariantsCN(props, className)}>
+    <button type={type} onClick={onClick} disabled={disabled} className={buttonVariantsCN(props, className)}>
       {children}
     </button>
   );

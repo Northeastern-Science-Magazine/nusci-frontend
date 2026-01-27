@@ -7,6 +7,7 @@ import { Badge } from "@/design-system/primitives/Badge/Badge";
 import { Box } from "@/design-system/primitives/Box/Box";
 import { Form, FormField } from "@/design-system/primitives/Form";
 import TextInput from "@/design-system/primitives/TextInput";
+import Button from "@/design-system/primitives/Button";
 import MediaCard from "@/design-system/components/MediaCard";
 import ImageUpload from "@/design-system/components/ImageUpload";
 import { useState } from "react";
@@ -108,28 +109,32 @@ export default function PrivateProfilePage() {
         {/* Edit Buttons */}
         <Box className="absolute top-4 right-4 laptop:right-8 flex gap-3 z-20">
           {!isEditing ? (
-            <button
-              type="button"
+            <Button
               onClick={() => setIsEditing(true)}
-              className="px-6 py-2.5 bg-aqua text-white rounded-lg hover:bg-aqua-dark transition-all duration-200 shadow-md hover:shadow-lg font-medium"
+              variant="default"
+              color="aqua"
+              size="md"
             >
               Edit Profile
-            </button>
+            </Button>
           ) : (
             <>
-              <button
-                type="button"
+              <Button
                 onClick={handleCancel}
-                className="px-6 py-2.5 bg-white text-gray-700 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-md hover:shadow-lg font-medium"
+                variant="outline"
+                color="black"
+                size="md"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 type="submit"
-                className="px-6 py-2.5 bg-forest-green text-white rounded-lg hover:bg-forest-green-dark transition-all duration-200 shadow-md hover:shadow-lg font-medium"
+                variant="default"
+                color="forest-green"
+                size="md"
               >
                 Save Changes
-              </button>
+              </Button>
             </>
           )}
         </Box>
@@ -213,8 +218,7 @@ export default function PrivateProfilePage() {
                         name="graduationYear"
                         rules={{
                           required: "Graduation year is required",
-                          min: { value: 2020, message: "Year must be 2020 or later" },
-                          max: { value: 2030, message: "Year must be 2030 or earlier" },
+                          min: { value: 2020, message: "Year must be 2020 or later" }
                         }}
                       >
                         <TextInput label="Graduation Year *" placeholder="2027" className="w-full" />
@@ -313,10 +317,15 @@ export default function PrivateProfilePage() {
                         minLength: { value: 50, message: "Bio must be at least 50 characters" },
                       }}
                     >
-                      <textarea
+                      <TextInput
+                        label=""
                         placeholder="Tell us about yourself..."
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-aqua min-h-[200px]"
+                        multiline
                         rows={8}
+                        variant="outline"
+                        color="black"
+                        size="md"
+                        className="w-full"
                       />
                     </FormField>
                     <Text size={12} color="sage-green" className="mt-2">

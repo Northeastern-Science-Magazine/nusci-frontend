@@ -6,8 +6,17 @@ import clsx from "clsx";
 import Icon from "../Icon";
 import { MultiselectTypeaheadDropdownProps, multiselectTypeaheadDropdownVariantsCN } from "./variants";
 
+/**
+ * Dropdown
+ * Multiselect Dropdown
+ *
+ * Typeahead Dropdown
+ * Multiselect Typeahead Dropdown
+ */
+
 const MAX_VISIBLE_ITEMS = 10;
-const ITEM_HEIGHT = 40; // Approximate height per item in pixels
+const ITEM_HEIGHT = 40;
+const BLUR_DELAY = 200;
 
 export function MultiselectTypeaheadDropdown({
   className,
@@ -20,26 +29,27 @@ export function MultiselectTypeaheadDropdown({
   const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<Set<string>>(new Set(selectedValues));
+  const [popupPosition, setPopupPosition] = useState<{ top: number; left: number; width: number } | null>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
-  const [popupPosition, setPopupPosition] = useState<{ top: number; left: number; width: number } | null>(null);
 
-  // Update selected when selectedValues prop changes
+  // Sync selected state with prop changes
   useEffect(() => {
     setSelected(new Set(selectedValues));
   }, [selectedValues]);
 
-  // Calculate popup position
+  // Calculate and update popup position
   const updatePopupPosition = useCallback(() => {
-    if (isOpen && inputRef.current && containerRef.current) {
-      const inputRect = inputRef.current.getBoundingClientRect();
-      setPopupPosition({
-        top: inputRect.bottom,
-        left: inputRect.left,
-        width: inputRect.width,
-      });
-    }
+    if (!isOpen || !inputRef.current) return;
+
+    const inputRect = inputRef.current.getBoundingClientRect();
+    setPopupPosition({
+      top: inputRect.bottom,
+      left: inputRect.left,
+      width: inputRect.width,
+    });
   }, [isOpen]);
 
   useEffect(() => {
@@ -48,98 +58,89 @@ export function MultiselectTypeaheadDropdown({
 
   // Update position on scroll and resize
   useEffect(() => {
-    if (isOpen) {
-      window.addEventListener("scroll", updatePopupPosition, true);
-      window.addEventListener("resize", updatePopupPosition);
-      return () => {
-        window.removeEventListener("scroll", updatePopupPosition, true);
-        window.removeEventListener("resize", updatePopupPosition);
-      };
-    }
+    if (!isOpen) return;
+
+    window.addEventListener("scroll", updatePopupPosition, true);
+    window.addEventListener("resize", updatePopupPosition);
+
+    return () => {
+      window.removeEventListener("scroll", updatePopupPosition, true);
+      window.removeEventListener("resize", updatePopupPosition);
+    };
   }, [isOpen, updatePopupPosition]);
 
-  // Helper function to rank options: those starting with query come first
+  // Rank options: prioritize items starting with query
   const rankOptions = useCallback((optionsToRank: string[], query: string) => {
-    if (!query.trim()) {
-      return optionsToRank;
-    }
+    if (!query.trim()) return optionsToRank;
 
     const queryLower = query.toLowerCase();
-    return optionsToRank.sort((a, b) => {
-      const aLower = a.toLowerCase();
-      const bLower = b.toLowerCase();
-      const aStarts = aLower.startsWith(queryLower);
-      const bStarts = bLower.startsWith(queryLower);
+    return [...optionsToRank].sort((a, b) => {
+      const aStarts = a.toLowerCase().startsWith(queryLower);
+      const bStarts = b.toLowerCase().startsWith(queryLower);
 
-      // If one starts with query and the other doesn't, prioritize the one that starts
       if (aStarts && !bStarts) return -1;
       if (!aStarts && bStarts) return 1;
-
-      // If both start with query or both don't, maintain original order
       return 0;
     });
   }, []);
 
-  // Selected options: always show all selected options, regardless of query
+  // Filter options by query (case-insensitive regex)
+  const filterByQuery = useCallback((optionsToFilter: string[], query: string) => {
+    if (!query.trim()) return optionsToFilter;
+
+    const queryLower = query.toLowerCase();
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    try {
+      const regex = new RegExp(escapedQuery, "i");
+      return optionsToFilter.filter((option) => regex.test(option));
+    } catch {
+      return optionsToFilter.filter((option) => option.toLowerCase().includes(queryLower));
+    }
+  }, []);
+
+  // Selected options: always visible, ranked by query
   const selectedOptions = useMemo(() => {
     const allSelected = options.filter((option) => selected.has(option));
-    // Rank selected options by query match (starts with query first)
     return rankOptions(allSelected, searchQuery);
   }, [options, selected, searchQuery, rankOptions]);
 
-  // Unselected options: filter by query, then rank
+  // Unselected options: filtered and ranked by query
   const unselectedOptions = useMemo(() => {
     const unselected = options.filter((option) => !selected.has(option));
+    const filtered = filterByQuery(unselected, searchQuery);
+    return rankOptions(filtered, searchQuery);
+  }, [options, selected, searchQuery, filterByQuery, rankOptions]);
 
-    if (!searchQuery.trim()) {
-      return unselected;
-    }
+  const showDivider = selectedOptions.length > 0 && unselectedOptions.length > 0;
+  const hasNoMatches = searchQuery.trim().length > 0 && unselectedOptions.length === 0;
+  const shouldShowPopup =
+    isOpen && popupPosition && (selectedOptions.length > 0 || unselectedOptions.length > 0 || searchQuery.trim().length > 0);
 
-    const query = searchQuery.toLowerCase();
-    const queryRegex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
-
-    // Filter unselected options that match the query
-    const matchingUnselected = unselected.filter((option) => {
-      try {
-        return queryRegex.test(option);
-      } catch {
-        return option.toLowerCase().includes(query);
+  // Handlers
+  const handleToggle = useCallback(
+    (option: string) => {
+      const newSelected = new Set(selected);
+      if (newSelected.has(option)) {
+        newSelected.delete(option);
+      } else {
+        newSelected.add(option);
       }
-    });
-
-    // Rank unselected options: those starting with query come first
-    return rankOptions(matchingUnselected, searchQuery);
-  }, [options, selected, searchQuery, rankOptions]);
-
-  // Combine: selected first, then unselected
-  const displayOptions = useMemo(() => {
-    return [...selectedOptions, ...unselectedOptions];
-  }, [selectedOptions, unselectedOptions]);
-
-  const handleToggle = (option: string) => {
-    const newSelected = new Set(selected);
-    if (newSelected.has(option)) {
-      newSelected.delete(option);
-    } else {
-      newSelected.add(option);
-    }
-    setSelected(newSelected);
-    onSelectionChange?.(Array.from(newSelected));
-  };
+      setSelected(newSelected);
+      onSelectionChange?.(Array.from(newSelected));
+    },
+    [selected, onSelectionChange]
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setIsOpen(true);
   };
 
-  const handleInputFocus = () => {
-    setIsOpen(true);
-  };
+  const handleInputFocus = () => setIsOpen(true);
 
-  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    // Delay closing to allow click events on popup items
+  const handleInputBlur = () => {
     setTimeout(() => {
-      // Check if focus moved to the popup or if it's truly outside
       const activeElement = document.activeElement;
       const isFocusInPopup = popupRef.current?.contains(activeElement);
       const isFocusInContainer = containerRef.current?.contains(activeElement);
@@ -147,33 +148,31 @@ export function MultiselectTypeaheadDropdown({
       if (!isFocusInContainer && !isFocusInPopup) {
         setIsOpen(false);
       }
-    }, 200);
+    }, BLUR_DELAY);
   };
 
-  // Close popup when clicking outside (but not when clicking inside popup)
+  const handleItemClick = useCallback(() => {
+    setTimeout(() => inputRef.current?.focus(), 0);
+  }, []);
+
+  // Close popup on outside click
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      const isClickInContainer = containerRef.current?.contains(target);
-      const isClickInPopup = popupRef.current?.contains(target);
+      const isClickInside = containerRef.current?.contains(target) || popupRef.current?.contains(target);
 
-      // Only close if click is outside both container and popup
-      if (!isClickInContainer && !isClickInPopup) {
+      if (!isClickInside) {
         setIsOpen(false);
       }
     };
 
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
   const baseClassName = clsx(multiselectTypeaheadDropdownVariantsCN(props), className);
-
-  const showDivider = selectedOptions.length > 0 && unselectedOptions.length > 0;
 
   return (
     <div ref={containerRef} className="relative w-full" data-multiselect-container>
@@ -193,21 +192,16 @@ export function MultiselectTypeaheadDropdown({
         </div>
       </div>
 
-      {isOpen && popupPosition && (displayOptions.length > 0 || searchQuery.trim().length > 0) && (
+      {shouldShowPopup && (
         <Popup
           ref={popupRef}
-          position={popupPosition}
+          position={popupPosition!}
           selectedOptions={selectedOptions}
           unselectedOptions={unselectedOptions}
           showDivider={showDivider}
-          searchQuery={searchQuery}
+          hasNoMatches={hasNoMatches}
           onToggle={handleToggle}
-          onItemClick={() => {
-            // Refocus input after selection to keep popup open
-            setTimeout(() => {
-              inputRef.current?.focus();
-            }, 0);
-          }}
+          onItemClick={handleItemClick}
         />
       )}
     </div>
@@ -219,46 +213,40 @@ interface PopupProps {
   selectedOptions: string[];
   unselectedOptions: string[];
   showDivider: boolean;
-  searchQuery: string;
+  hasNoMatches: boolean;
   onToggle: (option: string) => void;
   onItemClick: () => void;
 }
 
 const Popup = React.forwardRef<HTMLDivElement, PopupProps>(
-  ({ position, selectedOptions, unselectedOptions, showDivider, searchQuery, onToggle, onItemClick }, ref) => {
+  ({ position, selectedOptions, unselectedOptions, showDivider, hasNoMatches, onToggle, onItemClick }, ref) => {
     const maxHeight = MAX_VISIBLE_ITEMS * ITEM_HEIGHT;
-    const hasNoMatches = searchQuery.trim().length > 0 && unselectedOptions.length === 0;
 
     const popupContent = (
       <div
         ref={ref}
-        className="fixed z-[60] bg-white shadow-lg border-l border-r border-b border-gray-200 overflow-hidden rounded-b-md"
+        className="fixed z-[60] bg-white shadow-lg rounded-b-md overflow-hidden border border-neutral"
         style={{
           top: `${position.top}px`,
           left: `${position.left}px`,
           width: `${position.width}px`,
           maxHeight: `${maxHeight}px`,
-          borderTopLeftRadius: 0,
-          borderTopRightRadius: 0,
         }}
       >
         <div className="overflow-y-auto p-1" style={{ maxHeight: `${maxHeight}px` }}>
-          {/* Selected options */}
           {selectedOptions.length > 0 && (
             <>
               {selectedOptions.map((option) => (
-                <OptionItem key={option} option={option} isSelected={true} onToggle={onToggle} onItemClick={onItemClick} />
+                <OptionItem key={option} option={option} isSelected onToggle={onToggle} onItemClick={onItemClick} />
               ))}
               {showDivider && <div className="border-t border-gray-200 my-1" />}
             </>
           )}
 
-          {/* Unselected options */}
           {unselectedOptions.map((option) => (
             <OptionItem key={option} option={option} isSelected={false} onToggle={onToggle} onItemClick={onItemClick} />
           ))}
 
-          {/* No matches message */}
           {hasNoMatches && <div className="px-4 py-3 text-sm text-gray-500 text-center border-t border-gray-200">No matches</div>}
         </div>
       </div>
@@ -279,14 +267,12 @@ interface OptionItemProps {
 
 function OptionItem({ option, isSelected, onToggle, onItemClick }: OptionItemProps) {
   const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // Prevent input blur when clicking on popup items
-    e.preventDefault();
+    e.preventDefault(); // Prevent input blur
   };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     onToggle(option);
-    // Refocus input after selection to keep popup open and allow continued typing
     onItemClick();
   };
 
@@ -295,14 +281,11 @@ function OptionItem({ option, isSelected, onToggle, onItemClick }: OptionItemPro
       type="button"
       onClick={handleClick}
       onMouseDown={handleMouseDown}
-      className={clsx("w-full px-4 py-2 text-left flex items-center gap-3 transition-colors hover:bg-border rounded-lg")}
+      className="w-full px-4 py-2 text-left flex items-center gap-3 transition-colors hover:bg-border rounded-lg"
     >
-      {isSelected && (
-        <div className="flex-shrink-0 w-4 h-4 flex items-center justify-center">
-          <Icon icon="check" size="xs" color="black" />
-        </div>
-      )}
-      {!isSelected && <div className="flex-shrink-0 w-4 h-4" />}
+      <div className="flex-shrink-0 w-4 h-4 flex items-center justify-center">
+        {isSelected && <Icon icon="check" size="xs" color="black" />}
+      </div>
       <span className="flex-1">{option}</span>
     </button>
   );

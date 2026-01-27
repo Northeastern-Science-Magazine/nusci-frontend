@@ -231,20 +231,7 @@ const fruitOptions = [
 const meta: Meta<typeof MultiselectTypeaheadDropdown> = {
   component: MultiselectTypeaheadDropdown,
   title: "Primitives/MultiselectTypeaheadDropdown",
-  argTypes: {
-    variant: {
-      control: "select",
-      options: variants,
-    },
-    size: {
-      control: "select",
-      options: sizes,
-    },
-    color: {
-      control: "select",
-      options: colors,
-    },
-  },
+  argTypes: {},
 };
 
 export default meta;
@@ -253,9 +240,6 @@ type Story = StoryObj<typeof MultiselectTypeaheadDropdown>;
 /** Story for Default Variant */
 export const Default: Story = {
   args: {
-    size: "md",
-    variant: "outline",
-    color: "black",
     placeholder: "Search countries...",
     options: countryOptions,
   },
@@ -284,9 +268,6 @@ export const Default: Story = {
 /** Story for Outline Variant */
 export const Outline: Story = {
   args: {
-    size: "md",
-    variant: "outline",
-    color: "black",
     placeholder: "Search...",
     options: countryOptions,
   },
@@ -303,9 +284,6 @@ export const Outline: Story = {
 /** Story for Filled Variant */
 export const Filled: Story = {
   args: {
-    size: "md",
-    variant: "filled",
-    color: "black",
     placeholder: "Search...",
     options: countryOptions,
   },
@@ -322,9 +300,6 @@ export const Filled: Story = {
 /** Story demonstrating functionality with pre-selected values */
 export const WithPreselected: Story = {
   args: {
-    size: "md",
-    variant: "outline",
-    color: "black",
     placeholder: "Search countries...",
     options: countryOptions,
   },
@@ -358,9 +333,6 @@ export const SearchFunctionality: Story = {
           <h3 className="text-lg font-semibold mb-2">Try searching for countries:</h3>
           <p className="text-sm text-gray-600 mb-4">Type "Can" to see Canada, Cameroon, Central African Republic, etc.</p>
           <MultiselectTypeaheadDropdown
-            size="md"
-            variant="outline"
-            color="black"
             placeholder="Search countries..."
             options={countryOptions}
             selectedValues={selected}
@@ -394,9 +366,6 @@ export const DifferentOptions: Story = {
         <div>
           <h3 className="text-lg font-semibold mb-2">Fruits</h3>
           <MultiselectTypeaheadDropdown
-            size="md"
-            variant="outline"
-            color="sage-green"
             placeholder="Search fruits..."
             options={fruitOptions}
             selectedValues={selectedFruits}
@@ -411,9 +380,6 @@ export const DifferentOptions: Story = {
         <div>
           <h3 className="text-lg font-semibold mb-2">Countries</h3>
           <MultiselectTypeaheadDropdown
-            size="md"
-            variant="outline"
-            color="purple"
             placeholder="Search countries..."
             options={countryOptions}
             selectedValues={selectedCountries}
@@ -443,9 +409,6 @@ const GalleryItem = ({
   const [selected, setSelected] = useState<string[]>([]);
   return (
     <MultiselectTypeaheadDropdown
-      size={size}
-      color={color}
-      variant={variant}
       placeholder={`${size} | ${variant} | ${color}`}
       options={fruitOptions.slice(0, 20)}
       selectedValues={selected}
@@ -496,9 +459,6 @@ export const AllSizes: Story = {
         <div>
           <h3 className="text-sm font-medium mb-2">Small</h3>
           <MultiselectTypeaheadDropdown
-            size="sm"
-            variant="outline"
-            color="black"
             placeholder="Search..."
             options={fruitOptions}
             selectedValues={selectedSm}
@@ -508,9 +468,6 @@ export const AllSizes: Story = {
         <div>
           <h3 className="text-sm font-medium mb-2">Medium</h3>
           <MultiselectTypeaheadDropdown
-            size="md"
-            variant="outline"
-            color="black"
             placeholder="Search..."
             options={fruitOptions}
             selectedValues={selectedMd}
@@ -520,9 +477,6 @@ export const AllSizes: Story = {
         <div>
           <h3 className="text-sm font-medium mb-2">Large</h3>
           <MultiselectTypeaheadDropdown
-            size="lg"
-            variant="outline"
-            color="black"
             placeholder="Search..."
             options={fruitOptions}
             selectedValues={selectedLg}
@@ -546,9 +500,6 @@ export const MultiselectBehavior: Story = {
             Select multiple items. Selected items appear at the top with checkmarks. Click a selected item to deselect it.
           </p>
           <MultiselectTypeaheadDropdown
-            size="md"
-            variant="outline"
-            color="black"
             placeholder="Search and select countries..."
             options={countryOptions}
             selectedValues={selected}

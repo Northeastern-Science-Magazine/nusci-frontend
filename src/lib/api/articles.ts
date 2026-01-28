@@ -49,17 +49,17 @@ function getQuery(params: ArticleSearchParams) {
 export async function searchArticles<T = unknown>(
   params: ArticleSearchParams,
 ): Promise<ApiResponse<ArticleSearchResponse<T>>> {
-  return api("GET", `/articles/search${getQuery(params)}`);
+  return api("GET", `/search${getQuery(params)}`);
 }
 
 export async function searchArticlesByTitle<T = unknown>(
   params: ArticleSearchParams,
 ): Promise<ApiResponse<ArticleSearchResponse<T>>> {
-  return api("GET", `/articles/search/title${getQuery(params)}`);
+  return api("GET", `/search/title${getQuery(params)}`);
 }
 
 export async function searchArticlesByTitleAndContent<T = unknown>(
   params: ArticleSearchParams,
 ): Promise<ApiResponse<ArticleSearchResponse<T>>> {
-  return api("GET", `/articles/search/title-and-content${getQuery(params)}`);
+  return api("GET", `/search/title-and-content${getQuery(params)}`);
 }

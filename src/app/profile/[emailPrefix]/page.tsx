@@ -21,11 +21,9 @@ interface ProfileData {
   bio: string;
 }
 
-interface PublicProfilePageProps {
-  params: Promise<{ emailPrefix: string }>;
-}
+interface PublicProfilePageProps {}
 
-async function getProfile(emailPrefix: string) {
+async function getProfile() {
   const res = await api<ProfileData>("GET", "/user/me");
 
   if (!res.ok) {
@@ -35,11 +33,8 @@ async function getProfile(emailPrefix: string) {
   return res.data;
 }
 
-export default async function PublicProfilePage({
-  params,
-}: PublicProfilePageProps) {
-  const { emailPrefix } = await params;
-  const data = await getProfile(emailPrefix);
+export default async function PublicProfilePage({}: PublicProfilePageProps) {
+  const data = await getProfile();
 
   const {
     name,

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { apiGetUserRoles } from "./lib/api/users";
+import { redirect, RedirectType } from "next/navigation";
 
 /**
  * Proxy function
@@ -17,6 +18,12 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
     if (result.ok) {
       roles = [...result.data.roles];
     }
+  }
+
+  // if accessing internal page as unauthorized, redirect to login
+  // commented out for internal page testing
+  if (request.url.includes('/internal/') && roles.length == 0) {
+    return NextResponse.redirect(new URL('/login', request.url))  
   }
 
   // Create new request headers and add the x-user-roles header

@@ -18,7 +18,6 @@ export default function EmailSearch({
 
   const addEmail = () => {
     if (!email.trim()) return;
-
     setEmails((prev) => [...prev, email.trim()]);
     setEmail("");
   };

@@ -22,13 +22,11 @@ export default function InviteUser() {
   const canSend: boolean = emails.length !== 0 && roles.length !== 0;
 
   // todo: implement submission
-  const onSubmit: SubmitHandler<InviteUserFormValues> = (
-    data: InviteUserFormValues,
-  ) => {
-    // for every email, create invite link?
-    console.log(data);
-    return null;
-  };
+  const onSubmit: SubmitHandler<InviteUserFormValues> = (values: InviteUserFormValues) => {
+    values.emails = emails;
+    values.roles = roles;
+    // do whatever idk
+  }
 
   return (
     <div id="invite-user" className="my-4 py-4 h-fit">
@@ -67,7 +65,6 @@ export default function InviteUser() {
             <FormField<InviteUserFormValues>
               name="roles"
               rules={{
-                // idk why but when you click the delete button, even typed as button this shows up
                 required: "Please assign at least one role",
               }}
               label="Select User Roles:"
@@ -77,7 +74,8 @@ export default function InviteUser() {
                 <Checkbox
                   options={Object.keys(Roles)}
                   size="md"
-                  onChange={setRoles}
+                  value={ roles || [] }
+                  onChange={(newValue) => setRoles(newValue)}
                 />
               </div>
             </FormField>
@@ -89,7 +87,6 @@ export default function InviteUser() {
             >
               Invite
             </Button>
-            {/* <Button type="button" onClick={() => {console.log(emails, roles)}}> Test Data</Button> */}
           </Form>
         </Box>
       </Card>

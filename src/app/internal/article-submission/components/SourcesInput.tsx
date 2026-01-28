@@ -5,6 +5,7 @@ import TextInput from "@/design-system/primitives/TextInput";
 import Icon from "@/design-system/primitives/Icon";
 import Button from "@/design-system/primitives/Button";
 import Text from "@/design-system/primitives/Text";
+import { Grid, GridCol } from "@/design-system/primitives/Grid";
 
 type SourcesInputProps = {
   value?: string[];
@@ -17,10 +18,9 @@ export function SourcesInput({
   value = [],
   onChange,
   label = "Sources",
-  placeholder = "Enter source URL or citation",
 }: SourcesInputProps) {
   const [sources, setSources] = useState<string[]>(
-    value.length > 0 ? value : [""]
+    value.length > 0 ? value : [""],
   );
 
   useEffect(() => {
@@ -55,13 +55,27 @@ export function SourcesInput({
       {sources.map((source, index) => (
         <div key={index} className="flex items-end gap-2">
           <div className="flex-1">
-            <TextInput
-              value={source}
-              label="Source"
-              onChange={(newValue) => handleSourceChange(index, newValue)}
-              placeholder={placeholder}
-              className="w-full"
-            />
+            <label>{"Sources"}</label>
+            <Grid col span={2} gap={2}>
+              <GridCol span={1}>
+                <TextInput
+                  value={source}
+                  label=""
+                  onChange={(newValue) => handleSourceChange(index, newValue)}
+                  placeholder="Enter source title"
+                  className="w-full"
+                />
+              </GridCol>
+              <GridCol span={1}>
+                <TextInput
+                  value={source}
+                  label=""
+                  onChange={(newValue) => handleSourceChange(index, newValue)}
+                  placeholder="Enter source URL or citation"
+                  className="w-full"
+                />
+              </GridCol>
+            </Grid>
           </div>
           {sources.length > 1 && (
             <Button

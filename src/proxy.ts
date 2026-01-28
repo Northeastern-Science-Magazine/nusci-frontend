@@ -8,10 +8,7 @@ import { apiGetUserRoles } from "./lib/api/users";
  * @param request
  * @returns NextResponse with x-user-roles header
  */
-export async function proxy(
-  request: NextRequest,
-  backendPath?: string,
-): Promise<NextResponse> {
+export async function proxy(request: NextRequest): Promise<NextResponse> {
   const token = request.cookies.get("token")?.value;
   let roles: string[] = [];
 
@@ -22,31 +19,20 @@ export async function proxy(
     }
   }
 
-  const url = new URL(request.url);
-  const path = backendPath || url.pathname;
+  // if accessing internal page as unauthorized, redirect to login
+  // commented out for internal page testing
+  if (request.url.includes("/internal/") && roles.length == 0) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 
   // Create new request headers and add the x-user-roles header
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("X-User-Roles", JSON.stringify({ roles }));
 
-  const backendResponse = await fetch("http://localhost:9999" + path, {
-    method: request.method,
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-      "X-User-Roles": JSON.stringify({ roles }),
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
     },
-    body:
-      // make sure req is not GET/HEAD. GET/HEAD cannot have a body
-      request.method !== "GET" && request.method !== "HEAD"
-        ? await request.text()
-        : undefined,
-  });
-
-  const data = await backendResponse.json();
-
-  // Return NextResponse with proper typing
-  const response: NextResponse = NextResponse.json(data, {
-    status: backendResponse.status,
   });
 
   return response;

@@ -6,6 +6,7 @@ import { Box } from "@/design-system/primitives/Box/Box";
 import MediaCard from "@/design-system/components/MediaCard";
 import { notFound } from "next/navigation";
 import { Roles } from "@/lib/types/types";
+import { api } from "@/lib/api/api";
 
 interface ProfileData {
   name: string;
@@ -25,26 +26,20 @@ interface PublicProfilePageProps {
 }
 
 async function getProfile(emailPrefix: string) {
-  const res = await fetch(`http://localhost:3000/api/profile/${emailPrefix}`, {
-    cache: "no-store", // Always fetch fresh data
-  });
+  const res = await api<ProfileData>("GET", "/user/me");
 
   if (!res.ok) {
     throw new Error("Failed to fetch profile");
   }
 
-  return res.json();
+  return res.data;
 }
 
 export default async function PublicProfilePage({
   params,
 }: PublicProfilePageProps) {
   const { emailPrefix } = await params;
-  const data: ProfileData = await getProfile(emailPrefix);
-
-  if (!data) {
-    notFound();
-  }
+  const data = await getProfile(emailPrefix);
 
   const {
     name,

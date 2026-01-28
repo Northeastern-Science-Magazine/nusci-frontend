@@ -221,7 +221,7 @@ export default function ArticleSearchPage() {
                   <TextInput
                     variant="outline"
                     size="lg"
-                    color="border"
+                    color="black"
                     label=""
                     value={title}
                     onChange={(value) => setTitle(value)}

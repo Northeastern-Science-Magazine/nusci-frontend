@@ -9,6 +9,7 @@ import { Roles } from "@/lib/types/types";
 import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import EmailSearch from "./EmailSearch";
+import { Controller } from "react-hook-form";
 
 export default function InviteUser() {
   type InviteUserFormValues = {
@@ -22,17 +23,23 @@ export default function InviteUser() {
   const canSend: boolean = emails.length !== 0 && roles.length !== 0;
 
   // todo: implement submission
-  const onSubmit: SubmitHandler<InviteUserFormValues> = (values: InviteUserFormValues) => {
+  const onSubmit: SubmitHandler<InviteUserFormValues> = (
+    values: InviteUserFormValues,
+  ) => {
     values.emails = emails;
     values.roles = roles;
-    // do whatever idk
-  }
+  };
 
   return (
     <div id="invite-user" className="my-4 py-4 h-fit">
       <Card color="sage-green" className="p-4 my-2.5 w-full align-middle">
         <Box className="space-y-8 rounded-2xl bg-white p-4 shadow-xl ring-1 ring-black/5 w-4/5">
-          <Text color="sage-green" size={36} style="bold" className="text-left p-2">
+          <Text
+            color="sage-green"
+            size={36}
+            style="bold"
+            className="text-left p-2"
+          >
             Invite a user
           </Text>
 
@@ -58,28 +65,39 @@ export default function InviteUser() {
               />
             </FormField>
              */}
-            <FormField name="emails">
+            <FormField
+              name="emails"
+              rules={{
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Please enter a valid email",
+                },
+              }}
+            >
               <EmailSearch emails={emails} setEmails={setEmails}></EmailSearch>
             </FormField>
-            <br />
-            <FormField<InviteUserFormValues>
-              name="roles"
-              rules={{
-                required: "Please assign at least one role",
-              }}
-              label="Select User Roles:"
-            >
-              {/*flex logic taken from article submission html*/}
-              <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0 m-2">
-                <Checkbox
-                  options={Object.keys(Roles)}
-                  size="md"
-                  value={ roles || [] }
-                  onChange={(newValue) => setRoles(newValue)}
-                />
-              </div>
-            </FormField>
-            <br />
+
+            <div id="roles" className="scroll-mt-[80px] m-2">
+              <Controller
+                name="roles"
+                render={({ field }) => (
+                  <div>
+                    <label>{"Categories"}</label>
+                    <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
+                      <Checkbox
+                        options={Object.keys(Roles)}
+                        value={field.value || []}
+                        onChange={(newValue: string[]) => {
+                          field.onChange(newValue);
+                          setRoles(newValue);
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+              />
+            </div>
             <Button
               color={canSend ? "forest-green" : "border"}
               type="submit"

@@ -28,82 +28,13 @@ interface FeaturedArticlesProps {
 }
 
 export default function FeaturedArticles({
-  featuredArticles = [],
-  recentArticles = [],
+  featuredArticles,
+  recentArticles,
 }: FeaturedArticlesProps) {
-  // Use first featured article, else fallback
-  const mainArticle1 = featuredArticles[0] || {
-    title: "Siberian Permafrost",
-    description:
-      "A photo-led story about the science (and spectacle) behind ice—built to read like a print spread.",
-    imageUrl: "/icy.png",
-  };
-
-  const mainArticle2 = featuredArticles[1] || {
-    title: "Chasing Totality",
-    description:
-      "A photo-led story about the science (and spectacle) behind eclipses—built to read like a print spread.",
-    imageUrl: "/succulent.png",
-  };
-
-  const hasRecentArticles = recentArticles.length > 0;
-
-  // Sidebar articles: first 2 recent articles, else fallback
-  const sidebarArticles = hasRecentArticles
-    ? recentArticles.slice(0, 2)
-    : [
-        {
-          id: "fallback-1",
-          title: "Urban Heat Islands, Explained",
-          description:
-            "How cities trap heat and what we can do about it—a deep dive into urban climate science.",
-          imageUrl: "/london.png",
-          subtitle: "Science + Society",
-          slug: "urban-heat-islands",
-        },
-        {
-          id: "fallback-2",
-          title: "How Microbiomes Shape Our World",
-          description:
-            "Exploring the invisible ecosystems that influence everything from our health to our environment.",
-          imageUrl: "/moss.png",
-          subtitle: "Research Spotlight",
-          slug: "microbiomes",
-        },
-      ];
-
-  // Grid articles: next 3 recent articles, else fallback
-  const gridArticles = hasRecentArticles
-    ? recentArticles.slice(2, 5)
-    : [
-        {
-          id: "fallback-3",
-          title: "5 Questions About CRISPR",
-          description:
-            "A concise guide to understanding gene editing technology.",
-          imageUrl: "/icy.png",
-          subtitle: "Quick Read",
-          slug: "crispr-questions",
-        },
-        {
-          id: "fallback-4",
-          title: "Why Science Needs Better Stories",
-          description:
-            "How narrative can bridge the gap between research and public understanding.",
-          imageUrl: "/eclipse-image.png",
-          subtitle: "Opinion",
-          slug: "science-stories",
-        },
-        {
-          id: "fallback-5",
-          title: "Designing an Issue Cover",
-          description:
-            "A look into the creative process behind our magazine design.",
-          imageUrl: "/logo.png",
-          subtitle: "Behind the Scenes",
-          slug: "issue-cover-design",
-        },
-      ];
+  const mainArticle1 = featuredArticles[0];
+  const mainArticle2 = featuredArticles[1];
+  const sidebarArticles = recentArticles.slice(0, 2);
+  const gridArticles = recentArticles.slice(2, 5);
 
   return (
     <Font serif>
@@ -125,89 +56,95 @@ export default function FeaturedArticles({
 
           <Divider my={8} />
 
-          {/* Newspaper Layout - Multi-column */}
           <Box className="grid gap-8 laptop:grid-cols-12">
-            {/* Main Feature Articles - Left Column */}
+            {/* Newspaper Layout - Multi-column */}
             <div className="laptop:col-span-8 space-y-8">
               {/* First Main Article */}
-              <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
-                <Image
-                  src={mainArticle1.imageUrl}
-                  alt={mainArticle1.title}
-                  width="w-full"
-                  ratio={16 / 10}
-                />
-                <Overlay background="gradient-black">
-                  <Box className="flex h-full w-full items-end">
-                    <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
-                      <Text
-                        size={48}
-                        color="white"
-                        className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
-                      >
-                        {mainArticle1.title}
-                      </Text>
-                      <Text
-                        size={18}
-                        color="white"
-                        className="mt-3 max-w-2xl font-light leading-relaxed opacity-95 max-sm:text-[16px]"
-                      >
-                        {mainArticle1.description}
-                      </Text>
-                      <Box className="mt-6">
-                        <Button
-                          className="inline-flex"
-                          color="marigold"
-                          size="lg"
+              {mainArticle1 && (
+                <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
+                  <Image
+                    src={mainArticle1.imageUrl}
+                    alt={mainArticle1.title}
+                    width="w-full"
+                    ratio={16 / 10}
+                  />
+                  <Overlay background="gradient-black">
+                    <Box className="flex h-full w-full items-end">
+                      <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
+                        <Text
+                          size={48}
+                          color="white"
+                          className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
                         >
-                          Read article
-                        </Button>
+                          {mainArticle1.title}
+                        </Text>
+                        <Text
+                          size={18}
+                          color="white"
+                          className="mt-3 max-w-2xl font-light leading-relaxed opacity-95 max-sm:text-[16px]"
+                        >
+                          {mainArticle1.description}
+                        </Text>
+                        <Box className="mt-6">
+                          <Link href={mainArticle1.slug}>
+                            <Button
+                              className="inline-flex"
+                              color="marigold"
+                              size="lg"
+                            >
+                              Read article
+                            </Button>
+                          </Link>
+                        </Box>
                       </Box>
                     </Box>
-                  </Box>
-                </Overlay>
-              </OverlayMedia>
+                  </Overlay>
+                </OverlayMedia>
+              )}
 
               {/* Second Main Article */}
-              <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
-                <Image
-                  src={mainArticle2.imageUrl}
-                  alt={mainArticle2.title}
-                  width="w-full"
-                  ratio={16 / 10}
-                />
-                <Overlay background="gradient-black">
-                  <Box className="flex h-full w-full items-end">
-                    <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
-                      <Text
-                        size={48}
-                        color="white"
-                        className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
-                      >
-                        {mainArticle2.title}
-                      </Text>
-                      <Text
-                        size={18}
-                        color="white"
-                        className="mt-3 max-w-2xl font-light leading-relaxed opacity-95 max-sm:text-[16px]"
-                      >
-                        {mainArticle2.description}
-                      </Text>
-                      <Box className="mt-6">
-                        <Button
-                          className="inline-flex"
-                          color="marigold"
-                          size="lg"
+              {mainArticle2 && (
+                <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
+                  <Image
+                    src={mainArticle2.imageUrl}
+                    alt={mainArticle2.title}
+                    width="w-full"
+                    ratio={16 / 10}
+                  />
+                  <Overlay background="gradient-black">
+                    <Box className="flex h-full w-full items-end">
+                      <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
+                        <Text
+                          size={48}
+                          color="white"
+                          className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
                         >
-                          Read article
-                        </Button>
+                          {mainArticle2.title}
+                        </Text>
+                        <Text
+                          size={18}
+                          color="white"
+                          className="mt-3 max-w-2xl font-light leading-relaxed opacity-95 max-sm:text-[16px]"
+                        >
+                          {mainArticle2.description}
+                        </Text>
+                        <Box className="mt-6">
+                          <Link href={mainArticle2.slug}>
+                            <Button
+                              className="inline-flex"
+                              color="marigold"
+                              size="lg"
+                            >
+                              Read article
+                            </Button>
+                          </Link>
+                        </Box>
                       </Box>
                     </Box>
-                  </Box>
-                </Overlay>
-              </OverlayMedia>
+                  </Overlay>
+                </OverlayMedia>
+              )}
             </div>
-
             {/* Sidebar Articles - Right Column */}
             <div className="laptop:col-span-4">
               <Box className="space-y-6 border-l-2 border-black/10 pl-6 laptop:pl-8">

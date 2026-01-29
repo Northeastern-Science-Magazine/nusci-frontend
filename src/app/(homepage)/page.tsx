@@ -10,7 +10,6 @@ import {
   getMagazineIssues,
   getRecentArticles,
   getFeaturedArticles,
-  getCTAData,
 } from "@/lib/api/articles";
 
 export default async function Homepage() {
@@ -18,13 +17,12 @@ export default async function Homepage() {
   console.log(roles);
 
   try {
-    const [stats, magazines, recentArticles, featuredArticles, ctaData] =
+    const [stats, magazines, recentArticles, featuredArticles] =
       await Promise.all([
         getStatistics(),
         getMagazineIssues(),
         getRecentArticles(),
         getFeaturedArticles(),
-        getCTAData(),
       ]);
 
     return (
@@ -36,12 +34,12 @@ export default async function Homepage() {
           recentArticles={recentArticles}
         />
         <CTA
-          title={ctaData.title}
-          description={ctaData.description}
-          primaryButtonText={ctaData.primaryButtonText}
-          secondaryButtonText={ctaData.secondaryButtonText}
-          backgroundImageSrc={ctaData.backgroundImageSrc}
-          backgroundImageAlt={ctaData.backgroundImageAlt}
+          title="Made by students. Read by everyone."
+          description="Want to write, design, photograph, or build with us? NU Sci is a community for curious people."
+          primaryButtonText="Learn about NU Sci"
+          secondaryButtonText="Join the team"
+          backgroundImageSrc="/icy.png"
+          backgroundImageAlt="A textured green moss background"
         />
       </main>
     );

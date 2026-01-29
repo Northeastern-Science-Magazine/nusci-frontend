@@ -4,11 +4,11 @@ import Card from "@/design-system/primitives/Card";
 import { Badge } from "@/design-system/primitives/Badge/Badge";
 import { Box } from "@/design-system/primitives/Box/Box";
 import MediaCard from "@/design-system/components/MediaCard";
-import { notFound } from "next/navigation";
 import { Roles } from "@/lib/types/types";
 import { api } from "@/lib/api/api";
+import { apiGetProfile } from "@/lib/api/users";
 
-interface ProfileData {
+export interface ProfileData {
   name: string;
   pronouns: string;
   graduationYear: number;
@@ -24,7 +24,7 @@ interface ProfileData {
 interface PublicProfilePageProps {}
 
 async function getProfile() {
-  const res = await api<ProfileData>("GET", "/user/me");
+  const res = await apiGetProfile();
 
   if (!res.ok) {
     throw new Error("Failed to fetch profile");

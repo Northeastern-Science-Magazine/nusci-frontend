@@ -1,6 +1,7 @@
 "use server";
 
 import { api, ApiResponse } from "./api";
+import { ProfileData } from "@/app/profile/[emailPrefix]/page";
 
 /**
  * Gets the login status along with the roles of the
@@ -17,6 +18,13 @@ export async function apiGetUserRoles(): Promise<ApiResponse<Roles>> {
   return api("GET", "/user/roles");
 }
 
-export async function apiLogin(data: { email: string; password: string }): Promise<ApiResponse<void>> {
+export async function apiLogin(data: {
+  email: string;
+  password: string;
+}): Promise<ApiResponse<void>> {
   return api("POST", "/user/login", data);
+}
+
+export async function apiGetProfile(): Promise<ApiResponse<ProfileData>> {
+  return api("GET", "/user/me");
 }

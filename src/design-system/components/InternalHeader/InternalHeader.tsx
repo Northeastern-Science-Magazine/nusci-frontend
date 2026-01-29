@@ -34,12 +34,27 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Internal navigation items for club members
-  const navigationItems: { label: string; href: string }[] = [];
+  // Navigation items - public site links
+  const navigationItems: { label: string; href: string }[] = [
+    { label: "Home", href: "/" },
+    { label: "Print Articles", href: "/articles" },
+  ];
+
+  const categories = [
+    { value: "biology", label: "Biology" },
+    { value: "chemistry", label: "Chemistry" },
+    { value: "environment", label: "Environment" },
+    { value: "health", label: "Health" },
+    { value: "newsletter", label: "Newsletter" },
+    { value: "opinion", label: "Opinion" },
+    { value: "physics", label: "Physics" },
+    { value: "psychology", label: "Psychology" },
+    { value: "space", label: "Space" },
+    { value: "technology", label: "Technology" },
+    { value: "world", label: "World" },
+  ];
 
   const handleLogout = async () => {
-    // Implement your logout logic here
-    // Example: clear cookies, call API, etc.
     document.cookie = 'auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     window.location.href = '/';
   };
@@ -54,27 +69,28 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
       color="white"
       className={`
         z-50 transition-all duration-300 ease-in-out
-        ${isScrolled ? "shadow-lg py-2" : "py-4"}
+        h-16
+        ${isScrolled ? "shadow-lg" : ""}
         border-b border-black
       `}
     >
-      <Box className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Box className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         {/* Main Navigation */}
-        <Box className="flex items-center justify-between">
+        <Box className="flex items-center justify-between h-full">
           {/* Logo */}
           <Box className="flex-shrink-0">
             <Link href="/internal/dashboard" newWindow={false} className="flex items-center">
-              <Box className="transition-all duration-300 w-12">
+              <Box className="transition-all duration-300 w-10">
                 <Image 
                   src="/logo.png" 
                   alt="NU Sci Magazine" 
-                  width="w-12" 
+                  width="w-10" 
                   ratio={1} 
                   borderColor="black" 
                   borderWidth={2} 
                 />
               </Box>
-              <span className="ml-3 font-semibold text-gray-800">Internal Portal</span>
+              <span className="ml-3 font-semibold text-gray-800 text-sm">Internal Portal</span>
             </Link>
           </Box>
 
@@ -85,11 +101,56 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
                 key={item.label}
                 href={item.href}
                 newWindow={false}
-                className="text-gray-700 hover:text-black transition-colors duration-200 font-medium"
+                className="text-gray-700 hover:text-black transition-colors duration-200 font-medium text-sm"
               >
                 {item.label}
               </Link>
             ))}
+
+            {/* About Us Dropdown */}
+            <Box className="relative">
+              <DropdownInput
+                placeholder="About Us"
+                onChange={(value) => {
+                  if (value === "about") {
+                    window.location.href = "/about-us";
+                  } else if (value === "eboard") {
+                    window.location.href = "/teams/eboard";
+                  }
+                }}
+              >
+                <DropdownItem value="about">Teams</DropdownItem>
+                <DropdownItem value="eboard">Eboard & Editors</DropdownItem>
+              </DropdownInput>
+            </Box>
+
+            {/* Categories Dropdown */}
+            <Box className="relative">
+              <DropdownInput
+                placeholder="Categories"
+                onChange={(value) => {
+                  window.location.href = `/${value}`;
+                }}
+              >
+                {categories.map((category) => (
+                  <DropdownItem key={category.value} value={category.value}>
+                    {category.label}
+                  </DropdownItem>
+                ))}
+              </DropdownInput>
+            </Box>
+
+            {/* Search Articles Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              color="black"
+              onClick={() => (window.location.href = "/search")}
+              className="flex items-center h-[35px]"
+            >
+              <Icon icon="search" size="sm" className="mr-1" />
+              Search
+            </Button>
 
             {/* Profile Dropdown */}
             <Box className="relative flex items-center">
@@ -126,10 +187,10 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <Box className="lg:hidden mt-4 pb-4 border-t border-gray-200">
-            <Box className="flex flex-col space-y-4 pt-4">
+          <Box className="lg:hidden absolute top-16 left-0 right-0 bg-white border-b border-gray-200 shadow-lg">
+            <Box className="flex flex-col space-y-2 p-4">
               {/* User Info */}
-              <Box className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <Box className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg mb-2">
                 <Icon icon="user" size="md" />
                 <Box>
                   <div className="font-semibold text-gray-900">{userProfile.name}</div>
@@ -138,6 +199,71 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
                   )}
                 </Box>
               </Box>
+
+              {/* Navigation Items */}
+              {navigationItems.map((item) => (
+                <div key={item.label} onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link
+                    href={item.href}
+                    newWindow={false}
+                    className="text-gray-700 hover:text-black transition-colors duration-200 font-medium p-2 hover:bg-gray-50 rounded block"
+                  >
+                    {item.label}
+                  </Link>
+                </div>
+              ))}
+
+              {/* Mobile About Us Dropdown */}
+              <Box className="w-full">
+                <DropdownInput
+                  placeholder="About Us"
+                  className="w-full"
+                  onChange={(value) => {
+                    if (value === "about") {
+                      window.location.href = "/about-us";
+                    } else if (value === "eboard") {
+                      window.location.href = "/teams/eboard";
+                    }
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <DropdownItem value="about">Teams</DropdownItem>
+                  <DropdownItem value="eboard">Eboard & Editors</DropdownItem>
+                </DropdownInput>
+              </Box>
+
+              {/* Mobile Categories Dropdown */}
+              <Box className="w-full">
+                <DropdownInput
+                  placeholder="Categories"
+                  className="w-full"
+                  onChange={(value) => {
+                    window.location.href = `/${value}`;
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  {categories.map((category) => (
+                    <DropdownItem key={category.value} value={category.value}>
+                      {category.label}
+                    </DropdownItem>
+                  ))}
+                </DropdownInput>
+              </Box>
+
+              {/* Mobile Search Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                color="black"
+                onClick={() => {
+                  window.location.href = "/search";
+                  setIsMobileMenuOpen(false);
+                }}
+                className="flex items-center justify-center w-full"
+              >
+                <Icon icon="search" size="sm" className="mr-1" />
+                Search Articles
+              </Button>
 
               {/* Profile Actions */}
               <Box className="pt-2 border-t border-gray-200 space-y-2">

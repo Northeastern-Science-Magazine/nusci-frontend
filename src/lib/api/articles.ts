@@ -1,6 +1,7 @@
 "use server";
 
 import { api, ApiResponse } from "./api";
+import { Article } from "../types/types";
 
 type ArticleSearchFilters = {
   category?: string;
@@ -20,8 +21,8 @@ type ArticleSearchParams = {
   filters?: ArticleSearchFilters;
 };
 
-type ArticleSearchResponse<T = unknown> = {
-  results: T[];
+type ArticleSearchResponse = {
+  results: Article[];
   total?: number;
   page?: number;
   pageSize?: number;
@@ -46,20 +47,20 @@ function getQuery(params: ArticleSearchParams) {
   return qs ? `?${qs}` : "";
 }
 
-export async function searchArticles<T = unknown>(
+export async function searchArticles(
   params: ArticleSearchParams,
-): Promise<ApiResponse<ArticleSearchResponse<T>>> {
+): Promise<ApiResponse<ArticleSearchResponse>> {
   return api("GET", `/search${getQuery(params)}`);
 }
 
-export async function searchArticlesByTitle<T = unknown>(
+export async function searchArticlesByTitle(
   params: ArticleSearchParams,
-): Promise<ApiResponse<ArticleSearchResponse<T>>> {
+): Promise<ApiResponse<ArticleSearchResponse>> {
   return api("GET", `/search/title${getQuery(params)}`);
 }
 
-export async function searchArticlesByTitleAndContent<T = unknown>(
+export async function searchArticlesByTitleAndContent(
   params: ArticleSearchParams,
-): Promise<ApiResponse<ArticleSearchResponse<T>>> {
+): Promise<ApiResponse<ArticleSearchResponse>> {
   return api("GET", `/search/title-and-content${getQuery(params)}`);
 }

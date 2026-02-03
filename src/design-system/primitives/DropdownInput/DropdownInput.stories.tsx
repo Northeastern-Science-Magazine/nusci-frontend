@@ -2,24 +2,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { DropdownInput, DropdownItem } from "./DropdownInput";
 import React from "react";
 import Image from "../Image";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
 const sizes = ["xl", "lg", "md", "sm", "xs"] as const;
-const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof DropdownInput> = {

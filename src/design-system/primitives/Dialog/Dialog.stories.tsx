@@ -5,23 +5,9 @@ import Button from "../Button";
 import Box from "../Box";
 import Text from "../Text";
 import { Grid, GridCol, GridRow } from "../Grid";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
-const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 
 const sizes = ["xs", "sm", "md", "lg", "xl"] as const;
 

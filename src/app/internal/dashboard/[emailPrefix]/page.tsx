@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import DashboardCard from "./components/dashboardCard";
 import { OverlayMedia, Overlay } from "@/design-system/components/MediaOverlay";
 import Image from "@/design-system/primitives/Image";
+import Box from "@/design-system/primitives/Box";
 
 interface PublicProfilePageProps {
   params: Promise<{ emailPrefix: string }>;
@@ -41,7 +42,7 @@ export default async function DashboardPage({
         ratio={1920 / 1000}
       />
       <Overlay background="gradient-black" >
-        <div className="flex h-full w-full items-center justify-center">
+        <Box className="flex h-full w-full items-center justify-center">
         <Card color="white" className="h-[80vh] w-full max-w-[95vw] shadow-2xl">
           <Card color="gray-light" className="w-full shadow-2xl">
             <Font serif>
@@ -53,25 +54,25 @@ export default async function DashboardPage({
           {roles.map((role) => {
             if (role == Roles.Admin) {
               return (
-                <div className="grid grid-cols-4 gap-6">
+                <Box className="grid grid-cols-4 gap-6">
                   <DashboardCard text="Invite User" href="internal/inviteUser"/>
                   <DashboardCard text="Approve Submission" href="internal/approvals" />
                   <DashboardCard text="Make An Article" href="internal/article-submission"/>
-                </div>
+                </Box>
               );
             } else if (role == Roles.Editor) {
               return (
-                <div className="grid grid-cols-4 gap-6">
+                <Box className="grid grid-cols-4 gap-6">
                   <DashboardCard text="Approve Submission" href="internal/approvals"/>
                   <DashboardCard text="Create an Article" href="internal/article-submission"/>
-                </div>
+                </Box>
               );
             } else if (role == Roles.Photographer) {
               return <DashboardCard text="Upload Photos" href="internal/photoApproval"/>;
             }
           })}
         </Card>
-        </div>
+        </Box>
       </Overlay>
     </OverlayMedia>
   );

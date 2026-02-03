@@ -31,8 +31,7 @@ export default function InviteUser() {
   };
 
   return (
-    <div id="invite-user" className="my-4 py-4 h-fit">
-      <Card color="sage-green" className="p-4 my-2.5 w-full align-middle">
+    <div id="invite-user" className="bg-sage-green size-full py-8">
         <Box className="space-y-8 rounded-2xl bg-white p-4 shadow-xl ring-1 ring-black/5 w-4/5">
           <Text
             color="sage-green"
@@ -107,7 +106,6 @@ export default function InviteUser() {
             </Button>
           </Form>
         </Box>
-      </Card>
     </div>
   );
 }

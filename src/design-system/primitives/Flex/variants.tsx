@@ -1,6 +1,13 @@
+import { animationVariants, AnimationProps } from "@/design-system/utilities/props/Animation/animation";
+import { displayVariants, DisplayProps } from "@/design-system/utilities/props/Display/display";
+import { marginVariants, MarginProps } from "@/design-system/utilities/props/Margin/margin";
+import { paddingVariants, PaddingProps } from "@/design-system/utilities/props/Padding/padding";
+import { positionVariants, PositionProps } from "@/design-system/utilities/props/Position/position";
+import { sizeVariants, SizeProps } from "@/design-system/utilities/props/Size/size";
+import clsx from "clsx";
 import { tv, type VariantProps } from "tailwind-variants";
 
-export const flexVariants = tv({
+const flexVariants = tv({
   base: "flex",
   variants: {
     wrap: {
@@ -43,7 +50,7 @@ export const flexVariants = tv({
   },
 });
 
-export const flexChildVariants = tv({
+const flexChildVariants = tv({
   base: "flex",
   variants: {
     auto: {
@@ -66,12 +73,39 @@ export const flexChildVariants = tv({
 });
 
 type FlexVariants = VariantProps<typeof flexVariants>;
-type FlexChildVariants = VariantProps<typeof flexChildVariants>;
+export const flexVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    flexVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );
 
-export interface FlexProps extends FlexVariants {
-  children:
-    | React.ReactElement<FlexChildVariants>
-    | React.ReactElement<FlexChildVariants>[];
+type FlexChildVariants = VariantProps<typeof flexChildVariants>;
+export const flexChildVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    flexChildVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    className
+  );
+
+export interface FlexProps
+  extends FlexVariants,
+    AnimationProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    SizeProps {
+  children: React.ReactElement<FlexChildVariants> | React.ReactElement<FlexChildVariants>[];
   className?: string;
 }
 

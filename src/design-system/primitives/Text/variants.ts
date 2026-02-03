@@ -1,4 +1,11 @@
-import React, { ClassAttributes, HTMLAttributes } from "react";
+import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { OpacityProps, opacityVariants } from "@/design-system/utilities/props/Opacity/opacity";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import clsx from "clsx";
+import React from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const textVariants = tv({
@@ -44,9 +51,17 @@ export const textVariants = tv({
       96: "text-[96px]",
       128: "text-[128px]",
     },
+    spacing: {
+      xs: "tracking-tighter",
+      sm: "tracking-tight",
+      md: "tracking-normal",
+      lg: "tracking-[0.25em]",
+      xl: "tracking-[0.35em]",
+    },
   },
   defaultVariants: {
     size: 12,
+    spacing: "md",
   },
 });
 
@@ -54,8 +69,27 @@ export const textVariants = tv({
 export type TextVariants = VariantProps<typeof textVariants>;
 
 /** Export TextProps as one type */
-export interface TextProps extends TextVariants {
+export interface TextProps
+  extends TextVariants,
+    AnimationProps,
+    DisplayProps,
+    MarginProps,
+    PaddingProps,
+    PositionProps,
+    OpacityProps {
   className?: string;
   as?: "p" | "span";
   children: React.ReactNode;
 }
+
+export const textVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    textVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    opacityVariants(variantProps),
+    className
+  );

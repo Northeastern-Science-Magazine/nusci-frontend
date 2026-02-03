@@ -1,3 +1,10 @@
+import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
+import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
+import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
+import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
+import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
+import clsx from "clsx";
 import React from "react";
 import { tv, VariantProps } from "tailwind-variants";
 
@@ -82,9 +89,27 @@ export interface GridPropsBase {
 type GridColOnly = GridPropsBase & { col: true; row?: never };
 type GridRowOnly = GridPropsBase & { row: true; col?: never };
 
-export type GridProps = GridColOnly | GridRowOnly;
+export type GridProps = (GridColOnly | GridRowOnly) &
+  AnimationProps &
+  DisplayProps &
+  MarginProps &
+  PaddingProps &
+  PositionProps &
+  SizeProps;
 
-export const gridColVariants = tv({
+export const gridVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    gridVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    sizeVariants(variantProps),
+    className
+  );
+
+const gridColVariants = tv({
   base: "",
   variants: {
     span: {
@@ -105,12 +130,23 @@ export const gridColVariants = tv({
 });
 
 export type GridColVariants = VariantProps<typeof gridColVariants>;
+export const gridColVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    gridColVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    className
+  );
+
 export interface GridColProps extends GridColVariants {
   className?: string;
   children: React.ReactNode;
 }
 
-export const gridRowVariants = tv({
+const gridRowVariants = tv({
   base: "",
   variants: {
     span: {
@@ -131,6 +167,17 @@ export const gridRowVariants = tv({
 });
 
 export type GridRowVariants = VariantProps<typeof gridRowVariants>;
+export const gridRowVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    gridRowVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    className
+  );
+
 export interface GridRowProps extends GridRowVariants {
   className?: string;
   children: React.ReactNode;

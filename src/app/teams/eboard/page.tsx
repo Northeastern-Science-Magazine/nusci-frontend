@@ -298,10 +298,9 @@ export default function EboardPage() {
                     <button
                         onClick={() => setActiveTab("eboard")}
                         className={`px-6 py-3 rounded-full text-base font-medium transition-colors ${
-                            // TODO: make the buttons more buttony when not selected
                             activeTab === "eboard"
                                 ? "bg-black text-white"
-                                : "bg-white text-black border border-neutral/30 hover:bg-neutral/10"
+                                : "bg-white text-black border border-black/20 hover:border-black/40 hover:bg-neutral/10"
                         }`}
                     >
                         Executive Board
@@ -311,7 +310,7 @@ export default function EboardPage() {
                         className={`px-6 py-3 rounded-full text-base font-medium transition-colors ${
                             activeTab === "editors"
                                 ? "bg-black text-white"
-                                : "bg-white text-black border border-neutral/30 hover:bg-neutral/10"
+                                : "bg-white text-black border border-black/20 hover:border-black/40 hover:bg-neutral/10"
                         }`}
                     >
                         Editors

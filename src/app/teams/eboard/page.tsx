@@ -5,6 +5,8 @@ import { Box } from "@/design-system/primitives/Box/Box";
 import Text from "@/design-system/primitives/Text/Text";
 import { Divider } from "@/design-system/primitives/Divider/Divider";
 import { TeamMember, TeamMemberProps } from "./components/TeamMember";
+import Image from "@/primitives/Image";
+import { OverlayMedia, Overlay } from "@/design-system/components/MediaOverlay";
 
 export default function EboardPage() {
     const [activeTab, setActiveTab] = useState<"eboard" | "editors">("eboard");
@@ -272,27 +274,42 @@ export default function EboardPage() {
     const currentMembers = activeTab === "eboard" ? eboardMembers : editorMembers;
 
     return (
-        // TODO: Consider adding an image behind this to make the page less white
         <Box className="min-h-screen bg-neutral/10">
-            <Box className="mx-auto max-w-6xl px-6 py-16">
-                <Box className="mb-8">
-                    <Text size={48} style="bold" color="black" className="mb-4">
-                        About NU Sci
-                    </Text>
-                    <Text size={18} color="black" className="max-w-3xl leading-relaxed">
-                        NU Sci is Northeastern's student-run, student-written science magazine. We publish
-                        with the goal of informing our audience of the wonders of human discovery and
-                        progress in the world around us. Our magazine seeks to disseminate the latest
-                        information about science news, whether at the microscopic level or in the deepest
-                        reaches of space, in a simple and universally accessible format, bringing to our
-                        readers clear, high-quality, and well-researched journalism with an open mind and a
-                        sense of humor. We believe that when removed from a bland textbook format, science
-                        can be not only a field to discuss, but also something by which to be continually
-                        astounded and inspired.
-                    </Text>
-                </Box>
+            <OverlayMedia className="w-full relative overflow-hidden">
+                <div className="absolute inset-0">
+                    <Image
+                        raw
+                        src="/icy.png"
+                        alt="Icy pine needles with icicles background"
+                        width="w-full"
+                    />
+                </div>
 
-                <Divider my={8}/>
+                <Overlay background="solid-black" className="relative">
+                    {/* TODO: how to properly make overlay relative? */}
+                    <Box className="mx-auto max-w-6xl px-6 py-16">
+                        <Text size={48} style="bold" color="white" className="mb-4">
+                            About NU Sci
+                        </Text>
+                        <Text color="white" className="text-base tablet:text-base laptop:text-lg max-w-3xl leading-relaxed mb-8">
+                            NU Sci is Northeastern's student-run, student-written science magazine. We publish
+                            with the goal of informing our audience of the wonders of human discovery and
+                            progress in the world around us. Our magazine seeks to disseminate the latest
+                            information about science news, whether at the microscopic level or in the deepest
+                            reaches of space, in a simple and universally accessible format, bringing to our
+                            readers clear, high-quality, and well-researched journalism with an open mind and a
+                            sense of humor. We believe that when removed from a bland textbook format, science
+                            can be not only a field to discuss, but also something by which to be continually
+                            astounded and inspired.
+                        </Text>
+                    </Box>
+                </Overlay>
+            </OverlayMedia>
+
+            <Box className="mx-auto max-w-6xl px-6 py-8">
+                <Text size={36} style="bold" color="black" className="mb-4">
+                    Meet our team
+                </Text>
 
                 <Box className="flex gap-2 mb-8">
                     <button

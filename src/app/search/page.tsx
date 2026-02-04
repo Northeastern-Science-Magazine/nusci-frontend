@@ -364,7 +364,7 @@ export default function ArticleSearchPage() {
           {/* Active Filters */}
           {hasActiveFilters && (
             <div className="mb-6 flex items-start justify-between gap-3">
-              <Box className="mb-6">
+              <Box className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <Text size={14} color="black" className="opacity-70 mr-2">
                     Active filters:
@@ -372,9 +372,9 @@ export default function ArticleSearchPage() {
                   {filterTags.map((tag) => (
                     <Box
                       key={tag.id}
-                      className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm border-2 border-forest-green/30 bg-forest-green/10 text-forest-green hover:bg-forest-green/20 transition-colors"
+                      className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm border-2 border-forest-green/30 bg-forest-green/10 text-forest-green hover:bg-forest-green/20 transition-colors max-w-full min-w-0"
                     >
-                      <span>{tag.label}</span>
+                      <span className="truncate">{tag.label}</span>
                       <button
                         onClick={() => removeFilter(tag.id)}
                         className="hover:bg-forest-green/20 rounded-full p-0.5 transition-colors"
@@ -386,9 +386,9 @@ export default function ArticleSearchPage() {
                   ))}
                 </div>
               </Box>
-              <div className="flex-shrink-0">
+              <div>
               {hasActiveFilters && (
-                  <Box className="flex justify-end">
+                  <Box className="shrink-0" >
                     <Button variant="outline" size="sm" color="forest-green" onClick={onReset} disabled={loading}>
                       Reset filters
                     </Button>

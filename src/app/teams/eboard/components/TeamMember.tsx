@@ -4,6 +4,7 @@ import { Avatar } from "@/primitives/Avatar/Avatar";
 import Text from "@/primitives/Text";
 import { Badge } from "@/primitives/Badge/Badge";
 import Icon from "@/primitives/Icon";
+import Link from "@/primitives/Link";
 
 export interface TeamMemberProps {
     name: string;
@@ -14,11 +15,14 @@ export interface TeamMemberProps {
     major: string;
     email?: string;
     avatarUrl: string;
+    profileSlug: string; // TODO: If actually always the email prefix, can get rid of this field
 }
-// TODO: link each card to user's profile on click
+
 export function TeamMember(props: TeamMemberProps) {
     return (
-        <Box className="bg-white rounded-2xl shadow-md p-6 flex flex-col gap-4">
+        <Link href={`/profile/${props.profileSlug}`} newWindow={false}
+              className="bg-white rounded-2xl shadow-md p-6 flex flex-col gap-4
+              border-2 border-white hover:border-black/20 transition-colors">
             <Box className="flex items-center gap-4">
                 <Avatar
                     src={props.avatarUrl}
@@ -35,7 +39,7 @@ export function TeamMember(props: TeamMemberProps) {
                         <Text style="bold" size={20} color="black">
                             {props.name}
                         </Text>
-                        <Text size={14} color="neutral">
+                        <Text size={14} color="black">
                             ({props.pronouns})
                         </Text>
                     </Box>
@@ -70,7 +74,7 @@ export function TeamMember(props: TeamMemberProps) {
                     </Text>
                 </Box>
             )}
-        </Box>
+        </Link>
     );
 }
 

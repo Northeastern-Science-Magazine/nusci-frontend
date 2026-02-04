@@ -18,6 +18,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Health Science",
             avatarUrl: "/headshots/reshika_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Dessy Dusichka",
@@ -27,6 +28,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Computer Science & Biology",
             avatarUrl: "/headshots/dessy_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Gabrielle Weiner",
@@ -36,6 +38,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Biology",
             avatarUrl: "/headshots/gabrielle_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Lily Garrett",
@@ -45,6 +48,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Biochemistry",
             avatarUrl: "/headshots/lily_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Raisa Bhuiyan",
@@ -54,6 +58,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Computer Science & Math",
             avatarUrl: "/headshots/raisa_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Ethan Szeto",
@@ -63,6 +68,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Computer Science & Math",
             avatarUrl: "/headshots/ethan_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Jasmin Patel",
@@ -72,6 +78,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Behavioral Neuroscience",
             avatarUrl: "/headshots/jasmin_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Vianna Quach",
@@ -81,6 +88,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Pharmaceutical Science",
             avatarUrl: "/headshots/vianna_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Jiajia Fu",
@@ -90,6 +98,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Bioengineering",
             avatarUrl: "/headshots/jiajia_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Tonia Curdas",
@@ -99,6 +108,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Biochemistry",
             avatarUrl: "/headshots/tonia_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Medha Gollamudi",
@@ -108,6 +118,7 @@ export default function EboardPage() {
             graduationYear: 2027,
             major: "Journalism & Economics",
             avatarUrl: "/headshots/medha_headshot.jpg",
+            profileSlug: "/someprofile",
         },
     ];
 
@@ -119,6 +130,7 @@ export default function EboardPage() {
             graduationYear: 2027,
             major: "Behavioral Neuroscience",
             avatarUrl: "/headshots/aditi_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Aoife Jeffries",
@@ -127,6 +139,7 @@ export default function EboardPage() {
             graduationYear: 2027,
             major: "Behavioral Neuroscience & Data Science",
             avatarUrl: "/headshots/aoife_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Sashi Nallapati",
@@ -135,6 +148,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Chemistry",
             avatarUrl: "/headshots/sashi_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Sai Tummala",
@@ -143,6 +157,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Cell & Molecular Biology",
             avatarUrl: "/headshots/sai_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Cecelia Kincaid",
@@ -151,6 +166,7 @@ export default function EboardPage() {
             graduationYear: 2027,
             major: "Speech-Language Pathology & Audiology",
             avatarUrl: "/headshots/cecelia_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Emily Xu",
@@ -159,6 +175,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Behavioral Neuroscience",
             avatarUrl: "/headshots/emily_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Lilly Schar",
@@ -167,6 +184,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "History, Culture, & Law",
             avatarUrl: "/headshots/lillian_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Reshika Sai Devarajan",
@@ -175,6 +193,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Health Science",
             avatarUrl: "/headshots/reshika_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Aanchalika Chauhan",
@@ -183,6 +202,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Behavioral Neuroscience",
             avatarUrl: "/headshots/aanchalika_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Ananya Jain",
@@ -191,6 +211,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Behavioral Neuroscience",
             avatarUrl: "/headshots/ananya_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Caroline Gable",
@@ -199,6 +220,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Health Science & Psychology",
             avatarUrl: "/headshots/caroline_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Divya Ravikumar",
@@ -207,6 +229,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Bioengineering and Biochemistry",
             avatarUrl: "/headshots/divya_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Mackenzie Heidkamp",
@@ -215,6 +238,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Biochemistry",
             avatarUrl: "/headshots/mackenzie_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Maggie Eid",
@@ -223,6 +247,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Environmental & Sustainability Sciences",
             avatarUrl: "/headshots/maggie_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Maya Brinster",
@@ -231,6 +256,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Behavioral Neuroscience",
             avatarUrl: "/headshots/maya_headshot.jpg",
+            profileSlug: "/someprofile",
         },
         {
             name: "Sophie Donner",
@@ -239,6 +265,7 @@ export default function EboardPage() {
             graduationYear: 2025,
             major: "Environmental & Sustainability Sciences",
             avatarUrl: "/headshots/sophia_headshot.jpg",
+            profileSlug: "/someprofile",
         },
     ];
 
@@ -303,6 +330,7 @@ export default function EboardPage() {
                             major={member.major}
                             email={member.email}
                             avatarUrl={member.avatarUrl}
+                            profileSlug={member.profileSlug}
                         />
                     ))}
                 </Box>

@@ -358,8 +358,6 @@ export default function ArticleSearchPage() {
                   </Flex>
                 </Box>
               )}
-
-
             </Box>
           </Box>
 
@@ -456,19 +454,6 @@ export default function ArticleSearchPage() {
                   {/* Pagination */}
                   {searchPerformed && resultsCount && resultsCount > 12 && (
                     <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Previous page"
-                          className="px-4 disabled:opacity-50"
-                          disabled={currentPage === 1}
-                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                        >
-                          ‹ Previous
-                        </Button>
-                      </FlexChild>
                       <FlexChild className="gap-2">
                         <PaginationBar
                           maxItems={Math.ceil(resultsCount / 12)}
@@ -478,36 +463,10 @@ export default function ArticleSearchPage() {
                           onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
                         />
                       </FlexChild>
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Next page"
-                          className="px-4"
-                          disabled={currentPage >= Math.ceil(resultsCount / 12)}
-                          onClick={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
-                        >
-                          Next ›
-                        </Button>
-                      </FlexChild>
                     </Flex>
                   )}
                   {!searchPerformed && mockArticles.length > 12 && (
                     <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Previous page"
-                          className="px-4 disabled:opacity-50"
-                          disabled={currentPage === 1}
-                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                        >
-                          ‹ Previous
-                        </Button>
-                      </FlexChild>
                       <FlexChild className="gap-2">
                         <PaginationBar
                           maxItems={Math.ceil(mockArticles.length / 12)}
@@ -516,19 +475,6 @@ export default function ArticleSearchPage() {
                           onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
                           onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(mockArticles.length / 12), p + 1))}
                         />
-                      </FlexChild>
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Next page"
-                          className="px-4"
-                          disabled={currentPage >= Math.ceil(mockArticles.length / 12)}
-                          onClick={() => setCurrentPage((p) => Math.min(Math.ceil(mockArticles.length / 12), p + 1))}
-                        >
-                          Next ›
-                        </Button>
                       </FlexChild>
                     </Flex>
                   )}

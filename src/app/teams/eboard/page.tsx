@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { Box } from "@/design-system/primitives/Box/Box";
 import Text from "@/design-system/primitives/Text/Text";
-import { Divider } from "@/design-system/primitives/Divider/Divider";
 import { TeamMember, TeamMemberProps } from "./components/TeamMember";
 import Image from "@/primitives/Image";
 import { OverlayMedia, Overlay } from "@/design-system/components/MediaOverlay";

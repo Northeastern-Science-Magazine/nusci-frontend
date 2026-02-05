@@ -17,7 +17,7 @@ import Divider from "@/design-system/primitives/Divider";
 type FilterTag = {
   id: string;
   label: string;
-  type: "contributor" | "issue" | "category" | "date" | "sort";
+  type: "issue" | "category" | "date" | "sort";
 };
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -49,15 +49,12 @@ const DATE_LABEL: Record<string, string> = {
 const SORT_LABEL: Record<string, string> = {
   created_desc: "Most recent",
   created_asc: "Oldest",
-  title_asc: "Title A–Z",
-  title_desc: "Title Z–A",
 };
 
 export default function ArticleSearchPage() {
   const mostRecentIssueNum = 60;
 
   const [title, setTitle] = useState("");
-  const [contributor, setContributor] = useState("");
   const [date, setDate] = useState("any");
   const [sort, setSort] = useState("created_desc");
   const [issueNumber, setIssueNumber] = useState<string>("all");
@@ -80,9 +77,6 @@ export default function ArticleSearchPage() {
   // Build filter tags from current state
   const buildFilterTags = useCallback((): FilterTag[] => {
     const tags: FilterTag[] = [];
-    if (contributor.trim()) {
-      tags.push({ id: "contributor", label: `Contributor: "${contributor.trim()}"`, type: "contributor" });
-    }
     if (issueNumber && issueNumber !== "all") {
       tags.push({ id: "issue", label: `Issue #${issueNumber}`, type: "issue" });
     }
@@ -96,16 +90,13 @@ export default function ArticleSearchPage() {
       tags.push({ id: "sort", label: SORT_LABEL[sort] || sort, type: "sort" });
     }
     return tags;
-  }, [ contributor, issueNumber, category, date, sort]);
+  }, [issueNumber, category, date, sort]);
 
   const [filterTags, setFilterTags] = useState<FilterTag[]>([]);
 
   // Remove a specific filter
   const removeFilter = (tagId: string) => {
     switch (tagId) {
-      case "contributor":
-        setContributor("");
-        break;
       case "issue":
         setIssueNumber("all");
         setKeys((k) => ({ ...k, issueNum: k.issueNum + 1 }));
@@ -150,7 +141,6 @@ export default function ArticleSearchPage() {
 
   const onReset = () => {
     setTitle("");
-    setContributor("");
     setDate("any");
     setSort("created_desc");
     setIssueNumber("all");
@@ -275,22 +265,6 @@ export default function ArticleSearchPage() {
                     <Flex direction="row" wrap="wrap" gap={4}>
                       <FlexChild className="flex-col gap-1 min-w-[200px] flex-1 max-w-[280px]">
                         <Text size={12} color="black" className="opacity-70">
-                          Contributor
-                        </Text>
-                        <TextInput
-                          variant="filled"
-                          size="md"
-                          color="white"
-                          label=""
-                          value={contributor}
-                          onChange={(value) => setContributor(value)}
-                          placeholder="Author, photographer, editor..."
-                          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(e, onSearch)}
-                        />
-                      </FlexChild>
-
-                      <FlexChild className="flex-col gap-1 min-w-[200px] flex-1 max-w-[280px]">
-                        <Text size={12} color="black" className="opacity-70">
                           Category
                         </Text>
                         <DropdownInput placeholder="All categories" key={keys.category} onChange={setCategory}>
@@ -350,8 +324,6 @@ export default function ArticleSearchPage() {
                         <DropdownInput key={keys.sort} placeholder="Most recent" onChange={setSort as any}>
                           <DropdownItem value="created_desc">Most recent</DropdownItem>
                           <DropdownItem value="created_asc">Oldest</DropdownItem>
-                          <DropdownItem value="title_asc">Title A–Z</DropdownItem>
-                          <DropdownItem value="title_desc">Title Z–A</DropdownItem>
                         </DropdownInput>
                       </FlexChild>
                     </Flex>

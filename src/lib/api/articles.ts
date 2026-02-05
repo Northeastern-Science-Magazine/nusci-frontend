@@ -11,12 +11,6 @@ export interface Article {
   slug: string;
 }
 
-export interface Statistics {
-  legacyYears: number;
-  publishedIssues: number;
-  reachArticles: number;
-}
-
 export interface MagazineIssue {
   id: string;
   issueNumber: number;
@@ -24,21 +18,6 @@ export interface MagazineIssue {
   title: string;
   date: string;
 }
-
-export interface CTAData {
-  title: string;
-  description: string;
-  primaryButtonText: string;
-  secondaryButtonText: string;
-  backgroundImageSrc: string;
-  backgroundImageAlt: string;
-}
-
-const FALLBACK_STATS: Statistics = {
-  legacyYears: 17,
-  publishedIssues: 66,
-  reachArticles: 1300,
-};
 
 const FALLBACK_ARTICLES: Article[] = [
   {
@@ -117,7 +96,7 @@ const FALLBACK_RECENT_ARTICLES: Article[] = [
   FALLBACK_ARTICLES[6],
 ];
 
-const FALLBACK_MAGAZINES: MagazineIssue[] = [
+const HARDCODED_MAGAZINES: MagazineIssue[] = [
   {
     id: "issue-60",
     issueNumber: 60,
@@ -160,28 +139,17 @@ const FALLBACK_MAGAZINES: MagazineIssue[] = [
   },
 ];
 
-function buildQueryParams(params: Record<string, any>): string {
-  const queryParams = new URLSearchParams();
-
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      queryParams.append(key, String(value));
-    }
-  });
-
-  const queryString = queryParams.toString();
-  return queryString ? `?${queryString}` : "";
-}
-
 export async function getRecentArticles(limit: number = 6): Promise<Article[]> {
   try {
-    const queryParams = buildQueryParams({ limit });
-    const response = await api<any>("GET", `/articles/search${queryParams}`);
+    const response = await api<any>(
+      "GET",
+      `/articles/search?limit=${limit}&sort=date&order=desc`,
+    );
 
     if (!response.ok) {
       if (process.env.NODE_ENV === "development") {
         console.warn(
-          "Articles endpoint failed, using fallback recent articles",
+          "Articles search endpoint failed, using fallback recent articles",
         );
       }
       return FALLBACK_RECENT_ARTICLES.slice(0, limit);
@@ -200,12 +168,14 @@ export async function getRecentArticles(limit: number = 6): Promise<Article[]> {
 
 export async function getFeaturedArticles(): Promise<Article[]> {
   try {
-    const queryParams = buildQueryParams({ limit: 2, featured: true });
-    const response = await api<any>("GET", `/articles${queryParams}`);
+    const response = await api<any>(
+      "GET",
+      `/articles/search?limit=2&featured=true&sort=date&order=desc`,
+    );
 
     if (!response.ok) {
       console.warn(
-        "Featured articles endpoint failed, using fallback featured articles",
+        "Featured articles search endpoint failed, using fallback featured articles",
       );
       return FALLBACK_FEATURED_ARTICLES;
     }
@@ -221,76 +191,6 @@ export async function getFeaturedArticles(): Promise<Article[]> {
   }
 }
 
-export async function getStatistics(): Promise<Statistics> {
-  try {
-    const response = await api<Statistics>("GET", "/statistics");
-
-    if (!response.ok) return FALLBACK_STATS;
-
-    const data = response.data;
-    if (
-      typeof data?.legacyYears === "number" &&
-      typeof data?.publishedIssues === "number" &&
-      typeof data?.reachArticles === "number"
-    ) {
-      return data;
-    }
-
-    return FALLBACK_STATS;
-  } catch {
-    return FALLBACK_STATS;
-  }
-}
-
 export async function getMagazineIssues(): Promise<MagazineIssue[]> {
-  try {
-    const response = await api<MagazineIssue[]>("GET", "/magazines");
-
-    if (!response.ok || !Array.isArray(response.data)) {
-      console.warn("Magazines endpoint failed, using fallback magazines");
-      return FALLBACK_MAGAZINES;
-    }
-
-    if (response.data.length > 0) {
-      return response.data;
-    }
-
-    return FALLBACK_MAGAZINES;
-  } catch (error) {
-    console.error("Error fetching magazines:", error);
-    return FALLBACK_MAGAZINES;
-  }
-}
-
-export async function getHomepageData() {
-  const [stats, magazines, recentArticles, featuredArticles] =
-    await Promise.allSettled([
-      getStatistics(),
-      getMagazineIssues(),
-      getRecentArticles(6),
-      getFeaturedArticles(),
-    ]);
-
-  return {
-    stats: stats.status === "fulfilled" ? stats.value : FALLBACK_STATS,
-    magazines:
-      magazines.status === "fulfilled" ? magazines.value : FALLBACK_MAGAZINES,
-    recentArticles:
-      recentArticles.status === "fulfilled"
-        ? recentArticles.value
-        : FALLBACK_RECENT_ARTICLES.slice(0, 6),
-    featuredArticles:
-      featuredArticles.status === "fulfilled"
-        ? featuredArticles.value
-        : FALLBACK_FEATURED_ARTICLES,
-    ctaData: {
-      title: "Made by students. Read by everyone.",
-      description:
-        "Want to write, design, photograph, or build with us? NU Sci is a community for curious people.",
-      primaryButtonText: "Learn about NU Sci",
-      secondaryButtonText: "Join the team",
-      backgroundImageSrc: "/icy.png",
-      backgroundImageAlt: "A textured green moss background",
-    },
-  };
+  return HARDCODED_MAGAZINES;
 }

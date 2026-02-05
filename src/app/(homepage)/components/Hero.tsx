@@ -14,6 +14,13 @@ interface HeroProps {
     publishedIssues: number;
     reachArticles: number;
   };
+  content: {
+    subtitle: string;
+    title: string;
+    description: string;
+    primaryButtonText: string;
+    secondaryButtonText: string;
+  };
 }
 
 function useCountUp(target: number, durationMs: number) {
@@ -46,14 +53,13 @@ function useCountUp(target: number, durationMs: number) {
   return value;
 }
 
-export default function Hero({ stats }: HeroProps) {
+export default function Hero({ stats, content }: HeroProps) {
   const legacyYears = useCountUp(stats.legacyYears, 1500);
   const publishedIssues = useCountUp(stats.publishedIssues, 2500);
   const reachArticles = useCountUp(stats.reachArticles, 3500);
 
   return (
     <OverlayMedia className="w-full h-[620px] laptop:h-[700px] overflow-hidden">
-      {/* Fixed-height hero image: height stays consistent regardless of viewport width */}
       <Image raw src="/moss.png" alt="Moss texture background" width="w-full" />
       <Overlay background="solid-black">
         <Box height="full" width="full">
@@ -65,7 +71,7 @@ export default function Hero({ stats }: HeroProps) {
               opacity={90}
               className="uppercase"
             >
-              Northeastern University&apos;s student-run science magazine
+              {content.subtitle}
             </Text>
 
             <Box mt={4}>
@@ -75,7 +81,7 @@ export default function Hero({ stats }: HeroProps) {
                 spacing="sm"
                 className="leading-none max-laptop:text-[72px] max-sm:text-[56px]"
               >
-                NU Sci
+                {content.title}
               </Text>
               <Text
                 size={30}
@@ -83,14 +89,13 @@ export default function Hero({ stats }: HeroProps) {
                 opacity={95}
                 className="mt-4 max-w-2xl font-light max-sm:text-[20px]"
               >
-                Science communication for the community. Written, designed,
-                photographed, and developed by students.
+                {content.description}
               </Text>
             </Box>
 
             <Box mt={10} className="flex flex-wrap gap-3">
               <Button className="inline-flex" color="aqua" size="lg">
-                Browse articles
+                {content.primaryButtonText}
               </Button>
               <Button
                 className="inline-flex"
@@ -98,7 +103,7 @@ export default function Hero({ stats }: HeroProps) {
                 color="white"
                 size="lg"
               >
-                Learn more
+                {content.secondaryButtonText}
               </Button>
             </Box>
 

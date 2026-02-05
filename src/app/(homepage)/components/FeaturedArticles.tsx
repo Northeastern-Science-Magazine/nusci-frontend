@@ -25,11 +25,16 @@ interface Article {
 interface FeaturedArticlesProps {
   featuredArticles: Article[];
   recentArticles: Article[];
+  content: {
+    title: string;
+    viewAllText: string;
+  };
 }
 
 export default function FeaturedArticles({
   featuredArticles,
   recentArticles,
+  content,
 }: FeaturedArticlesProps) {
   const mainArticle1 = featuredArticles[0];
   const mainArticle2 = featuredArticles[1];
@@ -42,14 +47,14 @@ export default function FeaturedArticles({
         <Box className="relative px-4 laptop:px-16 py-16">
           <Box className="flex flex-col items-start justify-between gap-4 laptop:flex-row laptop:items-end">
             <Text size={48} className="mt-2 tracking-tight laptop:text-[56px]">
-              Recent Articles
+              {content.title}
             </Text>
 
             <Link
               href="/articles"
               className="group inline-flex items-center gap-2 border-b-2 border-black/20 pb-1 text-[14px] font-medium text-black/80 transition-all hover:border-black/40 hover:text-black"
             >
-              View all articles
+              {content.viewAllText}
               <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Box>

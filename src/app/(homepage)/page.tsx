@@ -3,44 +3,70 @@
 import Hero from "./components/Hero";
 import PrintMagazines from "./components/PrintMagazines";
 import FeaturedArticles from "./components/FeaturedArticles";
-import { getUserRoles } from "@/lib/helpers/auth";
 import CTA from "./components/CTA";
 import {
-  getStatistics,
   getMagazineIssues,
   getRecentArticles,
   getFeaturedArticles,
 } from "@/lib/api/articles";
 
-export default async function Homepage() {
-  const roles = getUserRoles();
-  console.log(roles);
+const HARDCODED_STATS = {
+  legacyYears: 17,
+  publishedIssues: 66,
+  reachArticles: 1300,
+};
 
+const HOMEPAGE_CONTENT = {
+  hero: {
+    subtitle: "Northeastern University's student-run science magazine",
+    title: "NU Sci",
+    description:
+      "Science communication for the community. Written, designed, photographed, and developed by students.",
+    primaryButtonText: "Browse articles",
+    secondaryButtonText: "Learn more",
+  },
+  magazines: {
+    title: "Our Magazines",
+    description:
+      "Look through our print archive - click a cover to bring it front and center.",
+    archiveButtonText: "View the archive",
+  },
+  featuredArticles: {
+    title: "Recent Articles",
+    viewAllText: "View all articles",
+  },
+  cta: {
+    title: "Made by students. Read by everyone.",
+    description:
+      "Want to write, design, photograph, or build with us? NU Sci is a community for curious people.",
+    primaryButtonText: "Learn about NU Sci",
+    secondaryButtonText: "Join the team",
+    backgroundImageSrc: "/icy.png",
+    backgroundImageAlt: "A textured green moss background",
+  },
+};
+
+export default async function Homepage() {
   try {
-    const [stats, magazines, recentArticles, featuredArticles] =
-      await Promise.all([
-        getStatistics(),
-        getMagazineIssues(),
-        getRecentArticles(),
-        getFeaturedArticles(),
-      ]);
+    const [magazines, recentArticles, featuredArticles] = await Promise.all([
+      getMagazineIssues(),
+      getRecentArticles(),
+      getFeaturedArticles(),
+    ]);
 
     return (
       <main>
-        <Hero stats={stats} />
-        <PrintMagazines magazines={magazines} />
+        <Hero stats={HARDCODED_STATS} content={HOMEPAGE_CONTENT.hero} />
+        <PrintMagazines
+          magazines={magazines}
+          content={HOMEPAGE_CONTENT.magazines}
+        />
         <FeaturedArticles
           featuredArticles={featuredArticles}
           recentArticles={recentArticles}
+          content={HOMEPAGE_CONTENT.featuredArticles}
         />
-        <CTA
-          title="Made by students. Read by everyone."
-          description="Want to write, design, photograph, or build with us? NU Sci is a community for curious people."
-          primaryButtonText="Learn about NU Sci"
-          secondaryButtonText="Join the team"
-          backgroundImageSrc="/icy.png"
-          backgroundImageAlt="A textured green moss background"
-        />
+        <CTA {...HOMEPAGE_CONTENT.cta} />
       </main>
     );
   } catch (error) {
@@ -48,19 +74,14 @@ export default async function Homepage() {
 
     return (
       <main>
-        <Hero
-          stats={{ legacyYears: 17, publishedIssues: 66, reachArticles: 1300 }}
+        <Hero stats={HARDCODED_STATS} content={HOMEPAGE_CONTENT.hero} />
+        <PrintMagazines magazines={[]} content={HOMEPAGE_CONTENT.magazines} />
+        <FeaturedArticles
+          featuredArticles={[]}
+          recentArticles={[]}
+          content={HOMEPAGE_CONTENT.featuredArticles}
         />
-        <PrintMagazines magazines={[]} />
-        <FeaturedArticles featuredArticles={[]} recentArticles={[]} />
-        <CTA
-          title="Made by students. Read by everyone."
-          description="Want to write, design, photograph, or build with us? NU Sci is a community for curious people."
-          primaryButtonText="Learn about NU Sci"
-          secondaryButtonText="Join the team"
-          backgroundImageSrc="/icy.png"
-          backgroundImageAlt="A textured green moss background"
-        />
+        <CTA {...HOMEPAGE_CONTENT.cta} />
       </main>
     );
   }

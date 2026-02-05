@@ -29,15 +29,15 @@ export default function NotFound() {
       <div className="max-w-2xl w-full text-center">
         {/* 404 Number */}
         <div className="mb-8">
-          <h1 className="text-9xl font-bold bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
-            404
+          <h1 className="text-1xl font-bold bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
+          The page you're looking for doesn't exist or has been moved.
           </h1>
         </div>
 
         {/* Main Message */}
         <div className="mb-8">
           <p className="text-gray-500">
-            The page you're looking for doesn't exist or has been moved.
+            404 Error
           </p>
         </div>
 

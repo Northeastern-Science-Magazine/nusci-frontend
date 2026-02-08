@@ -14,6 +14,7 @@ import { SourcesInput } from "./components/SourcesInput";
 import { Controller } from "react-hook-form";
 import ImageUpload from "@/design-system/components/ImageUpload";
 import ArticleInput from "./components/ArticleInput";
+import { Categories } from "@/lib/types/types";
 
 /* IDEAS: 
     - Author selection: would be cool to have a dropdown that updates as you type system
@@ -130,19 +131,7 @@ const FormContent = () => {
                   <label>{"Categories"}</label>
                   <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
                     <Checkbox
-                      options={[
-                        "Biology",
-                        "Chemistry",
-                        "Environment",
-                        "Health",
-                        "Newsletter",
-                        "Opinion",
-                        "Physics",
-                        "Psychology",
-                        "Space",
-                        "Technology",
-                        "World",
-                      ]}
+                      options= {Object.values(Categories)}
                       value={field.value || []}
                       onChange={field.onChange}
                     />

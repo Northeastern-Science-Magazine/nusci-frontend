@@ -51,6 +51,27 @@ export enum Roles {
   Admin = "admin",
 }
 
+export enum Categories {
+  Biology = "Biology",
+  Chemistry = "Chemistry",
+  Culture = "Culture",
+  Environment = "Environment",
+  Health = "Health",
+  Local = "Local",
+  Mathematics = "Mathematics",
+  Neuroscience = "Neuroscience",
+  NewsLetter = "Newsletter",
+  Opinion = "Opinion",
+  Philosophy = "Philosophy",
+  Physics = "Physics",
+  Politics = "Politics",
+  Psychology = "Psychology",
+  Space = "Space",
+  Technology = "Technology",
+  World = "World",
+  Uncategorized = "Uncategorized",
+}
+
 export type ArticleContent = {
   contentType: ArticleContentType;
   content: string;

@@ -13,14 +13,13 @@ export interface TeamMemberProps {
     bio: string;
     graduationYear: number;
     major: string;
-    email?: string;
+    email: string;
     avatarUrl: string;
-    profileSlug: string; // TODO: If actually always the email prefix, can get rid of this field
 }
 
 export function TeamMember(props: TeamMemberProps) {
     return (
-        <Link href={`/profile/${props.profileSlug}`} newWindow={false}
+        <Link href={`/profile/${props.email.split("@")[0]}`} newWindow={false}
               className="bg-white rounded-2xl shadow-md p-6 flex flex-col gap-4
               border-2 border-white hover:border-black/20 transition-colors">
             <Box className="flex items-center gap-4">

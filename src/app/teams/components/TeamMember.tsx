@@ -20,7 +20,7 @@ export interface TeamMemberProps {
 export function TeamMember(props: TeamMemberProps) {
     return (
         <Link href={`/profile/${props.email.split("@")[0]}`} newWindow={false}
-              className="bg-white rounded-2xl shadow-md p-6 flex flex-col gap-4
+              className="bg-white rounded-2xl shadow-md p-6 flex flex-col gap-4 h-full
               border-2 border-white hover:border-black/20 transition-colors">
             <Box className="flex items-center gap-4">
                 <Avatar
@@ -65,10 +65,15 @@ export function TeamMember(props: TeamMemberProps) {
                 </Text>
             )}
 
+            <Box className="mt-auto">
+                {/* Spacer to make the email stick to the bottom of the box */}
+                <></>
+            </Box>
+
             {props.email && (
-                <Box className="flex items-center gap-2 pt-2 border-t border-neutral/20">
-                    <Icon icon="email" size="sm" color="neutral" />
-                    <Text size={12} color="neutral">
+                <Box className="flex items-center gap-2 pt-2 border-t border-black/20">
+                    <Icon icon="email" size="sm" color="black" />
+                    <Text size={12} color="black">
                         {props.email}
                     </Text>
                 </Box>

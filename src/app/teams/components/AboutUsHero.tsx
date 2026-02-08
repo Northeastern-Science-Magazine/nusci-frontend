@@ -23,7 +23,7 @@ export function AboutUsHero() {
                         About NU Sci
                     </Text>
                     <Text color="white" className="text-base tablet:text-base laptop:text-lg max-w-3xl leading-relaxed mb-8">
-                        NU Sci is Northeastern's student-run, student-written science magazine. We publish
+                        NU Sci is Northeastern&#39;s student-run, student-written science magazine. We publish
                         with the goal of informing our audience of the wonders of human discovery and
                         progress in the world around us. Our magazine seeks to disseminate the latest
                         information about science news, whether at the microscopic level or in the deepest

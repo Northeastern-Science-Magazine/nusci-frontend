@@ -4,272 +4,192 @@ import React, { useState } from "react";
 import { Box } from "@/design-system/primitives/Box/Box";
 import Text from "@/design-system/primitives/Text/Text";
 import { TeamMember, TeamMemberProps } from "@/app/teams/components/TeamMember";
-import {AboutUsHero} from "@/app/teams/components/AboutUsHero";
+import { AboutUsHero } from "@/app/teams/components/AboutUsHero";
+import Button from "@/design-system/primitives/Button";
 
 export default function EboardPage() {
     const [activeTab, setActiveTab] = useState<"eboard" | "editors">("eboard");
 
-    const eboardMembers: TeamMemberProps[] = [
-        {
-            name: "Reshika Sai Devarajan",
-            pronouns: "She/Her",
-            role: "President",
-            bio: "Reshika Sai is a fourth-year health science major with a passion for science and a penchant for writing. NU Sci offered the perfect fusion of her interests, bridging the gap between her academic pursuits and creative expression. She has been an active member of the magazine since her first year and is now thrilled to serve as the magazine's president.",
-            graduationYear: 2025,
-            major: "Health Science",
-            avatarUrl: "/headshots/reshika_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Dessy Dusichka",
-            pronouns: "She/Her",
-            role: "Editor-in-Chief",
-            bio: "Dessy is a fourth year studying computer science and biology. She joined NU Sci during her first year at Northeastern and loves having a creative outlet to learn about intriguing areas of science. She enjoys reading and writing about technology, medicine, and the environment (especially quirky animals).",
-            graduationYear: 2025,
-            major: "Computer Science & Biology",
-            avatarUrl: "/headshots/dessy_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
+    const eboard: TeamMemberProps[] = [
         {
             name: "Gabrielle Weiner",
-            pronouns: "She/Her",
-            role: "Treasurer",
-            bio: "Gabrielle is a third year biology student who recently declared a pre-PA path, but loves anything related to the life sciences. She is joining E-board after a year of writing for NU Sci about molecular biology, evolution, and ecology.",
+            pronouns: "she/her",
+            role: "President",
+            bio: "Gabrielle is a fourth-year biology student on the pre-PA track. She's been with NU Sci since her second semester at Northeastern, starting as a writer and working her way up to president! Gabrielle loves NU Sci for the way that it allows her to combine her background in science with her passion for literature and creativity. Aside from studying anatomy (her favorite subject!) and working as a nursing assistant, she enjoys watercolor painting, pilates, and snuggling with her pet cat, Heidi.",
             graduationYear: 2026,
             major: "Biology",
+            email: "jdoe@example.com",
             avatarUrl: "/headshots/gabrielle_headshot.jpg",
-            profileSlug: "/someprofile",
         },
         {
-            name: "Lily Garrett",
-            pronouns: "She/Her",
-            role: "Head of Communications",
-            bio: "Lily is from the beautiful Pacific Northwest and spent most of her life on a lake right outside Portland, Oregon. She loves to wake surf, ski, run, cook, and paint. She is also passionate about science and medicine, and hopes to be a physician one day.",
-            graduationYear: 2025,
-            major: "Biochemistry",
-            avatarUrl: "/headshots/lily_headshot.jpg",
-            profileSlug: "/someprofile",
+            name: "Sasha Volkova",
+            pronouns: "she/her",
+            role: "Treasurer",
+            bio: "Sasha is a fourth-year student studying Behavioral Neuroscience and Biochemistry, with a strong interest in the brain–body connection. She recently joined NU Sci's E-board as Treasurer after two years of writing, covering topics in health science, biology, and neuroscience. Outside of NUSci, Sasha is also a member of Noreste Ballet Co. and the Women's Research Engagement Network (WREN). In her free time, she enjoys creating (and supporting) art, practicing yoga, and spending time outdoors.",
+            graduationYear: 2026,
+            major: "Behavioral Neuroscience",
+            email: "jdoe@example.com",
+            avatarUrl: "/headshots/sasha_headshot.jpg",
         },
         {
-            name: "Raisa Bhuiyan",
-            pronouns: "She/Her",
+            name: "Arushi Aggarwal",
+            pronouns: "she/her",
             role: "Co-Head of Web & Software",
-            bio: "Raisa is a fourth-year Computer Science and Math major who has always been interested in technology and science. Raisa loves being a member of NU Sci because she can learn about various scientific disciplines while working on the website.",
-            graduationYear: 2025,
-            major: "Computer Science & Math",
-            avatarUrl: "/headshots/raisa_headshot.jpg",
-            profileSlug: "/someprofile",
+            bio: "",
+            graduationYear: 2027,
+            major: "Computer Science (Robotics minor)",
+            email: "jdoe@example.com",
+            avatarUrl: "/headshots/arushi_headshot.jpg",
         },
         {
             name: "Ethan Szeto",
-            pronouns: "He/Him",
+            pronouns: "he/him",
             role: "Co-Head of Web & Software",
             bio: "Ethan is a third year computer science and mathematics major from New Jersey. He first found his passion for computer science designing his own websites and games online. He now promotes education by teaching mathematics and computer science in hopes of inspiring others to change the world.",
             graduationYear: 2026,
             major: "Computer Science & Math",
+            email: "jdoe@example.com",
             avatarUrl: "/headshots/ethan_headshot.jpg",
-            profileSlug: "/someprofile",
         },
+
         {
-            name: "Jasmin Patel",
-            pronouns: "She/Her",
-            role: "Co-Head of Design",
-            bio: "Jasmin explores graphic design as a tool for vibrant, bold, and truthful visual communication. Coming from a background in behavioral neuroscience studies, Jasmin is highly interested in design from a human perception and experience perspective.",
-            graduationYear: 2025,
-            major: "Behavioral Neuroscience",
-            avatarUrl: "/headshots/jasmin_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Vianna Quach",
-            pronouns: "She/Her",
-            role: "Co-Head of Design",
-            bio: "Vianna is a fourth year Pharmaceutical Sciences major from Portland, Oregon. She joined NU Sci in her first year as both a writer and designer. Vianna is an art enthusiast who wanted to explore the potential for the visual arts to intersect with science.",
-            graduationYear: 2025,
-            major: "Pharmaceutical Science",
-            avatarUrl: "/headshots/vianna_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Jiajia Fu",
-            pronouns: "She/Her",
+            name: "JiaJia Fu",
+            pronouns: "she/her",
             role: "Head of Photography",
-            bio: "Jiajia is a third year bioengineering major from NJ. She joined NU Sci in the fall of 2022 and has been an active writer and photographer since. Her passions lie in applying computational-bioengineering tools to ecological problems.",
+            bio: "JiaJia is a 4th year bioengineering major from NJ. She joined NU Sci in the fall of 2022 and has been an active writer and Head of Photography since. Her passions lie in applying computational-bioengineering tools and protein design to ecological problems. In her free time, JiaJia goes on compulsive nature hikes, city wandering adventures, reading and watching Star Trek.",
             graduationYear: 2026,
             major: "Bioengineering",
+            email: "jdoe@example.com",
             avatarUrl: "/headshots/jiajia_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Tonia Curdas",
-            pronouns: "She/Her",
-            role: "Social Media Manager",
-            bio: "Tonia is a fourth year biochemistry major. She developed an interest in science writing in high school and has been a member of NU Sci since her freshman year. In her free time, she enjoys reading fantasy and literary fiction, crocheting, and listening to her many many Spotify playlists.",
-            graduationYear: 2025,
-            major: "Biochemistry",
-            avatarUrl: "/headshots/tonia_headshot.jpg",
-            profileSlug: "/someprofile",
         },
         {
             name: "Medha Gollamudi",
-            pronouns: "She/Her",
-            role: "Head of Outreach",
-            bio: "Medha Gollamudi is a sophomore at Northeastern. She's majoring in Journalism and Economics with a minor in Data Science. She loves cooking, spending time with her family and friends, and traveling!",
+            pronouns: "she/her",
+            role: "Head of Marketing & Outreach",
+            bio: "Being a part of NU Sci since my freshman year has been such a rewarding experience, especially being a part of such an amazing team of students. Through my role within the magazine, I have loved working on collaborative student STEM events, creative campus-wide marketing, and multimedia storytelling, specifically within the science field. Outside of school, I love hanging out with friends, and learning to cook new recipes!",
             graduationYear: 2027,
-            major: "Journalism & Economics",
+            major: "Economics + Journalism (Data Science minor)",
+            email: "jdoe@example.com",
             avatarUrl: "/headshots/medha_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-    ];
-
-    const editorMembers: TeamMemberProps[] = [
-        {
-            name: "Aditi Swamy",
-            pronouns: "She/Her",
-            bio: "Aditi is a second-year behavioral neuroscience major with a minor in Spanish. She has been a member of NU Sci since her first semester at Northeastern, and has since fallen in love with science communication. She enjoys writing articles about medicine, health, neuroscience, and biology.",
-            graduationYear: 2027,
-            major: "Behavioral Neuroscience",
-            avatarUrl: "/headshots/aditi_headshot.jpg",
-            profileSlug: "/someprofile",
         },
         {
             name: "Aoife Jeffries",
-            pronouns: "She/Her",
-            bio: "Aoife is a second-year behavioral neuroscience and data science major. She is minoring in journalism, so she loves the combination of writing and science that NU Sci provides. In her free time, she enjoys playing soccer, listening to music, and spending time outdoors.",
-            graduationYear: 2027,
-            major: "Behavioral Neuroscience & Data Science",
+            pronouns: "she/her",
+            role: "Editor-in-Chief",
+            bio: "Aoife is a third-year in the PharmD program with minors in neuroscience and journalism. Passionate about science communication, she has been writing and editing for NU Sci since her first year at Northeastern. In her free time, Aoife enjoys playing guitar, running, traveling, playing soccer, and spending time with friends.",
+            graduationYear: 2029,
+            major: "Pharmacy",
+            email: "jdoe@example.com",
             avatarUrl: "/headshots/aoife_headshot.jpg",
-            profileSlug: "/someprofile",
         },
         {
-            name: "Sashi Nallapati",
-            pronouns: "She/Her",
-            bio: "Sashi is a third-year Chemistry student and began writing for NU Sci at the start of her second year at Northeastern. Having never considered herself a writer, NU Sci helped to cultivate her writing skills and provided an outlet for amplifying scientific curiosity. She hopes to extend the same service to other writers as well. Sashi likes to read about all scientific fields but is partial to the fields of chemistry, physics, environmental science, and math.",
-            graduationYear: 2026,
-            major: "Chemistry",
-            avatarUrl: "/headshots/sashi_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Sai Tummala",
-            pronouns: "She/Her",
-            bio: "Sai has been a member on NU Sci since her first semester. She is a pre-medical student and is passionate about medicine, health equity, and the environment. She loves being able to express her scientific interests through writing. In her free time, she loves trying new food, wandering around Boston, and trying to keep her houseplants alive!",
-            graduationYear: 2026,
-            major: "Cell & Molecular Biology",
-            avatarUrl: "/headshots/sai_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Cecelia Kincaid",
-            pronouns: "She/Her",
-            bio: "Cecelia is a second-year student and has been with NU Sci since her first semester at Northeastern. NU Sci is a great way to combine her interests in writing and science, and she loves having the opportunity to publish what she's passionate about. In her free time, Cecelia enjoys playing piano, reading, and traveling.",
+            name: "Aditi Swamy",
+            pronouns: "she/her",
+            role: "Head of Communications",
+            bio: "Aditi is a 3rd Behavioral Neuroscience Major and Spanish minor. She has been a member of NU Sci since her first semester at Northeastern, and has been a writer, editor, and is now on the E-Board. Aditi's passionate about research and has loved getting to share her interests with the Northeastern community as a part of this club. In her free time, she enjoys running, reading, and crocheting.",
             graduationYear: 2027,
-            major: "Speech-Language Pathology & Audiology",
-            avatarUrl: "/headshots/cecelia_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Emily Xu",
-            pronouns: "She/Her",
-            bio: "Emily has been a member of NU Sci since the beginning of her sophomore year. She is passionate about everything biology, neuroscience, and healthcare. NU Sci is a space for Emily to explore the topics she is passionate about and collaborate with her like-minded science writing enthusiasts. Post-college, she plans on continuing her education by studying dentistry. In her free time, Emily loves reading, eating, and creating art, especially working with textiles.",
-            graduationYear: 2026,
             major: "Behavioral Neuroscience",
-            avatarUrl: "/headshots/emily_headshot.jpg",
-            profileSlug: "/someprofile",
+            email: "jdoe@example.com",
+            avatarUrl: "/headshots/aditi_headshot.jpg",
         },
         {
-            name: "Lilly Schar",
-            pronouns: "She/Her",
-            bio: "Lilly is a fourth year History, Culture, & Law major with a minor in Biology. She has been writing for NU Sci since her first semester at Northeastern and editing since her second. She enjoys the interdisciplinary topics she explores and keeping her curiosity piqued by reading other student articles.",
-            graduationYear: 2025,
-            major: "History, Culture, & Law",
-            avatarUrl: "/headshots/lillian_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Reshika Sai Devarajan",
-            pronouns: "She/Her",
-            bio: "Reshika Sai is a fourth-year health science major with a passion for science and a penchant for writing. NU Sci offered the perfect fusion of her interests, bridging the gap between her academic pursuits and creative expression. She has been an active member of the magazine since her first year and is now thrilled to serve as the magazine's president. When she's not delving into the mysteries of the human body within the pages of her textbooks, you can often find her engrossed in reading, writing, or experimenting in the kitchen. Reshika Sai is enthusiastic about her continued journey with NU Sci and is eager to foster a strong sense of community within the magazine this academic year. Her goal is for the NU Sci team to create interdisciplinary publications that inspire curiosity and ignite intellectual discussions.",
-            graduationYear: 2025,
-            major: "Health Science",
-            avatarUrl: "/headshots/reshika_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Aanchalika Chauhan",
-            pronouns: "She/Her",
-            bio: "Aanchalika is a fourth year behavioral neuroscience major with a minor in women's gender and sexuality studies. She has been a NU Sci member since her first year at Northeastern. She enjoys the flexibility of her major and is interested in the intersection between neurology and women's health. In her free time, you can find her crocheting, trying Pinterest recipes, or exploring Boston for new cafes.",
-            graduationYear: 2025,
-            major: "Behavioral Neuroscience",
-            avatarUrl: "/headshots/aanchalika_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Ananya Jain",
-            pronouns: "She/Her",
-            bio: "Ananya has been a member of NU Sci since her first year at Northeastern, and she cherishes the club for making a space for her to write, edit, and design. She's passionate about topics concerning neuroscience, medicine, health, astronomy, and discussions of ethics in science. She hopes to become a physician and continue to share her excitement for science and art with the world. In her free time she loves to watch Bollywood movies and crochet.",
-            graduationYear: 2025,
-            major: "Behavioral Neuroscience",
-            avatarUrl: "/headshots/ananya_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Caroline Gable",
-            pronouns: "She/Her",
-            bio: "Caroline is a third-year Health Science and Psychology combined major with a minor in Spanish. She has been a part of NU Sci since her first semester at Northeastern, as she has always thoroughly enjoyed writing since second grade. Caroline is passionate about the brain, health equity and education, cultural intelligence, and bumblebees! In her free time, she loves to learn languages, read, hike, and eat sushi.",
+            name: "Giulia Walker",
+            pronouns: "she/her",
+            role: "Co-Head of Design",
+            bio: "Giulia Walker is a fourth year studying design. She joined NU Sci during her second year to gain better understanding of editorial design. She completed her first coop working at The Boston Globe last spring designing for the Globe Magazine and for the daily paper. NU Sci combines a range of her interests including sustainability and the environment with creative fabrication. In her free time she loves to run and do yoga.",
             graduationYear: 2026,
-            major: "Health Science & Psychology",
-            avatarUrl: "/headshots/caroline_headshot.jpg",
-            profileSlug: "/someprofile",
+            major: "Design",
+            email: "jdoe@example.com",
+            avatarUrl: "/headshots/giulia_headshot.jpg",
         },
         {
-            name: "Divya Ravikumar",
-            pronouns: "She/Her",
-            bio: "Divya has been a member of NU Sci since the beginning of her first year at Northeastern. She loves being able to explore different topics through NU Sci, especially related to astronomy and psychology. Her free time is filled with reading, watching TV shows, and cooking.",
-            graduationYear: 2025,
-            major: "Bioengineering and Biochemistry",
-            avatarUrl: "/headshots/divya_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Mackenzie Heidkamp",
-            pronouns: "She/Her",
-            bio: "Mackenzie has been involved in NU Sci since her first semester. She loves that she can combine her passions for both writing and science. She is a pre-medical student and is really interested in any topic relating to health, biology, chemistry, and psychology.",
-            graduationYear: 2026,
-            major: "Biochemistry",
-            avatarUrl: "/headshots/mackenzie_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Maggie Eid",
-            pronouns: "She/Her",
-            bio: "Maggie is a fourth year environmental and sustainability sciences student with a minor in biology. She enjoys the interdisciplinary nature of her major, especially the intersections of science and social justice. She is passionate about building a sustainable future for our planet through community-based initiatives. In her free time, she loves to spend time outdoors, particularly walking and hiking.",
-            graduationYear: 2025,
-            major: "Environmental & Sustainability Sciences",
-            avatarUrl: "/headshots/maggie_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Maya Brinster",
-            pronouns: "She/Her",
-            bio: "Maya Brinster is a third-year behavioral neuroscience major with a minor in music. She began writing for NU Sci at the start of her first year and became an editor at the beginning of 2023. NU Sci is the perfect way for Maya to combine her passions for writing and reading about current events in practically any scientific field, especially those related to medicine and biology. In her free time, she loves to play piano and explore new places and restaurants in Boston with her friends.",
-            graduationYear: 2026,
-            major: "Behavioral Neuroscience",
-            avatarUrl: "/headshots/maya_headshot.jpg",
-            profileSlug: "/someprofile",
-        },
-        {
-            name: "Sophie Donner",
-            pronouns: "She/Her",
-            bio: "Sophie is a fourth-year environmental and sustainability sciences student. She is grateful that NU Sci provides the opportunity to communicate the environmental issues and research she is most passionate about. Outside of her studies she enjoys silversmithing, hiking, and walking on the beach.",
-            graduationYear: 2025,
-            major: "Environmental & Sustainability Sciences",
-            avatarUrl: "/headshots/sophia_headshot.jpg",
-            profileSlug: "/someprofile",
+            name: "Anjana Balakrishnan",
+            pronouns: "she/her",
+            role: "Co-Head of Design",
+            bio: "Anjana is a fourth year studio art major with a passion for painting and graphic design. Her paintings focus on themes of family and tradition, and she frequently brings illustration into her graphic designs. In her free time, she loves reading, playing word games, and exploring the city.",
+            graduationYear: 2027,
+            major: "Studio Art",
+            email: "jdoe@example.com",
+            avatarUrl: "/headshots/anjana_headshot.jpg",
         },
     ];
 
-    const currentMembers = activeTab === "eboard" ? eboardMembers : editorMembers;
+    const editors: TeamMemberProps[] = [
+        {
+            name: "Caroline Gable",
+            pronouns: "she/her",
+            bio: "Caroline is a fourth-year Health Science and Psychology combined major with a minor in Spanish. She has been a part of NU Sci since her first semester at Northeastern, as she has always thoroughly enjoyed writing since second grade. Caroline is passionate about the brain, health equity and education, and protecting and exploring nature. In her free time, she loves to read in the Common, hike throughout New England, and play basketball with friends!",
+            graduationYear: 2026,
+            major: "Health Science & Psychology",
+            email: "jdoe@example.com",
+            avatarUrl: "https://drive.google.com/open?id=1DIJxeXRQXMFn1fjYOZkX53D-j4hZFyGh",
+        },
+        {
+            name: "Mackenzie Heidkamp",
+            pronouns: "she/her",
+            bio: "Mackenzie's involvement with NU Sci began the fall semester of her freshman year as a writer, and she is now in her third year as an editor. She loves combining her interests in writing and science! While as a pre-med student, health topics specifically interest her, she loves being able to read articles outside of her usual focus.",
+            graduationYear: 2026,
+            major: "Biochemistry",
+            email: "jdoe@example.com",
+            avatarUrl: "https://drive.google.com/open?id=1NJiWxPGVbS_kr0gTanbYFGqwv995dYr5",
+        },
+        {
+            name: "Ananya Arvind",
+            pronouns: "she/her",
+            bio: "Ananya has been a member of NU SCI since her first year at Northeastern. NU SCI allows her to research interdisciplinary topics she's passionate about, while also helping other writers cultivate their skills. In her free time, Ananya loves to sing, read books, and travel.",
+            graduationYear: 2027,
+            major: "Linguistics and Speech-Language Pathology and Audiology",
+            email: "jdoe@example.com",
+            avatarUrl: "https://drive.google.com/open?id=10oNeTWUhJ0fwPh8jz8xOrR3kH2dWTQtz",
+        },
+        {
+            name: "Cecelia Kincaid",
+            pronouns: "she/her",
+            bio: "Cecelia is a third-year SLP student and has been with NU Sci since her first semester at Northeastern. She loves getting the chance to combine her passions for science and writing, and is interested in all things biology, neuroscience, and healthcare. In her free time, she's usually reading, watching a TV show, or playing piano.",
+            graduationYear: 2027,
+            major: "Speech-Language Pathology & Audiology",
+            email: "jdoe@example.com",
+            avatarUrl: "https://drive.google.com/open?id=1-oCw1A2oMoRfP1u_RaOMaNAm53aV8G_k",
+        },
+        {
+            name: "Emily Xu",
+            pronouns: "she/her",
+            bio: "Emily has been a member of NU Sci since the start of her sophomore year. She is passionate about everything biology, psychology, and health medicine. NU Sci is a space for Emily to explore the topics she is passionate about and collaborate with her like-minded science writing enthusiasts. Post-college, she plans on continuing her education by studying dentistry. In her free time, Emily loves reading, eating, and creating art.",
+            graduationYear: 2026,
+            major: "Behavioral Neuroscience",
+            email: "jdoe@example.com",
+            avatarUrl: "https://drive.google.com/open?id=10FmiECDItmYaa9R_FVYfTRLTnqytq_2Y",
+        },
+        {
+            name: "Sashi Nallapati",
+            pronouns: "she/her",
+            bio: "Sashi is a fourth-year Chemistry student and began writing for NU Sci at the start of her second year at Northeastern. She loves reading everyone's articles and hopes to encourage scientific curiosity and communication. Outside of school, you can find her at a cafe, reading, watching a movie, or crafting.",
+            graduationYear: 2026,
+            major: "Chemistry",
+            email: "jdoe@example.com",
+            avatarUrl: "https://drive.google.com/open?id=1v8AFxrIjl72Acfs54SJUsgVvrCpNFQHT",
+        },
+        {
+            name: "Danielle Jeong",
+            pronouns: "she/her",
+            bio: "Danielle is a second year chemical engineering major. She loves writing about the intersection of science and culture. Her hobbies include listening to music, playing volleyball, and traveling.",
+            graduationYear: 2028,
+            major: "Chemical Engineering",
+            email: "jdoe@example.com",
+            avatarUrl: "https://drive.google.com/open?id=15bcERE42y-BZzREYBL5AGS3WQVy4WKzR",
+        },
+        {
+            name: "Saumya Sawant",
+            pronouns: "she/her",
+            bio: "Saumya is a second-year student majoring in Biochemistry and minoring in International Affairs. As a passionate writer with an interest in science communication and journalism, she joined NU Sci during her first semester at Northeastern in hopes of continuing to make science accessible to a wider audience. In her free time, she enjoys reading, creative writing, journaling, going on long walks, and listening to music.",
+            graduationYear: 2028,
+            major: "Biochemistry",
+            email: "jdoe@example.com",
+            avatarUrl: "https://drive.google.com/open?id=1acFUmysV3Y2KsuSIhvkyj9z65WkuB3mP",
+        },
+    ];
+
+    const currentMembers = activeTab === "eboard" ? eboard : editors;
 
     return (
         <Box className="min-h-screen bg-neutral/10">
@@ -281,26 +201,20 @@ export default function EboardPage() {
                 </Text>
 
                 <Box className="flex gap-2 mb-8">
-                    <button
+                    <Button
                         onClick={() => setActiveTab("eboard")}
-                        className={`px-6 py-3 rounded-full text-base font-medium transition-colors ${
-                            activeTab === "eboard"
-                                ? "bg-black text-white"
-                                : "bg-white text-black border border-black/20 hover:border-black/40 hover:bg-neutral/10"
-                        }`}
+                        className={`px-6 py-3 rounded-full text-base font-medium transition-colors`}
+                        color={`${activeTab === "eboard" ? "black" : "white"}`}
                     >
                         Executive Board
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         onClick={() => setActiveTab("editors")}
-                        className={`px-6 py-3 rounded-full text-base font-medium transition-colors ${
-                            activeTab === "editors"
-                                ? "bg-black text-white"
-                                : "bg-white text-black border border-black/20 hover:border-black/40 hover:bg-neutral/10"
-                        }`}
+                        className={`px-6 py-3 rounded-full text-base font-medium transition-colors`}
+                        color={`${activeTab === "editors" ? "black" : "white"}`}
                     >
                         Editors
-                    </button>
+                    </Button>
                 </Box>
 
                 <Box className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -315,7 +229,6 @@ export default function EboardPage() {
                             major={member.major}
                             email={member.email}
                             avatarUrl={member.avatarUrl}
-                            profileSlug={member.profileSlug}
                         />
                     ))}
                 </Box>

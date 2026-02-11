@@ -17,7 +17,7 @@ import Divider from "@/design-system/primitives/Divider";
 type FilterTag = {
   id: string;
   label: string;
-  type: "title" | "contributor" | "issue" | "category" | "date" | "sort";
+  type: "issue" | "category" | "date" | "sort";
 };
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -49,15 +49,12 @@ const DATE_LABEL: Record<string, string> = {
 const SORT_LABEL: Record<string, string> = {
   created_desc: "Most recent",
   created_asc: "Oldest",
-  title_asc: "Title A–Z",
-  title_desc: "Title Z–A",
 };
 
 export default function ArticleSearchPage() {
   const mostRecentIssueNum = 60;
 
   const [title, setTitle] = useState("");
-  const [contributor, setContributor] = useState("");
   const [date, setDate] = useState("any");
   const [sort, setSort] = useState("created_desc");
   const [issueNumber, setIssueNumber] = useState<string>("all");
@@ -80,12 +77,6 @@ export default function ArticleSearchPage() {
   // Build filter tags from current state
   const buildFilterTags = useCallback((): FilterTag[] => {
     const tags: FilterTag[] = [];
-    if (title.trim()) {
-      tags.push({ id: "title", label: `Title: "${title.trim()}"`, type: "title" });
-    }
-    if (contributor.trim()) {
-      tags.push({ id: "contributor", label: `Contributor: "${contributor.trim()}"`, type: "contributor" });
-    }
     if (issueNumber && issueNumber !== "all") {
       tags.push({ id: "issue", label: `Issue #${issueNumber}`, type: "issue" });
     }
@@ -99,19 +90,13 @@ export default function ArticleSearchPage() {
       tags.push({ id: "sort", label: SORT_LABEL[sort] || sort, type: "sort" });
     }
     return tags;
-  }, [title, contributor, issueNumber, category, date, sort]);
+  }, [issueNumber, category, date, sort]);
 
   const [filterTags, setFilterTags] = useState<FilterTag[]>([]);
 
   // Remove a specific filter
   const removeFilter = (tagId: string) => {
     switch (tagId) {
-      case "title":
-        setTitle("");
-        break;
-      case "contributor":
-        setContributor("");
-        break;
       case "issue":
         setIssueNumber("all");
         setKeys((k) => ({ ...k, issueNum: k.issueNum + 1 }));
@@ -137,6 +122,9 @@ export default function ArticleSearchPage() {
   }, [buildFilterTags]);
 
   const onSearch = async () => {
+    const articleTitle = title.trim();
+    setTitle(articleTitle);
+
     setLoading(true);
     setSearchPerformed(true);
     setCurrentPage(1);
@@ -153,7 +141,6 @@ export default function ArticleSearchPage() {
 
   const onReset = () => {
     setTitle("");
-    setContributor("");
     setDate("any");
     setSort("created_desc");
     setIssueNumber("all");
@@ -224,7 +211,7 @@ export default function ArticleSearchPage() {
                   <TextInput
                     variant="outline"
                     size="lg"
-                    color="border"
+                    color="black"
                     label=""
                     value={title}
                     onChange={(value) => setTitle(value)}
@@ -276,22 +263,6 @@ export default function ArticleSearchPage() {
                 <Box className="pt-4 border-t border-neutral-200">
                   <Flex direction="col" gap={6}>
                     <Flex direction="row" wrap="wrap" gap={4}>
-                      <FlexChild className="flex-col gap-1 min-w-[200px] flex-1 max-w-[280px]">
-                        <Text size={12} color="black" className="opacity-70">
-                          Contributor
-                        </Text>
-                        <TextInput
-                          variant="filled"
-                          size="md"
-                          color="white"
-                          label=""
-                          value={contributor}
-                          onChange={(value) => setContributor(value)}
-                          placeholder="Author, photographer, editor..."
-                          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(e, onSearch)}
-                        />
-                      </FlexChild>
-
                       <FlexChild className="flex-col gap-1 min-w-[200px] flex-1 max-w-[280px]">
                         <Text size={12} color="black" className="opacity-70">
                           Category
@@ -353,20 +324,10 @@ export default function ArticleSearchPage() {
                         <DropdownInput key={keys.sort} placeholder="Most recent" onChange={setSort as any}>
                           <DropdownItem value="created_desc">Most recent</DropdownItem>
                           <DropdownItem value="created_asc">Oldest</DropdownItem>
-                          <DropdownItem value="title_asc">Title A–Z</DropdownItem>
-                          <DropdownItem value="title_desc">Title Z–A</DropdownItem>
                         </DropdownInput>
                       </FlexChild>
                     </Flex>
                   </Flex>
-                </Box>
-              )}
-
-              {hasActiveFilters && (
-                <Box className="flex justify-center">
-                  <Button variant="outline" size="sm" color="forest-green" onClick={onReset} disabled={loading}>
-                    Reset filters
-                  </Button>
                 </Box>
               )}
             </Box>
@@ -374,28 +335,39 @@ export default function ArticleSearchPage() {
 
           {/* Active Filters */}
           {hasActiveFilters && (
-            <Box className="mb-6">
-              <div className="flex flex-wrap items-center gap-2">
-                <Text size={14} color="black" className="opacity-70 mr-2">
-                  Active filters:
-                </Text>
-                {filterTags.map((tag) => (
-                  <Box
-                    key={tag.id}
-                    className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm border-2 border-forest-green/30 bg-forest-green/10 text-forest-green hover:bg-forest-green/20 transition-colors"
-                  >
-                    <span>{tag.label}</span>
-                    <button
-                      onClick={() => removeFilter(tag.id)}
-                      className="hover:bg-forest-green/20 rounded-full p-0.5 transition-colors"
-                      aria-label={`Remove ${tag.label} filter`}
+            <div className="mb-6 flex items-start justify-between gap-3">
+              <Box className="flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Text size={14} color="black" className="opacity-70 mr-2">
+                    Active filters:
+                  </Text>
+                  {filterTags.map((tag) => (
+                    <Box
+                      key={tag.id}
+                      className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm border-2 border-forest-green/30 bg-forest-green/10 text-forest-green hover:bg-forest-green/20 transition-colors max-w-full min-w-0"
                     >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
+                      <span className="truncate">{tag.label}</span>
+                      <button
+                        onClick={() => removeFilter(tag.id)}
+                        className="hover:bg-forest-green/20 rounded-full p-0.5 transition-colors"
+                        aria-label={`Remove ${tag.label} filter`}
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </Box>
+                  ))}
+                </div>
+              </Box>
+              <div>
+              {hasActiveFilters && (
+                  <Box className="shrink-0" >
+                    <Button variant="outline" size="sm" color="forest-green" onClick={onReset} disabled={loading}>
+                      Reset filters
+                    </Button>
                   </Box>
-                ))}
+                )} 
               </div>
-            </Box>
+            </div>
           )}
 
           <Divider />
@@ -454,19 +426,6 @@ export default function ArticleSearchPage() {
                   {/* Pagination */}
                   {searchPerformed && resultsCount && resultsCount > 12 && (
                     <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Previous page"
-                          className="px-4 disabled:opacity-50"
-                          disabled={currentPage === 1}
-                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                        >
-                          ‹ Previous
-                        </Button>
-                      </FlexChild>
                       <FlexChild className="gap-2">
                         <PaginationBar
                           maxItems={Math.ceil(resultsCount / 12)}
@@ -476,36 +435,10 @@ export default function ArticleSearchPage() {
                           onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
                         />
                       </FlexChild>
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Next page"
-                          className="px-4"
-                          disabled={currentPage >= Math.ceil(resultsCount / 12)}
-                          onClick={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
-                        >
-                          Next ›
-                        </Button>
-                      </FlexChild>
                     </Flex>
                   )}
                   {!searchPerformed && mockArticles.length > 12 && (
                     <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Previous page"
-                          className="px-4 disabled:opacity-50"
-                          disabled={currentPage === 1}
-                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                        >
-                          ‹ Previous
-                        </Button>
-                      </FlexChild>
                       <FlexChild className="gap-2">
                         <PaginationBar
                           maxItems={Math.ceil(mockArticles.length / 12)}
@@ -514,19 +447,6 @@ export default function ArticleSearchPage() {
                           onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
                           onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(mockArticles.length / 12), p + 1))}
                         />
-                      </FlexChild>
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Next page"
-                          className="px-4"
-                          disabled={currentPage >= Math.ceil(mockArticles.length / 12)}
-                          onClick={() => setCurrentPage((p) => Math.min(Math.ceil(mockArticles.length / 12), p + 1))}
-                        >
-                          Next ›
-                        </Button>
                       </FlexChild>
                     </Flex>
                   )}

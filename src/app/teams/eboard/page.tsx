@@ -122,7 +122,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Health Science & Psychology",
             email: "jdoe@example.com",
-            avatarUrl: "https://drive.google.com/open?id=1DIJxeXRQXMFn1fjYOZkX53D-j4hZFyGh",
+            avatarUrl: "/headshots/caroline_headshot.jpg",
         },
         {
             name: "Mackenzie Heidkamp",
@@ -131,7 +131,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Biochemistry",
             email: "jdoe@example.com",
-            avatarUrl: "https://drive.google.com/open?id=1NJiWxPGVbS_kr0gTanbYFGqwv995dYr5",
+            avatarUrl: "/headshots/mackenzie_headshot.jpg",
         },
         {
             name: "Ananya Arvind",
@@ -140,7 +140,7 @@ export default function EboardPage() {
             graduationYear: 2027,
             major: "Linguistics and Speech-Language Pathology and Audiology",
             email: "jdoe@example.com",
-            avatarUrl: "https://drive.google.com/open?id=10oNeTWUhJ0fwPh8jz8xOrR3kH2dWTQtz",
+            avatarUrl: "/headshots/ananya_headshot.jpg",
         },
         {
             name: "Cecelia Kincaid",
@@ -149,7 +149,7 @@ export default function EboardPage() {
             graduationYear: 2027,
             major: "Speech-Language Pathology & Audiology",
             email: "jdoe@example.com",
-            avatarUrl: "https://drive.google.com/open?id=1-oCw1A2oMoRfP1u_RaOMaNAm53aV8G_k",
+            avatarUrl: "/headshots/cecelia_headshot.jpg",
         },
         {
             name: "Emily Xu",
@@ -158,7 +158,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Behavioral Neuroscience",
             email: "jdoe@example.com",
-            avatarUrl: "https://drive.google.com/open?id=10FmiECDItmYaa9R_FVYfTRLTnqytq_2Y",
+            avatarUrl: "/headshots/emily_headshot.jpg",
         },
         {
             name: "Sashi Nallapati",
@@ -167,7 +167,7 @@ export default function EboardPage() {
             graduationYear: 2026,
             major: "Chemistry",
             email: "jdoe@example.com",
-            avatarUrl: "https://drive.google.com/open?id=1v8AFxrIjl72Acfs54SJUsgVvrCpNFQHT",
+            avatarUrl: "/headshots/sashi_headshot.jpg",
         },
         {
             name: "Danielle Jeong",
@@ -176,7 +176,7 @@ export default function EboardPage() {
             graduationYear: 2028,
             major: "Chemical Engineering",
             email: "jdoe@example.com",
-            avatarUrl: "https://drive.google.com/open?id=15bcERE42y-BZzREYBL5AGS3WQVy4WKzR",
+            avatarUrl: "/headshots/danielle_headshot.jpg",
         },
         {
             name: "Saumya Sawant",
@@ -185,7 +185,7 @@ export default function EboardPage() {
             graduationYear: 2028,
             major: "Biochemistry",
             email: "jdoe@example.com",
-            avatarUrl: "https://drive.google.com/open?id=1acFUmysV3Y2KsuSIhvkyj9z65WkuB3mP",
+            avatarUrl: "/headshots/saumya_headshot.jpg",
         },
     ];
 

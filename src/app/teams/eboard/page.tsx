@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { Box } from "@/design-system/primitives/Box/Box";
 import Text from "@/design-system/primitives/Text/Text";
-import { TeamMember, TeamMemberProps } from "@/app/teams/components/TeamMember";
+import { TeamMember } from "@/design-system/components/TeamMember/TeamMember";
+import { TeamMemberProps } from "@/design-system/components/TeamMember";
 import { AboutUsHero } from "@/app/teams/components/AboutUsHero";
 import Button from "@/design-system/primitives/Button";
 

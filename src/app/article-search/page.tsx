@@ -18,7 +18,7 @@ import { Categories } from "@/lib/types/types";
 type FilterTag = {
   id: string;
   label: string;
-  type: "title" | "contributor" | "issue" | "category" | "date" | "sort";
+  type: "title" | "category";
 };
 
 const CATEGORY_LABEL: Record<string, string> = Object.values(Categories).reduce(
@@ -26,31 +26,11 @@ const CATEGORY_LABEL: Record<string, string> = Object.values(Categories).reduce(
     acc[category] = category;
     return acc;
   },
-  { all: "All categories" } as Record<string, string>
+  { all: "All categories" } as Record<string, string>,
 );
 
-const DATE_LABEL: Record<string, string> = {
-  any: "Any time",
-  "7d": "Last 7 days",
-  "30d": "Last 30 days",
-  ytd: "This year",
-};
-
-const SORT_LABEL: Record<string, string> = {
-  created_desc: "Most recent",
-  created_asc: "Oldest",
-  title_asc: "Title A–Z",
-  title_desc: "Title Z–A",
-};
-
 export default function ArticleSearchPage() {
-  const mostRecentIssueNum = 60;
-
   const [title, setTitle] = useState("");
-  const [contributor, setContributor] = useState("");
-  const [date, setDate] = useState("any");
-  const [sort, setSort] = useState("created_desc");
-  const [issueNumber, setIssueNumber] = useState<string>("all");
   const [category, setCategory] = useState<string>("all");
 
   const [loading, setLoading] = useState(false);
@@ -62,9 +42,6 @@ export default function ArticleSearchPage() {
   // to handle value for uncontrolled dropdown input
   const [keys, setKeys] = useState({
     category: 0,
-    issueNum: 0,
-    date: 0,
-    sort: 0,
   });
 
   // Build filter tags from current state
@@ -73,23 +50,11 @@ export default function ArticleSearchPage() {
     if (title.trim()) {
       tags.push({ id: "title", label: `Title: "${title.trim()}"`, type: "title" });
     }
-    if (contributor.trim()) {
-      tags.push({ id: "contributor", label: `Contributor: "${contributor.trim()}"`, type: "contributor" });
-    }
-    if (issueNumber && issueNumber !== "all") {
-      tags.push({ id: "issue", label: `Issue #${issueNumber}`, type: "issue" });
-    }
     if (category && category !== "all") {
       tags.push({ id: "category", label: CATEGORY_LABEL[category] || category, type: "category" });
     }
-    if (date !== "any") {
-      tags.push({ id: "date", label: DATE_LABEL[date] || date, type: "date" });
-    }
-    if (sort !== "created_desc") {
-      tags.push({ id: "sort", label: SORT_LABEL[sort] || sort, type: "sort" });
-    }
     return tags;
-  }, [title, contributor, issueNumber, category, date, sort]);
+  }, [title, category]);
 
   const [filterTags, setFilterTags] = useState<FilterTag[]>([]);
 
@@ -99,24 +64,9 @@ export default function ArticleSearchPage() {
       case "title":
         setTitle("");
         break;
-      case "contributor":
-        setContributor("");
-        break;
-      case "issue":
-        setIssueNumber("all");
-        setKeys((k) => ({ ...k, issueNum: k.issueNum + 1 }));
-        break;
       case "category":
         setCategory("all");
         setKeys((k) => ({ ...k, category: k.category + 1 }));
-        break;
-      case "date":
-        setDate("any");
-        setKeys((k) => ({ ...k, date: k.date + 1 }));
-        break;
-      case "sort":
-        setSort("created_desc");
-        setKeys((k) => ({ ...k, sort: k.sort + 1 }));
         break;
     }
   };
@@ -143,19 +93,12 @@ export default function ArticleSearchPage() {
 
   const onReset = () => {
     setTitle("");
-    setContributor("");
-    setDate("any");
-    setSort("created_desc");
-    setIssueNumber("all");
     setCategory("all");
     setSearchPerformed(false);
     setResultsCount(null);
     setCurrentPage(1);
     setKeys((k) => ({
       category: k.category + 1,
-      issueNum: k.issueNum + 1,
-      date: k.date + 1,
-      sort: k.sort + 1,
     }));
   };
 
@@ -214,7 +157,7 @@ export default function ArticleSearchPage() {
                   <TextInput
                     variant="outline"
                     size="lg"
-                    color="border"
+                    color="black"
                     label=""
                     value={title}
                     onChange={(value) => setTitle(value)}
@@ -248,7 +191,7 @@ export default function ArticleSearchPage() {
               </Flex>
 
               {/* Advanced Search Toggle */}
-              <Box className="flex justify-end">
+              <Box className="flex justify-center">
                 <Button
                   size="sm"
                   color="white"
@@ -265,23 +208,7 @@ export default function ArticleSearchPage() {
               {showAdvancedSearch && (
                 <Box className="pt-4 border-t border-neutral-200">
                   <Flex direction="col" gap={6}>
-                    <Flex direction="row" wrap="wrap" gap={4}>
-                      <FlexChild className="flex-col gap-1 min-w-[200px] flex-1 max-w-[280px]">
-                        <Text size={12} color="black" className="opacity-70">
-                          Contributor
-                        </Text>
-                        <TextInput
-                          variant="filled"
-                          size="md"
-                          color="white"
-                          label=""
-                          value={contributor}
-                          onChange={(value) => setContributor(value)}
-                          placeholder="Author, photographer, editor..."
-                          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(e, onSearch)}
-                        />
-                      </FlexChild>
-
+                    <Flex direction="row" wrap="wrap" gap={4} className="items-end">
                       <FlexChild className="flex-col gap-1 min-w-[200px] flex-1 max-w-[280px]">
                         <Text size={12} color="black" className="opacity-70">
                           Category
@@ -294,60 +221,16 @@ export default function ArticleSearchPage() {
                           ))}
                         </DropdownInput>
                       </FlexChild>
-
-                      <FlexChild className="flex-col gap-1 min-w-[160px] max-w-[200px]">
-                        <Text size={12} color="black" className="opacity-70">
-                          Issue Number
+                      <FlexChild>
+                        <Text size={12} color="black" className="opacity-60 italic">
+                          More options coming soon
                         </Text>
-                        <DropdownInput placeholder="All issues" key={keys.issueNum} onChange={setIssueNumber}>
-                          <>
-                            <DropdownItem value="all">All issues</DropdownItem>
-                            {Array.from({ length: mostRecentIssueNum }, (_, i) => i + 1)
-                              .reverse()
-                              .map((n) => (
-                                <DropdownItem key={n} value={String(n)}>
-                                  Issue #{n}
-                                </DropdownItem>
-                              ))}
-                          </>
-                        </DropdownInput>
-                      </FlexChild>
-
-                      <FlexChild className="flex-col gap-1 min-w-[160px] max-w-[200px]">
-                        <Text size={12} color="black" className="opacity-70">
-                          Date Range
-                        </Text>
-                        <DropdownInput key={keys.date} placeholder="Any time" onChange={setDate}>
-                          <DropdownItem value="any">Any time</DropdownItem>
-                          <DropdownItem value="7d">Last 7 days</DropdownItem>
-                          <DropdownItem value="30d">Last 30 days</DropdownItem>
-                          <DropdownItem value="ytd">This year</DropdownItem>
-                        </DropdownInput>
-                      </FlexChild>
-
-                      <FlexChild className="flex-col gap-1 min-w-[160px] max-w-[200px]">
-                        <Text size={12} color="black" className="opacity-70">
-                          Sort By
-                        </Text>
-                        <DropdownInput key={keys.sort} placeholder="Most recent" onChange={setSort as any}>
-                          <DropdownItem value="created_desc">Most recent</DropdownItem>
-                          <DropdownItem value="created_asc">Oldest</DropdownItem>
-                          <DropdownItem value="title_asc">Title A–Z</DropdownItem>
-                          <DropdownItem value="title_desc">Title Z–A</DropdownItem>
-                        </DropdownInput>
                       </FlexChild>
                     </Flex>
                   </Flex>
                 </Box>
               )}
 
-              {hasActiveFilters && (
-                <Box className="flex justify-center">
-                  <Button variant="outline" size="sm" color="forest-green" onClick={onReset} disabled={loading}>
-                    Reset filters
-                  </Button>
-                </Box>
-              )}
             </Box>
           </Box>
 
@@ -373,6 +256,9 @@ export default function ArticleSearchPage() {
                     </button>
                   </Box>
                 ))}
+                <Button variant="outline" size="sm" color="forest-green" onClick={onReset} disabled={loading}>
+                  Reset filters
+                </Button>
               </div>
             </Box>
           )}
@@ -433,80 +319,24 @@ export default function ArticleSearchPage() {
                   {/* Pagination */}
                   {searchPerformed && resultsCount && resultsCount > 12 && (
                     <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Previous page"
-                          className="px-4 disabled:opacity-50"
-                          disabled={currentPage === 1}
-                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                        >
-                          ‹ Previous
-                        </Button>
-                      </FlexChild>
-                      <FlexChild className="gap-2">
-                        <PaginationBar
-                          maxItems={Math.ceil(resultsCount / 12)}
-                          activeItem={currentPage}
-                          onClickFunctionGenerator={(index) => () => setCurrentPage(index)}
-                          onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                          onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
-                        />
-                      </FlexChild>
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Next page"
-                          className="px-4"
-                          disabled={currentPage >= Math.ceil(resultsCount / 12)}
-                          onClick={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
-                        >
-                          Next ›
-                        </Button>
-                      </FlexChild>
+                      <PaginationBar
+                        maxItems={Math.ceil(resultsCount / 12)}
+                        activeItem={currentPage}
+                        onClickFunctionGenerator={(index) => () => setCurrentPage(index)}
+                        onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                        onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
+                      />
                     </Flex>
                   )}
                   {!searchPerformed && mockArticles.length > 12 && (
                     <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Previous page"
-                          className="px-4 disabled:opacity-50"
-                          disabled={currentPage === 1}
-                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                        >
-                          ‹ Previous
-                        </Button>
-                      </FlexChild>
-                      <FlexChild className="gap-2">
-                        <PaginationBar
-                          maxItems={Math.ceil(mockArticles.length / 12)}
-                          activeItem={currentPage}
-                          onClickFunctionGenerator={(index) => () => setCurrentPage(index)}
-                          onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                          onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(mockArticles.length / 12), p + 1))}
-                        />
-                      </FlexChild>
-                      <FlexChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          color="forest-green"
-                          aria-label="Next page"
-                          className="px-4"
-                          disabled={currentPage >= Math.ceil(mockArticles.length / 12)}
-                          onClick={() => setCurrentPage((p) => Math.min(Math.ceil(mockArticles.length / 12), p + 1))}
-                        >
-                          Next ›
-                        </Button>
-                      </FlexChild>
+                      <PaginationBar
+                        maxItems={Math.ceil(mockArticles.length / 12)}
+                        activeItem={currentPage}
+                        onClickFunctionGenerator={(index) => () => setCurrentPage(index)}
+                        onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                        onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(mockArticles.length / 12), p + 1))}
+                      />
                     </Flex>
                   )}
                 </>

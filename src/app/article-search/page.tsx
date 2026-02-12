@@ -45,11 +45,13 @@ export default function ArticleSearchPage() {
   const [sortBy, setSortBy] = useState<"asc" | "desc">("desc");
   const [articles, setArticles] = useState<Article[]>([]);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [resultsCount, setResultsCount] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(15);
 
   // to handle value for uncontrolled dropdown input
   const [keys, setKeys] = useState({
@@ -128,6 +130,7 @@ export default function ArticleSearchPage() {
       }
 
       setLoading(false);
+      setInitialLoad(false);
     },
     [],
   );
@@ -193,215 +196,240 @@ export default function ArticleSearchPage() {
 
   const hasActiveFilters = filterTags.length > 0;
   const showResults = searchPerformed && !loading;
+  const showInitialLoadingScreen = initialLoad && loading;
+
+  // Fast loading bar animation for the initial page load only
+  useEffect(() => {
+    if (!showInitialLoadingScreen) return;
+
+    setLoadingProgress(15);
+    const intervalId = window.setInterval(() => {
+      setLoadingProgress((prev) => {
+        if (prev >= 90) return 15;
+        const next = prev + 10 + Math.round(Math.random() * 12);
+        return Math.min(next, 90);
+      });
+    }, 120);
+
+    return () => window.clearInterval(intervalId);
+  }, [showInitialLoadingScreen]);
+
+  const LoadingScreen = () => <div className="min-h-screen bg-white flex items-center justify-center" />;
+
+  if (showInitialLoadingScreen) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="min-h-screen bg-white">
       {/* Parallax Hero Section with Header and Search Form */}
-      <ParallaxScrollSection
-        imageSrc="/icy.png"
-        imageAlt="Article search background"
-        parallaxIntensity="medium"
-        offset="lg"
-        maxWidth="max-w-7xl"
-        padding="px-4 laptop:px-8"
-      >
-        <Box className="px-4 laptop:px-16 py-16">
-          {/* Main Search Bar - Full Width */}
-          <Box className="mb-4">
-            <Box className="flex flex-col gap-4">
-              <Flex direction="row" gap={2} className="items-center w-full">
-                <FlexChild className="flex-1">
-                  <TextInput
-                    variant="outline"
-                    size="lg"
-                    color="black"
-                    label=""
-                    value={title}
-                    onChange={(value) => setTitle(value)}
-                    placeholder="Search articles..."
-                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(e, onSearch)}
-                    className="w-[900px]"
-                  />
-                </FlexChild>
-                <FlexChild>
-                  <Button
-                    variant="default"
-                    size="lg"
-                    color="forest-green"
-                    onClick={onSearch}
-                    disabled={loading}
-                    className="min-w-[120px] flex items-center justify-center gap-2"
-                  >
-                    {loading ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        Searching...
-                      </>
-                    ) : (
-                      <>
-                        <SearchIcon className="w-5 h-5" />
-                        Search
-                      </>
-                    )}
-                  </Button>
-                </FlexChild>
-              </Flex>
-
-              {/* Advanced Search Toggle */}
-              <Box className="flex justify-center">
-                <Button
-                  size="sm"
-                  color="white"
-                  variant="default"
-                  onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
-                  className="flex items-center gap-2"
-                >
-                  Advanced Search
-                  {showAdvancedSearch ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                </Button>
-              </Box>
-
-              {/* Advanced Search Filters - Collapsible */}
-              {showAdvancedSearch && (
-                <Box className="pt-4 border-t border-neutral-200">
-                  <Flex direction="col" gap={6}>
-                    <Flex direction="row" wrap="wrap" gap={4} className="items-end">
-                      <FlexChild className="flex-col gap-1 min-w-[200px] flex-1 max-w-[280px]">
-                        <Text size={12} color="black" className="opacity-70">
-                          Category
-                        </Text>
-                        <DropdownInput placeholder="All categories" key={keys.category} onChange={setCategory}>
-                          {Object.entries(CATEGORY_LABEL).map(([key, label]) => (
-                            <DropdownItem value={key} key={key}>
-                              {label}
-                            </DropdownItem>
-                          ))}
-                        </DropdownInput>
-                      </FlexChild>
-                      <FlexChild className="flex-col gap-1 min-w-[160px] max-w-[200px]">
-                        <Text size={12} color="black" className="opacity-70">
-                          Sort By Date
-                        </Text>
-                        <DropdownInput
-                          key={keys.sort}
-                          placeholder="Newest first"
-                          onChange={(value) => setSortBy(value as "asc" | "desc")}
-                        >
-                          <DropdownItem value="desc">Newest first</DropdownItem>
-                          <DropdownItem value="asc">Oldest first</DropdownItem>
-                        </DropdownInput>
-                      </FlexChild>
-                    </Flex>
-                  </Flex>
-                </Box>
-              )}
-            </Box>
-          </Box>
-
-          {/* Active Filters */}
-          {hasActiveFilters && (
-            <Box className="mb-6">
-              <div className="flex flex-wrap items-center gap-2">
-                <Text size={14} color="black" className="opacity-70 mr-2">
-                  Active filters:
-                </Text>
-                {filterTags.map((tag) => (
-                  <Box
-                    key={tag.id}
-                    className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm border-2 border-forest-green/30 bg-forest-green/10 text-forest-green hover:bg-forest-green/20 transition-colors"
-                  >
-                    <span>{tag.label}</span>
-                    <button
-                      onClick={() => removeFilter(tag.id)}
-                      className="hover:bg-forest-green/20 rounded-full p-0.5 transition-colors"
-                      aria-label={`Remove ${tag.label} filter`}
+      <div className="animate-fadeIn">
+        <ParallaxScrollSection
+          imageSrc="/icy.png"
+          imageAlt="Article search background"
+          parallaxIntensity="medium"
+          offset="lg"
+          maxWidth="max-w-7xl"
+          padding="px-4 laptop:px-8"
+        >
+          <Box className="px-4 laptop:px-16 py-16">
+            {/* Main Search Bar - Full Width */}
+            <Box className="mb-4">
+              <Box className="flex flex-col gap-4">
+                <Flex direction="row" gap={2} className="items-center w-full">
+                  <FlexChild className="flex-1">
+                    <TextInput
+                      variant="outline"
+                      size="lg"
+                      color="black"
+                      label=""
+                      value={title}
+                      onChange={(value) => setTitle(value)}
+                      placeholder="Search articles..."
+                      onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(e, onSearch)}
+                      className="w-[900px]"
+                    />
+                  </FlexChild>
+                  <FlexChild>
+                    <Button
+                      variant="default"
+                      size="lg"
+                      color="forest-green"
+                      onClick={onSearch}
+                      disabled={loading}
+                      className="min-w-[120px] flex items-center justify-center gap-2"
                     >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  </Box>
-                ))}
-                <Button variant="outline" size="sm" color="forest-green" onClick={onReset} disabled={loading}>
-                  Reset filters
-                </Button>
-              </div>
-            </Box>
-          )}
-
-          <Divider />
-
-          {/* Results Section */}
-          {(showResults || !searchPerformed) && (
-            <Box className="mt-8">
-              {/* Results Header */}
-              {resultsCount !== null && (
-                <Flex direction="row" className="justify-between items-center mb-6 flex-wrap gap-4">
-                  <Box>
-                    <Text size={14} color="black" className="opacity-60">
-                      {resultsCount} {resultsCount === 1 ? "article found" : "articles found"}
-                    </Text>
-                  </Box>
+                      {loading ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Searching...
+                        </>
+                      ) : (
+                        <>
+                          <SearchIcon className="w-5 h-5" />
+                          Search
+                        </>
+                      )}
+                    </Button>
+                  </FlexChild>
                 </Flex>
-              )}
 
-              {/* Results List */}
-              {articles.length > 0 ? (
-                <>
-                  <Box className="flex flex-col gap-6 mb-8">
-                    {articles.map((article) => (
-                      <Link
-                        key={`${article.issueNumber}-${article.slug}`}
-                        href={`/issue/${article.issueNumber}/article/${article.slug}`}
-                        className="block w-full"
-                      >
-                        <MediaCard
-                          className="w-full max-w-none"
-                          mediaType="image"
-                          mediaDirection="right"
-                          border="none"
-                          title={article.title}
-                          size="md"
-                          shadow="none"
-                          subtitle={article.categories[0] || "Uncategorized"}
-                          description={truncateByWords(article.articleContent[0]?.content || "", 35)}
-                          imageProps={{
-                            src: "/succulent.png",
-                            alt: article.title,
-                          }}
-                        />
-                      </Link>
-                    ))}
-                  </Box>
-
-                  {/* Pagination */}
-                  {resultsCount && resultsCount > 12 && (
-                    <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
-                      <PaginationBar
-                        maxItems={Math.ceil(resultsCount / 12)}
-                        activeItem={currentPage}
-                        onClickFunctionGenerator={(index) => () => setCurrentPage(index)}
-                        onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                        onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
-                      />
-                    </Flex>
-                  )}
-                </>
-              ) : (
-                <Box className="text-center py-16">
-                  <Text size={24} style="bold" color="black" className="mb-2">
-                    No articles found
-                  </Text>
-                  <Text size={16} color="black" className="opacity-60 mb-6">
-                    Try adjusting your search criteria or filters
-                  </Text>
-                  <Button variant="outline" size="md" color="forest-green" onClick={onReset}>
-                    Clear all filters
+                {/* Advanced Search Toggle */}
+                <Box className="flex justify-center">
+                  <Button
+                    size="sm"
+                    color="white"
+                    variant="default"
+                    onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
+                    className="flex items-center gap-2"
+                  >
+                    Advanced Search
+                    {showAdvancedSearch ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                   </Button>
                 </Box>
-              )}
+
+                {/* Advanced Search Filters - Collapsible */}
+                {showAdvancedSearch && (
+                  <Box className="pt-4 border-t border-neutral-200">
+                    <Flex direction="col" gap={6}>
+                      <Flex direction="row" wrap="wrap" gap={4} className="items-end">
+                        <FlexChild className="flex-col gap-1 min-w-[200px] flex-1 max-w-[280px]">
+                          <Text size={12} color="black" className="opacity-70">
+                            Category
+                          </Text>
+                          <DropdownInput placeholder="All categories" key={keys.category} onChange={setCategory}>
+                            {Object.entries(CATEGORY_LABEL).map(([key, label]) => (
+                              <DropdownItem value={key} key={key}>
+                                {label}
+                              </DropdownItem>
+                            ))}
+                          </DropdownInput>
+                        </FlexChild>
+                        <FlexChild className="flex-col gap-1 min-w-[160px] max-w-[200px]">
+                          <Text size={12} color="black" className="opacity-70">
+                            Sort By Date
+                          </Text>
+                          <DropdownInput
+                            key={keys.sort}
+                            placeholder="Newest first"
+                            onChange={(value) => setSortBy(value as "asc" | "desc")}
+                          >
+                            <DropdownItem value="desc">Newest first</DropdownItem>
+                            <DropdownItem value="asc">Oldest first</DropdownItem>
+                          </DropdownInput>
+                        </FlexChild>
+                      </Flex>
+                    </Flex>
+                  </Box>
+                )}
+              </Box>
             </Box>
-          )}
-        </Box>
-      </ParallaxScrollSection>
+
+            {/* Active Filters */}
+            {hasActiveFilters && (
+              <Box className="mb-6">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Text size={14} color="black" className="opacity-70 mr-2">
+                    Active filters:
+                  </Text>
+                  {filterTags.map((tag) => (
+                    <Box
+                      key={tag.id}
+                      className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm border-2 border-forest-green/30 bg-forest-green/10 text-forest-green hover:bg-forest-green/20 transition-colors"
+                    >
+                      <span>{tag.label}</span>
+                      <button
+                        onClick={() => removeFilter(tag.id)}
+                        className="hover:bg-forest-green/20 rounded-full p-0.5 transition-colors"
+                        aria-label={`Remove ${tag.label} filter`}
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </Box>
+                  ))}
+                  <Button variant="outline" size="sm" color="forest-green" onClick={onReset} disabled={loading}>
+                    Reset filters
+                  </Button>
+                </div>
+              </Box>
+            )}
+
+            <Divider />
+
+            {/* Results Section */}
+            {(showResults || !searchPerformed) && (
+              <Box className="mt-8">
+                {/* Results Header */}
+                {resultsCount !== null && (
+                  <Flex direction="row" className="justify-between items-center mb-6 flex-wrap gap-4">
+                    <Box>
+                      <Text size={14} color="black" className="opacity-60">
+                        {resultsCount} {resultsCount === 1 ? "article found" : "articles found"}
+                      </Text>
+                    </Box>
+                  </Flex>
+                )}
+
+                {/* Results List */}
+                {articles.length > 0 ? (
+                  <>
+                    <Box className="flex flex-col gap-6 mb-8">
+                      {articles.map((article) => (
+                        <Link
+                          key={`${article.issueNumber}-${article.slug}`}
+                          href={`/issue/${article.issueNumber}/article/${article.slug}`}
+                          className="block w-full"
+                        >
+                          <MediaCard
+                            className="w-full max-w-none"
+                            mediaType="image"
+                            mediaDirection="right"
+                            border="none"
+                            title={article.title}
+                            size="md"
+                            shadow="none"
+                            subtitle={article.categories[0] || "Uncategorized"}
+                            description={truncateByWords(article.articleContent[0]?.content || "", 35)}
+                            imageProps={{
+                              src: "/succulent.png",
+                              alt: article.title,
+                            }}
+                          />
+                        </Link>
+                      ))}
+                    </Box>
+
+                    {/* Pagination */}
+                    {resultsCount && resultsCount > 12 && (
+                      <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
+                        <PaginationBar
+                          maxItems={Math.ceil(resultsCount / 12)}
+                          activeItem={currentPage}
+                          onClickFunctionGenerator={(index) => () => setCurrentPage(index)}
+                          onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                          onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
+                        />
+                      </Flex>
+                    )}
+                  </>
+                ) : (
+                  <Box className="text-center py-16">
+                    <Text size={24} style="bold" color="black" className="mb-2">
+                      No articles found
+                    </Text>
+                    <Text size={16} color="black" className="opacity-60 mb-6">
+                      Try adjusting your search criteria or filters
+                    </Text>
+                    <Button variant="outline" size="md" color="forest-green" onClick={onReset}>
+                      Clear all filters
+                    </Button>
+                  </Box>
+                )}
+              </Box>
+            )}
+          </Box>
+        </ParallaxScrollSection>
+      </div>
     </div>
   );
 }

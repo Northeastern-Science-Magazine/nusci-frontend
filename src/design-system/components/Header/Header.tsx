@@ -118,7 +118,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
               variant="outline"
               size="sm"
               color="black"
-              onClick={() => (window.location.href = "/search")}
+              onClick={() => (window.location.href = "/article-search")}
               className="flex items-center h-[35px]"
             >
               <Icon icon="search" size="sm" className="mr-1" />

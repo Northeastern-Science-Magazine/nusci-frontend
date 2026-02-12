@@ -7,6 +7,7 @@ import Link from "@/design-system/primitives/Link";
 import Image from "@/design-system/primitives/Image";
 import { DropdownInput, DropdownItem } from "@/design-system/primitives/DropdownInput";
 import Icon from "@/design-system/primitives/Icon";
+import { Categories } from "@/lib/types/types";
 
 interface HeaderProps {
   isLoggedIn?: boolean;
@@ -37,19 +38,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
 
   const navigationItems = [{ label: "Print Articles", href: "/articles" }];
 
-  const categories = [
-    { value: "biology", label: "Biology" },
-    { value: "chemistry", label: "Chemistry" },
-    { value: "environment", label: "Environment" },
-    { value: "health", label: "Health" },
-    { value: "newsletter", label: "Newsletter" },
-    { value: "opinion", label: "Opinion" },
-    { value: "physics", label: "Physics" },
-    { value: "psychology", label: "Psychology" },
-    { value: "space", label: "Space" },
-    { value: "technology", label: "Technology" },
-    { value: "world", label: "World" },
-  ];
+  const categories = Object.values(Categories);
 
   return (
     <Box
@@ -117,8 +106,8 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                 }}
               >
                 {categories.map((category) => (
-                  <DropdownItem key={category.value} value={category.value}>
-                    {category.label}
+                  <DropdownItem key={category} value={category}>
+                    {category}
                   </DropdownItem>
                 ))}
               </DropdownInput>
@@ -219,8 +208,8 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                   }}
                 >
                   {categories.map((category) => (
-                    <DropdownItem key={category.value} value={category.value}>
-                      {category.label}
+                    <DropdownItem key={category} value={category}>
+                      {category}
                     </DropdownItem>
                   ))}
                 </DropdownInput>

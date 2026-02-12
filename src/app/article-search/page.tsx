@@ -13,6 +13,7 @@ import { X, Search as SearchIcon, Loader2, ChevronDown, ChevronUp } from "lucide
 import Link from "@/design-system/primitives/Link";
 import { ParallaxScrollSection } from "@/design-system/components/ParallaxScrollSection";
 import Divider from "@/design-system/primitives/Divider";
+import { Categories } from "@/lib/types/types";
 
 type FilterTag = {
   id: string;
@@ -20,24 +21,13 @@ type FilterTag = {
   type: "title" | "contributor" | "issue" | "category" | "date" | "sort";
 };
 
-const CATEGORY_LABEL: Record<string, string> = {
-  all: "All categories",
-  ArtificialIntelligence: "Artificial Intelligence",
-  Biology: "Biology",
-  Chemistry: "Chemistry",
-  ComputerScience: "Computer Science",
-  Culture: "Culture",
-  Health: "Health",
-  Environment: "Environment",
-  Medicine: "Medicine",
-  Newsletter: "Newsletter",
-  Opinion: "Opinion",
-  Physics: "Physics",
-  Psychology: "Psychology",
-  Science: "Science",
-  Space: "Space",
-  Technology: "Technology",
-};
+const CATEGORY_LABEL: Record<string, string> = Object.values(Categories).reduce(
+  (acc, category) => {
+    acc[category] = category;
+    return acc;
+  },
+  { all: "All categories" } as Record<string, string>
+);
 
 const DATE_LABEL: Record<string, string> = {
   any: "Any time",
@@ -297,22 +287,11 @@ export default function ArticleSearchPage() {
                           Category
                         </Text>
                         <DropdownInput placeholder="All categories" key={keys.category} onChange={setCategory}>
-                          <DropdownItem value="all">All categories</DropdownItem>
-                          <DropdownItem value="ArtificialIntelligence">Artificial Intelligence</DropdownItem>
-                          <DropdownItem value="Biology">Biology</DropdownItem>
-                          <DropdownItem value="Chemistry">Chemistry</DropdownItem>
-                          <DropdownItem value="ComputerScience">Computer Science</DropdownItem>
-                          <DropdownItem value="Culture">Culture</DropdownItem>
-                          <DropdownItem value="Health">Health</DropdownItem>
-                          <DropdownItem value="Environment">Environment</DropdownItem>
-                          <DropdownItem value="Medicine">Medicine</DropdownItem>
-                          <DropdownItem value="Newsletter">Newsletter</DropdownItem>
-                          <DropdownItem value="Opinion">Opinion</DropdownItem>
-                          <DropdownItem value="Physics">Physics</DropdownItem>
-                          <DropdownItem value="Psychology">Psychology</DropdownItem>
-                          <DropdownItem value="Science">Science</DropdownItem>
-                          <DropdownItem value="Space">Space</DropdownItem>
-                          <DropdownItem value="Technology">Technology</DropdownItem>
+                          {Object.entries(CATEGORY_LABEL).map(([key, label]) => (
+                            <DropdownItem value={key} key={key}>
+                              {label}
+                            </DropdownItem>
+                          ))}
                         </DropdownInput>
                       </FlexChild>
 

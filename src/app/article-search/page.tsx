@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { DropdownInput, DropdownItem } from "@/primitives/DropdownInput";
 import Button from "@/primitives/Button";
 import TextInput from "@/design-system/primitives/TextInput";
@@ -13,12 +13,13 @@ import { X, Search as SearchIcon, Loader2, ChevronDown, ChevronUp } from "lucide
 import Link from "@/design-system/primitives/Link";
 import { ParallaxScrollSection } from "@/design-system/components/ParallaxScrollSection";
 import Divider from "@/design-system/primitives/Divider";
-import { Categories } from "@/lib/types/types";
+import { Categories, Article } from "@/lib/types/types";
+import { searchArticles } from "@/lib/api/articles";
 
 type FilterTag = {
   id: string;
   label: string;
-  type: "title" | "category";
+  type: "title" | "category" | "sort";
 };
 
 const CATEGORY_LABEL: Record<string, string> = Object.values(Categories).reduce(
@@ -29,9 +30,20 @@ const CATEGORY_LABEL: Record<string, string> = Object.values(Categories).reduce(
   { all: "All categories" } as Record<string, string>,
 );
 
+const truncateByWords = (text: string, wordLimit: number): string => {
+  if (!text) return "No description available.";
+  const words = text.trim().split(/\s+/);
+  if (words.length <= wordLimit) {
+    return text;
+  }
+  return words.slice(0, wordLimit).join(" ") + "...";
+};
+
 export default function ArticleSearchPage() {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<"asc" | "desc">("desc");
+  const [articles, setArticles] = useState<Article[]>([]);
 
   const [loading, setLoading] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false);
@@ -42,6 +54,7 @@ export default function ArticleSearchPage() {
   // to handle value for uncontrolled dropdown input
   const [keys, setKeys] = useState({
     category: 0,
+    sort: 0,
   });
 
   // Build filter tags from current state
@@ -53,8 +66,11 @@ export default function ArticleSearchPage() {
     if (category && category !== "all") {
       tags.push({ id: "category", label: CATEGORY_LABEL[category] || category, type: "category" });
     }
+    if (sortBy !== "desc") {
+      tags.push({ id: "sort", label: `Sort: Oldest first`, type: "sort" });
+    }
     return tags;
-  }, [title, category]);
+  }, [title, category, sortBy]);
 
   const [filterTags, setFilterTags] = useState<FilterTag[]>([]);
 
@@ -68,6 +84,10 @@ export default function ArticleSearchPage() {
         setCategory("all");
         setKeys((k) => ({ ...k, category: k.category + 1 }));
         break;
+      case "sort":
+        setSortBy("desc");
+        setKeys((k) => ({ ...k, sort: k.sort + 1 }));
+        break;
     }
   };
 
@@ -76,29 +96,58 @@ export default function ArticleSearchPage() {
     setFilterTags(buildFilterTags());
   }, [buildFilterTags]);
 
+  const performSearch = useCallback(
+    async (page: number = 1, searchTitle: string, searchCategory: string, searchSortBy: "asc" | "desc") => {
+      setLoading(true);
+
+      const request = {
+        limit: 12,
+        skip: (page - 1) * 12,
+        textQuery: searchTitle.trim() || undefined,
+        categories: searchCategory && searchCategory !== "all" ? [searchCategory] : undefined,
+        sortBy: searchSortBy,
+      };
+
+      const result = await searchArticles(request);
+      if (result.ok) {
+        setArticles(result.data);
+        // If we got a full page (12 articles), there might be more pages
+        // For now, we'll estimate total based on current page and results
+        // If we have exactly 12 results, assume there are more pages
+        if (result.data.length === 12) {
+          setResultsCount((page - 1) * 12 + result.data.length + 1); // Estimate: at least one more
+        } else {
+          setResultsCount((page - 1) * 12 + result.data.length);
+        }
+        setSearchPerformed(true);
+      } else {
+        console.error("Search failed:", result.error);
+        setArticles([]);
+        setResultsCount(0);
+        setSearchPerformed(true);
+      }
+
+      setLoading(false);
+    },
+    [],
+  );
+
   const onSearch = async () => {
-    setLoading(true);
-    setSearchPerformed(true);
     setCurrentPage(1);
-
-    // Simulate API call - replace with actual API call
-    await new Promise((resolve) => setTimeout(resolve, 800));
-
-    // Mock results count - replace with actual API response
-    const mockCount = Math.floor(Math.random() * 50) + 1;
-    setResultsCount(mockCount);
-
-    setLoading(false);
+    await performSearch(1, title, category, sortBy);
   };
 
   const onReset = () => {
     setTitle("");
     setCategory("all");
+    setSortBy("desc");
     setSearchPerformed(false);
     setResultsCount(null);
     setCurrentPage(1);
+    setArticles([]);
     setKeys((k) => ({
       category: k.category + 1,
+      sort: k.sort + 1,
     }));
   };
 
@@ -110,29 +159,37 @@ export default function ArticleSearchPage() {
     }
   };
 
-  // Mock articles data - replace with actual API data
-  const mockArticles = useMemo(() => {
-    if (searchPerformed && !loading && resultsCount && resultsCount > 0) {
-      // Search results
-      return Array.from({ length: Math.min(resultsCount, 12) }, (_, i) => ({
-        id: i,
-        title: `Article Title ${i + 1}`,
-        subtitle: category !== "all" ? CATEGORY_LABEL[category] || category : "Science",
-        description: "A compelling description of this article that gives readers a sense of what to expect.",
-        imageUrl: `/succulent.png`,
-      }));
-    } else if (!searchPerformed) {
-      // Most recent articles (default view) - generate 24 articles for pagination demo
-      return Array.from({ length: 24 }, (_, i) => ({
-        id: i + 100,
-        title: `Most Recent Article ${i + 1}`,
-        subtitle: ["Science", "Technology", "Medicine", "Biology", "Physics", "Chemistry"][i % 6],
-        description: "A compelling description of this article that gives readers a sense of what to expect.",
-        imageUrl: `/succulent.png`,
-      }));
+  // Track previous filter values to detect changes
+  const prevFiltersRef = useRef({ title, category, sortBy });
+
+  // Fetch articles when page changes
+  useEffect(() => {
+    if (searchPerformed && currentPage > 0) {
+      performSearch(currentPage, title, category, sortBy);
     }
-    return [];
-  }, [searchPerformed, loading, resultsCount, category]);
+  }, [currentPage, performSearch, searchPerformed, title, category, sortBy]);
+
+  // Reset to page 1 when filters change (but not on initial mount)
+  useEffect(() => {
+    const filtersChanged =
+      prevFiltersRef.current.title !== title ||
+      prevFiltersRef.current.category !== category ||
+      prevFiltersRef.current.sortBy !== sortBy;
+
+    if (searchPerformed && filtersChanged && currentPage !== 1) {
+      setCurrentPage(1);
+    }
+
+    prevFiltersRef.current = { title, category, sortBy };
+  }, [title, category, sortBy, searchPerformed, currentPage]);
+
+  // Load initial articles on mount (most recent)
+  useEffect(() => {
+    if (!searchPerformed) {
+      performSearch(1, "", "all", "desc");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const hasActiveFilters = filterTags.length > 0;
   const showResults = searchPerformed && !loading;
@@ -221,16 +278,23 @@ export default function ArticleSearchPage() {
                           ))}
                         </DropdownInput>
                       </FlexChild>
-                      <FlexChild>
-                        <Text size={12} color="black" className="opacity-60 italic">
-                          More options coming soon
+                      <FlexChild className="flex-col gap-1 min-w-[160px] max-w-[200px]">
+                        <Text size={12} color="black" className="opacity-70">
+                          Sort By Date
                         </Text>
+                        <DropdownInput
+                          key={keys.sort}
+                          placeholder="Newest first"
+                          onChange={(value) => setSortBy(value as "asc" | "desc")}
+                        >
+                          <DropdownItem value="desc">Newest first</DropdownItem>
+                          <DropdownItem value="asc">Oldest first</DropdownItem>
+                        </DropdownInput>
                       </FlexChild>
                     </Flex>
                   </Flex>
                 </Box>
               )}
-
             </Box>
           </Box>
 
@@ -269,32 +333,24 @@ export default function ArticleSearchPage() {
           {(showResults || !searchPerformed) && (
             <Box className="mt-8">
               {/* Results Header */}
-              <Flex direction="row" className="justify-between items-center mb-6 flex-wrap gap-4">
-                <Box>
-                  <Text size={20} style="bold" color="black" className="mb-1">
-                    {searchPerformed ? "Search Results" : "Most Recent Articles"}
-                  </Text>
-                  {searchPerformed && resultsCount !== null && (
+              {resultsCount !== null && (
+                <Flex direction="row" className="justify-between items-center mb-6 flex-wrap gap-4">
+                  <Box>
                     <Text size={14} color="black" className="opacity-60">
                       {resultsCount} {resultsCount === 1 ? "article found" : "articles found"}
                     </Text>
-                  )}
-                  {!searchPerformed && (
-                    <Text size={14} color="black" className="opacity-60">
-                      Showing the most recently published articles
-                    </Text>
-                  )}
-                </Box>
-              </Flex>
+                  </Box>
+                </Flex>
+              )}
 
               {/* Results List */}
-              {mockArticles.length > 0 ? (
+              {articles.length > 0 ? (
                 <>
                   <Box className="flex flex-col gap-6 mb-8">
-                    {mockArticles.slice((currentPage - 1) * 12, currentPage * 12).map((article) => (
+                    {articles.map((article) => (
                       <Link
-                        key={article.id}
-                        href={`/issue/${article.id}/article/${article.title.toLowerCase().replace(/\s+/g, "-")}`}
+                        key={`${article.issueNumber}-${article.slug}`}
+                        href={`/issue/${article.issueNumber}/article/${article.slug}`}
                         className="block w-full"
                       >
                         <MediaCard
@@ -305,10 +361,10 @@ export default function ArticleSearchPage() {
                           title={article.title}
                           size="md"
                           shadow="none"
-                          subtitle={article.subtitle}
-                          description={article.description}
+                          subtitle={article.categories[0] || "Uncategorized"}
+                          description={truncateByWords(article.articleContent[0]?.content || "", 35)}
                           imageProps={{
-                            src: article.imageUrl,
+                            src: "/succulent.png",
                             alt: article.title,
                           }}
                         />
@@ -317,7 +373,7 @@ export default function ArticleSearchPage() {
                   </Box>
 
                   {/* Pagination */}
-                  {searchPerformed && resultsCount && resultsCount > 12 && (
+                  {resultsCount && resultsCount > 12 && (
                     <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
                       <PaginationBar
                         maxItems={Math.ceil(resultsCount / 12)}
@@ -325,17 +381,6 @@ export default function ArticleSearchPage() {
                         onClickFunctionGenerator={(index) => () => setCurrentPage(index)}
                         onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
                         onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
-                      />
-                    </Flex>
-                  )}
-                  {!searchPerformed && mockArticles.length > 12 && (
-                    <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
-                      <PaginationBar
-                        maxItems={Math.ceil(mockArticles.length / 12)}
-                        activeItem={currentPage}
-                        onClickFunctionGenerator={(index) => () => setCurrentPage(index)}
-                        onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                        onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(mockArticles.length / 12), p + 1))}
                       />
                     </Flex>
                   )}

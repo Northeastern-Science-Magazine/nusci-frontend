@@ -1,6 +1,8 @@
 "use server";
 
-import { api } from "./api";
+import { api, ApiResponse } from "./api";
+import { Article as ArticleType } from "@/lib/types/types";
+import { Categories } from "@/lib/types/types";
 
 export interface Article {
   id: string;
@@ -23,8 +25,7 @@ const FALLBACK_ARTICLES: Article[] = [
   {
     id: "featured-1",
     title: "Siberian Permafrost",
-    description:
-      "A photo-led story about the science (and spectacle) behind ice—built to read like a print spread.",
+    description: "A photo-led story about the science (and spectacle) behind ice—built to read like a print spread.",
     imageUrl: "/icy.png",
     subtitle: "Climate Science",
     slug: "/articles/siberian-permafrost",
@@ -32,8 +33,7 @@ const FALLBACK_ARTICLES: Article[] = [
   {
     id: "featured-2",
     title: "Chasing Totality",
-    description:
-      "A photo-led story about the science (and spectacle) behind eclipses—built to read like a print spread.",
+    description: "A photo-led story about the science (and spectacle) behind eclipses—built to read like a print spread.",
     imageUrl: "/succulent.png",
     subtitle: "Astronomy",
     slug: "/articles/chasing-totality",
@@ -41,8 +41,7 @@ const FALLBACK_ARTICLES: Article[] = [
   {
     id: "recent-1",
     title: "Urban Heat Islands, Explained",
-    description:
-      "How cities trap heat and what we can do about it—a deep dive into urban climate science.",
+    description: "How cities trap heat and what we can do about it—a deep dive into urban climate science.",
     imageUrl: "/london.png",
     subtitle: "Science + Society",
     slug: "/articles/urban-heat-islands",
@@ -50,8 +49,7 @@ const FALLBACK_ARTICLES: Article[] = [
   {
     id: "recent-2",
     title: "How Microbiomes Shape Our World",
-    description:
-      "Exploring the invisible ecosystems that influence everything from our health to our environment.",
+    description: "Exploring the invisible ecosystems that influence everything from our health to our environment.",
     imageUrl: "/moss.png",
     subtitle: "Research Spotlight",
     slug: "/articles/microbiomes",
@@ -67,8 +65,7 @@ const FALLBACK_ARTICLES: Article[] = [
   {
     id: "recent-4",
     title: "Why Science Needs Better Stories",
-    description:
-      "How narrative can bridge the gap between research and public understanding.",
+    description: "How narrative can bridge the gap between research and public understanding.",
     imageUrl: "/eclipse-image.png",
     subtitle: "Opinion",
     slug: "/articles/science-stories",
@@ -83,10 +80,7 @@ const FALLBACK_ARTICLES: Article[] = [
   },
 ];
 
-const FALLBACK_FEATURED_ARTICLES: Article[] = [
-  FALLBACK_ARTICLES[0],
-  FALLBACK_ARTICLES[1],
-];
+const FALLBACK_FEATURED_ARTICLES: Article[] = [FALLBACK_ARTICLES[0], FALLBACK_ARTICLES[1]];
 
 const FALLBACK_RECENT_ARTICLES: Article[] = [
   FALLBACK_ARTICLES[2],
@@ -100,40 +94,35 @@ const HARDCODED_MAGAZINES: MagazineIssue[] = [
   {
     id: "issue-60",
     issueNumber: 60,
-    thumbnailUrl:
-      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue60.png",
+    thumbnailUrl: "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue60.png",
     title: "Issue 60",
     date: "2024",
   },
   {
     id: "issue-59",
     issueNumber: 59,
-    thumbnailUrl:
-      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue59.png",
+    thumbnailUrl: "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue59.png",
     title: "Issue 59",
     date: "2024",
   },
   {
     id: "issue-58",
     issueNumber: 5,
-    thumbnailUrl:
-      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue58.png",
+    thumbnailUrl: "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue58.png",
     title: "Issue 58",
     date: "2024",
   },
   {
     id: "issue-57",
     issueNumber: 57,
-    thumbnailUrl:
-      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue57.png",
+    thumbnailUrl: "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue57.png",
     title: "Issue 57",
     date: "2024",
   },
   {
     id: "issue-56",
     issueNumber: 56,
-    thumbnailUrl:
-      "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue56.png",
+    thumbnailUrl: "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue56.png",
     title: "Issue 56",
     date: "2023",
   },
@@ -141,16 +130,11 @@ const HARDCODED_MAGAZINES: MagazineIssue[] = [
 
 export async function getRecentArticles(limit: number = 6): Promise<Article[]> {
   try {
-    const response = await api<any>(
-      "GET",
-      `/articles/search?limit=${limit}&sort=date&order=desc`,
-    );
+    const response = await api<any>("GET", `/articles/search?limit=${limit}&sort=date&order=desc`);
 
     if (!response.ok) {
       if (process.env.NODE_ENV === "development") {
-        console.warn(
-          "Articles search endpoint failed, using fallback recent articles",
-        );
+        console.warn("Articles search endpoint failed, using fallback recent articles");
       }
       return FALLBACK_RECENT_ARTICLES.slice(0, limit);
     }
@@ -168,15 +152,10 @@ export async function getRecentArticles(limit: number = 6): Promise<Article[]> {
 
 export async function getFeaturedArticles(): Promise<Article[]> {
   try {
-    const response = await api<any>(
-      "GET",
-      `/articles/search?limit=2&featured=true&sort=date&order=desc`,
-    );
+    const response = await api<any>("GET", `/articles/search?limit=2&featured=true&sort=date&order=desc`);
 
     if (!response.ok) {
-      console.warn(
-        "Featured articles search endpoint failed, using fallback featured articles",
-      );
+      console.warn("Featured articles search endpoint failed, using fallback featured articles");
       return FALLBACK_FEATURED_ARTICLES;
     }
 
@@ -193,4 +172,16 @@ export async function getFeaturedArticles(): Promise<Article[]> {
 
 export async function getMagazineIssues(): Promise<MagazineIssue[]> {
   return HARDCODED_MAGAZINES;
+}
+
+export interface ArticleSearchRequest {
+  limit?: number;
+  skip?: number;
+  textQuery?: string;
+  categories?: string[];
+  sortBy?: "asc" | "desc";
+}
+
+export async function searchArticles(request: ArticleSearchRequest): Promise<ApiResponse<ArticleType[]>> {
+  return api<ArticleType[]>("POST", "/articles/search", request);
 }

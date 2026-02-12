@@ -2,24 +2,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Icon from "./Icon";
 import type { IconProps } from "./variants";
 import React from "react";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
 const sizes: IconProps["size"][] = ["xs", "sm", "md", "lg", "xl"];
-const colors: IconProps["color"][] = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-];
+const colors = storyColors;
 
 const icons: IconProps["icon"][] = [
   "search",

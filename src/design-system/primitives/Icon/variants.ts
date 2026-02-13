@@ -20,6 +20,24 @@ import {
   Plus,
   Info,
   Camera,
+  Dna,
+  FlaskConical,
+  Brain,
+  Sprout,
+  Palette,
+  HeartPulse,
+  MapPin,
+  Calculator,
+  Mails,
+  Handshake,
+  ScrollText,
+  Move,
+  Vote,
+  BrainCog,
+  Rocket,
+  Cpu,
+  Globe,
+  BookText,
 } from "lucide-react";
 import { InstagramLogoIcon, LinkedInLogoIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
@@ -116,6 +134,24 @@ export const iconMap = {
   plus: Plus,
   info: Info,
   camera: Camera,
+  dna: Dna,
+  flask: FlaskConical,
+  palette: Palette,
+  sprout: Sprout,
+  heartPulse: HeartPulse,
+  mapPin: MapPin,
+  calculator: Calculator,
+  brain: Brain,
+  mails: Mails,
+  handShake: Handshake,
+  scroll: ScrollText,
+  move: Move,
+  vote: Vote,
+  brainCog: BrainCog,
+  rocket: Rocket,
+  cpu: Cpu,
+  globe: Globe,
+  book: BookText,
 };
 
 export type IconName = keyof typeof iconMap;
@@ -124,13 +160,7 @@ export type IconName = keyof typeof iconMap;
 export type IconSize = IconVariants["size"];
 
 /** Export IconProps as one type */
-export interface IconProps
-  extends IconVariants,
-    AnimationProps,
-    DisplayProps,
-    MarginProps,
-    PaddingProps,
-    PositionProps {
+export interface IconProps extends IconVariants, AnimationProps, DisplayProps, MarginProps, PaddingProps, PositionProps {
   icon: IconName;
   className?: string;
   onClick?: () => void;

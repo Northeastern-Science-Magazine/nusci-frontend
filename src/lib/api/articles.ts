@@ -2,7 +2,7 @@
 
 import { api, ApiResponse } from "./api";
 import { Article as ArticleType } from "@/lib/types/types";
-import { Categories } from "@/lib/types/types";
+import { Category } from "@/lib/types/types";
 
 export interface Article {
   id: string;
@@ -182,6 +182,15 @@ export interface ArticleSearchRequest {
   sortBy?: "asc" | "desc";
 }
 
-export async function searchArticles(request: ArticleSearchRequest): Promise<ApiResponse<ArticleType[]>> {
-  return api<ArticleType[]>("POST", "/articles/search", request);
+export interface ArticleSearchResponse {
+  results: ArticleType[];
+  total: number;
+}
+
+export async function searchArticles(request: ArticleSearchRequest): Promise<ApiResponse<ArticleSearchResponse>> {
+  return api<ArticleSearchResponse>("POST", "/articles/search", request);
+}
+
+export async function getArticleBySlug(slug: string): Promise<ApiResponse<ArticleType>> {
+  return api<ArticleType>("GET", `/articles/slug/${slug}`);
 }

@@ -1,11 +1,45 @@
 import React from "react";
-import { ArticleTemplateProps, articleTemplateVariants } from "./variants";
+import { ArticleTemplateProps, articleTemplateVariants, ContentBlock } from "./variants";
+import { ArticleContentType } from "@/lib/types/types";
 import clsx from "clsx";
 import Text from "@/primitives/Text";
 import Link from "@/primitives/Link";
 import Image from "@/primitives/Image";
 import Badge from "@/primitives/Badge";
 import { OverlayMedia, Overlay } from "@/components/MediaOverlay";
+
+// Convert ArticleContent to ContentBlock format
+function convertArticleContentToContentBlocks(articleContent: ArticleTemplateProps["articleContent"]): ContentBlock[] {
+  const blocks: ContentBlock[] = [];
+
+  articleContent.forEach((item) => {
+    if (item.contentType === "image") {
+      // Skip images in content blocks (handled separately as featured image)
+      return;
+    }
+
+    if (item.contentType === "pull_quote") {
+      blocks.push({
+        type: "quote",
+        content: item.content,
+      });
+      return;
+    }
+
+    // For body_paragraph, treat as paragraph with text segment
+    blocks.push({
+      type: "paragraph",
+      segments: [
+        {
+          type: "text",
+          content: item.content,
+        },
+      ],
+    });
+  });
+
+  return blocks;
+}
 
 export default function ArticleTemplate({
   title,
@@ -16,11 +50,13 @@ export default function ArticleTemplate({
   publishDate,
   featuredImage,
   imageCaption,
-  content,
+  articleContent,
   sources,
   className,
   ...variantProps
 }: ArticleTemplateProps) {
+  // Convert articleContent to ContentBlock format
+  const content = convertArticleContentToContentBlocks(articleContent);
   return (
     <>
       <article className={clsx(articleTemplateVariants(variantProps), className)}>
@@ -79,7 +115,7 @@ export default function ArticleTemplate({
       <div className="mb-2 rounded-lg overflow-hidden">
         <OverlayMedia>
           <Image {...featuredImage} />
-          <Overlay background="gradient-black" children={undefined} />
+          <Overlay background="gradient-black">{undefined}</Overlay>
         </OverlayMedia>
       </div>
 

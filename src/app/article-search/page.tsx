@@ -6,15 +6,18 @@ import Button from "@/primitives/Button";
 import TextInput from "@/design-system/primitives/TextInput";
 import { FlexChild, Flex } from "@/design-system/primitives/Flex";
 import Text from "@/design-system/primitives/Text";
-import MediaCard from "@/components/MediaCard";
+import MediaCard from "@/design-system/components/MediaCard";
 import { PaginationBar } from "@/design-system/components/PaginationBar";
 import Box from "@/design-system/primitives/Box";
 import { X, Search as SearchIcon, Loader2, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "@/design-system/primitives/Link";
 import { ParallaxScrollSection } from "@/design-system/components/ParallaxScrollSection";
 import Divider from "@/design-system/primitives/Divider";
-import { Categories, Article } from "@/lib/types/types";
+import { Category, Article, PhotographyStatus } from "@/lib/types/types";
 import { searchArticles } from "@/lib/api/articles";
+import categoryToIcon from "@/lib/helpers/categoryToIcon";
+import categoryToIconColor from "@/lib/helpers/categoryToIconColor";
+import { IconName } from "@/design-system/primitives/Icon";
 
 type FilterTag = {
   id: string;
@@ -22,7 +25,7 @@ type FilterTag = {
   type: "title" | "category" | "sort";
 };
 
-const CATEGORY_LABEL: Record<string, string> = Object.values(Categories).reduce(
+const CATEGORY_LABEL: Record<string, string> = Object.values(Category).reduce(
   (acc, category) => {
     acc[category] = category;
     return acc;
@@ -112,15 +115,8 @@ export default function ArticleSearchPage() {
 
       const result = await searchArticles(request);
       if (result.ok) {
-        setArticles(result.data);
-        // If we got a full page (12 articles), there might be more pages
-        // For now, we'll estimate total based on current page and results
-        // If we have exactly 12 results, assume there are more pages
-        if (result.data.length === 12) {
-          setResultsCount((page - 1) * 12 + result.data.length + 1); // Estimate: at least one more
-        } else {
-          setResultsCount((page - 1) * 12 + result.data.length);
-        }
+        setArticles(result.data.results);
+        setResultsCount(result.data.total);
         setSearchPerformed(true);
       } else {
         console.error("Search failed:", result.error);
@@ -377,30 +373,49 @@ export default function ArticleSearchPage() {
                       {articles.map((article) => (
                         <Link
                           key={`${article.issueNumber}-${article.slug}`}
-                          href={`/issue/${article.issueNumber}/article/${article.slug}`}
+                          href={`/${article.slug}`}
                           className="block w-full"
                         >
-                          <MediaCard
-                            className="w-full max-w-none"
-                            mediaType="image"
-                            mediaDirection="right"
-                            border="none"
-                            title={article.title}
-                            size="md"
-                            shadow="none"
-                            subtitle={article.categories[0] || "Uncategorized"}
-                            description={truncateByWords(article.articleContent[0]?.content || "", 35)}
-                            imageProps={{
-                              src: "/succulent.png",
-                              alt: article.title,
-                            }}
-                          />
+                          {article.photographyStatus === PhotographyStatus.NoPhoto ? (
+                            <MediaCard
+                              className="w-full max-w-none"
+                              mediaType="icon"
+                              mediaDirection="right"
+                              border="none"
+                              title={article.title}
+                              size="md"
+                              shadow="none"
+                              subtitle={article.categories[0] || "Uncategorized"}
+                              description={truncateByWords(article.articleContent[0]?.content || "", 35)}
+                              iconProps={{
+                                icon: categoryToIcon(article.categories[0] || "uncategorized") as IconName,
+                                size: 128,
+                                color: categoryToIconColor(article.categories[0] || "uncategorized"),
+                              }}
+                            />
+                          ) : (
+                            <MediaCard
+                              className="w-full max-w-none"
+                              mediaType="image"
+                              mediaDirection="right"
+                              border="none"
+                              title={article.title}
+                              size="md"
+                              shadow="none"
+                              subtitle={article.categories[0] || "Uncategorized"}
+                              description={truncateByWords(article.articleContent[0]?.content || "", 35)}
+                              imageProps={{
+                                src: "/succulent.png",
+                                alt: article.title,
+                              }}
+                            />
+                          )}
                         </Link>
                       ))}
                     </Box>
 
                     {/* Pagination */}
-                    {resultsCount && resultsCount > 12 && (
+                    {resultsCount !== null && resultsCount > 12 && (
                       <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
                         <PaginationBar
                           maxItems={Math.ceil(resultsCount / 12)}

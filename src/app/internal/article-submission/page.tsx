@@ -14,7 +14,7 @@ import { SourcesInput } from "./components/SourcesInput";
 import { Controller } from "react-hook-form";
 import ImageUpload from "@/design-system/components/ImageUpload";
 import ArticleInput from "./components/ArticleInput";
-import { Categories } from "@/lib/types/types";
+import { Category, ArticleSource } from "@/lib/types/types";
 
 /* IDEAS: 
     - Author selection: would be cool to have a dropdown that updates as you type system
@@ -30,7 +30,7 @@ type ArticleSubmissionFormValues = {
   content: string;
   pullQuote: string;
   image?: File;
-  sources: string[];
+  sources: ArticleSource[];
 };
 
 type FormProgress = {
@@ -61,8 +61,7 @@ const FormContent = () => {
   useEffect(() => {
     const updateProgress = () => {
       setProgress({
-        author:
-          !!watchedFields.author && watchedFields.author.trim().length > 0,
+        author: !!watchedFields.author && watchedFields.author.trim().length > 0,
         title: !!watchedFields.title && watchedFields.title.trim().length > 0,
         categories:
           Array.isArray(watchedFields.categories) &&
@@ -75,13 +74,12 @@ const FormContent = () => {
             .replace(/\u200B/g, "")
             .replace(/\s+/g, " ")
             .trim().length > 0,
-        pullQuote:
-          !!watchedFields.pullQuote &&
-          watchedFields.pullQuote.trim().length > 0,
+        pullQuote: !!watchedFields.pullQuote && watchedFields.pullQuote.trim().length > 0,
         sources:
           Array.isArray(watchedFields.sources) &&
           watchedFields.sources.length > 0 &&
-          watchedFields.sources[0]?.trim().length > 0,
+          watchedFields.sources[0]?.text?.trim().length > 0 &&
+          watchedFields.sources[0]?.href?.trim().length > 0,
       });
     };
     updateProgress();
@@ -91,34 +89,21 @@ const FormContent = () => {
     <Grid col span={3} gap={8}>
       <GridCol span={2}>
         <Box className="space-y-8 rounded-2xl bg-white p-8 shadow-xl ring-1 ring-black/5">
-          <Text
-            color="sage-green"
-            size={36}
-            style="bold"
-            className="mb-8 text-left"
-          >
+          <Text color="sage-green" size={36} style="bold" className="mb-8 text-left">
             Submit an Article
           </Text>
 
           {/* Author */}
           <div id="author" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="author">
-              <TextInput
-                placeholder={currentUser.name}
-                label="Author"
-                className="w-full"
-              />
+              <TextInput placeholder={currentUser.name} label="Author" className="w-full" />
             </FormField>
           </div>
 
           {/* Title */}
           <div id="title" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="title">
-              <TextInput
-                placeholder="Enter article title"
-                label="Title"
-                className="w-full"
-              />
+              <TextInput placeholder="Enter article title" label="Title" className="w-full" />
             </FormField>
           </div>
 
@@ -130,11 +115,7 @@ const FormContent = () => {
                 <div>
                   <label>{"Categories"}</label>
                   <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
-                    <Checkbox
-                      options= {Object.values(Categories)}
-                      value={field.value || []}
-                      onChange={field.onChange}
-                    />
+                    <Checkbox options={Object.values(Category)} value={field.value || []} onChange={field.onChange} />
                   </div>
                 </div>
               )}
@@ -151,13 +132,7 @@ const FormContent = () => {
           {/* Pull Quote */}
           <div id="pull-quote" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="pullQuote">
-              <TextInput
-                placeholder="Enter a pull quote"
-                label="Pull Quote"
-                className="w-full"
-                rows={3}
-                multiline={true}
-              />
+              <TextInput placeholder="Enter a pull quote" label="Pull Quote" className="w-full" rows={3} multiline={true} />
             </FormField>
           </div>
 
@@ -213,12 +188,7 @@ const FormContent = () => {
 
 // TODO: Implement actual submission logic
 const onSubmit = (data: ArticleSubmissionFormValues) => {
-  alert(
-    "Article submitted!" +
-      JSON.stringify(data) +
-      " image name: " +
-      data.image?.name,
-  );
+  alert("Article submitted!" + JSON.stringify(data) + " image name: " + data.image?.name);
 };
 
 /* PAGE EXPORT */

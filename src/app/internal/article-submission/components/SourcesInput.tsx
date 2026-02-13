@@ -6,10 +6,11 @@ import Icon from "@/design-system/primitives/Icon";
 import Button from "@/design-system/primitives/Button";
 import Text from "@/design-system/primitives/Text";
 import { Grid, GridCol } from "@/design-system/primitives/Grid";
+import { ArticleSource } from "@/lib/types/types";
 
 type SourcesInputProps = {
-  value?: string[];
-  onChange?: (sources: string[]) => void;
+  value?: ArticleSource[];
+  onChange?: (sources: ArticleSource[]) => void;
   label?: string;
   placeholder?: string;
 };
@@ -19,8 +20,8 @@ export function SourcesInput({
   onChange,
   label = "Sources",
 }: SourcesInputProps) {
-  const [sources, setSources] = useState<string[]>(
-    value.length > 0 ? value : [""],
+  const [sources, setSources] = useState<ArticleSource[]>(
+    value.length > 0 ? value : [{ text: "", href: "" }],
   );
 
   useEffect(() => {
@@ -29,15 +30,22 @@ export function SourcesInput({
     }
   }, [value]);
 
-  const handleSourceChange = (index: number, newValue: string) => {
+  const handleSourceTextChange = (index: number, newText: string) => {
     const updatedSources = [...sources];
-    updatedSources[index] = newValue;
+    updatedSources[index] = { ...updatedSources[index], text: newText };
+    setSources(updatedSources);
+    onChange?.(updatedSources);
+  };
+
+  const handleSourceHrefChange = (index: number, newHref: string) => {
+    const updatedSources = [...sources];
+    updatedSources[index] = { ...updatedSources[index], href: newHref };
     setSources(updatedSources);
     onChange?.(updatedSources);
   };
 
   const addSource = () => {
-    const updatedSources = [...sources, ""];
+    const updatedSources = [...sources, { text: "", href: "" }];
     setSources(updatedSources);
     onChange?.(updatedSources);
   };
@@ -59,18 +67,18 @@ export function SourcesInput({
             <Grid col span={2} gap={2}>
               <GridCol span={1}>
                 <TextInput
-                  value={source}
+                  value={source.text}
                   label=""
-                  onChange={(newValue) => handleSourceChange(index, newValue)}
+                  onChange={(newValue) => handleSourceTextChange(index, newValue)}
                   placeholder="Enter source title"
                   className="w-full"
                 />
               </GridCol>
               <GridCol span={1}>
                 <TextInput
-                  value={source}
+                  value={source.href}
                   label=""
-                  onChange={(newValue) => handleSourceChange(index, newValue)}
+                  onChange={(newValue) => handleSourceHrefChange(index, newValue)}
                   placeholder="Enter source URL or citation"
                   className="w-full"
                 />

@@ -7,7 +7,7 @@ import Link from "@/design-system/primitives/Link";
 import Image from "@/design-system/primitives/Image";
 import { DropdownInput, DropdownItem } from "@/design-system/primitives/DropdownInput";
 import Icon from "@/design-system/primitives/Icon";
-import { Categories } from "@/lib/types/types";
+import { Category } from "@/lib/types/types";
 
 interface HeaderProps {
   isLoggedIn?: boolean;
@@ -38,7 +38,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
 
   const navigationItems = [{ label: "Print Articles", href: "/articles" }];
 
-  const categories = Object.values(Categories);
+  const categories = Object.values(Category);
 
   return (
     <Box

@@ -111,11 +111,8 @@ export default function PrintMagazines() {
           size={width && width > breakpoints.laptop ? "lg" : "md"}
           visibleCount={width && width > breakpoints.laptop ? 7 : 3}
           initialIndex={0}
-          centerLink={(index) => {
-            const url = issueThumbnails[index];
-            const match = url.match(/\/([^/]+)\.png$/);
-            const issueId = match ? match[1] : "";
-            return `/issues/${issueId}`;
+          centerLink={() => {
+            return "https://northeasternsciencemagazine.github.io/nusci-issuu/";
           }}
         />
 

@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { getArticleBySlug } from "@/lib/api/articles";
-import { ArticleTemplate } from "@/design-system/components/ArticleWithImage";
-import { ArticleWithoutImage } from "@/design-system/components/ArticleWithoutImage";
+import { ArticleTemplate } from "@/design-system/components/ArticleTemplate";
 import { PhotographyStatus } from "@/lib/types/types";
 
 interface ArticlePageProps {
@@ -60,36 +59,29 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   // Check if article has an image (photographyStatus !== NoPhoto)
   const hasImage = article.photographyStatus !== PhotographyStatus.NoPhoto;
 
-  // Common props for both components
-  const commonProps = {
-    title: article.title,
-    author,
-    editor,
-    categories: article.categories,
-    //issueNumber, //issue number later when we can clean data and figure out where each one is
-    publishDate,
-    articleContent: article.articleContent,
-    sources: article.sources,
-  };
+  // Use first image from content if available and article has image status, otherwise use placeholder
+  const imageUrl = hasImage ? firstImageUrl || "/succulent.png" : undefined;
 
-  if (hasImage) {
-    // Render ArticleWithImage
-    // Use first image from content if available, otherwise use placeholder
-    const imageUrl = firstImageUrl || "/succulent.png";
-
-    return (
-      <ArticleTemplate
-        {...commonProps}
-        featuredImage={{
-          src: imageUrl,
-          alt: article.title,
-          width: "w-full",
-        }}
-        imageCaption={undefined} // TODO: Add image caption if available in article
-      />
-    );
-  } else {
-    // Render ArticleWithoutImage
-    return <ArticleWithoutImage {...commonProps} />;
-  }
+  return (
+    <ArticleTemplate
+      title={article.title}
+      author={author}
+      editor={editor}
+      categories={article.categories}
+      //issueNumber={issueNumber} //issue number later when we can clean data and figure out where each one is
+      publishDate={publishDate}
+      articleContent={article.articleContent}
+      sources={article.sources}
+      featuredImage={
+        imageUrl
+          ? {
+              src: imageUrl,
+              alt: article.title,
+              width: "w-full",
+            }
+          : undefined
+      }
+      imageCaption={undefined} // TODO: Add image caption if available in article
+    />
+  );
 }

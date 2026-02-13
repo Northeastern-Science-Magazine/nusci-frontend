@@ -33,7 +33,7 @@ export interface ArticleTemplateProps extends VariantProps<typeof articleTemplat
   categories?: string[];
   issueNumber?: string;
   publishDate: string;
-  featuredImage: ImageProps;
+  featuredImage?: ImageProps;
   imageCaption?: string;
   articleContent: ArticleContent[];
   sources?: ArticleSource[];

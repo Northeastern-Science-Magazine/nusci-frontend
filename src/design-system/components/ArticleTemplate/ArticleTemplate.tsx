@@ -112,20 +112,24 @@ export default function ArticleTemplate({
       </header>
 
       {/* Featured Image with Media Overlay */}
-      <div className="mb-2 rounded-lg overflow-hidden">
-        <OverlayMedia>
-          <Image {...featuredImage} />
-          <Overlay background="gradient-black">{undefined}</Overlay>
-        </OverlayMedia>
-      </div>
+      {featuredImage && (
+        <>
+          <div className="mb-2 rounded-lg overflow-hidden">
+            <OverlayMedia>
+              <Image {...featuredImage} />
+              <Overlay background="gradient-black">{undefined}</Overlay>
+            </OverlayMedia>
+          </div>
 
-      {/* Image Caption Below */}
-      {imageCaption && (
-        <div className="mb-8">
-          <Text size={14} style="italic" color="black">
-            {imageCaption}
-          </Text>
-        </div>
+          {/* Image Caption Below */}
+          {imageCaption && (
+            <div className="mb-8">
+              <Text size={14} style="italic" color="black">
+                {imageCaption}
+              </Text>
+            </div>
+          )}
+        </>
       )}
 
       {/* Article Content */}

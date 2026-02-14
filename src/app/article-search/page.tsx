@@ -371,11 +371,7 @@ export default function ArticleSearchPage() {
                   <>
                     <Box className="flex flex-col gap-6 mb-8">
                       {articles.map((article) => (
-                        <Link
-                          key={`${article.issueNumber}-${article.slug}`}
-                          href={`/${article.slug}`}
-                          className="block w-full"
-                        >
+                        <Link key={`${article.issueNumber}-${article.slug}`} href={`/${article.slug}`} className="block w-full">
                           {article.photographyStatus === PhotographyStatus.NoPhoto ? (
                             <MediaCard
                               className="w-full max-w-none"

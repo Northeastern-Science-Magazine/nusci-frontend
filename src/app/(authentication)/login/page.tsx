@@ -21,12 +21,9 @@ export default function LoginPage() {
     const result = await apiLogin(data);
     if (result.ok) {
       console.log("Login process happened");
-      
     } else {
       console.log("Login process failed");
-      console.log(result);
     }
-    console.log("Fin");
   };
 
   return (

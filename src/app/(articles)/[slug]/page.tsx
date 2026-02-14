@@ -31,9 +31,7 @@ function formatDate(date: Date | string): string {
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
-  console.log(slug);
   const result = await getArticleBySlug(slug);
-  console.log(result);
   if (!result.ok || !result.data) {
     notFound();
   }
@@ -47,7 +45,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const publishDate = formatDate(article.creationTime);
 
   // Get first author (or "Unknown" if no authors)
-  console.log(article);
   const author = article.authors?.length > 0 ? article.authors[0] : "NU Sci Magazine";
 
   // Get first editor if available

@@ -31,11 +31,7 @@ interface FeaturedArticlesProps {
   };
 }
 
-export default function FeaturedArticles({
-  featuredArticles,
-  recentArticles,
-  content,
-}: FeaturedArticlesProps) {
+export default function FeaturedArticles({ featuredArticles, recentArticles, content }: FeaturedArticlesProps) {
   const mainArticle1 = featuredArticles[0];
   const mainArticle2 = featuredArticles[1];
   const sidebarArticles = recentArticles.slice(0, 2);
@@ -51,7 +47,7 @@ export default function FeaturedArticles({
             </Text>
 
             <Link
-              href="/articles"
+              href="/article-search"
               className="group inline-flex items-center gap-2 border-b-2 border-black/20 pb-1 text-[14px] font-medium text-black/80 transition-all hover:border-black/40 hover:text-black"
             >
               {content.viewAllText}
@@ -67,20 +63,11 @@ export default function FeaturedArticles({
               {/* First Main Article */}
               {mainArticle1 && (
                 <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
-                  <Image
-                    src={mainArticle1.imageUrl}
-                    alt={mainArticle1.title}
-                    width="w-full"
-                    ratio={16 / 10}
-                  />
+                  <Image src={mainArticle1.imageUrl} alt={mainArticle1.title} width="w-full" ratio={16 / 10} />
                   <Overlay background="gradient-black">
                     <Box className="flex h-full w-full items-end">
                       <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
-                        <Text
-                          size={48}
-                          color="white"
-                          className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
-                        >
+                        <Text size={48} color="white" className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]">
                           {mainArticle1.title}
                         </Text>
                         <Text
@@ -92,11 +79,7 @@ export default function FeaturedArticles({
                         </Text>
                         <Box className="mt-6">
                           <Link href={mainArticle1.slug}>
-                            <Button
-                              className="inline-flex"
-                              color="marigold"
-                              size="lg"
-                            >
+                            <Button className="inline-flex" color="marigold" size="lg">
                               Read article
                             </Button>
                           </Link>
@@ -110,20 +93,11 @@ export default function FeaturedArticles({
               {/* Second Main Article */}
               {mainArticle2 && (
                 <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
-                  <Image
-                    src={mainArticle2.imageUrl}
-                    alt={mainArticle2.title}
-                    width="w-full"
-                    ratio={16 / 10}
-                  />
+                  <Image src={mainArticle2.imageUrl} alt={mainArticle2.title} width="w-full" ratio={16 / 10} />
                   <Overlay background="gradient-black">
                     <Box className="flex h-full w-full items-end">
                       <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
-                        <Text
-                          size={48}
-                          color="white"
-                          className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
-                        >
+                        <Text size={48} color="white" className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]">
                           {mainArticle2.title}
                         </Text>
                         <Text
@@ -135,11 +109,7 @@ export default function FeaturedArticles({
                         </Text>
                         <Box className="mt-6">
                           <Link href={mainArticle2.slug}>
-                            <Button
-                              className="inline-flex"
-                              color="marigold"
-                              size="lg"
-                            >
+                            <Button className="inline-flex" color="marigold" size="lg">
                               Read article
                             </Button>
                           </Link>

@@ -133,6 +133,7 @@ export default function ArticleSearchPage() {
 
   const onSearch = async () => {
     setCurrentPage(1);
+    console.log(category);
     await performSearch(1, title, category, sortBy);
   };
 

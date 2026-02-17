@@ -47,7 +47,9 @@ export const mediaCarouselEmptyStateVariants = tv({
   base: "p-8 text-center text-gray-500",
 });
 
-export type MediaCarouselVariants = VariantProps<typeof mediaCarouselRootVariants>;
+export type MediaCarouselVariants = VariantProps<
+  typeof mediaCarouselRootVariants
+>;
 export type MediaCarouselSize = NonNullable<MediaCarouselVariants["size"]>;
 
 export const mediaCarouselLayoutBySize: Record<
@@ -74,4 +76,6 @@ export interface MediaCarouselProps extends MediaCarouselVariants {
   /** Show left/right controls (in addition to clicking side panels). */
   showControls?: boolean;
   className?: string;
+  //** If the center link brings you somewhere**/
+  centerLink?: (index: number) => string;
 }

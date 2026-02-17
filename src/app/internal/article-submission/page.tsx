@@ -78,8 +78,7 @@ const FormContent = () => {
         sources:
           Array.isArray(watchedFields.sources) &&
           watchedFields.sources.length > 0 &&
-          watchedFields.sources[0]?.text?.trim().length > 0 &&
-          watchedFields.sources[0]?.href?.trim().length > 0,
+          (watchedFields.sources[0]?.href?.trim()?.length ?? 0) > 0,
       });
     };
     updateProgress();

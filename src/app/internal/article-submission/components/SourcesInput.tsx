@@ -7,7 +7,6 @@ import Button from "@/design-system/primitives/Button";
 import Text from "@/design-system/primitives/Text";
 import { Grid, GridCol } from "@/design-system/primitives/Grid";
 import { ArticleSource } from "@/lib/types/types";
-import { Grid, GridCol } from "@/design-system/primitives/Grid";
 
 type SourcesInputProps = {
   value?: ArticleSource[];

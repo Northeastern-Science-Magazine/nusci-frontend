@@ -30,29 +30,20 @@ export default function NotFound() {
         {/* 404 Number */}
         <div className="mb-8">
           <h1 className="text-1xl font-bold bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
-          The page you're looking for doesn't exist or has been moved.
+            The page you`&apos;`re looking for doesn`&apos;`t exist or has been moved.
           </h1>
         </div>
 
         {/* Main Message */}
         <div className="mb-8">
-          <p className="text-gray-500">
-            404 Error
-          </p>
+          <p className="text-gray-500">404 Error</p>
         </div>
 
         {/* Countdown Circle */}
         <div className="mb-8 flex justify-center">
           <div className="relative w-32 h-32">
             <svg className="w-full h-full transform -rotate-90">
-              <circle
-                cx="64"
-                cy="64"
-                r="60"
-                stroke="#e5e7eb"
-                strokeWidth="8"
-                fill="none"
-              />
+              <circle cx="64" cy="64" r="60" stroke="#e5e7eb" strokeWidth="8" fill="none" />
               <circle
                 cx="64"
                 cy="64"
@@ -83,12 +74,9 @@ export default function NotFound() {
 
         {/* CTA Buttons */}
         <div className="flex gap-4 justify-center">
-        <Link href={"/"}>
-          <Button>
-            Go Home Now
-          </Button>
-        </Link>
-
+          <Link href={"/"}>
+            <Button>Go Home Now</Button>
+          </Link>
         </div>
       </div>
     </main>

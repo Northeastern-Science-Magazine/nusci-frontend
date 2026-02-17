@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { getArticleBySlug } from "@/lib/api/articles";
 import { ArticleTemplate } from "@/design-system/components/ArticleTemplate";
-import { PhotographyStatus } from "@/lib/types/types";
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
@@ -53,11 +52,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   // Format issue number
   const issueNumber = `Issue ${article.issueNumber}`;
 
-  // Check if article has an image (photographyStatus !== NoPhoto)
-  const hasImage = article.photographyStatus !== PhotographyStatus.NoPhoto;
-
-  // Use first image from content if available and article has image status, otherwise use placeholder
-  const imageUrl = hasImage ? firstImageUrl || "/succulent.png" : undefined;
+  // Only use image if it actually exists in the content (no placeholder fallback)
+  const imageUrl = firstImageUrl;
 
   return (
     <ArticleTemplate

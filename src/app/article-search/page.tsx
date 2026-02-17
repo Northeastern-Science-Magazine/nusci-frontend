@@ -370,44 +370,47 @@ export default function ArticleSearchPage() {
                 {articles.length > 0 ? (
                   <>
                     <Box className="flex flex-col gap-6 mb-8">
-                      {articles.map((article) => (
-                        <Link key={`${article.issueNumber}-${article.slug}`} href={`/${article.slug}`} className="block w-full">
-                          {article.photographyStatus === PhotographyStatus.NoPhoto ? (
-                            <MediaCard
-                              className="w-full max-w-none"
-                              mediaType="icon"
-                              mediaDirection="right"
-                              border="none"
-                              title={article.title}
-                              size="md"
-                              shadow="none"
-                              subtitle={article.categories[0] || "Uncategorized"}
-                              description={truncateByWords(article.articleContent[0]?.content || "", 35)}
-                              iconProps={{
-                                icon: categoryToIcon(article.categories[0] || "uncategorized") as IconName,
-                                size: 128,
-                                color: categoryToIconColor(article.categories[0] || "uncategorized"),
-                              }}
-                            />
-                          ) : (
-                            <MediaCard
-                              className="w-full max-w-none"
-                              mediaType="image"
-                              mediaDirection="right"
-                              border="none"
-                              title={article.title}
-                              size="md"
-                              shadow="none"
-                              subtitle={article.categories[0] || "Uncategorized"}
-                              description={truncateByWords(article.articleContent[0]?.content || "", 35)}
-                              imageProps={{
-                                src: "/succulent.png",
-                                alt: article.title,
-                              }}
-                            />
-                          )}
-                        </Link>
-                      ))}
+                      {articles.map((article) => {
+                        const hasNoPhoto = String(article.photographyStatus) === String(PhotographyStatus.NoPhoto);
+                        return (
+                          <Link key={`${article.issueNumber}-${article.slug}`} href={`/${article.slug}`} className="block w-full">
+                            {hasNoPhoto ? (
+                              <MediaCard
+                                className="w-full max-w-none"
+                                mediaType="icon"
+                                mediaDirection="right"
+                                border="none"
+                                title={article.title}
+                                size="md"
+                                shadow="none"
+                                subtitle={article.categories[0] || "Uncategorized"}
+                                description={truncateByWords(article.articleContent[0]?.content || "", 35)}
+                                iconProps={{
+                                  icon: categoryToIcon(article.categories[0] || "uncategorized") as IconName,
+                                  size: 128,
+                                  color: categoryToIconColor(article.categories[0] || "uncategorized"),
+                                }}
+                              />
+                            ) : (
+                              <MediaCard
+                                className="w-full max-w-none"
+                                mediaType="image"
+                                mediaDirection="right"
+                                border="none"
+                                title={article.title}
+                                size="md"
+                                shadow="none"
+                                subtitle={article.categories[0] || "Uncategorized"}
+                                description={truncateByWords(article.articleContent[0]?.content || "", 35)}
+                                imageProps={{
+                                  src: "/succulent.png",
+                                  alt: article.title,
+                                }}
+                              />
+                            )}
+                          </Link>
+                        );
+                      })}
                     </Box>
 
                     {/* Pagination */}

@@ -7,16 +7,7 @@ import Text from "@/primitives/Text";
 import { mediaCardTextSizes } from "./variants";
 
 export const MediaCard = (props: MediaCardProps) => {
-  const {
-    title,
-    subtitle,
-    description,
-    mediaType,
-    size,
-    color,
-    children,
-    ...variantProps
-  } = props;
+  const { title, subtitle, description, mediaType, size, color, children, ...variantProps } = props;
 
   // Get text sizes from the configuration
   const textSizes = mediaCardTextSizes[size ?? "md"];

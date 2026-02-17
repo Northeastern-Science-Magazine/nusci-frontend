@@ -28,8 +28,7 @@ function useCountUp(target: number, durationMs: number) {
 
   useEffect(() => {
     const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
     if (prefersReducedMotion || durationMs <= 0) {
       setValue(target);
@@ -64,37 +63,21 @@ export default function Hero({ stats, content }: HeroProps) {
       <Overlay background="solid-black">
         <Box height="full" width="full">
           <Box className="mx-auto w-full max-w-6xl px-6 py-16 laptop:py-20">
-            <Text
-              size={12}
-              color="white"
-              spacing="xl"
-              opacity={90}
-              className="uppercase"
-            >
+            <Text size={12} color="white" spacing="xl" opacity={90} className="uppercase">
               {content.subtitle}
             </Text>
 
             <Box mt={4}>
-              <Text
-                size={96}
-                color="white"
-                spacing="sm"
-                className="leading-none max-laptop:text-[72px] max-sm:text-[56px]"
-              >
+              <Text size={96} color="white" spacing="sm" className="leading-none max-laptop:text-[72px] max-sm:text-[56px]">
                 {content.title}
               </Text>
-              <Text
-                size={30}
-                color="white"
-                opacity={95}
-                className="mt-4 max-w-2xl font-light max-sm:text-[20px]"
-              >
+              <Text size={30} color="white" opacity={95} className="mt-4 max-w-2xl font-light max-sm:text-[20px]">
                 {content.description}
               </Text>
             </Box>
 
             <Box mt={10} className="flex flex-wrap gap-3">
-              <Button className="inline-flex" color="aqua" size="lg">
+              <Button className="inline-flex" color="aqua" size="lg" onClick={() => (window.location.href = "/article-search")}>
                 {content.primaryButtonText}
               </Button>
               <Button
@@ -102,24 +85,16 @@ export default function Hero({ stats, content }: HeroProps) {
                 variant="outline"
                 color="white"
                 size="lg"
+                onClick={() => (window.location.href = "/teams/eboard")}
               >
                 {content.secondaryButtonText}
               </Button>
             </Box>
 
             {/* Stats Badges */}
-            <Box
-              mt={10}
-              className="grid grid-cols-3 gap-3 max-sm:grid-cols-1 mobile:invisible laptop:visible"
-            >
+            <Box mt={10} className="grid grid-cols-3 gap-3 max-sm:grid-cols-1 mobile:invisible laptop:visible">
               <Badge rounded="md" color="white" variant="blur" py={4}>
-                <Text
-                  size={12}
-                  color="white"
-                  spacing="lg"
-                  opacity={80}
-                  className="uppercase"
-                >
+                <Text size={12} color="white" spacing="lg" opacity={80} className="uppercase">
                   Legacy
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">
@@ -137,13 +112,7 @@ export default function Hero({ stats, content }: HeroProps) {
                 </Box>
               </Badge>
               <Badge rounded="md" color="white" variant="blur" py={4}>
-                <Text
-                  size={12}
-                  color="white"
-                  spacing="lg"
-                  opacity={80}
-                  className="uppercase"
-                >
+                <Text size={12} color="white" spacing="lg" opacity={80} className="uppercase">
                   Published
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">
@@ -161,13 +130,7 @@ export default function Hero({ stats, content }: HeroProps) {
                 </Box>
               </Badge>
               <Badge rounded="md" color="white" variant="blur" py={4}>
-                <Text
-                  size={12}
-                  color="white"
-                  spacing="lg"
-                  opacity={80}
-                  className="uppercase"
-                >
+                <Text size={12} color="white" spacing="lg" opacity={80} className="uppercase">
                   Reach
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">

@@ -1,12 +1,7 @@
-import {
-  TeamMemberProps,
-  teamMemberVariants,
-  teamMemberTextSizes,
-  teamMemberAvatarSizes,
-} from "./variants";
+import { TeamMemberProps, teamMemberVariants, teamMemberTextSizes, teamMemberAvatarSizes } from "./variants";
 import Box from "@/primitives/Box";
 import { Avatar } from "@/primitives/Avatar/Avatar";
-import Text from "@/primitives/Text";
+import Text, { TextProps } from "@/primitives/Text";
 import { Badge } from "@/primitives/Badge/Badge";
 import Icon from "@/primitives/Icon";
 import Link from "@/primitives/Link";
@@ -31,11 +26,8 @@ export const TeamMember = (props: TeamMemberProps) => {
   const avatarSize = teamMemberAvatarSizes[size ?? "md"];
 
   return (
-    <Link
-      href={`${profileBaseUrl}/${email.split("@")[0]}`}
-      newWindow={false}
-      className={teamMemberVariants(props)}
-    >
+    <Link href={``} newWindow={false} className={teamMemberVariants(props)}>
+      {/*<Link href={`${profileBaseUrl}/${email.split("@")[0]}`} newWindow={false} className={teamMemberVariants(props)}>*/}
       <Box className="flex items-center gap-4">
         <Avatar
           src={avatarUrl}
@@ -81,12 +73,12 @@ export const TeamMember = (props: TeamMemberProps) => {
 
       {children}
 
-      <Box className="mt-auto" />
+      <Box className="mt-auto"> </Box>
 
       {email && (
         <Box className="flex items-center gap-2 pt-2 border-t border-black/20">
           <Icon icon="email" size="sm" color="black" />
-          <Text size={textSizes.email} className="text-inherit">
+          <Text size={textSizes.email as TextProps["size"]} className="text-inherit">
             {email}
           </Text>
         </Box>

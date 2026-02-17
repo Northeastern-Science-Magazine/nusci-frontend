@@ -30,7 +30,7 @@ export default function NotFound() {
         {/* 404 Number */}
         <div className="mb-8">
           <h1 className="text-1xl font-bold bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
-            The page you`&apos;`re looking for doesn`&apos;`t exist or has been moved.
+            The page you&apos;re looking for doesn&apos;t exist or has been moved.
           </h1>
         </div>
 

@@ -153,6 +153,47 @@ export const Ratios: Story = {
   ),
 };
 
+export const IconVariant: Story = {
+  render: () => {
+    const iconExamples = [
+      { icon: "star" as const, size: 128 as const, color: "purple" as const },
+      { icon: "bookmark" as const, size: 128 as const, color: "aqua" as const },
+      { icon: "share" as const, size: 128 as const, color: "white" as const },
+      { icon: "dna" as const, size: 128 as const, color: "forest-green" as const },
+      { icon: "flask" as const, size: 128 as const, color: "marigold" as const },
+      { icon: "brain" as const, size: 128 as const, color: "pink" as const },
+    ];
+
+    return (
+      <div className="flex flex-col gap-8">
+        {iconExamples.map((iconExample, index) => (
+          <OverlayMedia
+            key={index}
+            className="w-[300px] aspect-square"
+            iconProps={{
+              icon: iconExample.icon,
+              size: iconExample.size,
+              color: iconExample.color,
+            }}
+          >
+            {null}
+            <Overlay background="gradient-black">
+              <div className="flex flex-col justify-end h-full p-4">
+                <Text color="white" style="bold" size={20}>
+                  Icon Variant Example {index + 1}
+                </Text>
+                <Text color="white" size={14}>
+                  Icon: {iconExample.icon}
+                </Text>
+              </div>
+            </Overlay>
+          </OverlayMedia>
+        ))}
+      </div>
+    );
+  },
+};
+
 export const Gallery: Story = {
   render: () => {
     const overlays = [

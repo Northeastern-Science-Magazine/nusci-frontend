@@ -50,7 +50,7 @@ export default async function Homepage() {
   try {
     const [magazines, recentArticles, featuredArticles] = await Promise.all([
       getMagazineIssues(),
-      getRecentArticles(),
+      getRecentArticles(7),
       getFeaturedArticles(),
     ]);
 

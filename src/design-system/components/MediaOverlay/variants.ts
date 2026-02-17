@@ -1,6 +1,7 @@
 import { tv, type VariantProps } from "tailwind-variants";
 import React from "react";
 import { ImageProps } from "@/primitives/Image";
+import { IconName, IconVariants, IconSize } from "@/primitives/Icon/variants";
 
 export const overlayVariants = tv({
   base: "",
@@ -52,10 +53,15 @@ export const mediaOverlayVariants = tv({
 
 type OverlayElement = React.ReactElement<OverlayProps>;
 type ImageElement = React.ReactElement<ImageProps>;
-export type MediaOverlayChildren = [ImageElement, OverlayElement];
+export type MediaOverlayChildren = [ImageElement | null, OverlayElement];
 
 export interface MediaOverlayProps extends VariantProps<typeof mediaOverlayVariants> {
   className?: string;
   onClick?: () => void;
   children: MediaOverlayChildren;
+  iconProps?: {
+    icon: IconName;
+    size?: IconSize;
+    color?: IconVariants["color"];
+  };
 }

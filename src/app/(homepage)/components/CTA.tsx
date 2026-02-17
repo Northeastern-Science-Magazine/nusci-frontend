@@ -26,27 +26,14 @@ export default function CTA({
   return (
     <Box py={16} className="bg-white">
       <OverlayMedia className="mx-auto w-full max-w-6xl overflow-hidden rounded-3xl">
-        <Image
-          src={backgroundImageSrc}
-          alt={backgroundImageAlt}
-          width="w-full"
-          ratio={1920 / 700}
-        />
+        <Image src={backgroundImageSrc} alt={backgroundImageAlt} width="w-full" ratio={1920 / 700} />
         <Overlay background="gradient-black">
           <Box className="flex h-full w-full items-end">
             <Box className="w-full px-6 pb-10 pt-24 laptop:px-10 laptop:pb-12">
-              <Text
-                size={36}
-                color="white"
-                className="tracking-tight max-sm:text-[30px]"
-              >
+              <Text size={36} color="white" className="tracking-tight max-sm:text-[30px]">
                 {title}
               </Text>
-              <Text
-                size={16}
-                color="white"
-                className="mt-3 max-w-2xl font-light opacity-95"
-              >
+              <Text size={16} color="white" className="mt-3 max-w-2xl font-light opacity-95">
                 {description}
               </Text>
               <Box className="mt-6 flex flex-wrap gap-3">
@@ -54,7 +41,7 @@ export default function CTA({
                   className="inline-flex"
                   color="aqua-light"
                   size="lg"
-                  onClick={() => {}}
+                  onClick={() => (window.location.href = "/teams/eboard")}
                 >
                   {primaryButtonText}
                 </Button>
@@ -63,7 +50,11 @@ export default function CTA({
                   variant="outline"
                   color="white"
                   size="lg"
-                  onClick={() => {}}
+                  onClick={() =>
+                    (window.location.href = `mailto:northeasternsciencemagazine@gmail.com?subject=${encodeURIComponent(
+                      "I'm Interested in Joining NU Sci!",
+                    )}`)
+                  }
                 >
                   {secondaryButtonText}
                 </Button>

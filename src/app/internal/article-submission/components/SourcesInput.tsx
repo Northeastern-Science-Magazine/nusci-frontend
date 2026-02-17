@@ -7,6 +7,7 @@ import Button from "@/design-system/primitives/Button";
 import Text from "@/design-system/primitives/Text";
 import { Grid, GridCol } from "@/design-system/primitives/Grid";
 import { ArticleSource } from "@/lib/types/types";
+import { Grid, GridCol } from "@/design-system/primitives/Grid";
 
 type SourcesInputProps = {
   value?: ArticleSource[];
@@ -15,14 +16,8 @@ type SourcesInputProps = {
   placeholder?: string;
 };
 
-export function SourcesInput({
-  value = [],
-  onChange,
-  label = "Sources",
-}: SourcesInputProps) {
-  const [sources, setSources] = useState<ArticleSource[]>(
-    value.length > 0 ? value : [{ text: "", href: "" }],
-  );
+export function SourcesInput({ value = [], onChange, label = "Sources" }: SourcesInputProps) {
+  const [sources, setSources] = useState<ArticleSource[]>(value.length > 0 ? value : [{ text: "", href: "" }]);
 
   useEffect(() => {
     if (value && value.length > 0) {
@@ -86,23 +81,13 @@ export function SourcesInput({
             </Grid>
           </div>
           {sources.length > 1 && (
-            <Button
-              onClick={() => removeSource(index)}
-              aria-label="Remove source"
-              variant="outline"
-              color="red"
-            >
+            <Button onClick={() => removeSource(index)} aria-label="Remove source" variant="outline" color="red">
               <Icon icon="trash" size="sm" color="red" />
             </Button>
           )}
         </div>
       ))}
-      <Button
-        onClick={addSource}
-        className="flex w-full items-center justify-center gap-2"
-        variant="outline"
-        color="sage-green"
-      >
+      <Button onClick={addSource} className="flex w-full items-center justify-center gap-2" variant="outline" color="sage-green">
         <div className="flex items-center gap-2">
           <Icon icon="plus" size="md" />
           <Text>Add Source</Text>

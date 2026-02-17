@@ -40,6 +40,7 @@ export const overlayVariants = tv({
 });
 
 export interface OverlayProps extends VariantProps<typeof overlayVariants> {
+  className?: string;
   children: React.ReactNode;
 }
 

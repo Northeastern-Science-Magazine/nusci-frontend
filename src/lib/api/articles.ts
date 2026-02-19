@@ -10,6 +10,7 @@ export interface Article {
   description: string;
   imageUrl: string;
   subtitle?: string;
+  category?: string;
   slug: string;
 }
 
@@ -128,9 +129,42 @@ const HARDCODED_MAGAZINES: MagazineIssue[] = [
   },
 ];
 
+// Extract the first image URL from articleContent
+function extractFirstImageUrl(articleContent: Array<{ contentType: string; content: string }>): string | undefined {
+  const imageItem = articleContent.find((item) => item.contentType === "image");
+  return imageItem?.content;
+}
+
+// Extract description from first body paragraph
+function extractDescription(articleContent: Array<{ contentType: string; content: string }>): string {
+  const firstParagraph = articleContent.find((item) => item.contentType === "body_paragraph");
+  return firstParagraph?.content || "";
+}
+
+// Map ArticleType to Article interface
+function mapArticleTypeToArticle(articleType: ArticleType): Article {
+  const imageUrl = extractFirstImageUrl(articleType.articleContent) || "";
+  const description = extractDescription(articleType.articleContent);
+  const subtitle = articleType.categories?.[0] || undefined;
+  const category = articleType.categories?.[0] || undefined;
+
+  return {
+    id: articleType.slug,
+    title: articleType.title,
+    description,
+    imageUrl,
+    subtitle,
+    category,
+    slug: `/${articleType.slug}`,
+  };
+}
+
 export async function getRecentArticles(limit: number = 6): Promise<Article[]> {
   try {
-    const response = await api<any>("GET", `/articles/search?limit=${limit}&sort=date&order=desc`);
+    const response = await searchArticles({
+      limit,
+      sortBy: "desc",
+    });
 
     if (!response.ok) {
       if (process.env.NODE_ENV === "development") {
@@ -139,8 +173,8 @@ export async function getRecentArticles(limit: number = 6): Promise<Article[]> {
       return FALLBACK_RECENT_ARTICLES.slice(0, limit);
     }
 
-    if (Array.isArray(response.data) && response.data.length > 0) {
-      return response.data;
+    if (Array.isArray(response.data.results) && response.data.results.length > 0) {
+      return response.data.results.map(mapArticleTypeToArticle);
     }
 
     return FALLBACK_RECENT_ARTICLES.slice(0, limit);

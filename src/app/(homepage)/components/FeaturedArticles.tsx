@@ -31,7 +31,11 @@ interface FeaturedArticlesProps {
   };
 }
 
-export default function FeaturedArticles({ featuredArticles, recentArticles, content }: FeaturedArticlesProps) {
+export default function FeaturedArticles({
+  featuredArticles,
+  recentArticles,
+  content,
+}: FeaturedArticlesProps) {
   const mainArticle1 = featuredArticles[0];
   const mainArticle2 = featuredArticles[1];
   const sidebarArticles = recentArticles.slice(0, 2);
@@ -63,11 +67,20 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
               {/* First Main Article */}
               {mainArticle1 && (
                 <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
-                  <Image src={mainArticle1.imageUrl} alt={mainArticle1.title} width="w-full" ratio={16 / 10} />
+                  <Image
+                    src={mainArticle1.imageUrl}
+                    alt={mainArticle1.title}
+                    width="w-full"
+                    ratio={16 / 10}
+                  />
                   <Overlay background="gradient-black">
                     <Box className="flex h-full w-full items-end">
                       <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
-                        <Text size={48} color="white" className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]">
+                        <Text
+                          size={48}
+                          color="white"
+                          className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
+                        >
                           {mainArticle1.title}
                         </Text>
                         <Text
@@ -79,7 +92,11 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                         </Text>
                         <Box className="mt-6">
                           <Link href={mainArticle1.slug}>
-                            <Button className="inline-flex" color="marigold" size="lg">
+                            <Button
+                              className="inline-flex"
+                              color="marigold"
+                              size="lg"
+                            >
                               Read article
                             </Button>
                           </Link>
@@ -93,11 +110,20 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
               {/* Second Main Article */}
               {mainArticle2 && (
                 <OverlayMedia className="overflow-hidden border-2 border-black/10 shadow-lg">
-                  <Image src={mainArticle2.imageUrl} alt={mainArticle2.title} width="w-full" ratio={16 / 10} />
+                  <Image
+                    src={mainArticle2.imageUrl}
+                    alt={mainArticle2.title}
+                    width="w-full"
+                    ratio={16 / 10}
+                  />
                   <Overlay background="gradient-black">
                     <Box className="flex h-full w-full items-end">
                       <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
-                        <Text size={48} color="white" className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]">
+                        <Text
+                          size={48}
+                          color="white"
+                          className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
+                        >
                           {mainArticle2.title}
                         </Text>
                         <Text
@@ -109,7 +135,11 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                         </Text>
                         <Box className="mt-6">
                           <Link href={mainArticle2.slug}>
-                            <Button className="inline-flex" color="marigold" size="lg">
+                            <Button
+                              className="inline-flex"
+                              color="marigold"
+                              size="lg"
+                            >
                               Read article
                             </Button>
                           </Link>
@@ -124,6 +154,32 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
             <div className="laptop:col-span-4">
               <Box className="space-y-6 border-l-2 border-black/10 pl-6 laptop:pl-8">
                 {sidebarArticles.map((article) => (
+                  <Link href={article.slug}>
+                    <MediaCard
+                      key={article.id}
+                      mediaType="image"
+                      imageProps={{ src: article.imageUrl, alt: article.title }}
+                      subtitle={article.subtitle || "Article"}
+                      title={article.title}
+                      description={article.description}
+                      mediaDirection="top"
+                      size="sm"
+                      rounded="none"
+                      shadow="none"
+                      color="white"
+                      className="w-full max-w-none border-b border-black/10 pb-6"
+                    />
+                  </Link>
+                ))}
+              </Box>
+            </div>
+          </Box>
+
+          {/* Secondary Articles Grid - Newspaper Style */}
+          <div className="mt-12 border-t-2 border-black/10 pt-12">
+            <Box className="grid gap-6 laptop:grid-cols-3">
+              {gridArticles.map((article) => (
+                <Link href={article.slug}>
                   <MediaCard
                     key={article.id}
                     mediaType="image"
@@ -136,31 +192,9 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                     rounded="none"
                     shadow="none"
                     color="white"
-                    className="w-full max-w-none border-b border-black/10 pb-6"
+                    className="w-full max-w-none border border-black/10"
                   />
-                ))}
-              </Box>
-            </div>
-          </Box>
-
-          {/* Secondary Articles Grid - Newspaper Style */}
-          <div className="mt-12 border-t-2 border-black/10 pt-12">
-            <Box className="grid gap-6 laptop:grid-cols-3">
-              {gridArticles.map((article) => (
-                <MediaCard
-                  key={article.id}
-                  mediaType="image"
-                  imageProps={{ src: article.imageUrl, alt: article.title }}
-                  subtitle={article.subtitle || "Article"}
-                  title={article.title}
-                  description={article.description}
-                  mediaDirection="top"
-                  size="sm"
-                  rounded="none"
-                  shadow="none"
-                  color="white"
-                  className="w-full max-w-none border border-black/10"
-                />
+                </Link>
               ))}
             </Box>
           </div>

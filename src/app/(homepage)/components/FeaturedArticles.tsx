@@ -173,6 +173,7 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
               <Box className="space-y-6 border-l-2 border-black/10 pl-6 laptop:pl-8">
                 {sidebarArticles.map((article) =>
                   article.imageUrl ? (
+                    <Link href={article.slug}>
                     <MediaCard
                       key={article.id}
                       mediaType="image"
@@ -187,7 +188,9 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                       color="white"
                       className="w-full max-w-none border-b border-black/10 pb-6"
                     />
+                  </Link>
                   ) : (
+                    <Link href={article.slug}>
                     <MediaCard
                       key={article.id}
                       mediaType="icon"
@@ -206,6 +209,7 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                       color="white"
                       className="w-full max-w-none border-b border-black/10 pb-6"
                     />
+                 </Link>
                   ),
                 )}
               </Box>
@@ -217,6 +221,7 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
             <Box className="grid gap-6 laptop:grid-cols-3">
               {gridArticles.map((article) =>
                 article.imageUrl ? (
+                  <Link href={article.slug}>
                   <MediaCard
                     key={article.id}
                     mediaType="image"
@@ -231,7 +236,9 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                     color="white"
                     className="w-full max-w-none border border-black/10"
                   />
+                  </Link>
                 ) : (
+                  <Link href={article.slug}>
                   <MediaCard
                     key={article.id}
                     mediaType="icon"
@@ -250,6 +257,7 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                     color="white"
                     className="w-full max-w-none border border-black/10"
                   />
+                  </Link>
                 ),
               )}
             </Box>

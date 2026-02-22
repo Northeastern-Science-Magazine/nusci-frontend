@@ -67,7 +67,7 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
     <>
       {/* Banner */}
       <Box className="relative w-full h-[300px] overflow-hidden">
-        <Image src={bannerUrl} alt="Banner" className="w-full h-full object-cover" />
+        <img src={bannerUrl} alt="Banner" className="w-full h-full object-cover" />
       </Box>
 
       {/* Header: Avatar, Name and Role */}

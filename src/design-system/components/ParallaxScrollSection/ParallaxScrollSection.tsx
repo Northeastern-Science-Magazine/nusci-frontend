@@ -51,7 +51,7 @@ export function ParallaxScrollSection({
       <div ref={dividerRef} className="parallax-container relative w-full overflow-hidden">
         <motion.div style={{ y: imageY }} className="parallax-image absolute top-[-25%] left-0 w-full h-[150%]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <Image src={imageSrc} alt={imageAlt} className="absolute inset-0 w-full h-full object-cover object-center" />
+          <img src={imageSrc} alt={imageAlt} className="absolute inset-0 w-full h-full object-cover object-center" />
         </motion.div>
       </div>
 

@@ -3,7 +3,7 @@ import { MediaCard } from "./MediaCard";
 import React from "react";
 
 const mediaDirections = ["right", "left", "top", "bottom"] as const;
-const mediaTypes = ["image", "video"] as const;
+const mediaTypes = ["image", "video", "icon"] as const;
 const sizes = ["sm", "md", "lg"] as const;
 const roundedOptions = ["rounded", "none"] as const;
 const shadow = ["shadow", "none"] as const;
@@ -475,4 +475,21 @@ export const OpacityVariants: Story = {
       </div>
     </div>
   ),
+};
+
+// Icon Variant
+export const IconVariant: Story = {
+  args: {
+    mediaType: "icon",
+    mediaDirection: "right",
+    size: "md",
+    title: "Icon Card",
+    subtitle: "Feature Highlight",
+    description: sampleDescription,
+    iconProps: {
+      icon: "star",
+      size: 256,
+      color: "purple",
+    },
+  },
 };

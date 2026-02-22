@@ -18,6 +18,26 @@ import {
   Menu,
   X,
   Plus,
+  Info,
+  Camera,
+  Dna,
+  FlaskConical,
+  Brain,
+  Sprout,
+  Palette,
+  HeartPulse,
+  MapPin,
+  Calculator,
+  Mails,
+  Handshake,
+  ScrollText,
+  Move,
+  Vote,
+  BrainCog,
+  Rocket,
+  Cpu,
+  Globe,
+  BookText,
   Check,
 } from "lucide-react";
 import { InstagramLogoIcon, LinkedInLogoIcon, Cross2Icon } from "@radix-ui/react-icons";
@@ -26,7 +46,6 @@ import { DisplayProps, displayVariants } from "@/design-system/utilities/props/D
 import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
 import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
 import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
-import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
 import clsx from "clsx";
 
 export const iconVariants = tv({
@@ -38,6 +57,30 @@ export const iconVariants = tv({
       md: "w-6 h-6",
       lg: "w-7 h-7",
       xl: "w-8 h-8",
+      4: "w-[4px] h-[4px]",
+      8: "w-[8px] h-[8px]",
+      12: "w-[12px] h-[12px]",
+      14: "w-[14px] h-[14px]",
+      16: "w-[16px] h-[16px]",
+      18: "w-[18px] h-[18px]",
+      20: "w-[20px] h-[20px]",
+      24: "w-[24px] h-[24px]",
+      30: "w-[30px] h-[30px]",
+      36: "w-[36px] h-[36px]",
+      48: "w-[48px] h-[48px]",
+      60: "w-[60px] h-[60px]",
+      72: "w-[72px] h-[72px]",
+      96: "w-[96px] h-[96px]",
+      128: "w-[128px] h-[128px]",
+      256: "w-[256px] h-[256px]",
+      324: "w-[324px] h-[324px]",
+      400: "w-[400px] h-[400px]",
+      500: "w-[500px] h-[500px]",
+      600: "w-[600px] h-[600px]",
+      700: "w-[700px] h-[700px]",
+      800: "w-[800px] h-[800px]",
+      900: "w-[900px] h-[900px]",
+      1000: "w-[1000px] h-[1000px]",
     },
     color: {
       black: "text-black",
@@ -90,20 +133,36 @@ export const iconMap = {
   menu: Menu,
   x: X,
   plus: Plus,
+  info: Info,
+  camera: Camera,
+  dna: Dna,
+  flask: FlaskConical,
+  palette: Palette,
+  sprout: Sprout,
+  heartPulse: HeartPulse,
+  mapPin: MapPin,
+  calculator: Calculator,
+  brain: Brain,
+  mails: Mails,
+  handShake: Handshake,
+  scroll: ScrollText,
+  move: Move,
+  vote: Vote,
+  brainCog: BrainCog,
+  rocket: Rocket,
+  cpu: Cpu,
+  globe: Globe,
+  book: BookText,
   check: Check,
 };
 
 export type IconName = keyof typeof iconMap;
 
+/** Size type limited to Tailwind variant values */
+export type IconSize = IconVariants["size"];
+
 /** Export IconProps as one type */
-export interface IconProps
-  extends IconVariants,
-    AnimationProps,
-    DisplayProps,
-    MarginProps,
-    PaddingProps,
-    PositionProps,
-    SizeProps {
+export interface IconProps extends IconVariants, AnimationProps, DisplayProps, MarginProps, PaddingProps, PositionProps {
   icon: IconName;
   className?: string;
   onClick?: () => void;
@@ -117,6 +176,5 @@ export const iconVariantsCN = (variantProps: VariantProps<any>, className?: stri
     marginVariants(variantProps),
     paddingVariants(variantProps),
     positionVariants(variantProps),
-    sizeVariants(variantProps),
-    className
+    className,
   );

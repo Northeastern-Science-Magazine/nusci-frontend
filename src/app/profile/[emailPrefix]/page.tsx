@@ -6,6 +6,7 @@ import { Box } from "@/design-system/primitives/Box/Box";
 import MediaCard from "@/design-system/components/MediaCard";
 import { notFound } from "next/navigation";
 import { Roles } from "@/lib/types/types";
+import Image from "@/design-system/primitives/Image"
 
 interface ProfileData {
   name: string;
@@ -66,7 +67,7 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
     <>
       {/* Banner */}
       <Box className="relative w-full h-[300px] overflow-hidden">
-        <img src={bannerUrl} alt="Banner" className="w-full h-full object-cover" />
+        <Image src={bannerUrl} alt="Banner" className="w-full h-full object-cover" />
       </Box>
 
       {/* Header: Avatar, Name and Role */}

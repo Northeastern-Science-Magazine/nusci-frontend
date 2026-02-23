@@ -136,20 +136,20 @@ export const PreselectedGallery: Story = {
 
         <div>
           <h3 className="text-lg font-semibold mb-4">Multi Select (Preselected)</h3>
-          <Dropdown options={FRUITS} multiSelect={true} defaultValue={["apple", "banana"]} placeholder="Select fruits..." />
+          <Dropdown options={FRUITS} multiSelect defaultValue={["apple", "banana"]} placeholder="Select fruits..." />
         </div>
 
         <div>
           <h3 className="text-lg font-semibold mb-4">Typeahead Single Select (Preselected)</h3>
-          <Dropdown options={STATES} typeahead={true} defaultValue="ca" placeholder="Search for a state..." />
+          <Dropdown options={STATES} typeahead defaultValue="ca" placeholder="Search for a state..." />
         </div>
 
         <div>
           <h3 className="text-lg font-semibold mb-4">Typeahead Multi Select (Preselected)</h3>
           <Dropdown
             options={STATES}
-            multiSelect={true}
-            typeahead={true}
+            multiSelect
+            typeahead
             defaultValue={["ca", "ny"]}
             placeholder="Search and select states..."
           />

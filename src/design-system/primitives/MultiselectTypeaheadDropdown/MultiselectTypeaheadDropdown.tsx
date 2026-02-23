@@ -1,292 +1,220 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import clsx from "clsx";
+import Divider from "../Divider";
 import Icon from "../Icon";
-import { MultiselectTypeaheadDropdownProps, multiselectTypeaheadDropdownVariantsCN } from "./variants";
 
-/**
- * Dropdown
- * Multiselect Dropdown
- *
- * Typeahead Dropdown
- * Multiselect Typeahead Dropdown
- */
+/* ============================================================
+   Types
+   ============================================================ */
 
-const MAX_VISIBLE_ITEMS = 10;
-const ITEM_HEIGHT = 40;
-const BLUR_DELAY = 200;
+export type MultiSelectOption = {
+  label: string;
+  value: string;
+};
+
+export interface MultiSelectProps {
+  options: MultiSelectOption[];
+  defaultValue?: string[];
+  onChange?: (values: string[]) => void;
+  placeholder?: string;
+  maxVisibleItems?: number;
+  itemHeight?: number;
+  className?: string;
+}
+
+/* ============================================================
+   Utils
+   ============================================================ */
+
+function rankAndFilter(options: MultiSelectOption[], query: string) {
+  if (!query) return options;
+
+  const q = query.toLowerCase();
+
+  return options
+    .filter((o) => o.label.toLowerCase().includes(q))
+    .sort((a, b) => {
+      const aStarts = a.label.toLowerCase().startsWith(q);
+      const bStarts = b.label.toLowerCase().startsWith(q);
+      if (aStarts === bStarts) return 0;
+      return aStarts ? -1 : 1;
+    });
+}
+
+function useAnchorPosition(anchorRef: React.RefObject<HTMLElement>, open: boolean) {
+  const [rect, setRect] = useState<DOMRect | null>(null);
+
+  const update = useCallback(() => {
+    if (!anchorRef.current) return;
+    setRect(anchorRef.current.getBoundingClientRect());
+  }, [anchorRef]);
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    update();
+  }, [open, update]);
+
+  useEffect(() => {
+    if (!open) return;
+    window.addEventListener("scroll", update, true);
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update, true);
+      window.removeEventListener("resize", update);
+    };
+  }, [open, update]);
+
+  return rect;
+}
+
+/* ============================================================
+   Component
+   ============================================================ */
 
 export function MultiselectTypeaheadDropdown({
-  className,
-  placeholder = "Search...",
   options,
-  selectedValues = [],
-  onSelectionChange,
-  ...props
-}: MultiselectTypeaheadDropdownProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<Set<string>>(new Set(selectedValues));
-  const [popupPosition, setPopupPosition] = useState<{ top: number; left: number; width: number } | null>(null);
+  defaultValue = [],
+  onChange,
+  placeholder = "Search...",
+  maxVisibleItems = 8,
+  itemHeight = 36,
+  className,
+}: MultiSelectProps) {
+  const [selectedValues, setSelectedValues] = useState<string[]>(defaultValue);
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
-  // Sync selected state with prop changes
-  useEffect(() => {
-    setSelected(new Set(selectedValues));
-  }, [selectedValues]);
+  const anchorRect = useAnchorPosition(inputRef, open);
 
-  // Calculate and update popup position
-  const updatePopupPosition = useCallback(() => {
-    if (!isOpen || !inputRef.current) return;
+  const selectedSet = useMemo(() => new Set(selectedValues), [selectedValues]);
 
-    const inputRect = inputRef.current.getBoundingClientRect();
-    setPopupPosition({
-      top: inputRect.bottom,
-      left: inputRect.left,
-      width: inputRect.width,
-    });
-  }, [isOpen]);
+  const selectedOptions = useMemo(() => options.filter((o) => selectedSet.has(o.value)), [options, selectedSet]);
 
-  useEffect(() => {
-    updatePopupPosition();
-  }, [updatePopupPosition, searchQuery]);
-
-  // Update position on scroll and resize
-  useEffect(() => {
-    if (!isOpen) return;
-
-    window.addEventListener("scroll", updatePopupPosition, true);
-    window.addEventListener("resize", updatePopupPosition);
-
-    return () => {
-      window.removeEventListener("scroll", updatePopupPosition, true);
-      window.removeEventListener("resize", updatePopupPosition);
-    };
-  }, [isOpen, updatePopupPosition]);
-
-  // Rank options: prioritize items starting with query
-  const rankOptions = useCallback((optionsToRank: string[], query: string) => {
-    if (!query.trim()) return optionsToRank;
-
-    const queryLower = query.toLowerCase();
-    return [...optionsToRank].sort((a, b) => {
-      const aStarts = a.toLowerCase().startsWith(queryLower);
-      const bStarts = b.toLowerCase().startsWith(queryLower);
-
-      if (aStarts && !bStarts) return -1;
-      if (!aStarts && bStarts) return 1;
-      return 0;
-    });
-  }, []);
-
-  // Filter options by query (case-insensitive regex)
-  const filterByQuery = useCallback((optionsToFilter: string[], query: string) => {
-    if (!query.trim()) return optionsToFilter;
-
-    const queryLower = query.toLowerCase();
-    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-    try {
-      const regex = new RegExp(escapedQuery, "i");
-      return optionsToFilter.filter((option) => regex.test(option));
-    } catch {
-      return optionsToFilter.filter((option) => option.toLowerCase().includes(queryLower));
-    }
-  }, []);
-
-  // Selected options: always visible, ranked by query
-  const selectedOptions = useMemo(() => {
-    const allSelected = options.filter((option) => selected.has(option));
-    return rankOptions(allSelected, searchQuery);
-  }, [options, selected, searchQuery, rankOptions]);
-
-  // Unselected options: filtered and ranked by query
   const unselectedOptions = useMemo(() => {
-    const unselected = options.filter((option) => !selected.has(option));
-    const filtered = filterByQuery(unselected, searchQuery);
-    return rankOptions(filtered, searchQuery);
-  }, [options, selected, searchQuery, filterByQuery, rankOptions]);
+    const base = options.filter((o) => !selectedSet.has(o.value));
+    return rankAndFilter(base, query);
+  }, [options, selectedSet, query]);
 
-  const showDivider = selectedOptions.length > 0 && unselectedOptions.length > 0;
-  const hasNoMatches = searchQuery.trim().length > 0 && unselectedOptions.length === 0;
-  const shouldShowPopup =
-    isOpen && popupPosition && (selectedOptions.length > 0 || unselectedOptions.length > 0 || searchQuery.trim().length > 0);
+  const visibleItems = selectedOptions.length + unselectedOptions.length;
 
-  // Handlers
-  const handleToggle = useCallback(
-    (option: string) => {
-      const newSelected = new Set(selected);
-      if (newSelected.has(option)) {
-        newSelected.delete(option);
-      } else {
-        newSelected.add(option);
-      }
-      setSelected(newSelected);
-      onSelectionChange?.(Array.from(newSelected));
-    },
-    [selected, onSelectionChange]
-  );
+  const maxHeight = maxVisibleItems * itemHeight;
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    setIsOpen(true);
+  /* ============================================================
+     Selection
+     ============================================================ */
+
+  const updateSelection = (values: string[]) => {
+    setSelectedValues(values);
+    onChange?.(values);
   };
 
-  const handleInputFocus = () => setIsOpen(true);
-
-  const handleInputBlur = () => {
-    setTimeout(() => {
-      const activeElement = document.activeElement;
-      const isFocusInPopup = popupRef.current?.contains(activeElement);
-      const isFocusInContainer = containerRef.current?.contains(activeElement);
-
-      if (!isFocusInContainer && !isFocusInPopup) {
-        setIsOpen(false);
-      }
-    }, BLUR_DELAY);
+  const toggle = (value: string) => {
+    const next = new Set(selectedValues);
+    if (next.has(value)) next.delete(value);
+    else next.add(value);
+    updateSelection(Array.from(next));
   };
 
-  const handleItemClick = useCallback(() => {
-    setTimeout(() => inputRef.current?.focus(), 0);
-  }, []);
+  /* ============================================================
+     Outside click
+     ============================================================ */
 
-  // Close popup on outside click
   useEffect(() => {
-    if (!isOpen) return;
+    if (!open) return;
 
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-      const isClickInside = containerRef.current?.contains(target) || popupRef.current?.contains(target);
-
-      if (!isClickInside) {
-        setIsOpen(false);
-      }
+    const handler = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (containerRef.current?.contains(t) || popupRef.current?.contains(t)) return;
+      setOpen(false);
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
 
-  const baseClassName = clsx(multiselectTypeaheadDropdownVariantsCN(props), className);
+  /* ============================================================
+     Render
+     ============================================================ */
 
   return (
-    <div ref={containerRef} className="relative w-full" data-multiselect-container>
-      <div className="relative">
-        <input
-          ref={inputRef}
-          type="text"
-          value={searchQuery}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
-          placeholder={placeholder}
-          className={clsx(baseClassName, "w-full pr-10", isOpen && "rounded-b-none")}
-        />
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <Icon icon="search" size="xs" />
-        </div>
-      </div>
+    <div ref={containerRef} className="relative w-full flex">
+      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 flex items-center">
+        <Icon icon="search" size="xs" color="neutral" />
+      </span>
+      <input
+        ref={inputRef}
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setOpen(true);
+        }}
+        onFocus={() => setOpen(true)}
+        placeholder={placeholder}
+        className={clsx("w-full border border-border rounded-md px-3 py-2 pl-9", open && "rounded-b-none", className)}
+      />
 
-      {shouldShowPopup && (
-        <Popup
-          ref={popupRef}
-          position={popupPosition!}
-          selectedOptions={selectedOptions}
-          unselectedOptions={unselectedOptions}
-          showDivider={showDivider}
-          hasNoMatches={hasNoMatches}
-          onToggle={handleToggle}
-          onItemClick={handleItemClick}
-        />
-      )}
+      {open &&
+        anchorRect &&
+        createPortal(
+          <div
+            ref={popupRef}
+            className="fixed z-50 bg-white rounded-b-md shadow-lg overflow-hidden"
+            style={{
+              top: anchorRect.bottom,
+              left: anchorRect.left,
+              width: anchorRect.width,
+            }}
+          >
+            <div style={{ maxHeight }} className="overflow-auto p-1">
+              {selectedOptions.map((opt) => (
+                <OptionRow key={opt.value} option={opt} selected onSelect={toggle} />
+              ))}
+
+              {selectedOptions.length > 0 && unselectedOptions.length > 0 && <Divider />}
+
+              {unselectedOptions.map((opt) => (
+                <OptionRow key={opt.value} option={opt} selected={false} onSelect={toggle} />
+              ))}
+
+              {visibleItems === 0 && <div className="px-3 py-2 text-sm text-gray-500 text-center">No matches</div>}
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
 
-interface PopupProps {
-  position: { top: number; left: number; width: number };
-  selectedOptions: string[];
-  unselectedOptions: string[];
-  showDivider: boolean;
-  hasNoMatches: boolean;
-  onToggle: (option: string) => void;
-  onItemClick: () => void;
-}
+/* ============================================================
+   Subcomponents
+   ============================================================ */
 
-const Popup = React.forwardRef<HTMLDivElement, PopupProps>(
-  ({ position, selectedOptions, unselectedOptions, showDivider, hasNoMatches, onToggle, onItemClick }, ref) => {
-    const maxHeight = MAX_VISIBLE_ITEMS * ITEM_HEIGHT;
-
-    const popupContent = (
-      <div
-        ref={ref}
-        className="fixed z-[60] bg-white shadow-lg rounded-b-md overflow-hidden border border-neutral"
-        style={{
-          top: `${position.top}px`,
-          left: `${position.left}px`,
-          width: `${position.width}px`,
-          maxHeight: `${maxHeight}px`,
-        }}
-      >
-        <div className="overflow-y-auto p-1" style={{ maxHeight: `${maxHeight}px` }}>
-          {selectedOptions.length > 0 && (
-            <>
-              {selectedOptions.map((option) => (
-                <OptionItem key={option} option={option} isSelected onToggle={onToggle} onItemClick={onItemClick} />
-              ))}
-              {showDivider && <div className="border-t border-gray-200 my-1" />}
-            </>
-          )}
-
-          {unselectedOptions.map((option) => (
-            <OptionItem key={option} option={option} isSelected={false} onToggle={onToggle} onItemClick={onItemClick} />
-          ))}
-
-          {hasNoMatches && <div className="px-4 py-3 text-sm text-gray-500 text-center border-t border-gray-200">No matches</div>}
-        </div>
-      </div>
-    );
-
-    return typeof window !== "undefined" ? createPortal(popupContent, document.body) : null;
-  }
-);
-
-Popup.displayName = "Popup";
-
-interface OptionItemProps {
-  option: string;
-  isSelected: boolean;
-  onToggle: (option: string) => void;
-  onItemClick: () => void;
-}
-
-function OptionItem({ option, isSelected, onToggle, onItemClick }: OptionItemProps) {
-  const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Prevent input blur
-  };
-
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    onToggle(option);
-    onItemClick();
-  };
-
+function OptionRow({
+  option,
+  selected,
+  onSelect,
+}: {
+  option: MultiSelectOption;
+  selected: boolean;
+  onSelect: (value: string) => void;
+}) {
   return (
     <button
       type="button"
-      onClick={handleClick}
-      onMouseDown={handleMouseDown}
-      className="w-full px-4 py-2 text-left flex items-center gap-3 transition-colors hover:bg-border rounded-lg"
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={() => onSelect(option.value)}
+      className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-border rounded-md"
     >
-      <div className="flex-shrink-0 w-4 h-4 flex items-center justify-center">
-        {isSelected && <Icon icon="check" size="xs" color="black" />}
-      </div>
-      <span className="flex-1">{option}</span>
+      <span className="w-4">{selected && <Icon icon="check" size="sm" />}</span>
+      {option.label}
     </button>
   );
 }

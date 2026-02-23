@@ -1,9 +1,5 @@
-import { MultiselectTypeaheadDropdown } from "./MultiselectTypeaheadDropdown";
-import {
-  type MultiselectTypeaheadDropdownVariants,
-  type MultiselectTypeaheadDropdownProps,
-  type MultiSelectOption,
-} from "./variants";
+import { Dropdown } from "./MultiselectTypeaheadDropdown";
+import { type DropdownVariants, type DropdownProps, type DropdownOption } from "./variants";
 
-export { MultiselectTypeaheadDropdownVariants, MultiselectTypeaheadDropdownProps };
-export { MultiselectTypeaheadDropdown, MultiSelectOption };
+export type { DropdownVariants, DropdownProps, DropdownOption };
+export { Dropdown };

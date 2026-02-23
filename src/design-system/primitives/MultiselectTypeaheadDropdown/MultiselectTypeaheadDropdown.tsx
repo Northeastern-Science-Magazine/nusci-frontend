@@ -1,17 +1,245 @@
 "use client";
 
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import clsx from "clsx";
 import Divider from "../Divider";
 import Icon from "../Icon";
-import { multiselectTypeaheadDropdownVariants, MultiselectTypeaheadDropdownProps, MultiSelectOption } from "./variants";
+import { dropdownVariants, DropdownProps, DropdownOption } from "./variants";
 
-/* ============================================================
-   Utils
-   ============================================================ */
+export function Dropdown(props: DropdownProps) {
+  const {
+    options,
+    defaultValue,
+    onChange,
+    placeholder = "Select...",
+    maxVisibleItems = 8,
+    itemHeight = 36,
+    className,
+    color = "border",
+  } = props;
 
-function rankAndFilter(options: MultiSelectOption[], query: string) {
+  /* Determines what type of dropdown, and which subcomponents to render */
+  const cfg = useVariantConfig(props);
+
+  const [selected, setSelected] = useState<string[]>(
+    Array.isArray(defaultValue) ? defaultValue : typeof defaultValue === "string" && defaultValue ? [defaultValue] : [],
+  );
+
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  const anchorRect = useAnchorPosition(inputRef, open);
+
+  const selectedSet = useMemo(() => new Set(selected), [selected]);
+
+  const select = (value: string) => {
+    if (cfg.isMulti) {
+      const next = new Set(selectedSet);
+      next.has(value) ? next.delete(value) : next.add(value);
+      const arr = Array.from(next);
+      setSelected(arr);
+      onChange?.(arr);
+    } else {
+      setSelected([value]);
+      onChange?.(value);
+      setOpen(false);
+      setQuery("");
+    }
+  };
+
+  const selectedOptions = useMemo(() => options.filter((o) => selectedSet.has(o.value)), [options, selectedSet]);
+
+  const availableOptions = useMemo(() => {
+    const unselected = options.filter((o) => !selectedSet.has(o.value));
+    return cfg.isTypeahead ? rankAndFilter(unselected, query) : unselected;
+  }, [options, selectedSet, cfg.isTypeahead, query]);
+
+  const visibleItems = availableOptions.length;
+  const maxHeight = maxVisibleItems * itemHeight;
+
+  const displayValue = useMemo(() => {
+    if (cfg.isTypeahead) {
+      if (query) return query;
+      if (!cfg.isMulti) return selectedOptions[0]?.label ?? "";
+      return "";
+    }
+
+    if (cfg.isMulti) {
+      return selectedOptions.length ? `${selectedOptions.length} selected` : "";
+    }
+
+    return selectedOptions[0]?.label ?? "";
+  }, [query, selectedOptions, cfg]);
+
+  /* Input Controller */
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!cfg.isTypeahead) return;
+
+    const value = e.target.value;
+    setQuery(value);
+    setOpen(true);
+
+    if (!cfg.isMulti && value && selected.length) {
+      setSelected([]);
+      onChange?.("");
+    }
+  };
+
+  const handleInputMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
+    if (cfg.isTypeahead) return;
+    e.preventDefault();
+    setOpen((o) => !o);
+  };
+
+  /* Blur Action (outside click) */
+  useEffect(() => {
+    if (!open) return;
+
+    const handler = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (containerRef.current?.contains(t) || popupRef.current?.contains(t)) return;
+      setOpen(false);
+    };
+
+    document.addEventListener("click", handler, true);
+    return () => document.removeEventListener("click", handler, true);
+  }, [open]);
+
+  /* TV slots for styling subcomponents */
+  const styles = dropdownVariants({
+    color,
+    icon: cfg.showIcon,
+    chevron: cfg.showChevron,
+    open,
+    multiSelect: cfg.isMulti,
+    typeahead: cfg.isTypeahead,
+  });
+
+  const inputClassName = clsx(styles.input(), !cfg.isTypeahead && "cursor-pointer", className);
+
+  return (
+    <div ref={containerRef} className="relative w-full flex">
+      {cfg.showIcon && (
+        <span className={styles.iconContainer()}>
+          <Icon icon="search" size="xs" color={color} />
+        </span>
+      )}
+
+      {cfg.showChevron && (
+        <span className={styles.chevronContainer()}>
+          <Icon icon={open ? "chevronUp" : "chevronDown"} size="md" color={color} />
+        </span>
+      )}
+
+      <input
+        ref={inputRef}
+        value={displayValue}
+        onChange={handleInputChange}
+        onFocus={() => cfg.isTypeahead && setOpen(true)}
+        onMouseDown={handleInputMouseDown}
+        readOnly={cfg.inputReadOnly}
+        placeholder={placeholder}
+        className={inputClassName}
+      />
+
+      {open &&
+        anchorRect &&
+        createPortal(
+          <div
+            ref={popupRef}
+            className={styles.popup()}
+            style={{
+              top: anchorRect.bottom,
+              left: anchorRect.left,
+              width: anchorRect.width,
+            }}
+          >
+            <div style={{ maxHeight }} className={styles.popupContent()}>
+              {cfg.isMulti && selectedOptions.length > 0 && (
+                <>
+                  {selectedOptions.map((opt) => (
+                    <OptionRow key={opt.value} option={opt} selected onSelect={select} className={styles.optionRow()} />
+                  ))}
+                  {availableOptions.length >= 0 && <Divider />}
+                </>
+              )}
+
+              {availableOptions.map((opt) => (
+                <OptionRow
+                  key={opt.value}
+                  option={opt}
+                  selected={selectedSet.has(opt.value)}
+                  onSelect={select}
+                  className={styles.optionRow()}
+                />
+              ))}
+
+              {visibleItems === 0 && <div className={styles.emptyState()}>No matches</div>}
+            </div>
+          </div>,
+          document.body,
+        )}
+    </div>
+  );
+}
+
+function OptionRow({
+  option,
+  selected,
+  onSelect,
+  className,
+}: {
+  option: DropdownOption;
+  selected: boolean;
+  onSelect: (value: string) => void;
+  className?: string;
+}) {
+  return (
+    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => onSelect(option.value)} className={className}>
+      <span className="w-4">{selected && <Icon icon="check" size="sm" />}</span>
+      {option.label}
+    </button>
+  );
+}
+
+/**
+ * Since this component is essentially 4 different components
+ * wrapped into one, we define this config to compile all sources
+ * of determining which variant to use, and then which subcomponents
+ * to render.
+ *
+ * @param props DropdownProps
+ * @returns
+ */
+function useVariantConfig(props: DropdownProps) {
+  const isTypeahead = !!props.typeahead;
+  const isMulti = !!props.multiSelect;
+
+  return {
+    isTypeahead,
+    isMulti,
+    showIcon: isTypeahead,
+    showChevron: !isTypeahead,
+    inputReadOnly: !isTypeahead,
+  };
+}
+
+/**
+ * Typeahead filter function.
+ *
+ * Shows results that match text directly with priority
+ * beginning of string.
+ *
+ * @param options
+ * @param query
+ * @returns
+ */
+function rankAndFilter(options: DropdownOption[], query: string) {
   if (!query) return options;
 
   const q = query.toLowerCase();
@@ -26,6 +254,14 @@ function rankAndFilter(options: MultiSelectOption[], query: string) {
     });
 }
 
+/**
+ * Does some fancy DOM work to keep the portal
+ * next to the input element.
+ *
+ * @param anchorRef
+ * @param open
+ * @returns
+ */
 function useAnchorPosition(anchorRef: React.RefObject<HTMLElement>, open: boolean) {
   const [rect, setRect] = useState<DOMRect | null>(null);
 
@@ -35,8 +271,7 @@ function useAnchorPosition(anchorRef: React.RefObject<HTMLElement>, open: boolea
   }, [anchorRef]);
 
   useLayoutEffect(() => {
-    if (!open) return;
-    update();
+    if (open) update();
   }, [open, update]);
 
   useEffect(() => {
@@ -50,159 +285,4 @@ function useAnchorPosition(anchorRef: React.RefObject<HTMLElement>, open: boolea
   }, [open, update]);
 
   return rect;
-}
-
-/* ============================================================
-   Component
-   ============================================================ */
-
-export function MultiselectTypeaheadDropdown({
-  options,
-  defaultValue = [],
-  onChange,
-  placeholder = "Search...",
-  maxVisibleItems = 8,
-  itemHeight = 36,
-  className,
-  color = "border",
-  icon = true,
-}: MultiselectTypeaheadDropdownProps) {
-  const [selectedValues, setSelectedValues] = useState<string[]>(defaultValue);
-
-  const [query, setQuery] = useState("");
-  const [open, setOpen] = useState(false);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const popupRef = useRef<HTMLDivElement>(null);
-
-  const anchorRect = useAnchorPosition(inputRef, open);
-
-  const selectedSet = useMemo(() => new Set(selectedValues), [selectedValues]);
-
-  const selectedOptions = useMemo(() => options.filter((o) => selectedSet.has(o.value)), [options, selectedSet]);
-
-  const unselectedOptions = useMemo(() => {
-    const base = options.filter((o) => !selectedSet.has(o.value));
-    return rankAndFilter(base, query);
-  }, [options, selectedSet, query]);
-
-  const visibleItems = selectedOptions.length + unselectedOptions.length;
-
-  const maxHeight = maxVisibleItems * itemHeight;
-
-  /* ============================================================
-     Selection
-     ============================================================ */
-
-  const updateSelection = (values: string[]) => {
-    setSelectedValues(values);
-    onChange?.(values);
-  };
-
-  const toggle = (value: string) => {
-    const next = new Set(selectedValues);
-    if (next.has(value)) next.delete(value);
-    else next.add(value);
-    updateSelection(Array.from(next));
-  };
-
-  /* ============================================================
-     Outside click
-     ============================================================ */
-
-  useEffect(() => {
-    if (!open) return;
-
-    const handler = (e: MouseEvent) => {
-      const t = e.target as Node;
-      if (containerRef.current?.contains(t) || popupRef.current?.contains(t)) return;
-      setOpen(false);
-    };
-
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
-
-  /* ============================================================
-     Render
-     ============================================================ */
-
-  return (
-    <div ref={containerRef} className="relative w-full flex">
-      {icon && (
-        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 flex items-center">
-          <Icon icon="search" size="xs" color={color} />
-        </span>
-      )}
-      <input
-        ref={inputRef}
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          setOpen(true);
-        }}
-        onFocus={() => setOpen(true)}
-        placeholder={placeholder}
-        className={clsx(
-          "w-full rounded-md px-3 py-2",
-          icon ? "pl-9" : "pl-3",
-          multiselectTypeaheadDropdownVariants({ color }),
-          open && "rounded-b-none",
-          className,
-        )}
-      />
-
-      {open &&
-        anchorRect &&
-        createPortal(
-          <div
-            ref={popupRef}
-            className="fixed z-50 bg-white rounded-b-md shadow-lg overflow-hidden"
-            style={{
-              top: anchorRect.bottom,
-              left: anchorRect.left,
-              width: anchorRect.width,
-            }}
-          >
-            <div style={{ maxHeight }} className="overflow-auto p-1">
-              {selectedOptions.map((opt) => (
-                <OptionRow key={opt.value} option={opt} selected onSelect={toggle} />
-              ))}
-
-              {selectedOptions.length > 0 && unselectedOptions.length > 0 && <Divider />}
-
-              {unselectedOptions.map((opt) => (
-                <OptionRow key={opt.value} option={opt} selected={false} onSelect={toggle} />
-              ))}
-
-              {visibleItems === 0 && <div className="px-3 py-2 text-sm text-gray-500 text-center">No matches</div>}
-            </div>
-          </div>,
-          document.body,
-        )}
-    </div>
-  );
-}
-
-function OptionRow({
-  option,
-  selected,
-  onSelect,
-}: {
-  option: MultiSelectOption;
-  selected: boolean;
-  onSelect: (value: string) => void;
-}) {
-  return (
-    <button
-      type="button"
-      onMouseDown={(e) => e.preventDefault()}
-      onClick={() => onSelect(option.value)}
-      className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-border rounded-md"
-    >
-      <span className="w-4">{selected && <Icon icon="check" size="sm" />}</span>
-      {option.label}
-    </button>
-  );
 }

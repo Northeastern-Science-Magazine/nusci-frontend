@@ -16,7 +16,7 @@ export function Dropdown(props: DropdownProps) {
     maxVisibleItems = 8,
     itemHeight = 36,
     className,
-    color = "border",
+    color = "neutral",
   } = props;
 
   /* Determines what type of dropdown, and which subcomponents to render */

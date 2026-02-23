@@ -5,25 +5,7 @@ import { createPortal } from "react-dom";
 import clsx from "clsx";
 import Divider from "../Divider";
 import Icon from "../Icon";
-
-/* ============================================================
-   Types
-   ============================================================ */
-
-export type MultiSelectOption = {
-  label: string;
-  value: string;
-};
-
-export interface MultiSelectProps {
-  options: MultiSelectOption[];
-  defaultValue?: string[];
-  onChange?: (values: string[]) => void;
-  placeholder?: string;
-  maxVisibleItems?: number;
-  itemHeight?: number;
-  className?: string;
-}
+import { multiselectTypeaheadDropdownVariants, MultiselectTypeaheadDropdownProps, MultiSelectOption } from "./variants";
 
 /* ============================================================
    Utils
@@ -82,7 +64,9 @@ export function MultiselectTypeaheadDropdown({
   maxVisibleItems = 8,
   itemHeight = 36,
   className,
-}: MultiSelectProps) {
+  color = "border",
+  icon = true,
+}: MultiselectTypeaheadDropdownProps) {
   const [selectedValues, setSelectedValues] = useState<string[]>(defaultValue);
 
   const [query, setQuery] = useState("");
@@ -146,9 +130,11 @@ export function MultiselectTypeaheadDropdown({
 
   return (
     <div ref={containerRef} className="relative w-full flex">
-      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 flex items-center">
-        <Icon icon="search" size="xs" color="neutral" />
-      </span>
+      {icon && (
+        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 flex items-center">
+          <Icon icon="search" size="xs" color={color} />
+        </span>
+      )}
       <input
         ref={inputRef}
         value={query}
@@ -158,7 +144,13 @@ export function MultiselectTypeaheadDropdown({
         }}
         onFocus={() => setOpen(true)}
         placeholder={placeholder}
-        className={clsx("w-full border border-border rounded-md px-3 py-2 pl-9", open && "rounded-b-none", className)}
+        className={clsx(
+          "w-full rounded-md px-3 py-2",
+          icon ? "pl-9" : "pl-3",
+          multiselectTypeaheadDropdownVariants({ color }),
+          open && "rounded-b-none",
+          className,
+        )}
       />
 
       {open &&
@@ -192,10 +184,6 @@ export function MultiselectTypeaheadDropdown({
     </div>
   );
 }
-
-/* ============================================================
-   Subcomponents
-   ============================================================ */
 
 function OptionRow({
   option,

@@ -8,8 +8,38 @@ import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/si
 import clsx from "clsx";
 import { BasicColorProps, basicColorVariants } from "@/design-system/utilities/props/BasicColor/basiccolor";
 
+/* ============================================================
+   Types
+   ============================================================ */
+
+export type MultiSelectOption = {
+  label: string;
+  value: string;
+};
+
 export const multiselectTypeaheadDropdownVariants = tv({
-  base: "rounded px-3 py-2 border border-neutral focus:outline-none",
+  base: "rounded px-3 py-2 border focus:outline-none",
+  variants: {
+    color: {
+      black: "border-black",
+      white: "border-white",
+      red: "border-red-500",
+      aqua: "border-aqua",
+      "aqua-light": "border-aqua-light",
+      "forest-green": "border-forest-green",
+      "sage-green": "border-sage-green",
+      border: "border-border",
+      neutral: "border-neutral",
+      purple: "border-purple",
+      pink: "border-pink",
+      maroon: "border-maroon",
+      coral: "border-coral",
+      marigold: "border-marigold",
+    },
+  },
+  defaultVariants: {
+    color: "border",
+  },
 });
 
 export type MultiselectTypeaheadDropdownVariants = VariantProps<typeof multiselectTypeaheadDropdownVariants>;
@@ -17,17 +47,19 @@ export type MultiselectTypeaheadDropdownVariants = VariantProps<typeof multisele
 export interface MultiselectTypeaheadDropdownProps
   extends MultiselectTypeaheadDropdownVariants,
     AnimationProps,
-    BasicColorProps,
     DisplayProps,
     MarginProps,
     PaddingProps,
     PositionProps,
     SizeProps {
-  className?: string;
+  options: MultiSelectOption[];
+  defaultValue?: string[];
+  onChange?: (values: string[]) => void;
   placeholder?: string;
-  options: string[];
-  selectedValues?: string[];
-  onSelectionChange?: (selected: string[]) => void;
+  maxVisibleItems?: number;
+  itemHeight?: number;
+  className?: string;
+  icon?: boolean;
 }
 
 export const multiselectTypeaheadDropdownVariantsCN = (variantProps: VariantProps<any>, className?: string) =>

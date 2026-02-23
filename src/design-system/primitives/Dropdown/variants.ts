@@ -6,7 +6,7 @@ import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/P
 import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
 import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
 import clsx from "clsx";
-import { BasicColorProps, basicColorVariants } from "@/design-system/utilities/props/BasicColor/basiccolor";
+import { basicColorVariants } from "@/design-system/utilities/props/BasicColor/basiccolor";
 
 /* ============================================================
    Types

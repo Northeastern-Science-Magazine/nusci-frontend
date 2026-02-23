@@ -19,7 +19,7 @@ const OPTIONS: DropdownOption[] = [
 ];
 
 const meta: Meta<typeof Dropdown> = {
-  title: "Components/Dropdown",
+  title: "Primitives/Dropdown",
   component: Dropdown,
   parameters: {
     layout: "centered",
@@ -71,12 +71,7 @@ export const DropdownGallery: Story = {
 
         <div>
           <h3 className="text-lg font-semibold mb-4">Typeahead Multi Select</h3>
-          <Dropdown
-            options={OPTIONS}
-            multiSelect={true}
-            typeahead={true}
-            placeholder="Search and select multiple..."
-          />
+          <Dropdown options={OPTIONS} multiSelect={true} typeahead={true} placeholder="Search and select multiple..." />
         </div>
       </div>
     );
@@ -98,12 +93,7 @@ export const PreselectedGallery: Story = {
 
         <div>
           <h3 className="text-lg font-semibold mb-4">Multi Select (Preselected)</h3>
-          <Dropdown
-            options={OPTIONS}
-            multiSelect={true}
-            defaultValue={["react", "ts"]}
-            placeholder="Select technologies..."
-          />
+          <Dropdown options={OPTIONS} multiSelect={true} defaultValue={["react", "ts"]} placeholder="Select technologies..." />
         </div>
 
         <div>

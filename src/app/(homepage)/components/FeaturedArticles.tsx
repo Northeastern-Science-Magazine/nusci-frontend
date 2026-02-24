@@ -45,13 +45,12 @@ const truncateTitle = (text: string, charLimit: number): string => {
 interface FeaturedArticlesProps {
   featuredArticles: Article[];
   recentArticles: Article[];
-  content: {
-    title: string;
-    viewAllText: string;
-  };
 }
 
-export default function FeaturedArticles({ featuredArticles, recentArticles, content }: FeaturedArticlesProps) {
+export default function FeaturedArticles({
+  featuredArticles,
+  recentArticles,
+}: FeaturedArticlesProps) {
   // Use first 2 recent articles for MediaOverlay
   const overlayArticle1 = recentArticles[0];
   const overlayArticle2 = recentArticles[1];
@@ -65,14 +64,14 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
         <Box className="relative px-4 laptop:px-16 py-16">
           <Box className="flex flex-col items-start justify-between gap-4 laptop:flex-row laptop:items-end">
             <Text size={48} className="mt-2 tracking-tight laptop:text-[56px]">
-              {content.title}
+              Recent Articles
             </Text>
 
             <Link
-              href="/article-search"
+              href="/articles"
               className="group inline-flex items-center gap-2 border-b-2 border-black/20 pb-1 text-[14px] font-medium text-black/80 transition-all hover:border-black/40 hover:text-black"
             >
-              {content.viewAllText}
+              View all articles
               <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Box>
@@ -80,16 +79,17 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
           <Divider my={8} />
 
           <Box className="grid gap-8 laptop:grid-cols-12">
-            {/* Newspaper Layout - Multi-column */}
+            {/* Main Feature Articles - Left Column */}
             <div className="laptop:col-span-8 space-y-8">
-              {/* First Main Article */}
               {overlayArticle1 && (
                 <OverlayMedia
                   className="overflow-hidden border-2 border-black/10 shadow-lg w-full aspect-[16/10]"
                   iconProps={
                     !overlayArticle1.imageUrl && overlayArticle1.category
                       ? {
-                          icon: categoryToIcon(overlayArticle1.category) as IconName,
+                          icon: categoryToIcon(
+                            overlayArticle1.category,
+                          ) as IconName,
                           size: 256,
                           color: categoryToIconColor(overlayArticle1.category),
                         }
@@ -97,12 +97,21 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                   }
                 >
                   {overlayArticle1.imageUrl ? (
-                    <Image src={overlayArticle1.imageUrl} alt={overlayArticle1.title} width="w-full" ratio={16 / 10} />
+                    <Image
+                      src={overlayArticle1.imageUrl}
+                      alt={overlayArticle1.title}
+                      width="w-full"
+                      ratio={16 / 10}
+                    />
                   ) : null}
                   <Overlay background="gradient-black">
                     <Box className="flex h-full w-full items-end">
                       <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
-                        <Text size={48} color="white" className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]">
+                        <Text
+                          size={48}
+                          color="white"
+                          className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
+                        >
                           {truncateTitle(overlayArticle1.title, 40)}
                         </Text>
                         <Text
@@ -114,7 +123,11 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                         </Text>
                         <Box className="mt-6">
                           <Link href={overlayArticle1.slug}>
-                            <Button className="inline-flex" color="marigold" size="lg">
+                            <Button
+                              className="inline-flex"
+                              color="marigold"
+                              size="lg"
+                            >
                               Read article
                             </Button>
                           </Link>
@@ -125,14 +138,15 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                 </OverlayMedia>
               )}
 
-              {/* Second Main Article */}
               {overlayArticle2 && (
                 <OverlayMedia
                   className="overflow-hidden border-2 border-black/10 shadow-lg w-full aspect-[16/10]"
                   iconProps={
                     !overlayArticle2.imageUrl && overlayArticle2.category
                       ? {
-                          icon: categoryToIcon(overlayArticle2.category) as IconName,
+                          icon: categoryToIcon(
+                            overlayArticle2.category,
+                          ) as IconName,
                           size: 256,
                           color: categoryToIconColor(overlayArticle2.category),
                         }
@@ -140,12 +154,21 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                   }
                 >
                   {overlayArticle2.imageUrl ? (
-                    <Image src={overlayArticle2.imageUrl} alt={overlayArticle2.title} width="w-full" ratio={16 / 10} />
+                    <Image
+                      src={overlayArticle2.imageUrl}
+                      alt={overlayArticle2.title}
+                      width="w-full"
+                      ratio={16 / 10}
+                    />
                   ) : null}
                   <Overlay background="gradient-black">
                     <Box className="flex h-full w-full items-end">
                       <Box className="w-full px-8 pb-8 pt-32 laptop:px-10 laptop:pb-10 laptop:pt-40">
-                        <Text size={48} color="white" className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]">
+                        <Text
+                          size={48}
+                          color="white"
+                          className="mt-4 tracking-tight max-laptop:text-[28px] max-sm:text-[28px]"
+                        >
                           {truncateTitle(overlayArticle2.title, 40)}
                         </Text>
                         <Text
@@ -157,7 +180,11 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                         </Text>
                         <Box className="mt-6">
                           <Link href={overlayArticle2.slug}>
-                            <Button className="inline-flex" color="marigold" size="lg">
+                            <Button
+                              className="inline-flex"
+                              color="marigold"
+                              size="lg"
+                            >
                               Read article
                             </Button>
                           </Link>
@@ -168,98 +195,110 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                 </OverlayMedia>
               )}
             </div>
+
             {/* Sidebar Articles - Right Column */}
             <div className="laptop:col-span-4">
               <Box className="space-y-6 border-l-2 border-black/10 pl-6 laptop:pl-8">
-                {sidebarArticles.map((article) =>
-                  article.imageUrl ? (
-                    <Link href={article.slug}>
-                    <MediaCard
-                      key={article.id}
-                      mediaType="image"
-                      imageProps={{ src: article.imageUrl, alt: article.title }}
-                      subtitle={article.subtitle || "Article"}
-                      title={truncateTitle(article.title, 40)}
-                      description={truncateByWords(article.description, 15)}
-                      mediaDirection="top"
-                      size="sm"
-                      rounded="none"
-                      shadow="none"
-                      color="white"
-                      className="w-full max-w-none border-b border-black/10 pb-6"
-                    />
+                {sidebarArticles.map((article) => (
+                  <Link href={article.slug} key={article.id}>
+                    {article.imageUrl ? (
+                      <MediaCard
+                        mediaType="image"
+                        imageProps={{
+                          src: article.imageUrl,
+                          alt: article.title,
+                        }}
+                        subtitle={
+                          article.subtitle || article.category || "Article"
+                        }
+                        title={truncateTitle(article.title, 40)}
+                        description={truncateByWords(article.description, 15)}
+                        mediaDirection="top"
+                        size="sm"
+                        rounded="none"
+                        shadow="none"
+                        color="white"
+                        className="w-full max-w-none border-b border-black/10 pb-6"
+                      />
+                    ) : (
+                      <MediaCard
+                        mediaType="icon"
+                        iconProps={{
+                          icon: categoryToIcon(
+                            article.category || "uncategorized",
+                          ) as IconName,
+                          size: 128,
+                          color: categoryToIconColor(
+                            article.category || "uncategorized",
+                          ),
+                        }}
+                        subtitle={
+                          article.subtitle || article.category || "Article"
+                        }
+                        title={truncateTitle(article.title, 40)}
+                        description={truncateByWords(article.description, 15)}
+                        mediaDirection="top"
+                        size="sm"
+                        rounded="none"
+                        shadow="none"
+                        color="white"
+                        className="w-full max-w-none border-b border-black/10 pb-6"
+                      />
+                    )}
                   </Link>
-                  ) : (
-                    <Link href={article.slug}>
-                    <MediaCard
-                      key={article.id}
-                      mediaType="icon"
-                      iconProps={{
-                        icon: categoryToIcon(article.category || "uncategorized") as IconName,
-                        size: 128,
-                        color: categoryToIconColor(article.category || "uncategorized"),
-                      }}
-                      subtitle={article.subtitle || article.category || "Article"}
-                      title={truncateTitle(article.title, 40)}
-                      description={truncateByWords(article.description, 15)}
-                      mediaDirection="top"
-                      size="sm"
-                      rounded="none"
-                      shadow="none"
-                      color="white"
-                      className="w-full max-w-none border-b border-black/10 pb-6"
-                    />
-                 </Link>
-                  ),
-                )}
+                ))}
               </Box>
             </div>
           </Box>
 
-          {/* Secondary Articles Grid - Newspaper Style */}
+          {/* Secondary Articles Grid */}
           <div className="mt-12 border-t-2 border-black/10 pt-12">
             <Box className="grid gap-6 laptop:grid-cols-3">
-              {gridArticles.map((article) =>
-                article.imageUrl ? (
-                  <Link href={article.slug}>
-                  <MediaCard
-                    key={article.id}
-                    mediaType="image"
-                    imageProps={{ src: article.imageUrl, alt: article.title }}
-                    subtitle={article.subtitle || "Article"}
-                    title={truncateTitle(article.title, 50)}
-                    description={truncateByWords(article.description, 20)}
-                    mediaDirection="top"
-                    size="sm"
-                    rounded="none"
-                    shadow="none"
-                    color="white"
-                    className="w-full max-w-none border border-black/10"
-                  />
-                  </Link>
-                ) : (
-                  <Link href={article.slug}>
-                  <MediaCard
-                    key={article.id}
-                    mediaType="icon"
-                    iconProps={{
-                      icon: categoryToIcon(article.category || "uncategorized") as IconName,
-                      size: 128,
-                      color: categoryToIconColor(article.category || "uncategorized"),
-                    }}
-                    subtitle={article.subtitle || article.category || "Article"}
-                    title={truncateTitle(article.title, 50)}
-                    description={truncateByWords(article.description, 20)}
-                    mediaDirection="top"
-                    size="sm"
-                    rounded="none"
-                    shadow="none"
-                    color="white"
-                    className="w-full max-w-none border border-black/10"
-                  />
-                  </Link>
-                ),
-              )}
+              {gridArticles.map((article) => (
+                <Link href={article.slug} key={article.id}>
+                  {article.imageUrl ? (
+                    <MediaCard
+                      mediaType="image"
+                      imageProps={{ src: article.imageUrl, alt: article.title }}
+                      subtitle={
+                        article.subtitle || article.category || "Article"
+                      }
+                      title={truncateTitle(article.title, 50)}
+                      description={truncateByWords(article.description, 20)}
+                      mediaDirection="top"
+                      size="sm"
+                      rounded="none"
+                      shadow="none"
+                      color="white"
+                      className="w-full max-w-none border border-black/10"
+                    />
+                  ) : (
+                    <MediaCard
+                      mediaType="icon"
+                      iconProps={{
+                        icon: categoryToIcon(
+                          article.category || "uncategorized",
+                        ) as IconName,
+                        size: 128,
+                        color: categoryToIconColor(
+                          article.category || "uncategorized",
+                        ),
+                      }}
+                      subtitle={
+                        article.subtitle || article.category || "Article"
+                      }
+                      title={truncateTitle(article.title, 50)}
+                      description={truncateByWords(article.description, 20)}
+                      mediaDirection="top"
+                      size="sm"
+                      rounded="none"
+                      shadow="none"
+                      color="white"
+                      className="w-full max-w-none border border-black/10"
+                    />
+                  )}
+                </Link>
+              ))}
             </Box>
           </div>
         </Box>

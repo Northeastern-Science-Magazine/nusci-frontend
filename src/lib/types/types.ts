@@ -70,6 +70,7 @@ export enum Category {
   Technology = "Technology",
   World = "World",
   Uncategorized = "Uncategorized",
+  Interview = "Interview",
 }
 
 export type ArticleContent = {

@@ -103,7 +103,6 @@ export default function PrintMagazines({ magazines }: PrintMagazinesProps) {
               and center.
             </Text>
           </Box>
-
           <Box className="flex items-center gap-3">
             <Link
               href="https://northeasternsciencemagazine.github.io/nusci-issuu/"
@@ -122,9 +121,9 @@ export default function PrintMagazines({ magazines }: PrintMagazinesProps) {
           size={width && width > breakpoints.laptop ? "lg" : "md"}
           visibleCount={width && width > breakpoints.laptop ? 7 : 3}
           initialIndex={0}
-          centerLink={() =>
-            "https://northeasternsciencemagazine.github.io/nusci-issuu/"
-          }
+          centerLink={() => {
+            return "https://northeasternsciencemagazine.github.io/nusci-issuu/";
+          }}
         />
 
         <Divider mt={8} />

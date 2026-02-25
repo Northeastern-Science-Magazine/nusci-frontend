@@ -66,7 +66,6 @@ export default function FeaturedArticles({
             <Text size={48} className="mt-2 tracking-tight laptop:text-[56px]">
               Recent Articles
             </Text>
-
             <Link
               href="/articles"
               className="group inline-flex items-center gap-2 border-b-2 border-black/20 pb-1 text-[14px] font-medium text-black/80 transition-all hover:border-black/40 hover:text-black"
@@ -75,9 +74,7 @@ export default function FeaturedArticles({
               <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Box>
-
           <Divider my={8} />
-
           <Box className="grid gap-8 laptop:grid-cols-12">
             {/* Main Feature Articles - Left Column */}
             <div className="laptop:col-span-8 space-y-8">
@@ -137,7 +134,6 @@ export default function FeaturedArticles({
                   </Overlay>
                 </OverlayMedia>
               )}
-
               {overlayArticle2 && (
                 <OverlayMedia
                   className="overflow-hidden border-2 border-black/10 shadow-lg w-full aspect-[16/10]"
@@ -195,7 +191,6 @@ export default function FeaturedArticles({
                 </OverlayMedia>
               )}
             </div>
-
             {/* Sidebar Articles - Right Column */}
             <div className="laptop:col-span-4">
               <Box className="space-y-6 border-l-2 border-black/10 pl-6 laptop:pl-8">
@@ -250,7 +245,6 @@ export default function FeaturedArticles({
               </Box>
             </div>
           </Box>
-
           {/* Secondary Articles Grid */}
           <div className="mt-12 border-t-2 border-black/10 pt-12">
             <Box className="grid gap-6 laptop:grid-cols-3">

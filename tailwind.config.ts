@@ -34,6 +34,7 @@ const config: Config = {
         maroon: "#A64510",
         coral: "#EE7A51",
         marigold: "#FFC443",
+        "gray-light": "#f3f4f6"  
       },
       screens: {
         mobile: px(breakpoints.mobile),

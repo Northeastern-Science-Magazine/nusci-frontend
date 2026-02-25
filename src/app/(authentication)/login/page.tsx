@@ -8,7 +8,6 @@ import Button from "@/primitives/Button";
 import Box from "@/primitives/Box";
 import Text from "@/primitives/Text";
 import { Flex } from "@/primitives/Flex";
-import { apiLogin } from "@/lib/api/users";
 import { handleLogin } from "@/lib/helpers/auth";
 
 type LoginFormValues = {

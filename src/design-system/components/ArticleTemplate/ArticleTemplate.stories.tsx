@@ -17,7 +17,8 @@ type Story = StoryObj<typeof ArticleTemplate>;
 
 export const WithImage: Story = {
   args: {
-    title: "Demystifying AI's Energy Gluttony: How Simple Optimizations Can Keep LLMs Thirsty for Knowledge, Not Energy",
+    title:
+      "Demystifying AI's Energy Gluttony: How Simple Optimizations Can Keep LLMs Thirsty for Knowledge, Not Energy",
     author: "Robert Beliveau",
     editor: "Editor",
     categories: ["Technology", "AI", "Sustainability"],
@@ -54,7 +55,8 @@ export const WithImage: Story = {
       },
       {
         contentType: "pull_quote",
-        content: "Training and serving a massive LLM can easily rival the output of an entire wind farm within a single day",
+        content:
+          "Training and serving a massive LLM can easily rival the output of an entire wind farm within a single day",
       },
       {
         contentType: "body_paragraph",
@@ -114,7 +116,8 @@ export const WithImage: Story = {
 
 export const WithoutImage: Story = {
   args: {
-    title: "Demystifying AI's Energy Gluttony: How Simple Optimizations Can Keep LLMs Thirsty for Knowledge, Not Energy",
+    title:
+      "Demystifying AI's Energy Gluttony: How Simple Optimizations Can Keep LLMs Thirsty for Knowledge, Not Energy",
     author: "Robert Beliveau",
     editor: "Editor",
     categories: ["Technology", "AI", "Sustainability"],
@@ -132,12 +135,18 @@ export const WithoutImage: Story = {
       },
       {
         contentType: "pull_quote",
-        content: "Training and serving a massive LLM can easily rival the output of an entire wind farm within a single day",
+        content:
+          "Training and serving a massive LLM can easily rival the output of an entire wind farm within a single day",
       },
       {
         contentType: "body_paragraph",
         content:
           "Tech giants have already released the next generation of chips designed specifically for LLM inference! Google's new Ironwood TPU, now in early access, supports 29.3 teraflops per watt – nearly double the efficiency of last year's Trillium chip.",
+      },
+      {
+        contentType: "link",
+        content: "This is a test link.",
+        href: "https://www.google.com",
       },
       {
         contentType: "body_paragraph",

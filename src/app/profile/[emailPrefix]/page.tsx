@@ -6,8 +6,9 @@ import { Box } from "@/design-system/primitives/Box/Box";
 import MediaCard from "@/design-system/components/MediaCard";
 import { notFound } from "next/navigation";
 import { Roles } from "@/lib/types/types";
+import { getPublicUserByEmail } from "@/lib/api/users";
 
-interface ProfileData {
+export interface ProfileData {
   name: string;
   pronouns: string;
   graduationYear: number;
@@ -27,38 +28,13 @@ interface PublicProfilePageProps {
 export default async function PublicProfilePage({ params }: PublicProfilePageProps) {
   const { emailPrefix } = await params;
 
-  //Note: the below is in place of api call using emailPrefix to get data
-  let mockData: ProfileData = {
-    name: " ",
-    pronouns: " ",
-    graduationYear: 0,
-    major: "",
-    location: "",
-    email: "",
-    roles: [],
-    avatarUrl: "",
-    bannerUrl: "",
-    bio: "",
-  };
+  const userData = await getPublicUserByEmail(emailPrefix);
 
-  if (emailPrefix == "jdoe") {
-    mockData = {
-      name: "Jonathan Doemeterez",
-      pronouns: "He/Him",
-      graduationYear: 2027,
-      major: "Computer Science",
-      location: "Boston",
-      email: "jdoe@northeastern.edu",
-      roles: [Roles.Author, Roles.Designer, Roles.Editor],
-      avatarUrl: "/profil.png",
-      bannerUrl: "/icy.png",
-      bio: `Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.`,
-    };
-  } else {
+  if (!userData || userData.email === "") {
     notFound();
   }
 
-  const { name, pronouns, graduationYear, major, location, email, roles, avatarUrl, bannerUrl, bio } = mockData;
+  const { name, pronouns, graduationYear, major, location, email, roles, avatarUrl, bannerUrl, bio } = userData;
 
   const hasArticles = roles.includes(Roles.Author) || roles.includes(Roles.Editor);
 

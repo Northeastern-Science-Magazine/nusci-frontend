@@ -19,14 +19,17 @@ export const articleTemplateVariants = tv({
 
 export type ContentSegment =
   | { type: "text"; content: string }
-  | { type: "link"; text: string; href: string; newWindow?: boolean };
+  | { type: "link"; text: string; href: string };
 
 export type ContentBlock =
   | { type: "heading"; content: string }
   | { type: "paragraph"; segments: ContentSegment[] }
-  | { type: "quote"; content: string };
+  | { type: "quote"; content: string }
+  | { type: "link"; text: string; href: string };
 
-export interface ArticleTemplateProps extends VariantProps<typeof articleTemplateVariants> {
+export interface ArticleTemplateProps extends VariantProps<
+  typeof articleTemplateVariants
+> {
   title: string;
   author: string;
   editor?: string;

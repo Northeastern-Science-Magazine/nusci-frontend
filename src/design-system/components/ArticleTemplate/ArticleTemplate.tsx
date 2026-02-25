@@ -1,5 +1,9 @@
 import React from "react";
-import { ArticleTemplateProps, articleTemplateVariants, ContentBlock } from "./variants";
+import {
+  ArticleTemplateProps,
+  articleTemplateVariants,
+  ContentBlock,
+} from "./variants";
 import clsx from "clsx";
 import Text from "@/primitives/Text";
 import Link from "@/primitives/Link";
@@ -8,35 +12,69 @@ import Badge from "@/primitives/Badge";
 import { OverlayMedia, Overlay } from "@/components/MediaOverlay";
 
 // Convert ArticleContent to ContentBlock format
-function convertArticleContentToContentBlocks(articleContent: ArticleTemplateProps["articleContent"]): ContentBlock[] {
+function convertArticleContentToContentBlocks(
+  articleContent: ArticleTemplateProps["articleContent"],
+): ContentBlock[] {
   const blocks: ContentBlock[] = [];
+
+  type ParagraphBlock = Extract<ContentBlock, { type: "paragraph" }>;
+  const paragraphSegments: ParagraphBlock["segments"] = [];
+
+  let prevType:
+    | ArticleTemplateProps["articleContent"][number]["contentType"]
+    | null = null;
+
+  const flushParagraph = () => {
+    if (paragraphSegments.length === 0) return;
+    blocks.push({
+      type: "paragraph",
+      segments: [...paragraphSegments],
+    });
+    paragraphSegments.length = 0;
+  };
 
   articleContent.forEach((item) => {
     if (item.contentType === "image") {
-      // Skip images in content blocks (handled separately as featured image)
+      flushParagraph();
+      prevType = item.contentType;
       return;
     }
 
     if (item.contentType === "pull_quote") {
+      flushParagraph();
       blocks.push({
         type: "quote",
         content: item.content,
       });
+      prevType = item.contentType;
       return;
     }
 
-    // For body_paragraph, treat as paragraph with text segment
-    blocks.push({
-      type: "paragraph",
-      segments: [
-        {
-          type: "text",
-          content: item.content,
-        },
-      ],
-    });
+    if (item.contentType === "body_paragraph") {
+      if (prevType === "body_paragraph") {
+        flushParagraph();
+      }
+
+      paragraphSegments.push({
+        type: "text",
+        content: item.content,
+      });
+      prevType = item.contentType;
+      return;
+    }
+
+    if (item.contentType === "link") {
+      paragraphSegments.push({
+        type: "link",
+        text: " " + item.content + " ",
+        href: item.href ?? "#",
+      });
+      prevType = item.contentType;
+      return;
+    }
   });
 
+  flushParagraph();
   return blocks;
 }
 
@@ -58,7 +96,9 @@ export default function ArticleTemplate({
   const content = convertArticleContentToContentBlocks(articleContent);
   return (
     <>
-      <article className={clsx(articleTemplateVariants(variantProps), className)}>
+      <article
+        className={clsx(articleTemplateVariants(variantProps), className)}
+      >
         {/* Header Section */}
         <header className="mb-8 mt-8">
           {/* Title */}
@@ -154,7 +194,7 @@ export default function ArticleTemplate({
                         {segment.type === "link" && (
                           <Link
                             href={segment.href}
-                            newWindow={segment.newWindow ?? true}
+                            newWindow={true}
                             className="font-bold underline text-aqua hover:text-forest-green"
                           >
                             {segment.text}
@@ -169,7 +209,10 @@ export default function ArticleTemplate({
 
             if (block.type === "quote") {
               return (
-                <div key={index} className="my-8 border-l-4 border-aqua pl-6 py-4 bg-aqua-light/20">
+                <div
+                  key={index}
+                  className="my-8 border-l-4 border-aqua pl-6 py-4 bg-aqua-light/20"
+                >
                   <Text size={24} style="italic" color="black">
                     {block.content}
                   </Text>
@@ -192,7 +235,11 @@ export default function ArticleTemplate({
             <div className="flex flex-col gap-2">
               {sources.map((source, index) => (
                 <div key={index} className="leading-relaxed">
-                  <Link href={source.href} newWindow={true} className="underline text-aqua hover:text-forest-green">
+                  <Link
+                    href={source.href}
+                    newWindow={true}
+                    className="underline text-aqua hover:text-forest-green"
+                  >
                     <Text size={14} color="black">
                       {source.text}
                     </Text>

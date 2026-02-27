@@ -42,7 +42,7 @@ export interface ImageProps
   raw?: boolean;
   src: string;
   alt: string;
-  width: string;
+  width?: string;
   height?: string;
 }
 

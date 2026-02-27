@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useScroll, useInView, useTransform, motion } from "framer-motion";
 import { parallaxScrollSectionVariants, ParallaxScrollSectionProps } from "./variants";
 import clsx from "clsx";
+import Image from "@/design-system/primitives/Image"
 
 /**
  * ParallaxScrollSection Component
@@ -50,7 +51,7 @@ export function ParallaxScrollSection({
       <div ref={dividerRef} className="parallax-container relative w-full overflow-hidden">
         <motion.div style={{ y: imageY }} className="parallax-image absolute top-[-25%] left-0 w-full h-[150%]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={imageSrc} alt={imageAlt} className="absolute inset-0 w-full h-full object-cover object-center" />
+          <Image src={imageSrc} alt={imageAlt} raw className="absolute inset-0 w-full h-full object-cover object-center" />
         </motion.div>
       </div>
 

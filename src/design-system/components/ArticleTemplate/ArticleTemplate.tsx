@@ -103,8 +103,8 @@ export default function ArticleTemplate({
               </Badge>
             ))}
             {issueNumber && (
-              <Badge color="neutral" variant="outline">
-                {issueNumber}
+              <Badge color="aqua" variant="default">
+                Issue {issueNumber}
               </Badge>
             )}
           </div>

@@ -117,6 +117,7 @@ export const WithoutImage: Story = {
     title: "Demystifying AI's Energy Gluttony: How Simple Optimizations Can Keep LLMs Thirsty for Knowledge, Not Energy",
     author: "Robert Beliveau",
     editor: "Editor",
+    issueNumber: 1,
     categories: ["Technology", "AI", "Sustainability"],
     publishDate: "August 7, 2025",
     articleContent: [

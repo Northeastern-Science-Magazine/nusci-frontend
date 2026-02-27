@@ -37,11 +37,12 @@ export interface ImageProps
     MarginProps,
     PaddingProps,
     PositionProps {
+  className?: string;
   ratio?: number;
   raw?: boolean;
   src: string;
   alt: string;
-  width: string;
+  width?: string;
   height?: string;
 }
 
@@ -55,5 +56,5 @@ export const imageVariantsCN = (variantProps: VariantProps<any>, className?: str
     paddingVariants(variantProps),
     positionVariants(variantProps),
     sizeVariants(variantProps),
-    className
+    className,
   );

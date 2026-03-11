@@ -173,7 +173,7 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
               <Box className="space-y-6 border-l-2 border-black/10 pl-6 laptop:pl-8">
                 {sidebarArticles.map((article) =>
                   article.imageUrl ? (
-                    <Link href={article.slug}>
+                    <Link key={article.id} href={article.slug}>
                     <MediaCard
                       key={article.id}
                       mediaType="image"
@@ -190,7 +190,7 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                     />
                   </Link>
                   ) : (
-                    <Link href={article.slug}>
+                    <Link key={article.id} href={article.slug}>
                     <MediaCard
                       key={article.id}
                       mediaType="icon"
@@ -221,7 +221,7 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
             <Box className="grid gap-6 laptop:grid-cols-3">
               {gridArticles.map((article) =>
                 article.imageUrl ? (
-                  <Link href={article.slug}>
+                  <Link key={article.id} href={article.slug}>
                   <MediaCard
                     key={article.id}
                     mediaType="image"
@@ -238,7 +238,7 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
                   />
                   </Link>
                 ) : (
-                  <Link href={article.slug}>
+                  <Link key={article.id} href={article.slug}>
                   <MediaCard
                     key={article.id}
                     mediaType="icon"

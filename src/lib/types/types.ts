@@ -72,10 +72,14 @@ export enum Category {
   Uncategorized = "Uncategorized",
 }
 
-export type ArticleContent = {
+export type ArticleContentSegment = {
   contentType: "body_paragraph" | "pull_quote" | "image";
   content: string;
+  href?: string;
 };
+
+// A paragraph is an array of segments
+export type ArticleContent = ArticleContentSegment[];
 
 export type ArticleComment = {
   user: string;

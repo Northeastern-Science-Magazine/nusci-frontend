@@ -11,29 +11,44 @@ import { OverlayMedia, Overlay } from "@/components/MediaOverlay";
 function convertArticleContentToContentBlocks(articleContent: ArticleTemplateProps["articleContent"]): ContentBlock[] {
   const blocks: ContentBlock[] = [];
 
-  articleContent.forEach((item) => {
-    if (item.contentType === "image") {
-      // Skip images in content blocks (handled separately as featured image)
-      return;
-    }
+  // articleContent is an array of paragraphs; each paragraph is an array of segments.
+  articleContent.forEach((paragraph) => {
+    if (!paragraph || paragraph.length === 0) return;
 
-    if (item.contentType === "pull_quote") {
+    // If this paragraph is a pull_quote, treat entire paragraph as a quote block
+    if (paragraph.length === 1 && paragraph[0].contentType === "pull_quote") {
       blocks.push({
         type: "quote",
-        content: item.content,
+        content: paragraph[0].content,
       });
       return;
     }
 
-    // For body_paragraph, treat as paragraph with text segment
+    // Skip images here; featured image is handled separately
+    if (paragraph.some((seg) => seg.contentType === "image")) {
+      return;
+    }
+
+    // Body paragraph: map segments to text/link segments
+    const segments = paragraph.map((seg) => {
+      if (seg.href) {
+        return {
+          type: "link" as const,
+          text: seg.content,
+          href: seg.href,
+          newWindow: true,
+        };
+      }
+
+      return {
+        type: "text" as const,
+        content: seg.content,
+      };
+    });
+
     blocks.push({
       type: "paragraph",
-      segments: [
-        {
-          type: "text",
-          content: item.content,
-        },
-      ],
+      segments,
     });
   });
 

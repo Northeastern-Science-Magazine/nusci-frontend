@@ -73,8 +73,9 @@ export enum Category {
 }
 
 export type ArticleContent = {
-  contentType: "body_paragraph" | "pull_quote" | "image";
+  contentType: "body_paragraph" | "pull_quote" | "image" | "link";
   content: string;
+  href?: string; // Only for link type
 };
 
 export type ArticleComment = {

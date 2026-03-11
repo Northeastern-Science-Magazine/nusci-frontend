@@ -152,7 +152,7 @@ const FormContent = () => {
       </GridCol>
 
       <GridCol span={1}>
-        <Box className="sticky top-8 rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5">
+        <Box className="sticky top-24 rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5">
           <ProgressSidebar progress={progress} />
           {/* Submit */}
           <Button

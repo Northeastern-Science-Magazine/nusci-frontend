@@ -42,6 +42,16 @@ const truncateByWords = (text: string, wordLimit: number): string => {
   return words.slice(0, wordLimit).join(" ") + "...";
 };
 
+const getArticleDescription = (article: Article): string => {
+  const paragraphs = article.articleContent || [];
+  if (!Array.isArray(paragraphs) || paragraphs.length === 0) return "";
+
+  const firstParagraph = paragraphs.find((p) => p && p.length > 0);
+  if (!firstParagraph) return "";
+
+  return firstParagraph.map((seg) => seg.content).join(" ");
+};
+
 export default function ArticleSearchPage() {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<string>("all");
@@ -384,7 +394,7 @@ export default function ArticleSearchPage() {
                                 size="md"
                                 shadow="none"
                                 subtitle={article.categories[0] || "Uncategorized"}
-                                description={truncateByWords(article.articleContent[0]?.content || "", 35)}
+                                description={truncateByWords(getArticleDescription(article), 35)}
                                 iconProps={{
                                   icon: categoryToIcon(article.categories[0] || "uncategorized") as IconName,
                                   size: 128,
@@ -401,7 +411,7 @@ export default function ArticleSearchPage() {
                                 size="md"
                                 shadow="none"
                                 subtitle={article.categories[0] || "Uncategorized"}
-                                description={truncateByWords(article.articleContent[0]?.content || "", 35)}
+                                description={truncateByWords(getArticleDescription(article), 35)}
                                 imageProps={{
                                   src: "/succulent.png",
                                   alt: article.title,

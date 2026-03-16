@@ -19,7 +19,7 @@ export type DropdownOption = {
 
 export const dropdownVariants = tv({
   slots: {
-    input: "w-full rounded-md px-3 py-2 border focus:outline-none",
+    input: "w-full rounded-md px-3 py-2 border-2 focus:outline-none",
     popup: "fixed z-50 bg-white rounded-b-md shadow-lg overflow-hidden",
     popupContent: "overflow-auto p-1",
     optionRow: "w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-border rounded-md",

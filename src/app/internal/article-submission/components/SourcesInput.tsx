@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import TextInput from "@/design-system/primitives/TextInput";
 import Icon from "@/design-system/primitives/Icon";
 import Button from "@/design-system/primitives/Button";
@@ -16,38 +16,29 @@ type SourcesInputProps = {
 };
 
 export function SourcesInput({ value = [], onChange, label = "Sources" }: SourcesInputProps) {
-  const [sources, setSources] = useState<ArticleSource[]>(value.length > 0 ? value : [{ text: "", href: "" }]);
-
-  useEffect(() => {
-    if (value && value.length > 0) {
-      setSources(value);
-    }
-  }, [value]);
+  // Derive current sources from the controlled value; ensure at least one row exists
+  const sources: ArticleSource[] = value.length > 0 ? value : [{ text: "", href: "" }];
 
   const handleSourceTextChange = (index: number, newText: string) => {
     const updatedSources = [...sources];
     updatedSources[index] = { ...updatedSources[index], text: newText };
-    setSources(updatedSources);
     onChange?.(updatedSources);
   };
 
   const handleSourceHrefChange = (index: number, newHref: string) => {
     const updatedSources = [...sources];
     updatedSources[index] = { ...updatedSources[index], href: newHref };
-    setSources(updatedSources);
     onChange?.(updatedSources);
   };
 
   const addSource = () => {
     const updatedSources = [...sources, { text: "", href: "" }];
-    setSources(updatedSources);
     onChange?.(updatedSources);
   };
 
   const removeSource = (index: number) => {
     if (sources.length > 1) {
       const updatedSources = sources.filter((_, i) => i !== index);
-      setSources(updatedSources);
       onChange?.(updatedSources);
     }
   };
@@ -80,13 +71,25 @@ export function SourcesInput({ value = [], onChange, label = "Sources" }: Source
             </Grid>
           </div>
           {sources.length > 1 && (
-            <Button onClick={() => removeSource(index)} aria-label="Remove source" variant="outline" color="red">
+            <Button
+              type="button"
+              onClick={() => removeSource(index)}
+              aria-label="Remove source"
+              variant="outline"
+              color="red"
+            >
               <Icon icon="trash" size="sm" color="red" />
             </Button>
           )}
         </div>
       ))}
-      <Button onClick={addSource} className="flex w-full items-center justify-center gap-2" variant="outline" color="sage-green">
+      <Button
+        type="button"
+        onClick={addSource}
+        className="flex w-full items-center justify-center gap-2"
+        variant="outline"
+        color="sage-green"
+      >
         <div className="flex items-center gap-2">
           <Icon icon="plus" size="md" />
           <Text>Add Source</Text>

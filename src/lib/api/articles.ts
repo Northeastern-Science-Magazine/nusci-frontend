@@ -129,16 +129,29 @@ const HARDCODED_MAGAZINES: MagazineIssue[] = [
   },
 ];
 
-// Extract the first image URL from articleContent
-function extractFirstImageUrl(articleContent: Array<{ contentType: string; content: string }>): string | undefined {
-  const imageItem = articleContent.find((item) => item.contentType === "image");
-  return imageItem?.content;
+// Extract the first image URL from nested ArticleContent (paragraphs -> segments)
+function extractFirstImageUrl(articleContent: ArticleType["articleContent"]): string | undefined {
+  for (const paragraph of articleContent || []) {
+    if (!paragraph) continue;
+    const imageSeg = paragraph.find((seg) => seg.contentType === "image");
+    if (imageSeg?.content) return imageSeg.content;
+  }
+  return undefined;
 }
 
-// Extract description from first body paragraph
-function extractDescription(articleContent: Array<{ contentType: string; content: string }>): string {
-  const firstParagraph = articleContent.find((item) => item.contentType === "body_paragraph");
-  return firstParagraph?.content || "";
+// Extract description from first body paragraph (concatenate all segment text)
+function extractDescription(articleContent: ArticleType["articleContent"]): string {
+  if (!articleContent || articleContent.length === 0) return "";
+
+  const firstParagraph = articleContent.find((paragraph) =>
+    paragraph?.some((seg) => seg.contentType === "body_paragraph"),
+  );
+  if (!firstParagraph) return "";
+
+  return firstParagraph
+    .filter((seg) => seg.contentType === "body_paragraph")
+    .map((seg) => seg.content)
+    .join(" ");
 }
 
 // Map ArticleType to Article interface
@@ -227,4 +240,8 @@ export async function searchArticles(request: ArticleSearchRequest): Promise<Api
 
 export async function getArticleBySlug(slug: string): Promise<ApiResponse<ArticleType>> {
   return api<ArticleType>("GET", `/articles/slug/${slug}`);
+}
+
+export async function createArticle(articleData: ArticleType) {
+  return api<ArticleType>("POST", "/articles/create", articleData);
 }

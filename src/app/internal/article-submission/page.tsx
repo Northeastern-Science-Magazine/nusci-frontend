@@ -65,7 +65,7 @@ function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
 
       const flush = () => {
         const text = normalize(buf);
-        if (text) segments.push({ contentType: "body_paragraph", content: text });
+        if (text) segments.push({ contentType: "text", content: text });
         buf = "";
       };
 

@@ -83,7 +83,7 @@ function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
           flush();
           const text = normalize(el.textContent ?? "");
           const href = el.getAttribute("href") || undefined;
-          if (text || href) segments.push({ contentType: "body_paragraph", content: text, href });
+          if (text || href) segments.push({ contentType: "link", content: text, href });
           return;
         }
 
@@ -236,11 +236,7 @@ const FormContent = () => {
             <Controller
               name="sources"
               render={({ field }) => (
-                <SourcesInput
-                  value={field.value}
-                  onChange={field.onChange}
-                  placeholder="Enter source URL or citation"
-                />
+                <SourcesInput value={field.value} onChange={field.onChange} placeholder="Enter source URL or citation" />
               )}
             />
           </div>
@@ -315,8 +311,8 @@ const onSubmit = async (data: ArticleSubmissionFormValues) => {
     authors: [data.author], // only 1 author for now, no designers, etc attributed yet
   } as Article;
   console.log(articleData);
-  const response = await createArticle(articleData);
-  console.log(response);
+  await createArticle(articleData);
+  alert("Created New Article");
 };
 
 /* PAGE EXPORT */

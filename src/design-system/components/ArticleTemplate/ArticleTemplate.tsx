@@ -167,13 +167,16 @@ export default function ArticleTemplate({
                       <React.Fragment key={segIndex}>
                         {segment.type === "text" && segment.content}
                         {segment.type === "link" && (
-                          <Link
-                            href={segment.href}
-                            newWindow={segment.newWindow ?? true}
-                            className="font-bold underline text-aqua hover:text-forest-green"
-                          >
-                            {segment.text}
-                          </Link>
+                          <>
+                            {" "}
+                            <Link
+                              href={segment.href}
+                              newWindow={segment.newWindow ?? true}
+                              className="font-bold underline text-aqua hover:text-forest-green"
+                            >
+                              {segment.text}
+                            </Link>{" "}
+                          </>
                         )}
                       </React.Fragment>
                     ))}

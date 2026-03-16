@@ -14,8 +14,20 @@ import { SourcesInput } from "./components/SourcesInput";
 import { Controller } from "react-hook-form";
 import ImageUpload from "@/design-system/components/ImageUpload";
 import ArticleInput from "./components/ArticleInput";
-import { Category, ArticleSource, ArticleContent, ArticleContentSegment } from "@/lib/types/types";
+import {
+  Category,
+  ArticleSource,
+  ArticleContent,
+  ArticleContentSegment,
+  ArticleStatus,
+  WritingStatus,
+  DesignStatus,
+  PhotographyStatus,
+  Article,
+  ArticleComment,
+} from "@/lib/types/types";
 import { Dropdown, type DropdownOption } from "@/design-system/primitives/Dropdown";
+import { createArticle } from "@/lib/api/articles";
 
 /* IDEAS: 
     - Author selection: would be cool to have a dropdown that updates as you type system
@@ -221,9 +233,16 @@ const FormContent = () => {
 
           {/* Sources */}
           <div id="sources" className="scroll-mt-[80px]">
-            <FormField<ArticleSubmissionFormValues> name="sources">
-              <SourcesInput placeholder="Enter source URL or citation" />
-            </FormField>
+            <Controller
+              name="sources"
+              render={({ field }) => (
+                <SourcesInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Enter source URL or citation"
+                />
+              )}
+            />
           </div>
 
           {/* Image Upload */}
@@ -271,8 +290,7 @@ const FormContent = () => {
   );
 };
 
-// TODO: Implement actual submission logic
-const onSubmit = (data: ArticleSubmissionFormValues) => {
+const onSubmit = async (data: ArticleSubmissionFormValues) => {
   const slug = data.title
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, "")
@@ -288,8 +306,17 @@ const onSubmit = (data: ArticleSubmissionFormValues) => {
     categories: data.categories,
     articleContent: articleContent,
     sources: data.sources,
-    pageLength: 1, // by default, will matter later during issue map
-  };
+    pageLength: 1, // by default, will matter later during issue map spreads
+    comments: [] as ArticleComment[],
+    articleStatus: ArticleStatus.Print,
+    writingStatus: WritingStatus.EICApproved,
+    designStatus: DesignStatus.Completed,
+    photographyStatus: PhotographyStatus.NoPhoto,
+    authors: [data.author], // only 1 author for now, no designers, etc attributed yet
+  } as Article;
+  console.log(articleData);
+  const response = await createArticle(articleData);
+  console.log(response);
 };
 
 /* PAGE EXPORT */

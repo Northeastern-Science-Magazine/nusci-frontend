@@ -228,3 +228,7 @@ export async function searchArticles(request: ArticleSearchRequest): Promise<Api
 export async function getArticleBySlug(slug: string): Promise<ApiResponse<ArticleType>> {
   return api<ArticleType>("GET", `/articles/slug/${slug}`);
 }
+
+export async function createArticle(articleData: ArticleType) {
+  return api<ArticleType>("POST", "/articles/create", articleData);
+}

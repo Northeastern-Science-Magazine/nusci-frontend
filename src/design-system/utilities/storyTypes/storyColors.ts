@@ -1,0 +1,16 @@
+export const storyColors = [
+    "black",
+    "white",
+    "red",
+    "aqua",
+    "aqua-light",
+    "forest-green",
+    "sage-green",
+    "border",
+    "neutral",
+    "purple",
+    "pink",
+    "maroon",
+    "coral",
+    "marigold",
+  ] as const;

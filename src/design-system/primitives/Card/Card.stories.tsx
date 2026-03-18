@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Card from "./Card";
 import React from "react";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
 /* Modify this when adding variants to Card */
 const positions = ["static", "fixed", "absolute", "relative", "sticky"] as const;
@@ -25,22 +26,7 @@ const pts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 1
 const pbs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const prs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const pls = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Card> = {

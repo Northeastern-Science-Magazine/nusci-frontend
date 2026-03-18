@@ -14,6 +14,7 @@ export const toggleVariants = tv({
     color: {
       white: "bg-zinc-200 data-[state=checked]:bg-white",
       black: "bg-zinc-200 data-[state=checked]:bg-black",
+      red: "bg-zinc-200 data-[state=checked]:bg-red-500",
       "light-orange": "bg-zinc-200 data-[state=checked]:bg-light-orange",
       "dark-orange": "bg-zinc-200 data-[state=checked]:bg-dark-orange",
       gray: "bg-zinc-200 data-[state=checked]:bg-gray",

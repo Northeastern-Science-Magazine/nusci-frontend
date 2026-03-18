@@ -1,24 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import RadioButton from "./RadioButton";
 import React from "react";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
 // color vairants
-const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 
 // Define Storybook metadata
 const meta: Meta<typeof RadioButton> = {

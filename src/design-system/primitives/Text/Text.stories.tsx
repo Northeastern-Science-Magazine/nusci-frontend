@@ -1,27 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Text from "./Text";
 import React from "react";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
 /* Modify this when adding variants to Text */
 const styles = ["regular", "bold", "italic", "underline", "overline", "strikethrough"] as const;
 const sizes = [8, 12, 14, 16, 18, 20, 24, 30, 36, 48, 60, 72, 96, 128] as const;
 const spacingOptions = ["xs", "sm", "md", "lg", "xl"] as const;
-const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Text> = {

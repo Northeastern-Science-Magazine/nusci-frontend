@@ -14,7 +14,20 @@ import { SourcesInput } from "./components/SourcesInput";
 import { Controller } from "react-hook-form";
 import ImageUpload from "@/design-system/components/ImageUpload";
 import ArticleInput from "./components/ArticleInput";
-import { Category, ArticleSource } from "@/lib/types/types";
+import {
+  Category,
+  ArticleSource,
+  ArticleContent,
+  ArticleContentSegment,
+  ArticleStatus,
+  WritingStatus,
+  DesignStatus,
+  PhotographyStatus,
+  Article,
+  ArticleComment,
+} from "@/lib/types/types";
+import { Dropdown, type DropdownOption } from "@/design-system/primitives/Dropdown";
+import { createArticle } from "@/lib/api/articles";
 
 /* IDEAS: 
     - Author selection: would be cool to have a dropdown that updates as you type system
@@ -26,6 +39,7 @@ import { Category, ArticleSource } from "@/lib/types/types";
 type ArticleSubmissionFormValues = {
   author: string;
   title: string;
+  issueNumber: number;
   categories: string[];
   content: string;
   pullQuote: string;
@@ -33,9 +47,61 @@ type ArticleSubmissionFormValues = {
   sources: ArticleSource[];
 };
 
+function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
+  if (!html) return [];
+
+  const normalize = (s: string) =>
+    s
+      .replace(/\u00A0/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const doc = new DOMParser().parseFromString(html, "text/html");
+
+  return [...doc.querySelectorAll("p")]
+    .map((p) => {
+      const segments: ArticleContentSegment[] = [];
+      let buf = "";
+
+      const flush = () => {
+        const text = normalize(buf);
+        if (text) segments.push({ contentType: "text", content: text });
+        buf = "";
+      };
+
+      const walk = (node: Node): void => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          buf += node.textContent ?? "";
+          return;
+        }
+
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+        const el = node as HTMLElement;
+
+        if (el.tagName === "A") {
+          flush();
+          const text = normalize(el.textContent ?? "");
+          const href = el.getAttribute("href") || undefined;
+          if (text || href) segments.push({ contentType: "link", content: text, href });
+          return;
+        }
+
+        for (const child of el.childNodes) walk(child);
+      };
+
+      for (const n of p.childNodes) walk(n);
+      flush();
+
+      return segments.length ? (segments as ArticleContent) : null;
+    })
+    .filter((p): p is ArticleContent => !!p);
+}
+
 type FormProgress = {
   author: boolean;
   title: boolean;
+  issueNumber?: boolean;
   categories: boolean;
   content: boolean;
   pullQuote: boolean;
@@ -63,6 +129,7 @@ const FormContent = () => {
       setProgress({
         author: !!watchedFields.author && watchedFields.author.trim().length > 0,
         title: !!watchedFields.title && watchedFields.title.trim().length > 0,
+        issueNumber: !!watchedFields.issueNumber && watchedFields.issueNumber > 0,
         categories:
           Array.isArray(watchedFields.categories) &&
           watchedFields.categories.length > 0 &&
@@ -91,6 +158,35 @@ const FormContent = () => {
           <Text color="sage-green" size={36} style="bold" className="mb-8 text-left">
             Submit an Article
           </Text>
+
+          {/* Issue Number */}
+          <div id="issue-number" className="scroll-mt-[80px]">
+            <Controller
+              name="issueNumber"
+              render={({ field }) => (
+                <div className="flex flex-col gap-1">
+                  <Text size={16} color="black">
+                    Issue Number
+                  </Text>
+                  <Dropdown
+                    color="black"
+                    options={[
+                      { label: "Issue 1", value: "1" },
+                      { label: "Issue 2", value: "2" },
+                      { label: "Issue 3", value: "3" },
+                      { label: "Issue 67: Intrepid", value: "67" },
+                    ]}
+                    defaultValue={"67"}
+                    placeholder="Select issue"
+                    onChange={(value) => {
+                      const num = typeof value === "string" && value ? Number(value) : NaN;
+                      field.onChange(Number.isNaN(num) ? undefined : num);
+                    }}
+                  />
+                </div>
+              )}
+            />
+          </div>
 
           {/* Author */}
           <div id="author" className="scroll-mt-[80px]">
@@ -137,9 +233,12 @@ const FormContent = () => {
 
           {/* Sources */}
           <div id="sources" className="scroll-mt-[80px]">
-            <FormField<ArticleSubmissionFormValues> name="sources">
-              <SourcesInput placeholder="Enter source URL or citation" />
-            </FormField>
+            <Controller
+              name="sources"
+              render={({ field }) => (
+                <SourcesInput value={field.value} onChange={field.onChange} placeholder="Enter source URL or citation" />
+              )}
+            />
           </div>
 
           {/* Image Upload */}
@@ -152,7 +251,7 @@ const FormContent = () => {
       </GridCol>
 
       <GridCol span={1}>
-        <Box className="sticky top-8 rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5">
+        <Box className="sticky top-24 rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5">
           <ProgressSidebar progress={progress} />
           {/* Submit */}
           <Button
@@ -160,6 +259,7 @@ const FormContent = () => {
             color={
               !progress.author ||
               !progress.title ||
+              !progress.issueNumber ||
               !progress.content ||
               !progress.pullQuote ||
               !progress.categories ||
@@ -171,6 +271,7 @@ const FormContent = () => {
             disabled={
               !progress.author ||
               !progress.title ||
+              !progress.issueNumber ||
               !progress.content ||
               !progress.pullQuote ||
               !progress.categories ||
@@ -185,9 +286,33 @@ const FormContent = () => {
   );
 };
 
-// TODO: Implement actual submission logic
-const onSubmit = (data: ArticleSubmissionFormValues) => {
-  alert("Article submitted!" + JSON.stringify(data) + " image name: " + data.image?.name);
+const onSubmit = async (data: ArticleSubmissionFormValues) => {
+  const slug = data.title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+
+  const articleContent = reactQuillHtmlToArticleContent(data.content);
+
+  const articleData = {
+    title: data.title,
+    slug: slug,
+    issueNumber: data.issueNumber,
+    categories: data.categories,
+    articleContent: articleContent,
+    sources: data.sources,
+    pageLength: 1, // by default, will matter later during issue map spreads
+    comments: [] as ArticleComment[],
+    articleStatus: ArticleStatus.Print,
+    writingStatus: WritingStatus.EICApproved,
+    designStatus: DesignStatus.Completed,
+    photographyStatus: PhotographyStatus.NoPhoto,
+    authors: [data.author], // only 1 author for now, no designers, etc attributed yet
+  } as Article;
+  console.log(articleData);
+  await createArticle(articleData);
+  alert("Created New Article");
 };
 
 /* PAGE EXPORT */
@@ -202,6 +327,7 @@ export default function PublicProfilePage() {
           defaultValues: {
             author: currentUser.name,
             title: "",
+            issueNumber: 67,
             categories: [],
             content: "",
             pullQuote: "",

@@ -7,6 +7,7 @@ import MediaCard from "@/design-system/components/MediaCard";
 import { notFound } from "next/navigation";
 import { Roles } from "@/lib/types/types";
 import { getPublicUserByEmail } from "@/lib/api/users";
+import Image from "@/design-system/primitives/Image";
 
 export interface ProfileData {
   name: string;

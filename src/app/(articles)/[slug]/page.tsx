@@ -38,7 +38,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const article = result.data;
 
   // Extract first image URL for featured image
-  const firstImageUrl = extractFirstImageUrl(article.articleContent);
+  // const firstImageUrl = extractFirstImageUrl(article.articleContent);
 
   // Format publish date (using creationTime as publish date)
   const publishDate = formatDate(article.creationTime);
@@ -53,7 +53,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const issueNumber = `Issue ${article.issueNumber}`;
 
   // Only use image if it actually exists in the content (no placeholder fallback)
-  const imageUrl = firstImageUrl;
+  // const imageUrl = firstImageUrl;
 
   return (
     <ArticleTemplate
@@ -65,15 +65,15 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       publishDate={publishDate}
       articleContent={article.articleContent}
       sources={article.sources}
-      featuredImage={
-        imageUrl
-          ? {
-              src: imageUrl,
-              alt: article.title,
-              width: "w-full",
-            }
-          : undefined
-      }
+      // featuredImage={
+      //   imageUrl
+      //     ? {
+      //         src: imageUrl,
+      //         alt: article.title,
+      //         width: "w-full",
+      //       }
+      //     : undefined
+      // }
       imageCaption={undefined} // TODO: Add image caption if available in article
     />
   );

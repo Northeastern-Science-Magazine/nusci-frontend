@@ -173,43 +173,41 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
               <Box className="space-y-6 border-l-2 border-black/10 pl-6 laptop:pl-8">
                 {sidebarArticles.map((article) =>
                   article.imageUrl ? (
-                    <Link href={article.slug}>
-                    <MediaCard
-                      key={article.id}
-                      mediaType="image"
-                      imageProps={{ src: article.imageUrl, alt: article.title }}
-                      subtitle={article.subtitle || "Article"}
-                      title={truncateTitle(article.title, 40)}
-                      description={truncateByWords(article.description, 15)}
-                      mediaDirection="top"
-                      size="sm"
-                      rounded="none"
-                      shadow="none"
-                      color="white"
-                      className="w-full max-w-none border-b border-black/10 pb-6"
-                    />
-                  </Link>
+                    <Link href={article.slug} key={article.id}>
+                      <MediaCard
+                        mediaType="image"
+                        imageProps={{ src: article.imageUrl, alt: article.title }}
+                        subtitle={article.subtitle || "Article"}
+                        title={truncateTitle(article.title, 40)}
+                        description={truncateByWords(article.description, 15)}
+                        mediaDirection="top"
+                        size="sm"
+                        rounded="none"
+                        shadow="none"
+                        color="white"
+                        className="w-full max-w-none border-b border-black/10 pb-6"
+                      />
+                    </Link>
                   ) : (
-                    <Link href={article.slug}>
-                    <MediaCard
-                      key={article.id}
-                      mediaType="icon"
-                      iconProps={{
-                        icon: categoryToIcon(article.category || "uncategorized") as IconName,
-                        size: 128,
-                        color: categoryToIconColor(article.category || "uncategorized"),
-                      }}
-                      subtitle={article.subtitle || article.category || "Article"}
-                      title={truncateTitle(article.title, 40)}
-                      description={truncateByWords(article.description, 15)}
-                      mediaDirection="top"
-                      size="sm"
-                      rounded="none"
-                      shadow="none"
-                      color="white"
-                      className="w-full max-w-none border-b border-black/10 pb-6"
-                    />
-                 </Link>
+                    <Link href={article.slug} key={article.id}>
+                      <MediaCard
+                        mediaType="icon"
+                        iconProps={{
+                          icon: categoryToIcon(article.category || "uncategorized") as IconName,
+                          size: 128,
+                          color: categoryToIconColor(article.category || "uncategorized"),
+                        }}
+                        subtitle={article.subtitle || article.category || "Article"}
+                        title={truncateTitle(article.title, 40)}
+                        description={truncateByWords(article.description, 15)}
+                        mediaDirection="top"
+                        size="sm"
+                        rounded="none"
+                        shadow="none"
+                        color="white"
+                        className="w-full max-w-none border-b border-black/10 pb-6"
+                      />
+                    </Link>
                   ),
                 )}
               </Box>
@@ -221,42 +219,40 @@ export default function FeaturedArticles({ featuredArticles, recentArticles, con
             <Box className="grid gap-6 laptop:grid-cols-3">
               {gridArticles.map((article) =>
                 article.imageUrl ? (
-                  <Link href={article.slug}>
-                  <MediaCard
-                    key={article.id}
-                    mediaType="image"
-                    imageProps={{ src: article.imageUrl, alt: article.title }}
-                    subtitle={article.subtitle || "Article"}
-                    title={truncateTitle(article.title, 50)}
-                    description={truncateByWords(article.description, 20)}
-                    mediaDirection="top"
-                    size="sm"
-                    rounded="none"
-                    shadow="none"
-                    color="white"
-                    className="w-full max-w-none border border-black/10"
-                  />
+                  <Link href={article.slug} key={article.id}>
+                    <MediaCard
+                      mediaType="image"
+                      imageProps={{ src: article.imageUrl, alt: article.title }}
+                      subtitle={article.subtitle || "Article"}
+                      title={truncateTitle(article.title, 50)}
+                      description={truncateByWords(article.description, 20)}
+                      mediaDirection="top"
+                      size="sm"
+                      rounded="none"
+                      shadow="none"
+                      color="white"
+                      className="w-full max-w-none border border-black/10"
+                    />
                   </Link>
                 ) : (
-                  <Link href={article.slug}>
-                  <MediaCard
-                    key={article.id}
-                    mediaType="icon"
-                    iconProps={{
-                      icon: categoryToIcon(article.category || "uncategorized") as IconName,
-                      size: 128,
-                      color: categoryToIconColor(article.category || "uncategorized"),
-                    }}
-                    subtitle={article.subtitle || article.category || "Article"}
-                    title={truncateTitle(article.title, 50)}
-                    description={truncateByWords(article.description, 20)}
-                    mediaDirection="top"
-                    size="sm"
-                    rounded="none"
-                    shadow="none"
-                    color="white"
-                    className="w-full max-w-none border border-black/10"
-                  />
+                  <Link href={article.slug} key={article.id}>
+                    <MediaCard
+                      mediaType="icon"
+                      iconProps={{
+                        icon: categoryToIcon(article.category || "uncategorized") as IconName,
+                        size: 128,
+                        color: categoryToIconColor(article.category || "uncategorized"),
+                      }}
+                      subtitle={article.subtitle || article.category || "Article"}
+                      title={truncateTitle(article.title, 50)}
+                      description={truncateByWords(article.description, 20)}
+                      mediaDirection="top"
+                      size="sm"
+                      rounded="none"
+                      shadow="none"
+                      color="white"
+                      className="w-full max-w-none border border-black/10"
+                    />
                   </Link>
                 ),
               )}

@@ -40,7 +40,7 @@ import { createArticle } from "@/lib/api/articles";
 */
 
 type ArticleSubmissionFormValues = {
-  author: string;
+  author: string[];
   title: string;
   issueNumber: number;
   categories: string[];
@@ -141,9 +141,11 @@ const FormContent = () => {
   useEffect(() => {
     const updateProgress = () => {
       setProgress({
-        author:
-          !!watchedFields.author && watchedFields.author.trim().length > 0,
         title: !!watchedFields.title && watchedFields.title.trim().length > 0,
+        author:
+          Array.isArray(watchedFields.author) &&
+          watchedFields.author.length > 0 &&
+          (watchedFields.author[0]?.trim()?.length ?? 0) > 0,
         issueNumber:
           !!watchedFields.issueNumber && watchedFields.issueNumber > 0,
         categories:
@@ -226,9 +228,39 @@ const FormContent = () => {
           </div>
 
           <div id="author" className="scroll-mt-[80px]">
-            <FormField<ArticleSubmissionFormValues> name="author">
-              <Dropdown options={AUTHORS} multiSelect typeahead />
-            </FormField>
+            <Controller
+              name="author"
+              render={({ field }) => (
+                <div className="flex flex-col gap-2">
+                  <Dropdown
+                    options={AUTHORS}
+                    multiSelect
+                    typeahead
+                    defaultValue={field.value ?? []}
+                    onChange={(value) => field.onChange(value)}
+                  />
+
+                  {Array.isArray(field.value) && field.value.length > 0 && (
+                    <div className="flex flex-wrap">
+                      {field.value.map((name: string) => (
+                        <button
+                          key={name}
+                          type="button"
+                          onClick={() => {
+                            const next = field.value.filter(
+                              (n: string) => n !== name,
+                            );
+                            field.onChange(next);
+                          }}
+                        >
+                          <span>{name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            />
           </div>
 
           {/* Categories */}
@@ -312,8 +344,8 @@ const FormContent = () => {
             }
             className="w-full"
             disabled={
-              !progress.author ||
               !progress.title ||
+              !progress.author ||
               !progress.issueNumber ||
               !progress.content ||
               !progress.pullQuote ||
@@ -351,7 +383,7 @@ const onSubmit = async (data: ArticleSubmissionFormValues) => {
     writingStatus: WritingStatus.EICApproved,
     designStatus: DesignStatus.Completed,
     photographyStatus: PhotographyStatus.NoPhoto,
-    authors: [data.author], // only 1 author for now, no designers, etc attributed yet
+    authors: data.author ?? [],
   } as Article;
   console.log(articleData);
   await createArticle(articleData);
@@ -369,7 +401,7 @@ export default function PublicProfilePage() {
         options={{
           defaultValues: {
             title: "",
-            author: currentUser.name,
+            author: [currentUser.name],
             issueNumber: 67,
             categories: [],
             content: "",

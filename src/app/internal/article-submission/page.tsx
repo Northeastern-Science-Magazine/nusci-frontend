@@ -14,6 +14,7 @@ import { SourcesInput } from "./components/SourcesInput";
 import { Controller } from "react-hook-form";
 import ImageUpload from "@/design-system/components/ImageUpload";
 import ArticleInput from "./components/ArticleInput";
+import { PullQuoteInput } from "./components/PullQuoteInput";
 import {
   Category,
   ArticleSource,
@@ -26,7 +27,10 @@ import {
   Article,
   ArticleComment,
 } from "@/lib/types/types";
-import { Dropdown, type DropdownOption } from "@/design-system/primitives/Dropdown";
+import {
+  Dropdown,
+  type DropdownOption,
+} from "@/design-system/primitives/Dropdown";
 import { createArticle } from "@/lib/api/articles";
 
 /* IDEAS: 
@@ -42,7 +46,7 @@ type ArticleSubmissionFormValues = {
   issueNumber: number;
   categories: string[];
   content: string;
-  pullQuote: string;
+  pullQuotes: string[];
   image?: File;
   sources: ArticleSource[];
 };
@@ -83,7 +87,8 @@ function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
           flush();
           const text = normalize(el.textContent ?? "");
           const href = el.getAttribute("href") || undefined;
-          if (text || href) segments.push({ contentType: "link", content: text, href });
+          if (text || href)
+            segments.push({ contentType: "link", content: text, href });
           return;
         }
 
@@ -104,7 +109,7 @@ type FormProgress = {
   issueNumber?: boolean;
   categories: boolean;
   content: boolean;
-  pullQuote: boolean;
+  pullQuotes: boolean;
   sources: boolean;
 };
 
@@ -117,7 +122,7 @@ const FormContent = () => {
     title: false,
     categories: false,
     content: false,
-    pullQuote: false,
+    pullQuotes: false,
     sources: false,
   });
 
@@ -127,9 +132,11 @@ const FormContent = () => {
   useEffect(() => {
     const updateProgress = () => {
       setProgress({
-        author: !!watchedFields.author && watchedFields.author.trim().length > 0,
+        author:
+          !!watchedFields.author && watchedFields.author.trim().length > 0,
         title: !!watchedFields.title && watchedFields.title.trim().length > 0,
-        issueNumber: !!watchedFields.issueNumber && watchedFields.issueNumber > 0,
+        issueNumber:
+          !!watchedFields.issueNumber && watchedFields.issueNumber > 0,
         categories:
           Array.isArray(watchedFields.categories) &&
           watchedFields.categories.length > 0 &&
@@ -141,7 +148,9 @@ const FormContent = () => {
             .replace(/\u200B/g, "")
             .replace(/\s+/g, " ")
             .trim().length > 0,
-        pullQuote: !!watchedFields.pullQuote && watchedFields.pullQuote.trim().length > 0,
+        pullQuotes:
+          Array.isArray(watchedFields.pullQuotes) &&
+          watchedFields.pullQuotes.some((q) => q && q.trim().length > 0),
         sources:
           Array.isArray(watchedFields.sources) &&
           watchedFields.sources.length > 0 &&
@@ -155,7 +164,12 @@ const FormContent = () => {
     <Grid col span={3} gap={8}>
       <GridCol span={2}>
         <Box className="space-y-8 rounded-2xl bg-white p-8 shadow-xl ring-1 ring-black/5">
-          <Text color="sage-green" size={36} style="bold" className="mb-8 text-left">
+          <Text
+            color="sage-green"
+            size={36}
+            style="bold"
+            className="mb-8 text-left"
+          >
             Submit an Article
           </Text>
 
@@ -179,7 +193,10 @@ const FormContent = () => {
                     defaultValue={"67"}
                     placeholder="Select issue"
                     onChange={(value) => {
-                      const num = typeof value === "string" && value ? Number(value) : NaN;
+                      const num =
+                        typeof value === "string" && value
+                          ? Number(value)
+                          : NaN;
                       field.onChange(Number.isNaN(num) ? undefined : num);
                     }}
                   />
@@ -191,14 +208,22 @@ const FormContent = () => {
           {/* Author */}
           <div id="author" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="author">
-              <TextInput placeholder={currentUser.name} label="Author" className="w-full" />
+              <TextInput
+                placeholder={currentUser.name}
+                label="Author"
+                className="w-full"
+              />
             </FormField>
           </div>
 
           {/* Title */}
           <div id="title" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="title">
-              <TextInput placeholder="Enter article title" label="Title" className="w-full" />
+              <TextInput
+                placeholder="Enter article title"
+                label="Title"
+                className="w-full"
+              />
             </FormField>
           </div>
 
@@ -210,7 +235,11 @@ const FormContent = () => {
                 <div>
                   <label>{"Categories"}</label>
                   <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
-                    <Checkbox options={Object.values(Category)} value={field.value || []} onChange={field.onChange} />
+                    <Checkbox
+                      options={Object.values(Category)}
+                      value={field.value || []}
+                      onChange={field.onChange}
+                    />
                   </div>
                 </div>
               )}
@@ -224,11 +253,18 @@ const FormContent = () => {
             </FormField>
           </div>
 
-          {/* Pull Quote */}
+          {/* Pull Quotes */}
           <div id="pull-quote" className="scroll-mt-[80px]">
-            <FormField<ArticleSubmissionFormValues> name="pullQuote">
-              <TextInput placeholder="Enter a pull quote" label="Pull Quote" className="w-full" rows={3} multiline={true} />
-            </FormField>
+            <Controller
+              name="pullQuotes"
+              render={({ field }) => (
+                <PullQuoteInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Enter a pull quote"
+                />
+              )}
+            />
           </div>
 
           {/* Sources */}
@@ -236,7 +272,11 @@ const FormContent = () => {
             <Controller
               name="sources"
               render={({ field }) => (
-                <SourcesInput value={field.value} onChange={field.onChange} placeholder="Enter source URL or citation" />
+                <SourcesInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Enter source URL or citation"
+                />
               )}
             />
           </div>
@@ -261,7 +301,7 @@ const FormContent = () => {
               !progress.title ||
               !progress.issueNumber ||
               !progress.content ||
-              !progress.pullQuote ||
+              !progress.pullQuotes ||
               !progress.categories ||
               !progress.sources
                 ? "border"
@@ -273,7 +313,7 @@ const FormContent = () => {
               !progress.title ||
               !progress.issueNumber ||
               !progress.content ||
-              !progress.pullQuote ||
+              !progress.pullQuotes ||
               !progress.categories ||
               !progress.sources
             }
@@ -302,6 +342,7 @@ const onSubmit = async (data: ArticleSubmissionFormValues) => {
     categories: data.categories,
     articleContent: articleContent,
     sources: data.sources,
+    pullQuotes: data.pullQuotes,
     pageLength: 1, // by default, will matter later during issue map spreads
     comments: [] as ArticleComment[],
     articleStatus: ArticleStatus.Print,
@@ -330,7 +371,7 @@ export default function PublicProfilePage() {
             issueNumber: 67,
             categories: [],
             content: "",
-            pullQuote: "",
+            pullQuotes: [],
             image: undefined,
             sources: [],
           },

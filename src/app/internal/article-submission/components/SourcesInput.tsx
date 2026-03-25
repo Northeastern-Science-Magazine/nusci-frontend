@@ -15,9 +15,14 @@ type SourcesInputProps = {
   placeholder?: string;
 };
 
-export function SourcesInput({ value = [], onChange, label = "Sources" }: SourcesInputProps) {
+export function SourcesInput({
+  value = [],
+  onChange,
+  label = "Sources",
+}: SourcesInputProps) {
   // Derive current sources from the controlled value; ensure at least one row exists
-  const sources: ArticleSource[] = value.length > 0 ? value : [{ text: "", href: "" }];
+  const sources: ArticleSource[] =
+    value.length > 0 ? value : [{ text: "", href: "" }];
 
   const handleSourceTextChange = (index: number, newText: string) => {
     const updatedSources = [...sources];
@@ -54,7 +59,9 @@ export function SourcesInput({ value = [], onChange, label = "Sources" }: Source
                 <TextInput
                   value={source.text}
                   label=""
-                  onChange={(newValue) => handleSourceTextChange(index, newValue)}
+                  onChange={(newValue) =>
+                    handleSourceTextChange(index, newValue)
+                  }
                   placeholder="Enter source title"
                   className="w-full"
                 />
@@ -63,7 +70,9 @@ export function SourcesInput({ value = [], onChange, label = "Sources" }: Source
                 <TextInput
                   value={source.href}
                   label=""
-                  onChange={(newValue) => handleSourceHrefChange(index, newValue)}
+                  onChange={(newValue) =>
+                    handleSourceHrefChange(index, newValue)
+                  }
                   placeholder="Enter source URL or citation"
                   className="w-full"
                 />
@@ -77,8 +86,14 @@ export function SourcesInput({ value = [], onChange, label = "Sources" }: Source
               aria-label="Remove source"
               variant="outline"
               color="red"
+              className="group hover:bg-red-500"
             >
-              <Icon icon="trash" size="sm" color="red" />
+              <Icon
+                icon="trash"
+                size="sm"
+                color="red"
+                className="group-hover:text-white"
+              />
             </Button>
           )}
         </div>

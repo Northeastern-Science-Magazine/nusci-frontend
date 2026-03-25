@@ -101,6 +101,7 @@ export type Article = {
   categories: string[];
   articleContent: ArticleContent[];
   sources?: ArticleSource[];
+  pullQuotes?: string[];
   link?: string;
   pageLength: number;
   comments: ArticleComment[];
@@ -117,5 +118,3 @@ export type Article = {
   creationTime: Date;
   modificationTime: Date;
 };
-
-

@@ -26,7 +26,10 @@ import {
   Article,
   ArticleComment,
 } from "@/lib/types/types";
-import { Dropdown, type DropdownOption } from "@/design-system/primitives/Dropdown";
+import {
+  Dropdown,
+  type DropdownOption,
+} from "@/design-system/primitives/Dropdown";
 import { createArticle } from "@/lib/api/articles";
 
 /* IDEAS: 
@@ -46,6 +49,16 @@ type ArticleSubmissionFormValues = {
   image?: File;
   sources: ArticleSource[];
 };
+
+const AUTHORS: DropdownOption[] = [
+  { label: "Maddie Zhang", value: "Maddie Zhang" },
+  { label: "Treyton Mehta", value: "Treyton Mehta" },
+  { label: "Colten Gardner", value: " Colten Gardner" },
+  { label: "Keegan Huntley", value: "Keegan Huntley" },
+  { label: "Jean Gipson", value: "Jean Gipson" },
+  { label: "Elana Voss", value: "Elana Voss" },
+  { label: "Christin McCray", value: "Christin McCray" },
+];
 
 function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
   if (!html) return [];
@@ -83,7 +96,8 @@ function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
           flush();
           const text = normalize(el.textContent ?? "");
           const href = el.getAttribute("href") || undefined;
-          if (text || href) segments.push({ contentType: "link", content: text, href });
+          if (text || href)
+            segments.push({ contentType: "link", content: text, href });
           return;
         }
 
@@ -127,9 +141,11 @@ const FormContent = () => {
   useEffect(() => {
     const updateProgress = () => {
       setProgress({
-        author: !!watchedFields.author && watchedFields.author.trim().length > 0,
+        author:
+          !!watchedFields.author && watchedFields.author.trim().length > 0,
         title: !!watchedFields.title && watchedFields.title.trim().length > 0,
-        issueNumber: !!watchedFields.issueNumber && watchedFields.issueNumber > 0,
+        issueNumber:
+          !!watchedFields.issueNumber && watchedFields.issueNumber > 0,
         categories:
           Array.isArray(watchedFields.categories) &&
           watchedFields.categories.length > 0 &&
@@ -141,7 +157,9 @@ const FormContent = () => {
             .replace(/\u200B/g, "")
             .replace(/\s+/g, " ")
             .trim().length > 0,
-        pullQuote: !!watchedFields.pullQuote && watchedFields.pullQuote.trim().length > 0,
+        pullQuote:
+          !!watchedFields.pullQuote &&
+          watchedFields.pullQuote.trim().length > 0,
         sources:
           Array.isArray(watchedFields.sources) &&
           watchedFields.sources.length > 0 &&
@@ -155,7 +173,12 @@ const FormContent = () => {
     <Grid col span={3} gap={8}>
       <GridCol span={2}>
         <Box className="space-y-8 rounded-2xl bg-white p-8 shadow-xl ring-1 ring-black/5">
-          <Text color="sage-green" size={36} style="bold" className="mb-8 text-left">
+          <Text
+            color="sage-green"
+            size={36}
+            style="bold"
+            className="mb-8 text-left"
+          >
             Submit an Article
           </Text>
 
@@ -179,7 +202,10 @@ const FormContent = () => {
                     defaultValue={"67"}
                     placeholder="Select issue"
                     onChange={(value) => {
-                      const num = typeof value === "string" && value ? Number(value) : NaN;
+                      const num =
+                        typeof value === "string" && value
+                          ? Number(value)
+                          : NaN;
                       field.onChange(Number.isNaN(num) ? undefined : num);
                     }}
                   />
@@ -188,17 +214,20 @@ const FormContent = () => {
             />
           </div>
 
-          {/* Author */}
-          <div id="author" className="scroll-mt-[80px]">
-            <FormField<ArticleSubmissionFormValues> name="author">
-              <TextInput placeholder={currentUser.name} label="Author" className="w-full" />
-            </FormField>
-          </div>
-
           {/* Title */}
           <div id="title" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="title">
-              <TextInput placeholder="Enter article title" label="Title" className="w-full" />
+              <TextInput
+                placeholder="Enter article title"
+                label="Title"
+                className="w-full"
+              />
+            </FormField>
+          </div>
+
+          <div id="author" className="scroll-mt-[80px]">
+            <FormField<ArticleSubmissionFormValues> name="author">
+              <Dropdown options={AUTHORS} multiSelect typeahead />
             </FormField>
           </div>
 
@@ -210,7 +239,11 @@ const FormContent = () => {
                 <div>
                   <label>{"Categories"}</label>
                   <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
-                    <Checkbox options={Object.values(Category)} value={field.value || []} onChange={field.onChange} />
+                    <Checkbox
+                      options={Object.values(Category)}
+                      value={field.value || []}
+                      onChange={field.onChange}
+                    />
                   </div>
                 </div>
               )}
@@ -227,7 +260,13 @@ const FormContent = () => {
           {/* Pull Quote */}
           <div id="pull-quote" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="pullQuote">
-              <TextInput placeholder="Enter a pull quote" label="Pull Quote" className="w-full" rows={3} multiline={true} />
+              <TextInput
+                placeholder="Enter a pull quote"
+                label="Pull Quote"
+                className="w-full"
+                rows={3}
+                multiline={true}
+              />
             </FormField>
           </div>
 
@@ -236,7 +275,11 @@ const FormContent = () => {
             <Controller
               name="sources"
               render={({ field }) => (
-                <SourcesInput value={field.value} onChange={field.onChange} placeholder="Enter source URL or citation" />
+                <SourcesInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Enter source URL or citation"
+                />
               )}
             />
           </div>
@@ -257,8 +300,8 @@ const FormContent = () => {
           <Button
             type="submit"
             color={
-              !progress.author ||
               !progress.title ||
+              !progress.author ||
               !progress.issueNumber ||
               !progress.content ||
               !progress.pullQuote ||
@@ -325,8 +368,8 @@ export default function PublicProfilePage() {
         onSubmit={onSubmit}
         options={{
           defaultValues: {
-            author: currentUser.name,
             title: "",
+            author: currentUser.name,
             issueNumber: 67,
             categories: [],
             content: "",

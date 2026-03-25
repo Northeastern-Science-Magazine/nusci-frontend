@@ -225,14 +225,6 @@ export default function ArticleSearchPage() {
     prevFiltersRef.current = { title: debouncedTitle, category, sortBy, issueNumber };
   }, [debouncedTitle, category, sortBy, issueNumber, searchPerformed, currentPage]);
 
-  // Load initial articles on mount (most recent)
-  useEffect(() => {
-    if (!searchPerformed) {
-      performSearch(1, "", "all", "desc", "");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // Fetch available issue numbers for dropdown
   useEffect(() => {
     const fetchIssueNumbers = async () => {

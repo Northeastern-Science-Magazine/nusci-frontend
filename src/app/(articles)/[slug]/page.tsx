@@ -61,7 +61,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       author={author}
       editor={editor}
       categories={article.categories}
-      //issueNumber={issueNumber} //issue number later when we can clean data and figure out where each one is
+      issueNumber={issueNumber} 
       publishDate={publishDate}
       articleContent={article.articleContent}
       sources={article.sources}

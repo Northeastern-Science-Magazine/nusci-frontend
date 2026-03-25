@@ -21,7 +21,7 @@ import Link from "@/design-system/primitives/Link";
 import { ParallaxScrollSection } from "@/design-system/components/ParallaxScrollSection";
 import Divider from "@/design-system/primitives/Divider";
 import { Category, Article, PhotographyStatus } from "@/lib/types/types";
-import { searchArticles } from "@/lib/api/articles";
+import { searchArticles, getMagazineIssues } from "@/lib/api/articles";
 import categoryToIcon from "@/lib/helpers/categoryToIcon";
 import categoryToIconColor from "@/lib/helpers/categoryToIconColor";
 import { IconName } from "@/design-system/primitives/Icon";
@@ -29,7 +29,7 @@ import { IconName } from "@/design-system/primitives/Icon";
 type FilterTag = {
   id: string;
   label: string;
-  type: "title" | "category" | "sort";
+  type: "title" | "category" | "sort" | "issueNumber";
 };
 
 const CATEGORY_LABEL: Record<string, string> = Object.values(Category).reduce(
@@ -64,7 +64,9 @@ export default function ArticleSearchPage() {
   const [debouncedTitle, setDebouncedTitle] = useState("");
   const [category, setCategory] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"asc" | "desc">("desc");
+  const [issueNumber, setIssueNumber] = useState("");
   const [articles, setArticles] = useState<Article[]>([]);
+  const [issueNumbers, setIssueNumbers] = useState<string[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [searchPerformed, setSearchPerformed] = useState(false);
@@ -78,6 +80,7 @@ export default function ArticleSearchPage() {
   const [keys, setKeys] = useState({
     category: 0,
     sort: 0,
+    issueNumber: 0,
   });
 
   // Build filter tags from current state
@@ -100,8 +103,11 @@ export default function ArticleSearchPage() {
     if (sortBy !== "desc") {
       tags.push({ id: "sort", label: `Sort: Oldest first`, type: "sort" });
     }
+    if (issueNumber.trim()) {
+      tags.push({ id: "issueNumber", label: `Issue: ${issueNumber.trim()}`, type: "issueNumber" });
+    }
     return tags;
-  }, [title, category, sortBy]);
+  }, [title, category, sortBy, issueNumber]);
 
   const [filterTags, setFilterTags] = useState<FilterTag[]>([]);
 
@@ -119,6 +125,10 @@ export default function ArticleSearchPage() {
         setSortBy("desc");
         setKeys((k) => ({ ...k, sort: k.sort + 1 }));
         break;
+      case "issueNumber":
+        setIssueNumber("");
+        setKeys((k) => ({ ...k, issueNumber: k.issueNumber + 1 }));
+        break;
     }
   };
 
@@ -133,6 +143,7 @@ export default function ArticleSearchPage() {
       searchTitle: string,
       searchCategory: string,
       searchSortBy: "asc" | "desc",
+      searchIssueNumber: string,
     ) => {
       setLoading(true);
 
@@ -145,6 +156,7 @@ export default function ArticleSearchPage() {
             ? [searchCategory]
             : undefined,
         sortBy: searchSortBy,
+        issueNumber: searchIssueNumber.trim() || undefined, // ignored by API until backend supports it
       };
       const result = await searchArticles(request);
       if (result.ok) {
@@ -176,6 +188,7 @@ export default function ArticleSearchPage() {
     setDebouncedTitle("");
     setCategory("all");
     setSortBy("desc");
+    setIssueNumber("");
     setSearchPerformed(false);
     setResultsCount(null);
     setCurrentPage(1);
@@ -183,32 +196,51 @@ export default function ArticleSearchPage() {
     setKeys((k) => ({
       category: k.category + 1,
       sort: k.sort + 1,
+      issueNumber: k.issueNumber + 1, // ← missing
     }));
   };
 
   // Track previous filter values to detect changes
-  const prevFiltersRef = useRef({ title: debouncedTitle, category, sortBy });
+  const prevFiltersRef = useRef({ title: debouncedTitle, category, sortBy, issueNumber });
 
   // Fetch articles whenever page or filters (including debounced title) change
   useEffect(() => {
     if (currentPage > 0) {
-      performSearch(currentPage, debouncedTitle, category, sortBy);
+      performSearch(currentPage, debouncedTitle, category, sortBy, issueNumber);
     }
-  }, [currentPage, debouncedTitle, category, sortBy, performSearch]);
+  }, [currentPage, debouncedTitle, category, sortBy, performSearch, issueNumber]);
 
   // Reset to page 1 when filters change (but not on initial mount)
   useEffect(() => {
     const filtersChanged =
       prevFiltersRef.current.title !== debouncedTitle ||
       prevFiltersRef.current.category !== category ||
-      prevFiltersRef.current.sortBy !== sortBy;
+      prevFiltersRef.current.sortBy !== sortBy ||
+      prevFiltersRef.current.issueNumber !== issueNumber;
 
     if (searchPerformed && filtersChanged && currentPage !== 1) {
       setCurrentPage(1);
     }
 
-    prevFiltersRef.current = { title: debouncedTitle, category, sortBy };
-  }, [debouncedTitle, category, sortBy, searchPerformed, currentPage]);
+    prevFiltersRef.current = { title: debouncedTitle, category, sortBy, issueNumber };
+  }, [debouncedTitle, category, sortBy, issueNumber, searchPerformed, currentPage]);
+
+  // Load initial articles on mount (most recent)
+  useEffect(() => {
+    if (!searchPerformed) {
+      performSearch(1, "", "all", "desc", "");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Fetch available issue numbers for dropdown
+  useEffect(() => {
+    const fetchIssueNumbers = async () => {
+      const issues = await getMagazineIssues();
+      setIssueNumbers(issues.map((i) => String(i.issueNumber)));
+    };
+    fetchIssueNumbers();
+  }, []);
 
   const hasActiveFilters = filterTags.length > 0;
   const showResults = searchPerformed && !loading;
@@ -304,18 +336,28 @@ export default function ArticleSearchPage() {
                           <Text size={12} color="black" className="opacity-70">
                             Category
                           </Text>
+                          <DropdownInput placeholder="All categories" key={keys.category} onChange={setCategory}>
+                            {Object.entries(CATEGORY_LABEL).map(([key, label]) => (
+                              <DropdownItem value={key} key={key}>
+                                {label}
+                              </DropdownItem>
+                            ))}
+                          </DropdownInput>
+                        </FlexChild>
+                        <FlexChild className="flex-col gap-1 min-w-[160px] max-w-[200px]">
+                          <Text size={12} color="black" className="opacity-70">
+                            Issue Number
+                          </Text>
                           <DropdownInput
-                            placeholder="All categories"
-                            key={keys.category}
-                            onChange={setCategory}
+                            key={keys.issueNumber}
+                            placeholder="All issues"
+                            onChange={(value) => setIssueNumber(value)}
                           >
-                            {Object.entries(CATEGORY_LABEL).map(
-                              ([key, label]) => (
-                                <DropdownItem value={key} key={key}>
-                                  {label}
-                                </DropdownItem>
-                              ),
-                            )}
+                            {issueNumbers.map((num) => (
+                              <DropdownItem value={num} key={num}>
+                                Issue {num}
+                              </DropdownItem>
+                            ))}
                           </DropdownInput>
                         </FlexChild>
                         <FlexChild className="flex-col gap-1 min-w-[160px] max-w-[200px]">
@@ -406,9 +448,14 @@ export default function ArticleSearchPage() {
                   <>
                     <Box className="flex flex-col gap-6 mb-8">
                       {articles.map((article) => {
-                        const hasNoPhoto =
-                          String(article.photographyStatus) ===
-                          String(PhotographyStatus.NoPhoto);
+                        const hasNoPhoto = String(article.photographyStatus) === String(PhotographyStatus.NoPhoto);
+                        const subtitleWithIssue = [
+                          article.categories[0] || "Uncategorized",
+                          article.issueNumber ? `Issue ${article.issueNumber}` : null,
+                        ]
+                          .filter(Boolean)
+                          .join(" • ");
+
                         return (
                           <Link
                             key={`${article.issueNumber}-${article.slug}`}
@@ -424,7 +471,7 @@ export default function ArticleSearchPage() {
                                 title={article.title}
                                 size="md"
                                 shadow="none"
-                                subtitle={article.categories[0] || "Uncategorized"}
+                                subtitle={subtitleWithIssue}
                                 description={truncateByWords(getArticleDescription(article), 35)}
                                 iconProps={{
                                   icon: categoryToIcon(
@@ -445,7 +492,7 @@ export default function ArticleSearchPage() {
                                 title={article.title}
                                 size="md"
                                 shadow="none"
-                                subtitle={article.categories[0] || "Uncategorized"}
+                                subtitle={subtitleWithIssue}
                                 description={truncateByWords(getArticleDescription(article), 35)}
                                 imageProps={{
                                   src: "/succulent.png",

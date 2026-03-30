@@ -43,14 +43,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   // Format publish date (using creationTime as publish date)
   const publishDate = formatDate(article.creationTime);
 
-  // Get first author (or "Unknown" if no authors)
-  const author = article.authors?.length > 0 ? article.authors[0] : "NU Sci Magazine";
+  // Get first author name (or default if no authors)
+  const author = article.authors?.length > 0 
+    ? `${article.authors[0].firstName} ${article.authors[0].lastName}` 
+    : "NU Sci Magazine";
 
   // Get first editor if available
   const editor = article.editors?.length > 0 ? article.editors[0] : undefined;
-
-  // Format issue number
-  const issueNumber = `Issue ${article.issueNumber}`;
 
   // Only use image if it actually exists in the content (no placeholder fallback)
   // const imageUrl = firstImageUrl;
@@ -61,7 +60,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       author={author}
       editor={editor}
       categories={article.categories}
-      issueNumber={issueNumber} 
+      issueNumber={article.issueNumber} 
       publishDate={publishDate}
       articleContent={article.articleContent}
       sources={article.sources}

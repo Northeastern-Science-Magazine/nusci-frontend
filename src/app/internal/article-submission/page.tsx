@@ -25,6 +25,7 @@ import {
   PhotographyStatus,
   Article,
   ArticleComment,
+  PublicUser,
 } from "@/lib/types/types";
 import { Dropdown, type DropdownOption } from "@/design-system/primitives/Dropdown";
 import { createArticle } from "@/lib/api/articles";
@@ -308,7 +309,22 @@ const onSubmit = async (data: ArticleSubmissionFormValues) => {
     writingStatus: WritingStatus.EICApproved,
     designStatus: DesignStatus.Completed,
     photographyStatus: PhotographyStatus.NoPhoto,
-    authors: [data.author], // only 1 author for now, no designers, etc attributed yet
+    authors: [{
+      firstName: data.author.split(' ')[0] || '',
+      lastName: data.author.split(' ').slice(1).join(' ') || '',
+      email: '',
+      roles: [],
+      graduationYear: 0,
+      bio: '',
+      creationTime: new Date().toISOString(),
+      modificationTime: new Date().toISOString(),
+    }],
+    editors: [],
+    designers: [],
+    photographers: [],
+    approvingUser: '',
+    creationTime: new Date(),
+    modificationTime: new Date(),
   } as Article;
   console.log(articleData);
   await createArticle(articleData);

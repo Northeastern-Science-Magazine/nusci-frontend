@@ -1,7 +1,7 @@
 "use server";
 
 
-import { Roles } from "../types/types";
+import { PublicUser, Roles } from "../types/types";
 import { api, ApiResponse } from "./api";
 import { ProfileData } from "@/app/profile/[emailPrefix]/page";
 
@@ -15,23 +15,6 @@ import { ProfileData } from "@/app/profile/[emailPrefix]/page";
 type RolesString = {
   roles: string[];
 };
-
-
-type PublicUser = {
-  firstName: string;
-  lastName: string;
-  pronouns?: string[],
-  graduationYear: number,
-  major?: string,
-  location?: string,
-  profileImage?: string,
-  bannerImage?: string,
-  bio: string,
-  email: string,
-  roles: string[],
-  creationTime: string;
-  modificationTime: string;
-}
 
 const FALLBACK_PROFILE_USER: ProfileData = {
   name: "Unknown User",

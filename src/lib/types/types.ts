@@ -108,7 +108,7 @@ export type Article = {
   writingStatus: WritingStatus;
   designStatus: DesignStatus;
   photographyStatus: PhotographyStatus;
-  authors: string[];
+  authors: PublicUser[];
   editors: string[];
   designers: string[];
   photographers: string[];
@@ -117,5 +117,21 @@ export type Article = {
   creationTime: Date;
   modificationTime: Date;
 };
+
+export type PublicUser = {
+  firstName: string;
+  lastName: string;
+  pronouns?: string[],
+  graduationYear: number,
+  major?: string,
+  location?: string,
+  profileImage?: string,
+  bannerImage?: string,
+  bio: string,
+  email: string,
+  roles: string[],
+  creationTime: string;
+  modificationTime: string;
+}
 
 

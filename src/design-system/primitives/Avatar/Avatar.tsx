@@ -9,7 +9,7 @@ import { avatarVariants, AvatarProps } from "./variants";
  */
 export const Avatar = ({ size, src, alt, fallback, onClick }: AvatarProps) => {
   return (
-    <RadixAvatar.Root onClick={onClick}>
+    <RadixAvatar.Root onClick={onClick} className="shrink-0">
       <RadixAvatar.Image className={avatarVariants({ size })} src={src} alt={alt ?? "an avatar"} />
       <RadixAvatar.Fallback className={avatarVariants({ size })}>
         {fallback.length == 0 ? "NA" : fallback.length <= 2 ? fallback : fallback.substring(0, 2)}

@@ -83,7 +83,7 @@ function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
           flush();
           const text = normalize(el.textContent ?? "");
           const href = el.getAttribute("href") || undefined;
-          if (text || href) segments.push({ contentType: "link", content: text, href });
+          if (text) segments.push({ contentType: "link", content: text, href });
           return;
         }
 

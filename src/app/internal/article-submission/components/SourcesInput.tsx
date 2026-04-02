@@ -86,7 +86,7 @@ export function SourcesInput({
               aria-label="Remove source"
               variant="outline"
               color="red"
-              className="group hover:bg-red-500"
+              className="group hover:bg-red-500 self-center mt-[1.4rem]"
             >
               <Icon
                 icon="trash"

@@ -48,7 +48,6 @@ export function PullQuoteInput({
               value={quote}
               label={label}
               placeholder={placeholder}
-              multiline
               rows={2}
               onChange={(newValue) => handleQuoteChange(index, newValue)}
               className="w-full"
@@ -61,7 +60,7 @@ export function PullQuoteInput({
               aria-label="Remove pull quote"
               variant="outline"
               color="red"
-              className="group hover:bg-red-500"
+              className="group hover:bg-red-500 self-center mt-[1.4rem]"
             >
               <Icon
                 icon="trash"

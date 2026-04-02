@@ -326,6 +326,68 @@ const FormContent = () => {
   );
 };
 
+function insertPullQuotes(content: any[], pullQuotes: string[]): any[] {
+  if (!pullQuotes.length) return content;
+
+  const result = [...content];
+  const totalSlots = result.length + 1;
+
+  const safeIndices = [];
+  for (let i = 1; i < totalSlots - 1; i++) safeIndices.push(i);
+  const unsafeIndices = [0, totalSlots - 1];
+
+  for (let i = safeIndices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [safeIndices[i], safeIndices[j]] = [safeIndices[j], safeIndices[i]];
+  }
+
+  const insertions: { index: number; quote: string }[] = [];
+
+  for (const quote of pullQuotes) {
+    let chosenIndex: number | null = null;
+    for (const idx of safeIndices) {
+      if (!insertions.some((ins) => Math.abs(ins.index - idx) <= 1)) {
+        chosenIndex = idx;
+        break;
+      }
+    }
+
+    if (chosenIndex === null) {
+      for (const idx of safeIndices) {
+        if (!insertions.some((ins) => ins.index === idx)) {
+          chosenIndex = idx;
+          break;
+        }
+      }
+    }
+
+    if (chosenIndex === null && unsafeIndices.length) {
+      for (const idx of unsafeIndices) {
+        if (!insertions.some((ins) => ins.index === idx)) {
+          chosenIndex = idx;
+          break;
+        }
+      }
+    }
+
+    if (chosenIndex !== null) {
+      insertions.push({ index: chosenIndex, quote });
+    } else {
+      console.warn(`Could not insert pull quote: "${quote}"`);
+    }
+  }
+
+  insertions.sort((a, b) => b.index - a.index);
+  for (const ins of insertions) {
+    result.splice(ins.index, 0, {
+      contentType: "pull_quote",
+      content: ins.quote,
+    });
+  }
+
+  return result;
+}
+
 const onSubmit = async (data: ArticleSubmissionFormValues) => {
   const slug = data.title
     .toLowerCase()
@@ -333,16 +395,16 @@ const onSubmit = async (data: ArticleSubmissionFormValues) => {
     .trim()
     .replace(/\s+/g, "-");
 
-  const articleContent = reactQuillHtmlToArticleContent(data.content);
+  const originalContent = reactQuillHtmlToArticleContent(data.content);
+  const finalContent = insertPullQuotes(originalContent, data.pullQuotes);
 
   const articleData = {
     title: data.title,
     slug: slug,
     issueNumber: data.issueNumber,
     categories: data.categories,
-    articleContent: articleContent,
+    articleContent: finalContent,
     sources: data.sources,
-    pullQuotes: data.pullQuotes,
     pageLength: 1, // by default, will matter later during issue map spreads
     comments: [] as ArticleComment[],
     articleStatus: ArticleStatus.Print,

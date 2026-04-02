@@ -396,14 +396,14 @@ const onSubmit = async (data: ArticleSubmissionFormValues) => {
     .replace(/\s+/g, "-");
 
   const originalContent = reactQuillHtmlToArticleContent(data.content);
-  const finalContent = insertPullQuotes(originalContent, data.pullQuotes);
+  const articleContent = insertPullQuotes(originalContent, data.pullQuotes);
 
   const articleData = {
     title: data.title,
     slug: slug,
     issueNumber: data.issueNumber,
     categories: data.categories,
-    articleContent: finalContent,
+    articleContent: articleContent,
     sources: data.sources,
     pageLength: 1, // by default, will matter later during issue map spreads
     comments: [] as ArticleComment[],

@@ -14,24 +14,18 @@ type EmailFormValues = {
   email: string;
 };
 
-type OTPFormValues = {
-  otp: string;
-};
-
 export default function OTPPage() {
-  const [step, setStep] = useState<"email" | "otp">("email");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
   const onEmailSubmit: SubmitHandler<EmailFormValues> = async (data) => {
-    console.log("Sending OTP to:", data.email);
-    // Add API logic to send OTP here
-    setStep("otp");
-  };
+    console.log("Sending magic link to email:", data.email);
 
-  const onOTPSubmit: SubmitHandler<OTPFormValues> = async (data) => {
-    console.log("Verifying OTP:", data.otp);
-    // Add API logic to verify OTP here
-  };
+    // add API call here
 
+    setSubmittedEmail(data.email);
+    setIsSubmitted(true);
+  };
   return (
     <Flex className="min-h-screen items-center justify-center p-4 bg-sage-green">
       <MediaCard
@@ -47,10 +41,25 @@ export default function OTPPage() {
         color="white"
       >
         <Text size={48} style="bold" color="forest-green" className="p-5 pb-0">
-          Sign In with Code
+          {isSubmitted ? "Check your email" : "Sign In with Email"}
         </Text>
 
-        {step === "email" ? (
+        {isSubmitted ? (
+          <Box className="space-y-8 mt-6 p-5">
+            <Text size={16} color="black">
+              We&#39;ve sent a one-time link to <strong className="font-semibold">{submittedEmail}</strong>. Please check your inbox and click the link to sign in.
+            </Text>
+            <Button
+              variant="outline"
+              size="md"
+              color="forest-green"
+              className="w-full mt-4"
+              onClick={() => setIsSubmitted(false)}
+            >
+              Try another email
+            </Button>
+          </Box>
+        ) : (
           <Form<EmailFormValues>
             onSubmit={onEmailSubmit}
             options={{
@@ -61,7 +70,7 @@ export default function OTPPage() {
             className="space-y-8 mt-6 p-5"
           >
             <Text size={16} color="black">
-              Enter your email address and we will send you a one-time password to sign in.
+              Enter your email address to sign in.
             </Text>
 
             <FormField<EmailFormValues>
@@ -85,66 +94,15 @@ export default function OTPPage() {
             </FormField>
 
             <Button variant="default" size="md" color="forest-green" className="w-full">
-              Send Code
+              Sign In
             </Button>
 
             <Box className="flex flex-col gap-2 text-left mt-4">
               <Text size={12} color="sage-green">
                 Remember your password?{" "}
                 <a href="/login" className="underline hover:text-forest-green">
-                  Sign in
+                  Sign in with password
                 </a>
-              </Text>
-            </Box>
-          </Form>
-        ) : (
-          <Form<OTPFormValues>
-            onSubmit={onOTPSubmit}
-            options={{
-              defaultValues: {
-                otp: "",
-              },
-            }}
-            className="space-y-8 mt-6 p-5"
-          >
-            <Text size={16} color="black">
-              Enter the 6-digit code sent to your email.
-            </Text>
-
-            <FormField<OTPFormValues>
-              name="otp"
-              rules={{
-                required: "Code is required",
-                minLength: {
-                  value: 6,
-                  message: "Code must be 6 digits",
-                },
-                maxLength: {
-                  value: 6,
-                  message: "Code must be 6 digits",
-                },
-              }}
-            >
-              <TextInput
-                variant="outline"
-                size="md"
-                color="black"
-                label="One-Time Password"
-                placeholder="123456"
-                className="w-full"
-              />
-            </FormField>
-
-            <Button variant="default" size="md" color="forest-green" className="w-full">
-              Verify Code
-            </Button>
-
-            <Box className="flex flex-col gap-2 text-left mt-4">
-              <Text size={12} color="sage-green">
-                Didn't receive a code?{" "}
-                <button type="button" onClick={() => setStep("email")} className="underline hover:text-forest-green">
-                  Try another email
-                </button>
               </Text>
             </Box>
           </Form>

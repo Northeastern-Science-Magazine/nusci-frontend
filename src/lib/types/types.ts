@@ -13,33 +13,33 @@ export enum CommentStatus {
 }
 
 export enum ArticleStatus {
-  Pending,
-  Print,
-  Online,
+  Pending = "pending",
+  Print = "print",
+  Online = "online",
 }
 
 export enum WritingStatus {
-  NeedsEditor,
-  HasEditor,
-  RoughDraftComplete,
-  EditsComplete,
-  CopyEditsComplete,
-  EICApproved,
-  Dropped,
+  NeedsEditor = "needs_editor",
+  HasEditor = "has_editor",
+  RoughDraftComplete = "rough_draft_complete",
+  EditsComplete = "edits_complete",
+  CopyEditsComplete = "copy_edits_complete",
+  EICApproved = "eic_approved",
+  Dropped = "dropped",
 }
 
 export enum DesignStatus {
-  NeedsDesigner,
-  HasDesigner,
-  InProgress,
-  Completed,
+  NeedsDesigner = "needs_designer",
+  HasDesigner = "has_designer",
+  InProgress = "in_progress",
+  Completed = "completed",
 }
 
 export enum PhotographyStatus {
-  NoPhoto = "NoPhoto",
-  NeedsPhotographer = "NeedsPhotographer",
-  PhotographerAssigned = "PhotographerAssigned",
-  PhotoComplete = "PhotoComplete",
+  NoPhoto = "no_photo",
+  NeedsPhotographer = "needs_photographer",
+  PhotographerAssigned = "photographer_assigned",
+  PhotoComplete = "photo_complete",
 }
 
 export enum Roles {
@@ -72,10 +72,14 @@ export enum Category {
   Uncategorized = "Uncategorized",
 }
 
-export type ArticleContent = {
-  contentType: "body_paragraph" | "pull_quote" | "image";
+export type ArticleContentSegment = {
+  contentType: "text" | "pull_quote" | "image" | "link";
   content: string;
+  href?: string;
 };
+
+// A paragraph is an array of segments
+export type ArticleContent = ArticleContentSegment[];
 
 export type ArticleComment = {
   user: string;
@@ -113,3 +117,5 @@ export type Article = {
   creationTime: Date;
   modificationTime: Date;
 };
+
+

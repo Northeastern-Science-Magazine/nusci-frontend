@@ -194,18 +194,13 @@ export default function FeaturedArticles({
             {/* Sidebar Articles - Right Column */}
             <div className="laptop:col-span-4">
               <Box className="space-y-6 border-l-2 border-black/10 pl-6 laptop:pl-8">
-                {sidebarArticles.map((article) => (
-                  <Link href={article.slug} key={article.id}>
-                    {article.imageUrl ? (
+                {sidebarArticles.map((article) =>
+                  article.imageUrl ? (
+                    <Link href={article.slug} key={article.id}>
                       <MediaCard
                         mediaType="image"
-                        imageProps={{
-                          src: article.imageUrl,
-                          alt: article.title,
-                        }}
-                        subtitle={
-                          article.subtitle || article.category || "Article"
-                        }
+                        imageProps={{ src: article.imageUrl, alt: article.title }}
+                        subtitle={article.subtitle || "Article"}
                         title={truncateTitle(article.title, 40)}
                         description={truncateByWords(article.description, 15)}
                         mediaDirection="top"
@@ -215,21 +210,17 @@ export default function FeaturedArticles({
                         color="white"
                         className="w-full max-w-none border-b border-black/10 pb-6"
                       />
-                    ) : (
+                    </Link>
+                  ) : (
+                    <Link href={article.slug} key={article.id}>
                       <MediaCard
                         mediaType="icon"
                         iconProps={{
-                          icon: categoryToIcon(
-                            article.category || "uncategorized",
-                          ) as IconName,
+                          icon: categoryToIcon(article.category || "uncategorized") as IconName,
                           size: 128,
-                          color: categoryToIconColor(
-                            article.category || "uncategorized",
-                          ),
+                          color: categoryToIconColor(article.category || "uncategorized"),
                         }}
-                        subtitle={
-                          article.subtitle || article.category || "Article"
-                        }
+                        subtitle={article.subtitle || article.category || "Article"}
                         title={truncateTitle(article.title, 40)}
                         description={truncateByWords(article.description, 15)}
                         mediaDirection="top"
@@ -239,24 +230,23 @@ export default function FeaturedArticles({
                         color="white"
                         className="w-full max-w-none border-b border-black/10 pb-6"
                       />
-                    )}
-                  </Link>
-                ))}
+                    </Link>
+                  ),
+                )}
               </Box>
             </div>
           </Box>
-          {/* Secondary Articles Grid */}
+
+          {/* Secondary Articles Grid - Newspaper Style */}
           <div className="mt-12 border-t-2 border-black/10 pt-12">
             <Box className="grid gap-6 laptop:grid-cols-3">
-              {gridArticles.map((article) => (
-                <Link href={article.slug} key={article.id}>
-                  {article.imageUrl ? (
+              {gridArticles.map((article) =>
+                article.imageUrl ? (
+                  <Link href={article.slug} key={article.id}>
                     <MediaCard
                       mediaType="image"
                       imageProps={{ src: article.imageUrl, alt: article.title }}
-                      subtitle={
-                        article.subtitle || article.category || "Article"
-                      }
+                      subtitle={article.subtitle || "Article"}
                       title={truncateTitle(article.title, 50)}
                       description={truncateByWords(article.description, 20)}
                       mediaDirection="top"
@@ -266,7 +256,9 @@ export default function FeaturedArticles({
                       color="white"
                       className="w-full max-w-none border border-black/10"
                     />
-                  ) : (
+                  </Link>
+                ) : (
+                  <Link href={article.slug} key={article.id}>
                     <MediaCard
                       mediaType="icon"
                       iconProps={{
@@ -278,9 +270,7 @@ export default function FeaturedArticles({
                           article.category || "uncategorized",
                         ),
                       }}
-                      subtitle={
-                        article.subtitle || article.category || "Article"
-                      }
+                      subtitle={article.subtitle || article.category || "Article"}
                       title={truncateTitle(article.title, 50)}
                       description={truncateByWords(article.description, 20)}
                       mediaDirection="top"
@@ -290,9 +280,9 @@ export default function FeaturedArticles({
                       color="white"
                       className="w-full max-w-none border border-black/10"
                     />
-                  )}
-                </Link>
-              ))}
+                  </Link>
+                ),
+              )}
             </Box>
           </div>
         </Box>

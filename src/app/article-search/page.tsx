@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { debounce } from "lodash";
 import { DropdownInput, DropdownItem } from "@/primitives/DropdownInput";
 import Button from "@/primitives/Button";
 import TextInput from "@/design-system/primitives/TextInput";
@@ -9,12 +10,18 @@ import Text from "@/design-system/primitives/Text";
 import MediaCard from "@/design-system/components/MediaCard";
 import { PaginationBar } from "@/design-system/components/PaginationBar";
 import Box from "@/design-system/primitives/Box";
-import { X, Search as SearchIcon, Loader2, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  X,
+  Search as SearchIcon,
+  Loader2,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import Link from "@/design-system/primitives/Link";
 import { ParallaxScrollSection } from "@/design-system/components/ParallaxScrollSection";
 import Divider from "@/design-system/primitives/Divider";
 import { Category, Article, PhotographyStatus } from "@/lib/types/types";
-import { searchArticles } from "@/lib/api/articles";
+import { searchArticles, getMagazineIssues } from "@/lib/api/articles";
 import categoryToIcon from "@/lib/helpers/categoryToIcon";
 import categoryToIconColor from "@/lib/helpers/categoryToIconColor";
 import { IconName } from "@/design-system/primitives/Icon";
@@ -22,7 +29,7 @@ import { IconName } from "@/design-system/primitives/Icon";
 type FilterTag = {
   id: string;
   label: string;
-  type: "title" | "category" | "sort";
+  type: "title" | "category" | "sort" | "issueNumber";
 };
 
 const CATEGORY_LABEL: Record<string, string> = Object.values(Category).reduce(
@@ -42,11 +49,24 @@ const truncateByWords = (text: string, wordLimit: number): string => {
   return words.slice(0, wordLimit).join(" ") + "...";
 };
 
+const getArticleDescription = (article: Article): string => {
+  const paragraphs = article.articleContent || [];
+  if (!Array.isArray(paragraphs) || paragraphs.length === 0) return "";
+
+  const firstParagraph = paragraphs.find((p) => p && p.length > 0);
+  if (!firstParagraph) return "";
+
+  return firstParagraph.map((seg) => seg.content).join(" ");
+};
+
 export default function ArticleSearchPage() {
   const [title, setTitle] = useState("");
+  const [debouncedTitle, setDebouncedTitle] = useState("");
   const [category, setCategory] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"asc" | "desc">("desc");
+  const [issueNumber, setIssueNumber] = useState("");
   const [articles, setArticles] = useState<Article[]>([]);
+  const [issueNumbers, setIssueNumbers] = useState<string[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [searchPerformed, setSearchPerformed] = useState(false);
@@ -60,22 +80,34 @@ export default function ArticleSearchPage() {
   const [keys, setKeys] = useState({
     category: 0,
     sort: 0,
+    issueNumber: 0,
   });
 
   // Build filter tags from current state
   const buildFilterTags = useCallback((): FilterTag[] => {
     const tags: FilterTag[] = [];
     if (title.trim()) {
-      tags.push({ id: "title", label: `Title: "${title.trim()}"`, type: "title" });
+      tags.push({
+        id: "title",
+        label: `Title: "${title.trim()}"`,
+        type: "title",
+      });
     }
     if (category && category !== "all") {
-      tags.push({ id: "category", label: CATEGORY_LABEL[category] || category, type: "category" });
+      tags.push({
+        id: "category",
+        label: CATEGORY_LABEL[category] || category,
+        type: "category",
+      });
     }
     if (sortBy !== "desc") {
       tags.push({ id: "sort", label: `Sort: Oldest first`, type: "sort" });
     }
+    if (issueNumber.trim()) {
+      tags.push({ id: "issueNumber", label: `Issue: ${issueNumber.trim()}`, type: "issueNumber" });
+    }
     return tags;
-  }, [title, category, sortBy]);
+  }, [title, category, sortBy, issueNumber]);
 
   const [filterTags, setFilterTags] = useState<FilterTag[]>([]);
 
@@ -93,6 +125,10 @@ export default function ArticleSearchPage() {
         setSortBy("desc");
         setKeys((k) => ({ ...k, sort: k.sort + 1 }));
         break;
+      case "issueNumber":
+        setIssueNumber("");
+        setKeys((k) => ({ ...k, issueNumber: k.issueNumber + 1 }));
+        break;
     }
   };
 
@@ -102,17 +138,26 @@ export default function ArticleSearchPage() {
   }, [buildFilterTags]);
 
   const performSearch = useCallback(
-    async (page: number = 1, searchTitle: string, searchCategory: string, searchSortBy: "asc" | "desc") => {
+    async (
+      page: number = 1,
+      searchTitle: string,
+      searchCategory: string,
+      searchSortBy: "asc" | "desc",
+      searchIssueNumber: string,
+    ) => {
       setLoading(true);
 
       const request = {
         limit: 12,
         skip: (page - 1) * 12,
         textQuery: searchTitle.trim() || undefined,
-        categories: searchCategory && searchCategory !== "all" ? [searchCategory] : undefined,
+        categories:
+          searchCategory && searchCategory !== "all"
+            ? [searchCategory]
+            : undefined,
         sortBy: searchSortBy,
+        issueNumber: searchIssueNumber.trim() || undefined, // ignored by API until backend supports it
       };
-
       const result = await searchArticles(request);
       if (result.ok) {
         setArticles(result.data.results);
@@ -131,15 +176,19 @@ export default function ArticleSearchPage() {
     [],
   );
 
-  const onSearch = async () => {
-    setCurrentPage(1);
-    await performSearch(1, title, category, sortBy);
-  };
+  // Debounce title updates so searches use debouncedTitle
+  const debouncedSetTitle = useRef(
+    debounce((value: string) => {
+      setDebouncedTitle(value);
+    }, 500),
+  ).current;
 
   const onReset = () => {
     setTitle("");
+    setDebouncedTitle("");
     setCategory("all");
     setSortBy("desc");
+    setIssueNumber("");
     setSearchPerformed(false);
     setResultsCount(null);
     setCurrentPage(1);
@@ -147,47 +196,42 @@ export default function ArticleSearchPage() {
     setKeys((k) => ({
       category: k.category + 1,
       sort: k.sort + 1,
+      issueNumber: k.issueNumber + 1, // ← missing
     }));
   };
 
-  // Handle Enter key in search inputs
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, action: () => void) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      action();
-    }
-  };
-
   // Track previous filter values to detect changes
-  const prevFiltersRef = useRef({ title, category, sortBy });
+  const prevFiltersRef = useRef({ title: debouncedTitle, category, sortBy, issueNumber });
 
-  // Fetch articles when page changes
+  // Fetch articles whenever page or filters (including debounced title) change
   useEffect(() => {
-    if (searchPerformed && currentPage > 0) {
-      performSearch(currentPage, title, category, sortBy);
+    if (currentPage > 0) {
+      performSearch(currentPage, debouncedTitle, category, sortBy, issueNumber);
     }
-  }, [currentPage, performSearch, searchPerformed, title, category, sortBy]);
+  }, [currentPage, debouncedTitle, category, sortBy, performSearch, issueNumber]);
 
   // Reset to page 1 when filters change (but not on initial mount)
   useEffect(() => {
     const filtersChanged =
-      prevFiltersRef.current.title !== title ||
+      prevFiltersRef.current.title !== debouncedTitle ||
       prevFiltersRef.current.category !== category ||
-      prevFiltersRef.current.sortBy !== sortBy;
+      prevFiltersRef.current.sortBy !== sortBy ||
+      prevFiltersRef.current.issueNumber !== issueNumber;
 
     if (searchPerformed && filtersChanged && currentPage !== 1) {
       setCurrentPage(1);
     }
 
-    prevFiltersRef.current = { title, category, sortBy };
-  }, [title, category, sortBy, searchPerformed, currentPage]);
+    prevFiltersRef.current = { title: debouncedTitle, category, sortBy, issueNumber };
+  }, [debouncedTitle, category, sortBy, issueNumber, searchPerformed, currentPage]);
 
-  // Load initial articles on mount (most recent)
+  // Fetch available issue numbers for dropdown
   useEffect(() => {
-    if (!searchPerformed) {
-      performSearch(1, "", "all", "desc");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const fetchIssueNumbers = async () => {
+      const issues = await getMagazineIssues();
+      setIssueNumbers(issues.map((i) => String(i.issueNumber)));
+    };
+    fetchIssueNumbers();
   }, []);
 
   const hasActiveFilters = filterTags.length > 0;
@@ -210,7 +254,9 @@ export default function ArticleSearchPage() {
     return () => window.clearInterval(intervalId);
   }, [showInitialLoadingScreen]);
 
-  const LoadingScreen = () => <div className="min-h-screen bg-white flex items-center justify-center" />;
+  const LoadingScreen = () => (
+    <div className="min-h-screen bg-white flex items-center justify-center" />
+  );
 
   if (showInitialLoadingScreen) {
     return <LoadingScreen />;
@@ -240,33 +286,13 @@ export default function ArticleSearchPage() {
                       color="black"
                       label=""
                       value={title}
-                      onChange={(value) => setTitle(value)}
+                      onChange={(value) => {
+                        setTitle(value);
+                        debouncedSetTitle(value);
+                      }}
                       placeholder="Search articles..."
-                      onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(e, onSearch)}
-                      className="w-[900px]"
+                      className="w-[1090px]"
                     />
-                  </FlexChild>
-                  <FlexChild>
-                    <Button
-                      variant="default"
-                      size="lg"
-                      color="forest-green"
-                      onClick={onSearch}
-                      disabled={loading}
-                      className="min-w-[120px] flex items-center justify-center gap-2"
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          Searching...
-                        </>
-                      ) : (
-                        <>
-                          <SearchIcon className="w-5 h-5" />
-                          Search
-                        </>
-                      )}
-                    </Button>
                   </FlexChild>
                 </Flex>
 
@@ -280,7 +306,11 @@ export default function ArticleSearchPage() {
                     className="flex items-center gap-2"
                   >
                     Advanced Search
-                    {showAdvancedSearch ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    {showAdvancedSearch ? (
+                      <ChevronUp className="w-4 h-4" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4" />
+                    )}
                   </Button>
                 </Box>
 
@@ -288,7 +318,12 @@ export default function ArticleSearchPage() {
                 {showAdvancedSearch && (
                   <Box className="pt-4 border-t border-neutral-200">
                     <Flex direction="col" gap={6}>
-                      <Flex direction="row" wrap="wrap" gap={4} className="items-end">
+                      <Flex
+                        direction="row"
+                        wrap="wrap"
+                        gap={4}
+                        className="items-end"
+                      >
                         <FlexChild className="flex-col gap-1 min-w-[200px] flex-1 max-w-[280px]">
                           <Text size={12} color="black" className="opacity-70">
                             Category
@@ -303,15 +338,37 @@ export default function ArticleSearchPage() {
                         </FlexChild>
                         <FlexChild className="flex-col gap-1 min-w-[160px] max-w-[200px]">
                           <Text size={12} color="black" className="opacity-70">
+                            Issue Number
+                          </Text>
+                          <DropdownInput
+                            key={keys.issueNumber}
+                            placeholder="All issues"
+                            onChange={(value) => setIssueNumber(value)}
+                          >
+                            {issueNumbers.map((num) => (
+                              <DropdownItem value={num} key={num}>
+                                Issue {num}
+                              </DropdownItem>
+                            ))}
+                          </DropdownInput>
+                        </FlexChild>
+                        <FlexChild className="flex-col gap-1 min-w-[160px] max-w-[200px]">
+                          <Text size={12} color="black" className="opacity-70">
                             Sort By Date
                           </Text>
                           <DropdownInput
                             key={keys.sort}
                             placeholder="Newest first"
-                            onChange={(value) => setSortBy(value as "asc" | "desc")}
+                            onChange={(value) =>
+                              setSortBy(value as "asc" | "desc")
+                            }
                           >
-                            <DropdownItem value="desc">Newest first</DropdownItem>
-                            <DropdownItem value="asc">Oldest first</DropdownItem>
+                            <DropdownItem value="desc">
+                              Newest first
+                            </DropdownItem>
+                            <DropdownItem value="asc">
+                              Oldest first
+                            </DropdownItem>
                           </DropdownInput>
                         </FlexChild>
                       </Flex>
@@ -343,7 +400,13 @@ export default function ArticleSearchPage() {
                       </button>
                     </Box>
                   ))}
-                  <Button variant="outline" size="sm" color="forest-green" onClick={onReset} disabled={loading}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    color="forest-green"
+                    onClick={onReset}
+                    disabled={loading}
+                  >
                     Reset filters
                   </Button>
                 </div>
@@ -357,10 +420,16 @@ export default function ArticleSearchPage() {
               <Box className="mt-8">
                 {/* Results Header */}
                 {resultsCount !== null && (
-                  <Flex direction="row" className="justify-between items-center mb-6 flex-wrap gap-4">
+                  <Flex
+                    direction="row"
+                    className="justify-between items-center mb-6 flex-wrap gap-4"
+                  >
                     <Box>
                       <Text size={14} color="black" className="opacity-60">
-                        {resultsCount} {resultsCount === 1 ? "article found" : "articles found"}
+                        {resultsCount}{" "}
+                        {resultsCount === 1
+                          ? "article found"
+                          : "articles found"}
                       </Text>
                     </Box>
                   </Flex>
@@ -372,8 +441,19 @@ export default function ArticleSearchPage() {
                     <Box className="flex flex-col gap-6 mb-8">
                       {articles.map((article) => {
                         const hasNoPhoto = String(article.photographyStatus) === String(PhotographyStatus.NoPhoto);
+                        const subtitleWithIssue = [
+                          article.categories[0] || "Uncategorized",
+                          article.issueNumber ? `Issue ${article.issueNumber}` : null,
+                        ]
+                          .filter(Boolean)
+                          .join(" • ");
+
                         return (
-                          <Link key={`${article.issueNumber}-${article.slug}`} href={`/${article.slug}`} className="block w-full">
+                          <Link
+                            key={`${article.issueNumber}-${article.slug}`}
+                            href={`/${article.slug}`}
+                            className="block w-full"
+                          >
                             {hasNoPhoto ? (
                               <MediaCard
                                 className="w-full max-w-none"
@@ -383,12 +463,16 @@ export default function ArticleSearchPage() {
                                 title={article.title}
                                 size="md"
                                 shadow="none"
-                                subtitle={article.categories[0] || "Uncategorized"}
-                                description={truncateByWords(article.articleContent[0]?.content || "", 35)}
+                                subtitle={subtitleWithIssue}
+                                description={truncateByWords(getArticleDescription(article), 35)}
                                 iconProps={{
-                                  icon: categoryToIcon(article.categories[0] || "uncategorized") as IconName,
+                                  icon: categoryToIcon(
+                                    article.categories[0] || "uncategorized",
+                                  ) as IconName,
                                   size: 128,
-                                  color: categoryToIconColor(article.categories[0] || "uncategorized"),
+                                  color: categoryToIconColor(
+                                    article.categories[0] || "uncategorized",
+                                  ),
                                 }}
                               />
                             ) : (
@@ -400,8 +484,8 @@ export default function ArticleSearchPage() {
                                 title={article.title}
                                 size="md"
                                 shadow="none"
-                                subtitle={article.categories[0] || "Uncategorized"}
-                                description={truncateByWords(article.articleContent[0]?.content || "", 35)}
+                                subtitle={subtitleWithIssue}
+                                description={truncateByWords(getArticleDescription(article), 35)}
                                 imageProps={{
                                   src: "/succulent.png",
                                   alt: article.title,
@@ -415,13 +499,25 @@ export default function ArticleSearchPage() {
 
                     {/* Pagination */}
                     {resultsCount !== null && resultsCount > 12 && (
-                      <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
+                      <Flex
+                        direction="row"
+                        gap={2}
+                        className="justify-center items-center pt-6 border-t border-neutral-200"
+                      >
                         <PaginationBar
                           maxItems={Math.ceil(resultsCount / 12)}
                           activeItem={currentPage}
-                          onClickFunctionGenerator={(index) => () => setCurrentPage(index)}
-                          onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                          onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
+                          onClickFunctionGenerator={(index) => () =>
+                            setCurrentPage(index)
+                          }
+                          onClickLeft={() =>
+                            setCurrentPage((p) => Math.max(1, p - 1))
+                          }
+                          onClickRight={() =>
+                            setCurrentPage((p) =>
+                              Math.min(Math.ceil(resultsCount / 12), p + 1),
+                            )
+                          }
                         />
                       </Flex>
                     )}
@@ -434,7 +530,12 @@ export default function ArticleSearchPage() {
                     <Text size={16} color="black" className="opacity-60 mb-6">
                       Try adjusting your search criteria or filters
                     </Text>
-                    <Button variant="outline" size="md" color="forest-green" onClick={onReset}>
+                    <Button
+                      variant="outline"
+                      size="md"
+                      color="forest-green"
+                      onClick={onReset}
+                    >
                       Clear all filters
                     </Button>
                   </Box>

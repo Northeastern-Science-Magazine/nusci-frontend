@@ -129,16 +129,29 @@ const HARDCODED_MAGAZINES: MagazineIssue[] = [
   },
 ];
 
-// Extract the first image URL from articleContent
-function extractFirstImageUrl(articleContent: Array<{ contentType: string; content: string }>): string | undefined {
-  const imageItem = articleContent.find((item) => item.contentType === "image");
-  return imageItem?.content;
+// Extract the first image URL from nested ArticleContent (paragraphs -> segments)
+function extractFirstImageUrl(articleContent: ArticleType["articleContent"]): string | undefined {
+  for (const paragraph of articleContent || []) {
+    if (!paragraph) continue;
+    const imageSeg = paragraph.find((seg) => seg.contentType === "image");
+    if (imageSeg?.content) return imageSeg.content;
+  }
+  return undefined;
 }
 
-// Extract description from first body paragraph
-function extractDescription(articleContent: Array<{ contentType: string; content: string }>): string {
-  const firstParagraph = articleContent.find((item) => item.contentType === "body_paragraph");
-  return firstParagraph?.content || "";
+// Extract description from first paragraph (concatenate segment text).
+// Works for both "text"/"link" and "body_paragraph" style contentTypes.
+function extractDescription(articleContent: ArticleType["articleContent"]): string {
+  if (!articleContent || articleContent.length === 0) return "";
+
+  const firstParagraph = articleContent.find((paragraph) => paragraph && paragraph.length > 0);
+  if (!firstParagraph) return "";
+
+  // Prefer body_paragraph segments if present; otherwise use all segments
+  const bodySegments = firstParagraph.filter((seg) => seg.contentType === "text");
+  const segmentsToUse = bodySegments.length > 0 ? bodySegments : firstParagraph;
+
+  return segmentsToUse.map((seg) => seg.content).join(" ");
 }
 
 // Map ArticleType to Article interface
@@ -186,18 +199,15 @@ export async function getRecentArticles(limit: number = 6): Promise<Article[]> {
 
 export async function getFeaturedArticles(): Promise<Article[]> {
   try {
-    const response = await api<any>("GET", `/articles/search?limit=2&featured=true&sort=date&order=desc`);
+    const response = await api<ArticleType[]>("GET", `/articles/search?limit=2&featured=true&sort=date&order=desc`);
 
-    if (!response.ok) {
+    if (!response.ok || !Array.isArray(response.data) || response.data.length === 0) {
       console.warn("Featured articles search endpoint failed, using fallback featured articles");
       return FALLBACK_FEATURED_ARTICLES;
     }
 
-    if (Array.isArray(response.data) && response.data.length >= 2) {
-      return response.data;
-    }
-
-    return FALLBACK_FEATURED_ARTICLES;
+    // Map backend ArticleType[] to frontend Article[], deriving description from first paragraph
+    return response.data.map(mapArticleTypeToArticle);
   } catch (error) {
     console.error("Error fetching featured articles:", error);
     return FALLBACK_FEATURED_ARTICLES;
@@ -227,4 +237,8 @@ export async function searchArticles(request: ArticleSearchRequest): Promise<Api
 
 export async function getArticleBySlug(slug: string): Promise<ApiResponse<ArticleType>> {
   return api<ArticleType>("GET", `/articles/slug/${slug}`);
+}
+
+export async function createArticle(articleData: ArticleType) {
+  return api<ArticleType>("POST", "/articles/create", articleData);
 }

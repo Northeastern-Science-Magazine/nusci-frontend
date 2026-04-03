@@ -23,9 +23,8 @@ import {
   WritingStatus,
   DesignStatus,
   PhotographyStatus,
-  Article,
   ArticleComment,
-  PublicUser,
+  ArticleCreate
 } from "@/lib/types/types";
 import { Dropdown, type DropdownOption } from "@/design-system/primitives/Dropdown";
 import { createArticle } from "@/lib/api/articles";
@@ -309,23 +308,14 @@ const onSubmit = async (data: ArticleSubmissionFormValues) => {
     writingStatus: WritingStatus.EICApproved,
     designStatus: DesignStatus.Completed,
     photographyStatus: PhotographyStatus.NoPhoto,
-    authors: [{
-      firstName: data.author.split(' ')[0] || '',
-      lastName: data.author.split(' ').slice(1).join(' ') || '',
-      email: '',
-      roles: [],
-      graduationYear: 0,
-      bio: '',
-      creationTime: new Date().toISOString(),
-      modificationTime: new Date().toISOString(),
-    }],
+    authors: [data.author], //data.author will be updated to be the public user id by the other ticket for the dropdown
     editors: [],
     designers: [],
     photographers: [],
     approvingUser: '',
     creationTime: new Date(),
     modificationTime: new Date(),
-  } as Article;
+  } as ArticleCreate;
   console.log(articleData);
   await createArticle(articleData);
   alert("Created New Article");

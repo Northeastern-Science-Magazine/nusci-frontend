@@ -118,7 +118,32 @@ export type Article = {
   modificationTime: Date;
 };
 
+export type ArticleCreate = {
+  title: string;
+  slug: string;
+  issueNumber: number;
+  categories: string[];
+  articleContent: ArticleContent[];
+  sources?: ArticleSource[];
+  link?: string;
+  pageLength: number;
+  comments: ArticleComment[];
+  articleStatus: ArticleStatus;
+  writingStatus: WritingStatus;
+  designStatus: DesignStatus;
+  photographyStatus: PhotographyStatus;
+  authors: string[];
+  editors: string[];
+  designers: string[];
+  photographers: string[];
+  approvingUser: string;
+  approvalTime?: Date;
+  creationTime: Date;
+  modificationTime: Date;
+};
+
 export type PublicUser = {
+  _id: string;
   firstName: string;
   lastName: string;
   pronouns?: string[],

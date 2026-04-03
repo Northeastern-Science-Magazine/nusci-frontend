@@ -19,10 +19,6 @@ export default function OTPPage() {
   const [submittedEmail, setSubmittedEmail] = useState("");
 
   const onEmailSubmit: SubmitHandler<EmailFormValues> = async (data) => {
-    console.log("Sending magic link to email:", data.email);
-
-    // add API call here
-
     setSubmittedEmail(data.email);
     setIsSubmitted(true);
   };
@@ -47,7 +43,8 @@ export default function OTPPage() {
         {isSubmitted ? (
           <Box className="space-y-8 mt-6 p-5">
             <Text size={16} color="black">
-              We&#39;ve sent a one-time link to <strong className="font-semibold">{submittedEmail}</strong>. Please check your inbox and click the link to sign in.
+              We&#39;ve sent a one-time link to <strong className="font-semibold">{submittedEmail}</strong>. Please check your
+              inbox and click the link to sign in.
             </Text>
             <Button
               variant="outline"
@@ -88,7 +85,7 @@ export default function OTPPage() {
                 size="md"
                 color="black"
                 label="Email"
-                placeholder="name@company.com"
+                placeholder="email@northeastern.edu"
                 className="w-full"
               />
             </FormField>

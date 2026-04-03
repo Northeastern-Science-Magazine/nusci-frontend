@@ -68,7 +68,7 @@ export default function LoginPage() {
               size="md"
               color="black"
               label="Email"
-              placeholder="name@company.com"
+              placeholder="email@northeastern.edu"
               className="w-full"
             />
           </FormField>
@@ -97,12 +97,6 @@ export default function LoginPage() {
           </Button>
 
           <Box className="flex flex-col gap-2 text-left mt-4">
-            <Text size={12} color="sage-green">
-              Don&#39;t have an account?{" "}
-              <a href="/signup" className="underline">
-                Sign up
-              </a>
-            </Text>
             <Text size={12} color="sage-green">
               Or sign in with a{" "}
               <a href="/otp" className="underline">

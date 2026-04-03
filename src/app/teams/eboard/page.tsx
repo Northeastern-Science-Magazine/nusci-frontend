@@ -188,6 +188,15 @@ export default function EboardPage() {
       email: "",
       avatarUrl: "/headshots/saumya_headshot.jpg",
     },
+    {
+      name: "Mikayla Tsai",
+      pronouns: "she/her",
+      bio: "Mikayla is a fourth-year Behavioral Neuroscience student, and began writing for the NU Sci since her sophomore year. She loves reading and writing articles pertaining to neural mechanisms, natural phenomena, and historical events. Outside of school, you can find her long-distance running, drinking matcha, and watching a good movie.",
+      graduationYear: 2026,
+      major: "Behavioral Neuroscience",
+      email: "",
+      avatarUrl: "/headshots/mikayla_headshot.jpg",
+    },
   ];
 
   const currentMembers = activeTab === "eboard" ? eboard : editors;

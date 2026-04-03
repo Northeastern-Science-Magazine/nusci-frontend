@@ -1,6 +1,5 @@
 "use server";
 
-
 import { PublicUser, Roles } from "../types/types";
 import { api, ApiResponse } from "./api";
 import { ProfileData } from "@/app/profile/[emailPrefix]/page";
@@ -14,6 +13,22 @@ import { ProfileData } from "@/app/profile/[emailPrefix]/page";
  */
 type RolesString = {
   roles: string[];
+};
+
+type PublicUser = {
+  firstName: string;
+  lastName: string;
+  pronouns?: string[];
+  graduationYear: number;
+  major?: string;
+  location?: string;
+  profileImage?: string;
+  bannerImage?: string;
+  bio: string;
+  email: string;
+  roles: string[];
+  creationTime: string;
+  modificationTime: string;
 };
 
 const FALLBACK_PROFILE_USER: ProfileData = {
@@ -30,9 +45,7 @@ const FALLBACK_PROFILE_USER: ProfileData = {
 };
 
 function mapRolesToEnum(roleStrings: string[]): Roles[] {
-  return roleStrings
-    .map((role) => Roles[role as keyof typeof Roles])
-    .filter(Boolean);
+  return roleStrings.map((role) => Roles[role as keyof typeof Roles]).filter(Boolean);
 }
 
 function mapPublicUserToProfile(user: PublicUser): ProfileData {
@@ -50,18 +63,14 @@ function mapPublicUserToProfile(user: PublicUser): ProfileData {
   };
 }
 
-export async function getPublicUserByEmail(
-  email: string
-): Promise<ProfileData> {
+export async function getPublicUserByEmail(email: string): Promise<ProfileData> {
   try {
     const newEmail = email.concat("@northeastern.edu");
     const response = await apiGetPublicUserByEmail(newEmail);
 
     if (!response.ok) {
       if (process.env.NODE_ENV === "development") {
-        console.warn(
-          "Get public user by email endpoint failed, using fallback user"
-        );
+        console.warn("Get public user by email endpoint failed, using fallback user");
       }
       return FALLBACK_PROFILE_USER;
     }
@@ -85,8 +94,10 @@ export async function apiLogin(data: { email: string; password: string }): Promi
   return api("POST", "/user/login", data);
 }
 
-export async function apiGetPublicUserByEmail(
-  email: string
-): Promise<ApiResponse<PublicUser>> {
+export async function apiGetPublicUserByEmail(email: string): Promise<ApiResponse<PublicUser>> {
   return api<PublicUser>("GET", `/user/email/${email}`);
+}
+
+export async function apiVerifyOTPToken(token: string): Promise<ApiResponse<void>> {
+  return api<void>("POST", `/user/verify-otp?token=${token}`);
 }

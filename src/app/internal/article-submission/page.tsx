@@ -14,6 +14,7 @@ import { SourcesInput } from "./components/SourcesInput";
 import { Controller } from "react-hook-form";
 import ImageUpload from "@/design-system/components/ImageUpload";
 import ArticleInput from "./components/ArticleInput";
+import { PullQuoteInput } from "./components/PullQuoteInput";
 import {
   Category,
   ArticleSource,
@@ -42,7 +43,7 @@ type ArticleSubmissionFormValues = {
   issueNumber: number;
   categories: string[];
   content: string;
-  pullQuote: string;
+  pullQuotes: string[];
   image?: File;
   sources: ArticleSource[];
 };
@@ -104,7 +105,7 @@ type FormProgress = {
   issueNumber?: boolean;
   categories: boolean;
   content: boolean;
-  pullQuote: boolean;
+  pullQuotes: boolean;
   sources: boolean;
 };
 
@@ -117,7 +118,7 @@ const FormContent = () => {
     title: false,
     categories: false,
     content: false,
-    pullQuote: false,
+    pullQuotes: false,
     sources: false,
   });
 
@@ -141,7 +142,7 @@ const FormContent = () => {
             .replace(/\u200B/g, "")
             .replace(/\s+/g, " ")
             .trim().length > 0,
-        pullQuote: !!watchedFields.pullQuote && watchedFields.pullQuote.trim().length > 0,
+        pullQuotes: Array.isArray(watchedFields.pullQuotes) && watchedFields.pullQuotes.some((q) => q && q.trim().length > 0),
         sources:
           Array.isArray(watchedFields.sources) &&
           watchedFields.sources.length > 0 &&
@@ -224,11 +225,14 @@ const FormContent = () => {
             </FormField>
           </div>
 
-          {/* Pull Quote */}
+          {/* Pull Quotes */}
           <div id="pull-quote" className="scroll-mt-[80px]">
-            <FormField<ArticleSubmissionFormValues> name="pullQuote">
-              <TextInput placeholder="Enter a pull quote" label="Pull Quote" className="w-full" rows={3} multiline={true} />
-            </FormField>
+            <Controller
+              name="pullQuotes"
+              render={({ field }) => (
+                <PullQuoteInput value={field.value} onChange={field.onChange} placeholder="Enter a pull quote" />
+              )}
+            />
           </div>
 
           {/* Sources */}
@@ -261,7 +265,7 @@ const FormContent = () => {
               !progress.title ||
               !progress.issueNumber ||
               !progress.content ||
-              !progress.pullQuote ||
+              !progress.pullQuotes ||
               !progress.categories ||
               !progress.sources
                 ? "border"
@@ -273,7 +277,7 @@ const FormContent = () => {
               !progress.title ||
               !progress.issueNumber ||
               !progress.content ||
-              !progress.pullQuote ||
+              !progress.pullQuotes ||
               !progress.categories ||
               !progress.sources
             }
@@ -286,6 +290,49 @@ const FormContent = () => {
   );
 };
 
+function insertPullQuotes(content: ArticleContent[], pullQuotes: string[]): ArticleContent[] {
+  if (!pullQuotes.length) return content;
+
+  const result = [...content];
+  const slots = result.length + 1;
+
+  const indices = Array.from({ length: slots - 2 }, (_, i) => i + 1);
+
+  // Shuffle (Fisher–Yates)
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+
+  const used = new Set<number>();
+  const insertions: { index: number; quote: string }[] = [];
+
+  for (const quote of pullQuotes) {
+    const idx = indices.find((i) => !used.has(i) && !used.has(i - 1) && !used.has(i + 1));
+
+    if (idx === undefined) {
+      console.warn(`Could not insert pull quote: "${quote}"`);
+      continue;
+    }
+
+    used.add(idx);
+    insertions.push({ index: idx, quote });
+  }
+
+  insertions
+    .sort((a, b) => b.index - a.index)
+    .forEach(({ index, quote }) =>
+      result.splice(index, 0, [
+        {
+          contentType: "pull_quote",
+          content: quote,
+        },
+      ]),
+    );
+
+  return result;
+}
+
 const onSubmit = async (data: ArticleSubmissionFormValues) => {
   const slug = data.title
     .toLowerCase()
@@ -293,7 +340,8 @@ const onSubmit = async (data: ArticleSubmissionFormValues) => {
     .trim()
     .replace(/\s+/g, "-");
 
-  const articleContent = reactQuillHtmlToArticleContent(data.content);
+  const originalContent = reactQuillHtmlToArticleContent(data.content);
+  const articleContent = insertPullQuotes(originalContent, data.pullQuotes);
 
   const articleData = {
     title: data.title,
@@ -336,7 +384,7 @@ export default function PublicProfilePage() {
             issueNumber: 67,
             categories: [],
             content: "",
-            pullQuote: "",
+            pullQuotes: [],
             image: undefined,
             sources: [],
           },

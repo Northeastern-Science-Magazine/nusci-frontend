@@ -125,6 +125,7 @@ export type ArticleCreate = {
   categories: string[];
   articleContent: ArticleContent[];
   sources?: ArticleSource[];
+  pullQuotes?: string[];
   link?: string;
   pageLength: number;
   comments: ArticleComment[];
@@ -146,17 +147,29 @@ export type PublicUser = {
   _id: string;
   firstName: string;
   lastName: string;
-  pronouns?: string[],
-  graduationYear: number,
-  major?: string,
-  location?: string,
-  profileImage?: string,
-  bannerImage?: string,
-  bio: string,
-  email: string,
-  roles: string[],
+  pronouns?: string[];
+  graduationYear: number;
+  major?: string;
+  location?: string;
+  profileImage?: string;
+  bannerImage?: string;
+  bio: string;
+  email: string;
+  roles: string[];
   creationTime: string;
   modificationTime: string;
+};
+
+export enum EmailType {
+  REMINDER = "reminder",
+  DEADLINE = "deadline",
+  RESET_PASSWORD = "reset_password",
+  INVITE_USER = "invite_user",
+  OTP = "otp",
+  CUSTOM = "custom",
 }
 
-
+export type Email = {
+  to: String[];
+  type: EmailType;
+};

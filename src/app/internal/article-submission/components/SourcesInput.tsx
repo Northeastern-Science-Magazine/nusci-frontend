@@ -15,14 +15,9 @@ type SourcesInputProps = {
   placeholder?: string;
 };
 
-export function SourcesInput({
-  value = [],
-  onChange,
-  label = "Sources",
-}: SourcesInputProps) {
+export function SourcesInput({ value = [], onChange, label = "Sources" }: SourcesInputProps) {
   // Derive current sources from the controlled value; ensure at least one row exists
-  const sources: ArticleSource[] =
-    value.length > 0 ? value : [{ text: "", href: "" }];
+  const sources: ArticleSource[] = value.length > 0 ? value : [{ text: "", href: "" }];
 
   const handleSourceTextChange = (index: number, newText: string) => {
     const updatedSources = [...sources];
@@ -50,18 +45,16 @@ export function SourcesInput({
 
   return (
     <div className="flex flex-col gap-3">
+      <label className="block text-sm font-medium text-black">{label}</label>
       {sources.map((source, index) => (
-        <div key={index} className="flex items-end gap-2">
+        <div key={index} className="flex items-center gap-2">
           <div className="flex-1">
-            <label>{"Sources"}</label>
             <Grid col span={2} gap={2}>
               <GridCol span={1}>
                 <TextInput
                   value={source.text}
                   label=""
-                  onChange={(newValue) =>
-                    handleSourceTextChange(index, newValue)
-                  }
+                  onChange={(newValue) => handleSourceTextChange(index, newValue)}
                   placeholder="Enter source title"
                   className="w-full"
                 />
@@ -70,10 +63,8 @@ export function SourcesInput({
                 <TextInput
                   value={source.href}
                   label=""
-                  onChange={(newValue) =>
-                    handleSourceHrefChange(index, newValue)
-                  }
-                  placeholder="Enter source URL or citation"
+                  onChange={(newValue) => handleSourceHrefChange(index, newValue)}
+                  placeholder="Enter source URL"
                   className="w-full"
                 />
               </GridCol>
@@ -86,14 +77,9 @@ export function SourcesInput({
               aria-label="Remove source"
               variant="outline"
               color="red"
-              className="group hover:bg-red-500 self-center mt-[1.4rem]"
+              className="group shrink-0 hover:bg-red-500"
             >
-              <Icon
-                icon="trash"
-                size="sm"
-                color="red"
-                className="group-hover:text-white"
-              />
+              <Icon icon="trash" size="sm" color="red" className="group-hover:text-white" />
             </Button>
           )}
         </div>

@@ -41,14 +41,15 @@ export function PullQuoteInput({
 
   return (
     <div className="flex flex-col gap-3">
+      <label className="block text-sm font-medium text-black">{label}</label>
       {quotes.map((quote, index) => (
-        <div key={index} className="flex items-end gap-2">
+        <div key={index} className="flex items-center gap-2">
           <div className="flex-1">
             <TextInput
               value={quote}
-              label={label}
+              label=""
               placeholder={placeholder}
-              rows={2}
+              multiline={false}
               onChange={(newValue) => handleQuoteChange(index, newValue)}
               className="w-full"
             />
@@ -60,7 +61,7 @@ export function PullQuoteInput({
               aria-label="Remove pull quote"
               variant="outline"
               color="red"
-              className="group hover:bg-red-500 self-center mt-[1.4rem]"
+              className="group shrink-0 hover:bg-red-500"
             >
               <Icon
                 icon="trash"

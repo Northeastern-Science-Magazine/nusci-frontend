@@ -1,6 +1,6 @@
 "use server";
 
-import { PublicUser, Roles } from "../types/types";
+import { Roles } from "../types/types";
 import { api, ApiResponse } from "./api";
 import { ProfileData } from "@/app/profile/[emailPrefix]/page";
 

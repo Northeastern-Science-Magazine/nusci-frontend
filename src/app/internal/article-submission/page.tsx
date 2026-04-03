@@ -27,10 +27,7 @@ import {
   Article,
   ArticleComment,
 } from "@/lib/types/types";
-import {
-  Dropdown,
-  type DropdownOption,
-} from "@/design-system/primitives/Dropdown";
+import { Dropdown, type DropdownOption } from "@/design-system/primitives/Dropdown";
 import { createArticle } from "@/lib/api/articles";
 
 /* IDEAS: 
@@ -87,8 +84,7 @@ function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
           flush();
           const text = normalize(el.textContent ?? "");
           const href = el.getAttribute("href") || undefined;
-          if (text || href)
-            segments.push({ contentType: "link", content: text, href });
+          if (text || href) segments.push({ contentType: "link", content: text, href });
           return;
         }
 
@@ -132,11 +128,9 @@ const FormContent = () => {
   useEffect(() => {
     const updateProgress = () => {
       setProgress({
-        author:
-          !!watchedFields.author && watchedFields.author.trim().length > 0,
+        author: !!watchedFields.author && watchedFields.author.trim().length > 0,
         title: !!watchedFields.title && watchedFields.title.trim().length > 0,
-        issueNumber:
-          !!watchedFields.issueNumber && watchedFields.issueNumber > 0,
+        issueNumber: !!watchedFields.issueNumber && watchedFields.issueNumber > 0,
         categories:
           Array.isArray(watchedFields.categories) &&
           watchedFields.categories.length > 0 &&
@@ -148,9 +142,7 @@ const FormContent = () => {
             .replace(/\u200B/g, "")
             .replace(/\s+/g, " ")
             .trim().length > 0,
-        pullQuotes:
-          Array.isArray(watchedFields.pullQuotes) &&
-          watchedFields.pullQuotes.some((q) => q && q.trim().length > 0),
+        pullQuotes: Array.isArray(watchedFields.pullQuotes) && watchedFields.pullQuotes.some((q) => q && q.trim().length > 0),
         sources:
           Array.isArray(watchedFields.sources) &&
           watchedFields.sources.length > 0 &&
@@ -164,12 +156,7 @@ const FormContent = () => {
     <Grid col span={3} gap={8}>
       <GridCol span={2}>
         <Box className="space-y-8 rounded-2xl bg-white p-8 shadow-xl ring-1 ring-black/5">
-          <Text
-            color="sage-green"
-            size={36}
-            style="bold"
-            className="mb-8 text-left"
-          >
+          <Text color="sage-green" size={36} style="bold" className="mb-8 text-left">
             Submit an Article
           </Text>
 
@@ -193,10 +180,7 @@ const FormContent = () => {
                     defaultValue={"67"}
                     placeholder="Select issue"
                     onChange={(value) => {
-                      const num =
-                        typeof value === "string" && value
-                          ? Number(value)
-                          : NaN;
+                      const num = typeof value === "string" && value ? Number(value) : NaN;
                       field.onChange(Number.isNaN(num) ? undefined : num);
                     }}
                   />
@@ -208,22 +192,14 @@ const FormContent = () => {
           {/* Author */}
           <div id="author" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="author">
-              <TextInput
-                placeholder={currentUser.name}
-                label="Author"
-                className="w-full"
-              />
+              <TextInput placeholder={currentUser.name} label="Author" className="w-full" />
             </FormField>
           </div>
 
           {/* Title */}
           <div id="title" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="title">
-              <TextInput
-                placeholder="Enter article title"
-                label="Title"
-                className="w-full"
-              />
+              <TextInput placeholder="Enter article title" label="Title" className="w-full" />
             </FormField>
           </div>
 
@@ -235,11 +211,7 @@ const FormContent = () => {
                 <div>
                   <label>{"Categories"}</label>
                   <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
-                    <Checkbox
-                      options={Object.values(Category)}
-                      value={field.value || []}
-                      onChange={field.onChange}
-                    />
+                    <Checkbox options={Object.values(Category)} value={field.value || []} onChange={field.onChange} />
                   </div>
                 </div>
               )}
@@ -258,11 +230,7 @@ const FormContent = () => {
             <Controller
               name="pullQuotes"
               render={({ field }) => (
-                <PullQuoteInput
-                  value={field.value}
-                  onChange={field.onChange}
-                  placeholder="Enter a pull quote"
-                />
+                <PullQuoteInput value={field.value} onChange={field.onChange} placeholder="Enter a pull quote" />
               )}
             />
           </div>
@@ -272,11 +240,7 @@ const FormContent = () => {
             <Controller
               name="sources"
               render={({ field }) => (
-                <SourcesInput
-                  value={field.value}
-                  onChange={field.onChange}
-                  placeholder="Enter source URL or citation"
-                />
+                <SourcesInput value={field.value} onChange={field.onChange} placeholder="Enter source URL or citation" />
               )}
             />
           </div>
@@ -326,64 +290,45 @@ const FormContent = () => {
   );
 };
 
-function insertPullQuotes(content: any[], pullQuotes: string[]): any[] {
+function insertPullQuotes(content: ArticleContent[], pullQuotes: string[]): ArticleContent[] {
   if (!pullQuotes.length) return content;
 
   const result = [...content];
-  const totalSlots = result.length + 1;
+  const slots = result.length + 1;
 
-  const safeIndices = [];
-  for (let i = 1; i < totalSlots - 1; i++) safeIndices.push(i);
-  const unsafeIndices = [0, totalSlots - 1];
+  const indices = Array.from({ length: slots - 2 }, (_, i) => i + 1);
 
-  for (let i = safeIndices.length - 1; i > 0; i--) {
+  // Shuffle (Fisher–Yates)
+  for (let i = indices.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [safeIndices[i], safeIndices[j]] = [safeIndices[j], safeIndices[i]];
+    [indices[i], indices[j]] = [indices[j], indices[i]];
   }
 
+  const used = new Set<number>();
   const insertions: { index: number; quote: string }[] = [];
 
   for (const quote of pullQuotes) {
-    let chosenIndex: number | null = null;
-    for (const idx of safeIndices) {
-      if (!insertions.some((ins) => Math.abs(ins.index - idx) <= 1)) {
-        chosenIndex = idx;
-        break;
-      }
-    }
+    const idx = indices.find((i) => !used.has(i) && !used.has(i - 1) && !used.has(i + 1));
 
-    if (chosenIndex === null) {
-      for (const idx of safeIndices) {
-        if (!insertions.some((ins) => ins.index === idx)) {
-          chosenIndex = idx;
-          break;
-        }
-      }
-    }
-
-    if (chosenIndex === null && unsafeIndices.length) {
-      for (const idx of unsafeIndices) {
-        if (!insertions.some((ins) => ins.index === idx)) {
-          chosenIndex = idx;
-          break;
-        }
-      }
-    }
-
-    if (chosenIndex !== null) {
-      insertions.push({ index: chosenIndex, quote });
-    } else {
+    if (idx === undefined) {
       console.warn(`Could not insert pull quote: "${quote}"`);
+      continue;
     }
+
+    used.add(idx);
+    insertions.push({ index: idx, quote });
   }
 
-  insertions.sort((a, b) => b.index - a.index);
-  for (const ins of insertions) {
-    result.splice(ins.index, 0, {
-      contentType: "pull_quote",
-      content: ins.quote,
-    });
-  }
+  insertions
+    .sort((a, b) => b.index - a.index)
+    .forEach(({ index, quote }) =>
+      result.splice(index, 0, [
+        {
+          contentType: "pull_quote",
+          content: quote,
+        },
+      ]),
+    );
 
   return result;
 }

@@ -92,7 +92,7 @@ export default function LoginPage() {
             </FormField>
           </Box>
 
-          <Button variant="default" size="md" color="forest-green" className="w-full">
+          <Button variant="default" size="md" color="forest-green" type="submit" className="w-full">
             Sign In
           </Button>
 

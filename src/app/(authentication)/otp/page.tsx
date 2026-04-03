@@ -9,6 +9,8 @@ import Button from "@/primitives/Button";
 import Box from "@/primitives/Box";
 import Text from "@/primitives/Text";
 import { Flex } from "@/primitives/Flex";
+import { apiSendEmail } from "@/lib/api/email";
+import { EmailType } from "@/lib/types/types";
 
 type EmailFormValues = {
   email: string;
@@ -19,6 +21,8 @@ export default function OTPPage() {
   const [submittedEmail, setSubmittedEmail] = useState("");
 
   const onEmailSubmit: SubmitHandler<EmailFormValues> = async (data) => {
+    await apiSendEmail({ to: [data.email], type: EmailType.OTP });
+    console.log({ to: [data.email], type: EmailType.OTP });
     setSubmittedEmail(data.email);
     setIsSubmitted(true);
   };
@@ -45,6 +49,13 @@ export default function OTPPage() {
             <Text size={16} color="black">
               We&#39;ve sent a one-time link to <strong className="font-semibold">{submittedEmail}</strong>. Please check your
               inbox and click the link to sign in.
+            </Text>
+            <Text size={12} color="sage-green">
+              If the link expired before you used it, see{" "}
+              <a href="/otp/link-expired" className="underline hover:text-forest-green">
+                what to do next
+              </a>
+              .
             </Text>
             <Button
               variant="outline"
@@ -90,7 +101,7 @@ export default function OTPPage() {
               />
             </FormField>
 
-            <Button variant="default" size="md" color="forest-green" className="w-full">
+            <Button variant="default" size="md" color="forest-green" className="w-full" type="submit">
               Sign In
             </Button>
 
@@ -99,6 +110,12 @@ export default function OTPPage() {
                 Remember your password?{" "}
                 <a href="/login" className="underline hover:text-forest-green">
                   Sign in with password
+                </a>
+              </Text>
+              <Text size={12} color="sage-green">
+                Link expired or doesn&apos;t work?{" "}
+                <a href="/otp/link-expired" className="underline hover:text-forest-green">
+                  What to do next
                 </a>
               </Text>
             </Box>

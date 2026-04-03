@@ -118,3 +118,17 @@ export type Article = {
   creationTime: Date;
   modificationTime: Date;
 };
+
+export enum EmailType {
+  REMINDER = "reminder",
+  DEADLINE = "deadline",
+  RESET_PASSWORD = "reset_password",
+  INVITE_USER = "invite_user",
+  OTP = "otp",
+  CUSTOM = "custom",
+}
+
+export type Email = {
+  to: String[];
+  type: EmailType;
+};

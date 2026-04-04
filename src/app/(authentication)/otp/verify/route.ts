@@ -5,7 +5,7 @@ export async function GET(request: Request) {
   const token = url.searchParams.get("token");
   const origin = url.origin;
 
-  const expiredUrl = new URL(`${process.env.NEXT_PUBLIC_URL}/otp/link-expired`, origin);
+  const expiredUrl = new URL(`${process.env.NEXT_PUBLIC_URL}/otp/link-expired`);
 
   if (!token) {
     return NextResponse.redirect(expiredUrl);
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   if (!apiUrl) {
     console.error("NEXT_PUBLIC_API_URL is not set");
-    return NextResponse.redirect(new URL("/", origin));
+    return NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_URL}`));
   }
 
   const backendRes = await fetch(`${apiUrl}/user/verify-otp?token=${encodeURIComponent(token)}`, {
@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     return NextResponse.redirect(expiredUrl);
   }
 
-  const redirect = NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_URL}/internal/article-submission`, origin));
+  const redirect = NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_URL}/internal/article-submission`));
 
   const headers = backendRes.headers as Headers & { getSetCookie?: () => string[] };
   const setCookies = typeof headers.getSetCookie === "function" ? headers.getSetCookie() : [];

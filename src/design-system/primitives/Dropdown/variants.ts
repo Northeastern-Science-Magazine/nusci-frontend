@@ -126,6 +126,8 @@ export interface DropdownProps
     PositionProps,
     SizeProps {
   options: DropdownOption[];
+  /** Controlled selection. When set, `defaultValue` is only used for the initial mount if `value` was undefined. */
+  value?: string | string[];
   defaultValue?: string | string[];
   onChange?: (value: string | string[]) => void;
   placeholder?: string;

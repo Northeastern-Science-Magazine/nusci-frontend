@@ -63,6 +63,11 @@ function mapPublicUserToProfile(user: PublicUser): ProfileData {
   };
 }
 
+export type BasicUser = {
+  name: string;
+  email: string;
+};
+
 export async function getPublicUserByEmail(email: string): Promise<ProfileData> {
   try {
     const newEmail = email.concat("@northeastern.edu");
@@ -100,4 +105,8 @@ export async function apiGetPublicUserByEmail(email: string): Promise<ApiRespons
 
 export async function apiVerifyOTPToken(token: string): Promise<ApiResponse<void>> {
   return api<void>("POST", `/user/verify-otp?token=${token}`);
+}
+
+export async function apiGetBasicUserList(): Promise<ApiResponse<BasicUser[]>> {
+  return api<BasicUser[]>("GET", "/user/list/basic");
 }

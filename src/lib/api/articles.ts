@@ -2,6 +2,7 @@
 
 import { api, ApiResponse } from "./api";
 import { Article as ArticleType } from "@/lib/types/types";
+import { ArticleCreate } from "@/lib/types/types";
 import { Category } from "@/lib/types/types";
 
 export interface Article {
@@ -239,6 +240,6 @@ export async function getArticleBySlug(slug: string): Promise<ApiResponse<Articl
   return api<ArticleType>("GET", `/articles/slug/${slug}`);
 }
 
-export async function createArticle(articleData: ArticleType) {
-  return api<ArticleType>("POST", "/articles/create", articleData);
+export async function createArticle(articleData: ArticleCreate) {
+  return api<ArticleCreate>("POST", "/articles/create", articleData);
 }

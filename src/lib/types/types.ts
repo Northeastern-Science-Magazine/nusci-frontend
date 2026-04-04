@@ -108,6 +108,31 @@ export type Article = {
   writingStatus: WritingStatus;
   designStatus: DesignStatus;
   photographyStatus: PhotographyStatus;
+  authors: PublicUser[];
+  editors: string[];
+  designers: string[];
+  photographers: string[];
+  approvingUser: string;
+  approvalTime?: Date;
+  creationTime: Date;
+  modificationTime: Date;
+};
+
+export type ArticleCreate = {
+  title: string;
+  slug: string;
+  issueNumber: number;
+  categories: string[];
+  articleContent: ArticleContent[];
+  sources?: ArticleSource[];
+  pullQuotes?: string[];
+  link?: string;
+  pageLength: number;
+  comments: ArticleComment[];
+  articleStatus: ArticleStatus;
+  writingStatus: WritingStatus;
+  designStatus: DesignStatus;
+  photographyStatus: PhotographyStatus;
   authors: string[];
   editors: string[];
   designers: string[];
@@ -118,4 +143,33 @@ export type Article = {
   modificationTime: Date;
 };
 
+export type PublicUser = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  pronouns?: string[];
+  graduationYear: number;
+  major?: string;
+  location?: string;
+  profileImage?: string;
+  bannerImage?: string;
+  bio: string;
+  email: string;
+  roles: string[];
+  creationTime: string;
+  modificationTime: string;
+};
 
+export enum EmailType {
+  REMINDER = "reminder",
+  DEADLINE = "deadline",
+  RESET_PASSWORD = "reset_password",
+  INVITE_USER = "invite_user",
+  OTP = "otp",
+  CUSTOM = "custom",
+}
+
+export type Email = {
+  to: String[];
+  type: EmailType;
+};

@@ -10,9 +10,14 @@ export async function middleware(request: NextRequest) {
   let roles: string[] = [];
 
   if (token) {
-    const result = await apiGetUserRoles();
-    if (result.ok) {
-      roles = [...result.data.roles];
+    try {
+      const result = await apiGetUserRoles();
+      if (result.ok && result.data) {
+        const raw = result.data.roles;
+        roles = Array.isArray(raw) ? [...raw] : [];
+      }
+    } catch {
+      roles = [];
     }
   }
 

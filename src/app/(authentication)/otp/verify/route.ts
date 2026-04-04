@@ -5,7 +5,7 @@ export async function GET(request: Request) {
   const token = url.searchParams.get("token");
   const origin = url.origin;
 
-  const expiredUrl = new URL("/otp/link-expired", origin);
+  const expiredUrl = new URL(`${process.env.NEXT_PUBLIC_URL}/otp/link-expired`, origin);
 
   if (!token) {
     return NextResponse.redirect(expiredUrl);

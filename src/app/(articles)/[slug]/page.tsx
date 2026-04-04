@@ -56,12 +56,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const publishDate = formatDate(article.creationTime);
 
   // Get first author name (or default if no authors)
-  const author =
-    article.authors?.length > 0 ? formatPersonName(article.authors[0]) ?? "NU Sci Magazine" : "NU Sci Magazine";
+  const author = article.authors?.length > 0 ? formatPersonName(article.authors[0]) ?? "NU Sci Magazine" : "NU Sci Magazine";
 
   // Get first editor if available (API may return a user object or string)
-  const editor =
-    article.editors?.length > 0 ? formatPersonName(article.editors[0]) : undefined;
+  const editor = article.editors?.length > 0 ? formatPersonName(article.editors[0]) : undefined;
 
   // Only use image if it actually exists in the content (no placeholder fallback)
   // const imageUrl = firstImageUrl;

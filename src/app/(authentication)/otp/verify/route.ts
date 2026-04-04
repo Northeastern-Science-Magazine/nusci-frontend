@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     return NextResponse.redirect(expiredUrl);
   }
 
-  const redirect = NextResponse.redirect(new URL("/internal/article-submission", origin));
+  const redirect = NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_URL}/internal/article-submission`, origin));
 
   const headers = backendRes.headers as Headers & { getSetCookie?: () => string[] };
   const setCookies = typeof headers.getSetCookie === "function" ? headers.getSetCookie() : [];

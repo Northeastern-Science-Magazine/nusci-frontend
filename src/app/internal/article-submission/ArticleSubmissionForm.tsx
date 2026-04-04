@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Form, FormField } from "../../../design-system/primitives/Form/Form";
 import { useWatch } from "react-hook-form";
 import Box from "@/design-system/primitives/Box";
@@ -28,6 +28,8 @@ import {
   ArticleCreate,
 } from "@/lib/types/types";
 import { Dropdown, type DropdownOption } from "@/design-system/primitives/Dropdown";
+import { Dialog, DialogWindow } from "@/design-system/primitives/Dialog";
+import Icon from "@/design-system/primitives/Icon";
 import { createArticle } from "@/lib/api/articles";
 import type { BasicUser } from "@/lib/api/users";
 import { X } from "lucide-react";
@@ -203,8 +205,7 @@ const FormContent = ({
               name="authors"
               render={({ field }) => {
                 const selectedEmails = field.value ?? [];
-                const labelForEmail = (email: string) =>
-                  authorOptions.find((o) => o.value === email)?.label ?? email;
+                const labelForEmail = (email: string) => authorOptions.find((o) => o.value === email)?.label ?? email;
 
                 return (
                   <div className="flex flex-col gap-1">
@@ -383,50 +384,74 @@ function insertPullQuotes(content: ArticleContent[], pullQuotes: string[]): Arti
   return result;
 }
 
-async function onSubmitArticle(data: ArticleSubmissionFormValues) {
-  const slug = data.title
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
-
-  const originalContent = reactQuillHtmlToArticleContent(data.content);
-  const articleContent = insertPullQuotes(originalContent, data.pullQuotes);
-
-  const articleData = {
-    title: data.title,
-    slug: slug,
-    issueNumber: data.issueNumber,
-    categories: data.categories,
-    articleContent: articleContent,
-    sources: data.sources,
-    pageLength: 1,
-    comments: [] as ArticleComment[],
-    articleStatus: ArticleStatus.Print,
-    writingStatus: WritingStatus.EICApproved,
-    designStatus: DesignStatus.Completed,
-    photographyStatus: PhotographyStatus.NoPhoto,
-    authors: data.authors,
-    editors: [],
-    designers: [],
-    photographers: [],
-    approvingUser: "",
-    creationTime: new Date(),
-    modificationTime: new Date(),
-  } as ArticleCreate;
-  console.log(articleData);
-  await createArticle(articleData);
-  alert("Created New Article");
-}
-
 export default function ArticleSubmissionForm({ basicUsers, defaultAuthorEmails }: ArticleSubmissionFormProps) {
-  const authorOptions = useMemo<DropdownOption[]>(
-    () => basicUsers.map((u) => ({ label: u.name, value: u.email })),
-    [basicUsers],
-  );
+  const authorOptions = useMemo<DropdownOption[]>(() => basicUsers.map((u) => ({ label: u.name, value: u.email })), [basicUsers]);
+
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
+
+  const handleSuccessDialogOpenChange = useCallback((open: boolean) => {
+    setSuccessDialogOpen(open);
+    if (!open) {
+      window.location.reload();
+    }
+  }, []);
+
+  const onSubmitArticle = useCallback(async (data: ArticleSubmissionFormValues) => {
+    const slug = data.title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
+
+    const originalContent = reactQuillHtmlToArticleContent(data.content);
+    const articleContent = insertPullQuotes(originalContent, data.pullQuotes);
+
+    const articleData = {
+      title: data.title,
+      slug: slug,
+      issueNumber: data.issueNumber,
+      categories: data.categories,
+      articleContent: articleContent,
+      sources: data.sources,
+      pageLength: 1,
+      comments: [] as ArticleComment[],
+      articleStatus: ArticleStatus.Print,
+      writingStatus: WritingStatus.EICApproved,
+      designStatus: DesignStatus.Completed,
+      photographyStatus: PhotographyStatus.NoPhoto,
+      authors: data.authors,
+      editors: [],
+      designers: [],
+      photographers: [],
+      approvingUser: "",
+      creationTime: new Date(),
+      modificationTime: new Date(),
+    } as ArticleCreate;
+    console.log(articleData);
+    await createArticle(articleData);
+    setSuccessDialogOpen(true);
+  }, []);
 
   return (
     <Box className="mx-auto w-full max-w-7xl px-4 py-8">
+      <Dialog open={successDialogOpen} onOpenChange={handleSuccessDialogOpenChange}>
+        <DialogWindow size="sm" color="white" className="max-w-lg p-8 pb-10 pt-12 shadow-2xl ring-2 ring-forest-green/20">
+          <Box className="flex flex-col items-center gap-4 text-center">
+            <Box className="flex items-end justify-center gap-3">
+              <Icon icon="star" size={36} color="forest-green" className="drop-shadow-sm" />
+              <Icon icon="book" size={36} color="marigold" className="drop-shadow-sm" />
+              <Icon icon="rocket" size={36} color="coral" className="drop-shadow-sm" />
+            </Box>
+            <Text size={24} style="bold" color="forest-green" className="leading-tight">
+              Article submitted, hooray!
+            </Text>
+            <Text size={14} color="black" className="leading-relaxed opacity-75">
+              Thank you for writing and editing for this issue, and using the webteam&apos;s new tool.
+            </Text>
+          </Box>
+        </DialogWindow>
+      </Dialog>
+
       <Form<ArticleSubmissionFormValues>
         onSubmit={onSubmitArticle}
         options={{

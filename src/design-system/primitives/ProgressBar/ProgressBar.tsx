@@ -15,7 +15,8 @@ export function ProgressBar({
         "relative h-[25px] w-[300px] overflow-hidden rounded-full outline outline-solid outline-2",
         { [`outline-${variantProps.color}`]: variantProps.color != "red" },
         { [`outline-${variantProps.color}-500`]: variantProps.color == "red" },
-        { [`bg-${backgroundColor}`]: backgroundColor }
+        { [`bg-${backgroundColor}`]: backgroundColor },
+        className,
       )}
       style={{
         transform: "translateZ(0)",

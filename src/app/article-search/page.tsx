@@ -10,13 +10,7 @@ import Text from "@/design-system/primitives/Text";
 import MediaCard from "@/design-system/components/MediaCard";
 import { PaginationBar } from "@/design-system/components/PaginationBar";
 import Box from "@/design-system/primitives/Box";
-import {
-  X,
-  Search as SearchIcon,
-  Loader2,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { X, Search as SearchIcon, Loader2, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "@/design-system/primitives/Link";
 import { ParallaxScrollSection } from "@/design-system/components/ParallaxScrollSection";
 import Divider from "@/design-system/primitives/Divider";
@@ -151,10 +145,7 @@ export default function ArticleSearchPage() {
         limit: 12,
         skip: (page - 1) * 12,
         textQuery: searchTitle.trim() || undefined,
-        categories:
-          searchCategory && searchCategory !== "all"
-            ? [searchCategory]
-            : undefined,
+        categories: searchCategory && searchCategory !== "all" ? [searchCategory] : undefined,
         sortBy: searchSortBy,
         issueNumber: searchIssueNumber.trim() || undefined, // ignored by API until backend supports it
       };
@@ -254,9 +245,7 @@ export default function ArticleSearchPage() {
     return () => window.clearInterval(intervalId);
   }, [showInitialLoadingScreen]);
 
-  const LoadingScreen = () => (
-    <div className="min-h-screen bg-white flex items-center justify-center" />
-  );
+  const LoadingScreen = () => <div className="min-h-screen bg-white flex items-center justify-center" />;
 
   if (showInitialLoadingScreen) {
     return <LoadingScreen />;
@@ -306,11 +295,7 @@ export default function ArticleSearchPage() {
                     className="flex items-center gap-2"
                   >
                     Advanced Search
-                    {showAdvancedSearch ? (
-                      <ChevronUp className="w-4 h-4" />
-                    ) : (
-                      <ChevronDown className="w-4 h-4" />
-                    )}
+                    {showAdvancedSearch ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                   </Button>
                 </Box>
 
@@ -318,12 +303,7 @@ export default function ArticleSearchPage() {
                 {showAdvancedSearch && (
                   <Box className="pt-4 border-t border-neutral-200">
                     <Flex direction="col" gap={6}>
-                      <Flex
-                        direction="row"
-                        wrap="wrap"
-                        gap={4}
-                        className="items-end"
-                      >
+                      <Flex direction="row" wrap="wrap" gap={4} className="items-end">
                         <FlexChild className="flex-col gap-1 min-w-[200px] flex-1 max-w-[280px]">
                           <Text size={12} color="black" className="opacity-70">
                             Category
@@ -359,16 +339,10 @@ export default function ArticleSearchPage() {
                           <DropdownInput
                             key={keys.sort}
                             placeholder="Newest first"
-                            onChange={(value) =>
-                              setSortBy(value as "asc" | "desc")
-                            }
+                            onChange={(value) => setSortBy(value as "asc" | "desc")}
                           >
-                            <DropdownItem value="desc">
-                              Newest first
-                            </DropdownItem>
-                            <DropdownItem value="asc">
-                              Oldest first
-                            </DropdownItem>
+                            <DropdownItem value="desc">Newest first</DropdownItem>
+                            <DropdownItem value="asc">Oldest first</DropdownItem>
                           </DropdownInput>
                         </FlexChild>
                       </Flex>
@@ -400,13 +374,7 @@ export default function ArticleSearchPage() {
                       </button>
                     </Box>
                   ))}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    color="forest-green"
-                    onClick={onReset}
-                    disabled={loading}
-                  >
+                  <Button variant="outline" size="sm" color="forest-green" onClick={onReset} disabled={loading}>
                     Reset filters
                   </Button>
                 </div>
@@ -420,16 +388,10 @@ export default function ArticleSearchPage() {
               <Box className="mt-8">
                 {/* Results Header */}
                 {resultsCount !== null && (
-                  <Flex
-                    direction="row"
-                    className="justify-between items-center mb-6 flex-wrap gap-4"
-                  >
+                  <Flex direction="row" className="justify-between items-center mb-6 flex-wrap gap-4">
                     <Box>
                       <Text size={14} color="black" className="opacity-60">
-                        {resultsCount}{" "}
-                        {resultsCount === 1
-                          ? "article found"
-                          : "articles found"}
+                        {resultsCount} {resultsCount === 1 ? "article found" : "articles found"}
                       </Text>
                     </Box>
                   </Flex>
@@ -449,11 +411,7 @@ export default function ArticleSearchPage() {
                           .join(" • ");
 
                         return (
-                          <Link
-                            key={`${article.issueNumber}-${article.slug}`}
-                            href={`/${article.slug}`}
-                            className="block w-full"
-                          >
+                          <Link key={`${article.issueNumber}-${article.slug}`} href={`/${article.slug}`} className="block w-full">
                             {hasNoPhoto ? (
                               <MediaCard
                                 className="w-full max-w-none"
@@ -466,13 +424,9 @@ export default function ArticleSearchPage() {
                                 subtitle={subtitleWithIssue}
                                 description={truncateByWords(getArticleDescription(article), 35)}
                                 iconProps={{
-                                  icon: categoryToIcon(
-                                    article.categories[0] || "uncategorized",
-                                  ) as IconName,
+                                  icon: categoryToIcon(article.categories[0] || "uncategorized") as IconName,
                                   size: 128,
-                                  color: categoryToIconColor(
-                                    article.categories[0] || "uncategorized",
-                                  ),
+                                  color: categoryToIconColor(article.categories[0] || "uncategorized"),
                                 }}
                               />
                             ) : (
@@ -499,25 +453,13 @@ export default function ArticleSearchPage() {
 
                     {/* Pagination */}
                     {resultsCount !== null && resultsCount > 12 && (
-                      <Flex
-                        direction="row"
-                        gap={2}
-                        className="justify-center items-center pt-6 border-t border-neutral-200"
-                      >
+                      <Flex direction="row" gap={2} className="justify-center items-center pt-6 border-t border-neutral-200">
                         <PaginationBar
                           maxItems={Math.ceil(resultsCount / 12)}
                           activeItem={currentPage}
-                          onClickFunctionGenerator={(index) => () =>
-                            setCurrentPage(index)
-                          }
-                          onClickLeft={() =>
-                            setCurrentPage((p) => Math.max(1, p - 1))
-                          }
-                          onClickRight={() =>
-                            setCurrentPage((p) =>
-                              Math.min(Math.ceil(resultsCount / 12), p + 1),
-                            )
-                          }
+                          onClickFunctionGenerator={(index) => () => setCurrentPage(index)}
+                          onClickLeft={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                          onClickRight={() => setCurrentPage((p) => Math.min(Math.ceil(resultsCount / 12), p + 1))}
                         />
                       </Flex>
                     )}
@@ -530,12 +472,7 @@ export default function ArticleSearchPage() {
                     <Text size={16} color="black" className="opacity-60 mb-6">
                       Try adjusting your search criteria or filters
                     </Text>
-                    <Button
-                      variant="outline"
-                      size="md"
-                      color="forest-green"
-                      onClick={onReset}
-                    >
+                    <Button variant="outline" size="md" color="forest-green" onClick={onReset}>
                       Clear all filters
                     </Button>
                   </Box>

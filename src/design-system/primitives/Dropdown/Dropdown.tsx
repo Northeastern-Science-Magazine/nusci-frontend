@@ -10,6 +10,7 @@ import { dropdownVariants, DropdownProps, DropdownOption } from "./variants";
 export function Dropdown(props: DropdownProps) {
   const {
     options,
+    value: valueProp,
     defaultValue,
     onChange,
     placeholder = "Select...",
@@ -22,9 +23,22 @@ export function Dropdown(props: DropdownProps) {
   /* Determines what type of dropdown, and which subcomponents to render */
   const cfg = useVariantConfig(props);
 
-  const [selected, setSelected] = useState<string[]>(
-    Array.isArray(defaultValue) ? defaultValue : typeof defaultValue === "string" && defaultValue ? [defaultValue] : [],
+  const isControlled = valueProp !== undefined;
+
+  const normalizeSelection = (source: string | string[] | undefined) =>
+    Array.isArray(source) ? source : typeof source === "string" && source ? [source] : [];
+
+  const [selected, setSelected] = useState<string[]>(() =>
+    normalizeSelection(isControlled ? valueProp : defaultValue),
   );
+
+  useEffect(() => {
+    if (!isControlled) return;
+    const next = normalizeSelection(valueProp);
+    setSelected((prev) =>
+      prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next,
+    );
+  }, [isControlled, valueProp]);
 
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);

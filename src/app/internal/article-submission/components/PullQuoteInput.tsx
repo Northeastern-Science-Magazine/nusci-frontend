@@ -11,6 +11,7 @@ type PullQuoteInputProps = {
   onChange?: (quotes: string[]) => void;
   label?: string;
   placeholder?: string;
+  disabled?: boolean;
 };
 
 export function PullQuoteInput({
@@ -18,6 +19,7 @@ export function PullQuoteInput({
   onChange,
   label = "Pull Quotes",
   placeholder = "Enter a pull quote",
+  disabled = false,
 }: PullQuoteInputProps) {
   const quotes = value.length > 0 ? value : [""];
 
@@ -40,7 +42,7 @@ export function PullQuoteInput({
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className={`flex flex-col gap-3 ${disabled ? "opacity-60" : ""}`}>
       <label className="block text-sm font-medium text-black">{label}</label>
       {quotes.map((quote, index) => (
         <div key={index} className="flex items-center gap-2">
@@ -52,6 +54,7 @@ export function PullQuoteInput({
               multiline={false}
               onChange={(newValue) => handleQuoteChange(index, newValue)}
               className="w-full"
+              disabled={disabled}
             />
           </div>
           {quotes.length > 1 && (
@@ -61,13 +64,14 @@ export function PullQuoteInput({
               aria-label="Remove pull quote"
               variant="outline"
               color="red"
-              className="group shrink-0 hover:bg-red-500"
+              className="group shrink-0 hover:bg-red-500 disabled:pointer-events-none disabled:hover:bg-transparent disabled:hover:text-red-600"
+              disabled={disabled}
             >
               <Icon
                 icon="trash"
                 size="sm"
                 color="red"
-                className="group-hover:text-white"
+                className="group-hover:text-white group-disabled:text-red"
               />
             </Button>
           )}
@@ -79,6 +83,7 @@ export function PullQuoteInput({
         className="flex w-full items-center justify-center gap-2"
         variant="outline"
         color="sage-green"
+        disabled={disabled}
       >
         <div className="flex items-center gap-2">
           <Icon icon="plus" size="md" />

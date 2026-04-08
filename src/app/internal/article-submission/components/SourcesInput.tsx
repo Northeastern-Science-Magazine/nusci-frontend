@@ -13,9 +13,10 @@ type SourcesInputProps = {
   onChange?: (sources: ArticleSource[]) => void;
   label?: string;
   placeholder?: string;
+  disabled?: boolean;
 };
 
-export function SourcesInput({ value = [], onChange, label = "Sources" }: SourcesInputProps) {
+export function SourcesInput({ value = [], onChange, label = "Sources", disabled = false }: SourcesInputProps) {
   // Derive current sources from the controlled value; ensure at least one row exists
   const sources: ArticleSource[] = value.length > 0 ? value : [{ text: "", href: "" }];
 
@@ -44,7 +45,7 @@ export function SourcesInput({ value = [], onChange, label = "Sources" }: Source
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className={`flex flex-col gap-3 ${disabled ? "opacity-60" : ""}`}>
       <label className="block text-sm font-medium text-black">{label}</label>
       {sources.map((source, index) => (
         <div key={index} className="flex items-center gap-2">
@@ -57,6 +58,7 @@ export function SourcesInput({ value = [], onChange, label = "Sources" }: Source
                   onChange={(newValue) => handleSourceTextChange(index, newValue)}
                   placeholder="Enter source title"
                   className="w-full"
+                  disabled={disabled}
                 />
               </GridCol>
               <GridCol span={1}>
@@ -66,6 +68,7 @@ export function SourcesInput({ value = [], onChange, label = "Sources" }: Source
                   onChange={(newValue) => handleSourceHrefChange(index, newValue)}
                   placeholder="Enter source URL"
                   className="w-full"
+                  disabled={disabled}
                 />
               </GridCol>
             </Grid>
@@ -77,9 +80,10 @@ export function SourcesInput({ value = [], onChange, label = "Sources" }: Source
               aria-label="Remove source"
               variant="outline"
               color="red"
-              className="group shrink-0 hover:bg-red-500"
+              className="group shrink-0 hover:bg-red-500 disabled:pointer-events-none disabled:hover:bg-transparent disabled:hover:text-red-600"
+              disabled={disabled}
             >
-              <Icon icon="trash" size="sm" color="red" className="group-hover:text-white" />
+              <Icon icon="trash" size="sm" color="red" className="group-hover:text-white group-disabled:text-red" />
             </Button>
           )}
         </div>
@@ -90,6 +94,7 @@ export function SourcesInput({ value = [], onChange, label = "Sources" }: Source
         className="flex w-full items-center justify-center gap-2"
         variant="outline"
         color="sage-green"
+        disabled={disabled}
       >
         <div className="flex items-center gap-2">
           <Icon icon="plus" size="md" />

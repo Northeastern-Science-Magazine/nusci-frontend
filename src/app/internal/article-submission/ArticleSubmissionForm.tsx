@@ -41,8 +41,10 @@ type ArticleSubmissionFormValues = {
   categories: string[];
   content: string;
   pullQuotes: string[];
+  noPullQuotes: boolean;
   image?: File;
   sources: ArticleSource[];
+  noSources: boolean;
 };
 
 function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
@@ -147,11 +149,14 @@ const FormContent = ({
             .replace(/\u200B/g, "")
             .replace(/\s+/g, " ")
             .trim().length > 0,
-        pullQuotes: Array.isArray(watchedFields.pullQuotes) && watchedFields.pullQuotes.some((q) => q && q.trim().length > 0),
+        pullQuotes:
+          !!watchedFields.noPullQuotes ||
+          (Array.isArray(watchedFields.pullQuotes) && watchedFields.pullQuotes.some((q) => q && q.trim().length > 0)),
         sources:
-          Array.isArray(watchedFields.sources) &&
-          watchedFields.sources.length > 0 &&
-          (watchedFields.sources[0]?.href?.trim()?.length ?? 0) > 0,
+          !!watchedFields.noSources ||
+          (Array.isArray(watchedFields.sources) &&
+            watchedFields.sources.length > 0 &&
+            (watchedFields.sources[0]?.href?.trim()?.length ?? 0) > 0),
       });
     };
     updateProgress();
@@ -283,7 +288,35 @@ const FormContent = ({
             <Controller
               name="pullQuotes"
               render={({ field }) => (
-                <PullQuoteInput value={field.value} onChange={field.onChange} placeholder="Enter a pull quote" />
+                <div className="space-y-3">
+                  <Controller
+                    name="noPullQuotes"
+                    render={({ field: noPullQuotesField }) => (
+                      <PullQuoteInput
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Enter a pull quote"
+                        disabled={!!noPullQuotesField.value}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="noPullQuotes"
+                    render={({ field: noPullQuotesField }) => (
+                      <Checkbox
+                        options={["This article has no pull quotes"]}
+                        value={noPullQuotesField.value ? ["This article has no pull quotes"] : []}
+                        onChange={(value) => {
+                          const checked = value.includes("This article has no pull quotes");
+                          noPullQuotesField.onChange(checked);
+                          if (checked) {
+                            field.onChange([]);
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                </div>
               )}
             />
           </div>
@@ -293,7 +326,35 @@ const FormContent = ({
             <Controller
               name="sources"
               render={({ field }) => (
-                <SourcesInput value={field.value} onChange={field.onChange} placeholder="Enter source URL or citation" />
+                <div className="space-y-3">
+                  <Controller
+                    name="noSources"
+                    render={({ field: noSourcesField }) => (
+                      <SourcesInput
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Enter source URL or citation"
+                        disabled={!!noSourcesField.value}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="noSources"
+                    render={({ field: noSourcesField }) => (
+                      <Checkbox
+                        options={["This article has no sources"]}
+                        value={noSourcesField.value ? ["This article has no sources"] : []}
+                        onChange={(value) => {
+                          const checked = value.includes("This article has no sources");
+                          noSourcesField.onChange(checked);
+                          if (checked) {
+                            field.onChange([]);
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                </div>
               )}
             />
           </div>
@@ -462,8 +523,10 @@ export default function ArticleSubmissionForm({ basicUsers, defaultAuthorEmails 
             categories: [],
             content: "",
             pullQuotes: [],
+            noPullQuotes: false,
             image: undefined,
             sources: [],
+            noSources: false,
           },
         }}
       >

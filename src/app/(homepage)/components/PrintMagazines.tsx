@@ -1,4 +1,3 @@
-// app/components/PrintMagazines.tsx (REPLACE entire file)
 "use client";
 
 import MediaCarousel from "@/design-system/components/MediaCarousel";
@@ -20,17 +19,9 @@ interface Magazine {
 
 interface PrintMagazinesProps {
   magazines: Magazine[];
-  content: {
-    title: string;
-    description: string;
-    archiveButtonText: string;
-  };
 }
 
-export default function PrintMagazines({
-  magazines,
-  content,
-}: PrintMagazinesProps) {
+export default function PrintMagazines({ magazines }: PrintMagazinesProps) {
   const { width } = useWindowSize();
 
   const issueThumbnails = useMemo(
@@ -105,24 +96,24 @@ export default function PrintMagazines({
         <Box className="flex flex-col items-start justify-between gap-6 laptop:flex-row laptop:items-end">
           <Box>
             <Text size={36} className="tracking-tight">
-              {content.title}
+              Our Magazines
             </Text>
             <Text size={16} className="mt-2 max-w-2xl text-black/70">
               Look through our print archive - click a cover to bring it front
               and center.
             </Text>
           </Box>
-
           <Box className="flex items-center gap-3">
             <Link
               href="https://northeasternsciencemagazine.github.io/nusci-issuu/"
               newWindow
               className="rounded-full border border-black/15 px-4 py-2 text-[14px] text-black/80 hover:bg-black/5"
             >
-              {content.archiveButtonText}
+              View the archive
             </Link>
           </Box>
         </Box>
+
         <Divider mt={8} />
 
         <MediaCarousel

@@ -66,20 +66,39 @@ export const Spacing: Story = {
   },
 };
 
+/** Story for Style Variants */
+export const Style: Story = {
+  args: {},
+  render: () => {
+    return (
+      <div className="flex flex-col gap-8 p-8 bg-white">
+        <div className="flex flex-col gap-4">
+          {styles.map((style) => (
+            <div key={style} className="flex flex-col gap-2">
+              <Text size={14} style="bold" color="neutral">
+                spacing: {style}
+              </Text>
+              <Text size={24} style={style}>
+                The Quick Brown Fox Jumps Over The Lazy Dog
+              </Text>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  },
+};
+
 /** Gallery story showing every combination of style, size, and spacing for each color */
 export const TextGallery: Story = {
   render: () => (
     <div className="flex flex-col gap-16 p-8 bg-white">
       {colors.map((color) => (
         <div key={color} className={`flex flex-col gap-8 ${color === "white" ? "bg-zinc-300 p-4 rounded-md" : ""}`}>
-          {styles.map((style) => (
-            <div key={`${color}-${style}`} className="flex flex-col gap-2">
-              {sizes.map((size) => (
-                <Text key={`${color}-${style}-${size}`} color={color} style={style} size={size}>
-                  example text
-                </Text>
-              ))}
-            </div>
+          {sizes.map((size) => (
+            <Text key={`${color}-${size}`} color={color} size={size}>
+              example text
+            </Text>
           ))}
         </div>
       ))}

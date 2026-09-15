@@ -60,6 +60,7 @@ export const mediaCardVariants = tv({
       maroon: "",
       coral: "",
       marigold: "",
+      "gray-light": "",
     },
   },
   compoundVariants: [

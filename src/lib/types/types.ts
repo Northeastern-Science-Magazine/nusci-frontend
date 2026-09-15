@@ -13,33 +13,33 @@ export enum CommentStatus {
 }
 
 export enum ArticleStatus {
-  Pending,
-  Print,
-  Online,
+  Pending = "pending",
+  Print = "print",
+  Online = "online",
 }
 
 export enum WritingStatus {
-  NeedsEditor,
-  HasEditor,
-  RoughDraftComplete,
-  EditsComplete,
-  CopyEditsComplete,
-  EICApproved,
-  Dropped,
+  NeedsEditor = "needs_editor",
+  HasEditor = "has_editor",
+  RoughDraftComplete = "rough_draft_complete",
+  EditsComplete = "edits_complete",
+  CopyEditsComplete = "copy_edits_complete",
+  EICApproved = "eic_approved",
+  Dropped = "dropped",
 }
 
 export enum DesignStatus {
-  NeedsDesigner,
-  HasDesigner,
-  InProgress,
-  Completed,
+  NeedsDesigner = "needs_designer",
+  HasDesigner = "has_designer",
+  InProgress = "in_progress",
+  Completed = "completed",
 }
 
 export enum PhotographyStatus {
-  NoPhoto = "NoPhoto",
-  NeedsPhotographer = "NeedsPhotographer",
-  PhotographerAssigned = "PhotographerAssigned",
-  PhotoComplete = "PhotoComplete",
+  NoPhoto = "no_photo",
+  NeedsPhotographer = "needs_photographer",
+  PhotographerAssigned = "photographer_assigned",
+  PhotoComplete = "photo_complete",
 }
 
 export enum Roles {
@@ -73,10 +73,14 @@ export enum Category {
   Interview = "Interview",
 }
 
-export type ArticleContent = {
-  contentType: "body_paragraph" | "pull_quote" | "image";
+export type ArticleContentSegment = {
+  contentType: "text" | "pull_quote" | "image" | "link";
   content: string;
+  href?: string;
 };
+
+// A paragraph is an array of segments
+export type ArticleContent = ArticleContentSegment[];
 
 export type ArticleComment = {
   user: string;
@@ -105,6 +109,31 @@ export type Article = {
   writingStatus: WritingStatus;
   designStatus: DesignStatus;
   photographyStatus: PhotographyStatus;
+  authors: PublicUser[];
+  editors: string[];
+  designers: string[];
+  photographers: string[];
+  approvingUser: string;
+  approvalTime?: Date;
+  creationTime: Date;
+  modificationTime: Date;
+};
+
+export type ArticleCreate = {
+  title: string;
+  slug: string;
+  issueNumber: number;
+  categories: string[];
+  articleContent: ArticleContent[];
+  sources?: ArticleSource[];
+  pullQuotes?: string[];
+  link?: string;
+  pageLength: number;
+  comments: ArticleComment[];
+  articleStatus: ArticleStatus;
+  writingStatus: WritingStatus;
+  designStatus: DesignStatus;
+  photographyStatus: PhotographyStatus;
   authors: string[];
   editors: string[];
   designers: string[];
@@ -113,4 +142,35 @@ export type Article = {
   approvalTime?: Date;
   creationTime: Date;
   modificationTime: Date;
+};
+
+export type PublicUser = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  pronouns?: string[];
+  graduationYear: number;
+  major?: string;
+  location?: string;
+  profileImage?: string;
+  bannerImage?: string;
+  bio: string;
+  email: string;
+  roles: string[];
+  creationTime: string;
+  modificationTime: string;
+};
+
+export enum EmailType {
+  REMINDER = "reminder",
+  DEADLINE = "deadline",
+  RESET_PASSWORD = "reset_password",
+  INVITE_USER = "invite_user",
+  OTP = "otp",
+  CUSTOM = "custom",
+}
+
+export type Email = {
+  to: String[];
+  type: EmailType;
 };

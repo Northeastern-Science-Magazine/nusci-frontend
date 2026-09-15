@@ -142,35 +142,3 @@ export const Default: Story = {
     p: 4,
   },
 };
-
-/** Gallery Story for some Card variants with ranging background color, width, and height */
-export const Gallery: Story = {
-  args: {},
-  render: (args) => {
-    return (
-      <div>
-        {colors.map((backgroundColor) => {
-          return (
-            <div key={backgroundColor}>
-              <div className={`grid grid-cols-3 gap-2`}>
-                {widths.map((width) => (
-                  <React.Fragment key={width}>
-                    <div className="flex flex-col">
-                      {heights.map((height) => (
-                        <div key={`${width}-${height}`} className="flex justify-left p-2">
-                          <Card height={height} width={width} color={backgroundColor}>
-                            {width} x {height}
-                          </Card>
-                        </div>
-                      ))}
-                    </div>
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  },
-};

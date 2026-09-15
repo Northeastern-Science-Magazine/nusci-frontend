@@ -8,27 +8,13 @@ import Text from "@/design-system/primitives/Text";
 import { useEffect, useState } from "react";
 import Badge from "@/design-system/primitives/Badge";
 
-interface HeroProps {
-  stats: {
-    legacyYears: number;
-    publishedIssues: number;
-    reachArticles: number;
-  };
-  content: {
-    subtitle: string;
-    title: string;
-    description: string;
-    primaryButtonText: string;
-    secondaryButtonText: string;
-  };
-}
-
 function useCountUp(target: number, durationMs: number) {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
     const prefersReducedMotion =
-      typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
     if (prefersReducedMotion || durationMs <= 0) {
       setValue(target);
@@ -52,10 +38,10 @@ function useCountUp(target: number, durationMs: number) {
   return value;
 }
 
-export default function Hero({ stats, content }: HeroProps) {
-  const legacyYears = useCountUp(stats.legacyYears, 1500);
-  const publishedIssues = useCountUp(stats.publishedIssues, 2500);
-  const reachArticles = useCountUp(stats.reachArticles, 3500);
+export default function Hero() {
+  const legacyYears = useCountUp(17, 1500);
+  const publishedIssues = useCountUp(66, 2500);
+  const reachArticles = useCountUp(1300, 3500);
 
   return (
     <OverlayMedia className="w-full h-[620px] laptop:h-[700px] overflow-hidden">
@@ -63,22 +49,44 @@ export default function Hero({ stats, content }: HeroProps) {
       <Overlay background="solid-black">
         <Box height="full" width="full">
           <Box className="mx-auto w-full max-w-6xl px-6 py-16 laptop:py-20">
-            <Text size={12} color="white" spacing="xl" opacity={90} className="uppercase">
-              {content.subtitle}
+            <Text
+              size={12}
+              color="white"
+              spacing="xl"
+              opacity={90}
+              className="uppercase"
+            >
+              Northeastern University&apos;s student-run science magazine
             </Text>
 
             <Box mt={4}>
-              <Text size={96} color="white" spacing="sm" className="leading-none max-laptop:text-[72px] max-sm:text-[56px]">
-                {content.title}
+              <Text
+                size={96}
+                color="white"
+                spacing="sm"
+                className="leading-none max-laptop:text-[72px] max-sm:text-[56px]"
+              >
+                NU Sci
               </Text>
-              <Text size={30} color="white" opacity={95} className="mt-4 max-w-2xl font-light max-sm:text-[20px]">
-                {content.description}
+              <Text
+                size={30}
+                color="white"
+                opacity={95}
+                className="mt-4 max-w-2xl font-light max-sm:text-[20px]"
+              >
+                Science communication for the community. Written, designed,
+                photographed, and developed by students.
               </Text>
             </Box>
 
             <Box mt={10} className="flex flex-wrap gap-3">
-              <Button className="inline-flex" color="aqua" size="lg" onClick={() => (window.location.href = "/article-search")}>
-                {content.primaryButtonText}
+              <Button
+                className="inline-flex"
+                color="aqua"
+                size="lg"
+                onClick={() => (window.location.href = "/article-search")}
+              >
+                Browse articles
               </Button>
               <Button
                 className="inline-flex"
@@ -87,14 +95,23 @@ export default function Hero({ stats, content }: HeroProps) {
                 size="lg"
                 onClick={() => (window.location.href = "/teams/eboard")}
               >
-                {content.secondaryButtonText}
+                Learn more
               </Button>
             </Box>
 
             {/* Stats Badges */}
-            <Box mt={10} className="grid grid-cols-3 gap-3 max-sm:grid-cols-1 mobile:invisible laptop:visible">
+            <Box
+              mt={10}
+              className="grid grid-cols-3 gap-3 max-sm:grid-cols-1 mobile:invisible laptop:visible"
+            >
               <Badge rounded="md" color="white" variant="blur" py={4}>
-                <Text size={12} color="white" spacing="lg" opacity={80} className="uppercase">
+                <Text
+                  size={12}
+                  color="white"
+                  spacing="lg"
+                  opacity={80}
+                  className="uppercase"
+                >
                   Legacy
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">
@@ -112,7 +129,13 @@ export default function Hero({ stats, content }: HeroProps) {
                 </Box>
               </Badge>
               <Badge rounded="md" color="white" variant="blur" py={4}>
-                <Text size={12} color="white" spacing="lg" opacity={80} className="uppercase">
+                <Text
+                  size={12}
+                  color="white"
+                  spacing="lg"
+                  opacity={80}
+                  className="uppercase"
+                >
                   Published
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">
@@ -130,7 +153,13 @@ export default function Hero({ stats, content }: HeroProps) {
                 </Box>
               </Badge>
               <Badge rounded="md" color="white" variant="blur" py={4}>
-                <Text size={12} color="white" spacing="lg" opacity={80} className="uppercase">
+                <Text
+                  size={12}
+                  color="white"
+                  spacing="lg"
+                  opacity={80}
+                  className="uppercase"
+                >
                   Reach
                 </Text>
                 <Box className="mt-1 flex items-baseline gap-2">

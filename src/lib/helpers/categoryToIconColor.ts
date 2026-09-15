@@ -1,9 +1,30 @@
 export default function categoryToIconColor(
   category: string,
-): "forest-green" | "sage-green" | "red" | "aqua" | "purple" | "pink" | "maroon" | "coral" | "marigold" | "neutral" | "black" {
+):
+  | "forest-green"
+  | "sage-green"
+  | "red"
+  | "aqua"
+  | "purple"
+  | "pink"
+  | "maroon"
+  | "coral"
+  | "marigold"
+  | "neutral"
+  | "black" {
   const map = new Map<
     string,
-    "forest-green" | "sage-green" | "red" | "aqua" | "purple" | "pink" | "maroon" | "coral" | "marigold" | "neutral" | "black"
+    | "forest-green"
+    | "sage-green"
+    | "red"
+    | "aqua"
+    | "purple"
+    | "pink"
+    | "maroon"
+    | "coral"
+    | "marigold"
+    | "neutral"
+    | "black"
   >(
     Object.entries({
       biology: "purple",
@@ -24,6 +45,7 @@ export default function categoryToIconColor(
       technology: "black",
       world: "sage-green",
       uncategorized: "black",
+      interview: "coral",
     }),
   );
 

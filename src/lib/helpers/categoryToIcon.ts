@@ -19,6 +19,7 @@ export default function categoryToIcon(category: string) {
       technology: "cpu",
       world: "globe",
       uncategorized: "book",
+      interview: "mic-vocal",
     }),
   );
 

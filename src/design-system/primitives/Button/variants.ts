@@ -1,6 +1,7 @@
 import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
 import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
 import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
+import { OpacityProps, opacityVariants } from "@/design-system/utilities/props/Opacity/opacity";
 import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
 import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
 import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
@@ -45,6 +46,8 @@ export const buttonVariants = tv({
         "text-black bg-coral border-coral hover:bg-coral hover:border-coral focus:ring-coral",
       marigold:
         "text-black bg-marigold border-marigold hover:bg-marigold hover:border-marigold focus:ring-marigold",
+      "gray-light":
+       "text-black bg-gray-light"
     },
   },
   compoundVariants: [
@@ -223,6 +226,7 @@ export interface ButtonProps
     MarginProps,
     PaddingProps,
     PositionProps,
+    OpacityProps,
     SizeProps {
   className?: string;
   children: React.ReactNode;
@@ -240,5 +244,6 @@ export const buttonVariantsCN = (variantProps: VariantProps<any>, className?: st
     paddingVariants(variantProps),
     positionVariants(variantProps),
     sizeVariants(variantProps),
+    opacityVariants(variantProps),
     className
   );

@@ -74,7 +74,7 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
 
   const handleProfileChange = (value: string) => {
     if (value === "profile") {
-      window.location.href = `/internal/private-profile/${emailPrefix}`;
+      window.location.href = `/internal/profile`;
     } else if (value === "logout") {
       handleLogout();
     }

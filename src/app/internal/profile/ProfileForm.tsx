@@ -12,6 +12,7 @@ import MediaCard from "@/design-system/components/MediaCard";
 import ImageUpload from "@/design-system/components/ImageUpload";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
+import { PublicUser, updateMyProfile } from "@/lib/api/users";
 
 interface ProfileFormValues {
   firstName: string;
@@ -27,49 +28,94 @@ interface ProfileFormValues {
   phone: string;
 }
 
-export default function PrivateProfilePage() {
-  const initialData: ProfileFormValues = {
-    firstName: "Jonathan",
-    lastName: "Doemeterez",
-    pronouns: "He/Him",
-    graduationYear: 2027,
-    major: "Computer Science",
-    location: "Boston",
+const DEFAULT_PROFILE_IMAGE = "/profil.png";
+const DEFAULT_BANNER_IMAGE = "/icy.png";
+
+function userToFormValues(user: PublicUser): ProfileFormValues {
+  return {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    pronouns: user.pronouns?.join(" / ") ?? "",
+    graduationYear: user.graduationYear,
+    major: user.major ?? "",
+    location: user.location ?? "",
     profileImage: undefined,
     bannerImage: undefined,
-    bio: `Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.`,
-    email: "jdoe@northeastern.edu",
-    phone: "+1 (617) 555-0123",
+    bio: user.bio,
+    email: user.email,
+    phone: user.phone ?? "",
   };
+}
 
-  // Default images (URLs for display when no file is uploaded)
-  const defaultProfileImage = "/profil.png";
-  const defaultBannerImage = "/icy.png";
+interface ProfileFormProps {
+  user: PublicUser | null;
+}
 
-  const roles = ["Author", "Designer", "Editor"]; // Not editable
+export default function ProfileForm({ user }: ProfileFormProps) {
+  if (!user) {
+    return (
+      <Box className="max-w-6xl mx-auto px-4 laptop:px-8 py-16">
+        <Text style="regular" size={18} color="black">
+          Unable to load your profile. Please try logging in again.
+        </Text>
+      </Box>
+    );
+  }
+
+  return <ProfileEditor user={user} />;
+}
+
+function ProfileEditor({ user }: { user: PublicUser }) {
+  const initialData = userToFormValues(user);
+  const roles = user.roles;
   const [isEditing, setIsEditing] = useState(false);
   const [currentData, setCurrentData] = useState<ProfileFormValues>(initialData);
   // Bumped on cancel to remount the Form and discard unsaved edits
   const [formKey, setFormKey] = useState(0);
-  
+
   // Store image previews
-  const [profileImagePreview, setProfileImagePreview] = useState<string>(defaultProfileImage);
-  const [bannerImagePreview, setBannerImagePreview] = useState<string>(defaultBannerImage);
+  const [profileImagePreview, setProfileImagePreview] = useState<string>(user.profileImage || DEFAULT_PROFILE_IMAGE);
+  const [bannerImagePreview, setBannerImagePreview] = useState<string>(user.bannerImage || DEFAULT_BANNER_IMAGE);
 
   const onSubmit = async (data: ProfileFormValues) => {
-    console.log("Saving profile data:", data);
-    console.log("Banner image file:", data.bannerImage?.name);
-    console.log("Profile image file:", data.profileImage?.name);
-    
-    // Update previews if new images were uploaded
+    // Image uploads aren't wired up to storage yet, so only the preview updates locally.
     if (data.bannerImage) {
       setBannerImagePreview(URL.createObjectURL(data.bannerImage));
     }
     if (data.profileImage) {
       setProfileImagePreview(URL.createObjectURL(data.profileImage));
     }
-    
-    setCurrentData(data);
+
+    const updated = await updateMyProfile({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      pronouns: data.pronouns
+        .split("/")
+        .map((p) => p.trim())
+        .filter(Boolean),
+      graduationYear: Number(data.graduationYear),
+      major: data.major,
+      location: data.location,
+      bio: data.bio,
+      phone: data.phone,
+    });
+
+    if (updated) {
+      setCurrentData({
+        ...data,
+        firstName: updated.name.split(" ")[0] ?? data.firstName,
+        lastName: updated.name.split(" ").slice(1).join(" ") || data.lastName,
+        pronouns: updated.pronouns,
+        graduationYear: updated.graduationYear,
+        major: updated.major,
+        location: updated.location,
+        bio: updated.bio,
+        email: updated.email,
+      });
+    } else {
+      setCurrentData(data);
+    }
+
     setIsEditing(false);
   };
 
@@ -78,7 +124,7 @@ export default function PrivateProfilePage() {
     setFormKey((k) => k + 1);
   };
 
-  const hasArticles = roles.includes("Author") || roles.includes("Editor");
+  const hasArticles = roles.includes("author") || roles.includes("editor");
 
   return (
     <Form<ProfileFormValues>
@@ -97,12 +143,7 @@ export default function PrivateProfilePage() {
               <Text style="regular" size={14} color="black" className="whitespace-nowrap">
                 Change Banner Image
               </Text>
-              <Controller
-                name="bannerImage"
-                render={({ field }) => (
-                  <ImageUpload value={field.value} onChange={field.onChange} />
-                )}
-              />
+              <Controller name="bannerImage" render={({ field }) => <ImageUpload value={field.value} onChange={field.onChange} />} />
             </Box>
           </Box>
         )}
@@ -113,30 +154,15 @@ export default function PrivateProfilePage() {
         {/* Edit Buttons */}
         <Box className="absolute top-4 right-4 laptop:right-8 flex gap-3 z-20">
           {!isEditing ? (
-            <Button
-              onClick={() => setIsEditing(true)}
-              variant="default"
-              color="aqua"
-              size="md"
-            >
+            <Button onClick={() => setIsEditing(true)} variant="default" color="aqua" size="md">
               Edit Profile
             </Button>
           ) : (
             <>
-              <Button
-                onClick={handleCancel}
-                variant="outline"
-                color="black"
-                size="md"
-              >
+              <Button onClick={handleCancel} variant="outline" color="black" size="md">
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                variant="default"
-                color="forest-green"
-                size="md"
-              >
+              <Button type="submit" variant="default" color="forest-green" size="md">
                 Save Changes
               </Button>
             </>
@@ -162,9 +188,7 @@ export default function PrivateProfilePage() {
                       </Text>
                       <Controller
                         name="profileImage"
-                        render={({ field }) => (
-                          <ImageUpload value={field.value} onChange={field.onChange} />
-                        )}
+                        render={({ field }) => <ImageUpload value={field.value} onChange={field.onChange} />}
                       />
                     </Box>
                   </Box>
@@ -198,19 +222,21 @@ export default function PrivateProfilePage() {
             <Box className="col-span-1 laptop:col-span-4 flex">
               <Card color="white" className="shadow-xl p-8 sticky top-8 w-full flex flex-col">
                 <Box className="space-y-6 flex-1">
+                  <Box>
+                    <Text style="regular" size={14} color="sage-green" className="uppercase tracking-wide mb-1">
+                      Email
+                    </Text>
+                    <Text style="regular" size={18} color="black" className="break-all">
+                      {currentData.email}
+                    </Text>
+                  </Box>
                   {isEditing ? (
                     <>
-                      <FormField<ProfileFormValues>
-                        name="firstName"
-                        rules={{ required: "First name is required" }}
-                      >
+                      <FormField<ProfileFormValues> name="firstName" rules={{ required: "First name is required" }}>
                         <TextInput label="First Name *" placeholder="Enter first name" className="w-full" />
                       </FormField>
 
-                      <FormField<ProfileFormValues>
-                        name="lastName"
-                        rules={{ required: "Last name is required" }}
-                      >
+                      <FormField<ProfileFormValues> name="lastName" rules={{ required: "Last name is required" }}>
                         <TextInput label="Last Name *" placeholder="Enter last name" className="w-full" />
                       </FormField>
 
@@ -222,7 +248,7 @@ export default function PrivateProfilePage() {
                         name="graduationYear"
                         rules={{
                           required: "Graduation year is required",
-                          min: { value: 2020, message: "Year must be 2020 or later" }
+                          min: { value: 2020, message: "Year must be 2020 or later" },
                         }}
                       >
                         <TextInput label="Graduation Year *" placeholder="2027" className="w-full" />
@@ -234,16 +260,6 @@ export default function PrivateProfilePage() {
 
                       <FormField<ProfileFormValues> name="location">
                         <TextInput label="Location" placeholder="Boston, MA" className="w-full" />
-                      </FormField>
-
-                      <FormField<ProfileFormValues>
-                        name="email"
-                        rules={{
-                          required: "Email is required",
-                          pattern: { value: /^\S+@\S+$/i, message: "Please enter a valid email" },
-                        }}
-                      >
-                        <TextInput label="Email *" placeholder="name@northeastern.edu" className="w-full" />
                       </FormField>
 
                       <FormField<ProfileFormValues> name="phone">
@@ -282,14 +298,6 @@ export default function PrivateProfilePage() {
                         </Text>
                         <Text style="regular" size={18} color="black">
                           {currentData.location}
-                        </Text>
-                      </Box>
-                      <Box>
-                        <Text style="regular" size={14} color="sage-green" className="uppercase tracking-wide mb-1">
-                          Email
-                        </Text>
-                        <Text style="regular" size={18} color="black" className="break-all">
-                          {currentData.email}
                         </Text>
                       </Box>
                       <Box>

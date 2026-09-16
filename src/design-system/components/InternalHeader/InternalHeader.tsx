@@ -14,9 +14,10 @@ interface InternalHeaderProps {
     avatar?: string;
     role?: string;
   };
+  emailPrefix: string;
 }
 
-export default function InternalHeader({ userProfile }: InternalHeaderProps) {
+export default function InternalHeader({ userProfile, emailPrefix }: InternalHeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -59,6 +60,26 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
     window.location.href = '/';
   };
 
+  const handleAboutUsChange = (value: string) => {
+    if (value === "about") {
+      window.location.href = "/about-us";
+    } else if (value === "eboard") {
+      window.location.href = "/teams/eboard";
+    }
+  };
+
+  const handleCategoryChange = (value: string) => {
+    window.location.href = `/${value}`;
+  };
+
+  const handleProfileChange = (value: string) => {
+    if (value === "profile") {
+      window.location.href = `/internal/private-profile/${emailPrefix}`;
+    } else if (value === "logout") {
+      handleLogout();
+    }
+  };
+
   return (
     <Box
       position="fixed"
@@ -79,7 +100,7 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
         <Box className="flex items-center justify-between h-full">
           {/* Logo */}
           <Box className="flex-shrink-0">
-            <Link href="/internal/dashboard" newWindow={false} className="flex items-center">
+            <Link href={`/internal/dashboard/${emailPrefix}`} newWindow={false} className="flex items-center">
               <Box className="transition-all duration-300 w-10">
                 <Image 
                   src="/logo.png" 
@@ -109,16 +130,7 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
 
             {/* About Us Dropdown */}
             <Box className="relative">
-              <DropdownInput
-                placeholder="About Us"
-                onChange={(value) => {
-                  if (value === "about") {
-                    window.location.href = "/about-us";
-                  } else if (value === "eboard") {
-                    window.location.href = "/teams/eboard";
-                  }
-                }}
-              >
+              <DropdownInput placeholder="About Us" onChange={handleAboutUsChange}>
                 <DropdownItem value="about">Teams</DropdownItem>
                 <DropdownItem value="eboard">Eboard & Editors</DropdownItem>
               </DropdownInput>
@@ -126,12 +138,7 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
 
             {/* Categories Dropdown */}
             <Box className="relative">
-              <DropdownInput
-                placeholder="Categories"
-                onChange={(value) => {
-                  window.location.href = `/${value}`;
-                }}
-              >
+              <DropdownInput placeholder="Categories" onChange={handleCategoryChange}>
                 {categories.map((category) => (
                   <DropdownItem key={category.value} value={category.value}>
                     {category.label}
@@ -155,16 +162,7 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
             {/* Profile Dropdown */}
             <Box className="relative flex items-center">
               <Icon icon="user" size="sm" className="mr-2" />
-              <DropdownInput
-                placeholder={userProfile.name}
-                onChange={(value) => {
-                  if (value === "profile") {
-                    window.location.href = "/internal/private-profile";
-                  } else if (value === "logout") {
-                    handleLogout();
-                  }
-                }}
-              >
+              <DropdownInput placeholder={userProfile.name} onChange={handleProfileChange}>
                 <DropdownItem value="profile">Profile</DropdownItem>
                 <DropdownItem value="logout">Logout</DropdownItem>
               </DropdownInput>
@@ -219,11 +217,7 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
                   placeholder="About Us"
                   className="w-full"
                   onChange={(value) => {
-                    if (value === "about") {
-                      window.location.href = "/about-us";
-                    } else if (value === "eboard") {
-                      window.location.href = "/teams/eboard";
-                    }
+                    handleAboutUsChange(value);
                     setIsMobileMenuOpen(false);
                   }}
                 >
@@ -238,7 +232,7 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
                   placeholder="Categories"
                   className="w-full"
                   onChange={(value) => {
-                    window.location.href = `/${value}`;
+                    handleCategoryChange(value);
                     setIsMobileMenuOpen(false);
                   }}
                 >
@@ -272,7 +266,7 @@ export default function InternalHeader({ userProfile }: InternalHeaderProps) {
                   size="sm"
                   color="black"
                   onClick={() => {
-                    window.location.href = "/internal/profile";
+                    handleProfileChange("profile");
                     setIsMobileMenuOpen(false);
                   }}
                   className="w-full justify-center"

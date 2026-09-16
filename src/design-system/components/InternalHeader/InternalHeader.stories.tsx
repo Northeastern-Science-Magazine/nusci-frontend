@@ -27,6 +27,7 @@ export const Default: Story = {
       avatar: "/logo.png",
       role: "Writer",
     },
+    emailPrefix: "jdoe",
   },
   decorators: [
     (Story) => (
@@ -49,6 +50,7 @@ export const Editor: Story = {
       avatar: "/logo.png",
       role: "Editor",
     },
+    emailPrefix: "jdoe",
   },
   decorators: [
     (Story) => (
@@ -71,6 +73,7 @@ export const Admin: Story = {
       avatar: "/logo.png",
       role: "Admin",
     },
+    emailPrefix: "jdoe",
   },
   decorators: [
     (Story) => (
@@ -93,6 +96,7 @@ export const Mobile: Story = {
       avatar: "/logo.png",
       role: "Writer",
     },
+    emailPrefix: "jdoe",
   },
   parameters: {
     viewport: {

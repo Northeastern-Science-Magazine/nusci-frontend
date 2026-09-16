@@ -91,8 +91,34 @@ export async function getPublicUserByEmail(email: string): Promise<ProfileData> 
   }
 }
 
+export async function getMyProfile(): Promise<ProfileData> {
+  try {
+    const response = await apiGetMyProfile();
+
+    if (!response.ok) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Get my profile endpoint failed, using fallback user");
+      }
+      return FALLBACK_PROFILE_USER;
+    }
+
+    if (response.data) {
+      return mapPublicUserToProfile(response.data);
+    }
+
+    return FALLBACK_PROFILE_USER;
+  } catch (error) {
+    console.error("Error fetching my profile:", error);
+    return FALLBACK_PROFILE_USER;
+  }
+}
+
 export async function apiGetUserRoles(): Promise<ApiResponse<RolesString>> {
   return api("GET", "/user/roles");
+}
+
+export async function apiGetMyProfile(): Promise<ApiResponse<PublicUser>> {
+  return api("GET", "/user/me");
 }
 
 export async function apiLogin(data: { email: string; password: string }): Promise<ApiResponse<void>> {

@@ -49,9 +49,8 @@ export default function CTA() {
                   color="white"
                   size="lg"
                   onClick={() =>
-                    (window.location.href = `mailto:northeasternsciencemagazine@gmail.com?subject=${encodeURIComponent(
-                      "I'm Interested in Joining NU Sci!",
-                    )}`)
+                    (window.location.href =
+                      "https://docs.google.com/forms/d/e/1FAIpQLSc0KfCGiODcLw2tZEUouDnkhXP4XAocen_sNg8SO9F01GO25g/viewform?usp=send_form")
                   }
                 >
                   Join the team

@@ -49,6 +49,8 @@ export default function PrivateProfilePage() {
   const roles = ["Author", "Designer", "Editor"]; // Not editable
   const [isEditing, setIsEditing] = useState(false);
   const [currentData, setCurrentData] = useState<ProfileFormValues>(initialData);
+  // Bumped on cancel to remount the Form and discard unsaved edits
+  const [formKey, setFormKey] = useState(0);
   
   // Store image previews
   const [profileImagePreview, setProfileImagePreview] = useState<string>(defaultProfileImage);
@@ -73,12 +75,14 @@ export default function PrivateProfilePage() {
 
   const handleCancel = () => {
     setIsEditing(false);
+    setFormKey((k) => k + 1);
   };
 
   const hasArticles = roles.includes("Author") || roles.includes("Editor");
 
   return (
     <Form<ProfileFormValues>
+      key={formKey}
       onSubmit={onSubmit}
       options={{
         defaultValues: currentData,

@@ -2,20 +2,12 @@ import { MediaCardProps, mediaCardVariants } from "./variants";
 import Box from "@/primitives/Box";
 import Image from "@/primitives/Image";
 import Video from "@/primitives/Video";
+import Icon from "@/primitives/Icon";
 import Text from "@/primitives/Text";
 import { mediaCardTextSizes } from "./variants";
 
 export const MediaCard = (props: MediaCardProps) => {
-  const {
-    title,
-    subtitle,
-    description,
-    mediaType,
-    size,
-    color,
-    children,
-    ...variantProps
-  } = props;
+  const { title, subtitle, description, mediaType, size, color, children, ...variantProps } = props;
 
   // Get text sizes from the configuration
   const textSizes = mediaCardTextSizes[size ?? "md"];
@@ -40,13 +32,16 @@ export const MediaCard = (props: MediaCardProps) => {
         )}
         {children}
       </Box>
-      <Box className="media-container flex-shrink-0">
+      <Box className="media-container flex-shrink-0 flex items-center justify-center">
         {props.mediaType === "image" && (
           <div className="w-full h-full object-cover">
             <Image {...props.imageProps} raw width="w-full h-full object-cover" />
           </div>
         )}
         {props.mediaType === "video" && <Video {...props.videoProps} className="w-full h-full object-cover" />}
+        {props.mediaType === "icon" && (
+          <Icon icon={props.iconProps.icon} size={props.iconProps.size} color={props.iconProps.color} />
+        )}
       </Box>
     </Box>
   );

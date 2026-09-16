@@ -36,10 +36,10 @@ export enum DesignStatus {
 }
 
 export enum PhotographyStatus {
-  NoPhoto,
-  NeedsPhotographer,
-  PhotographerAssigned,
-  PhotoComplete,
+  NoPhoto = "NoPhoto",
+  NeedsPhotographer = "NeedsPhotographer",
+  PhotographerAssigned = "PhotographerAssigned",
+  PhotoComplete = "PhotoComplete",
 }
 
 export enum Roles {
@@ -51,8 +51,29 @@ export enum Roles {
   Admin = "admin",
 }
 
+export enum Category {
+  Biology = "Biology",
+  Chemistry = "Chemistry",
+  Culture = "Culture",
+  Environment = "Environment",
+  Health = "Health",
+  Local = "Local",
+  Mathematics = "Mathematics",
+  Neuroscience = "Neuroscience",
+  Newsletter = "Newsletter",
+  Opinion = "Opinion",
+  Philosophy = "Philosophy",
+  Physics = "Physics",
+  Politics = "Politics",
+  Psychology = "Psychology",
+  Space = "Space",
+  Technology = "Technology",
+  World = "World",
+  Uncategorized = "Uncategorized",
+}
+
 export type ArticleContent = {
-  contentType: ArticleContentType;
+  contentType: "body_paragraph" | "pull_quote" | "image";
   content: string;
 };
 
@@ -64,13 +85,18 @@ export type ArticleComment = {
   modificatonDate: Date;
 };
 
+export type ArticleSource = {
+  text: string;
+  href: string;
+};
+
 export type Article = {
   title: string;
   slug: string;
   issueNumber: number;
   categories: string[];
   articleContent: ArticleContent[];
-  sources?: string[];
+  sources?: ArticleSource[];
   link?: string;
   pageLength: number;
   comments: ArticleComment[];

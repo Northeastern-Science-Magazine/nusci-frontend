@@ -5,23 +5,18 @@ import TextInput from "@/design-system/primitives/TextInput";
 import Icon from "@/design-system/primitives/Icon";
 import Button from "@/design-system/primitives/Button";
 import Text from "@/design-system/primitives/Text";
+import { Grid, GridCol } from "@/design-system/primitives/Grid";
+import { ArticleSource } from "@/lib/types/types";
 
 type SourcesInputProps = {
-  value?: string[];
-  onChange?: (sources: string[]) => void;
+  value?: ArticleSource[];
+  onChange?: (sources: ArticleSource[]) => void;
   label?: string;
   placeholder?: string;
 };
 
-export function SourcesInput({
-  value = [],
-  onChange,
-  label = "Sources",
-  placeholder = "Enter source URL or citation",
-}: SourcesInputProps) {
-  const [sources, setSources] = useState<string[]>(
-    value.length > 0 ? value : [""]
-  );
+export function SourcesInput({ value = [], onChange, label = "Sources" }: SourcesInputProps) {
+  const [sources, setSources] = useState<ArticleSource[]>(value.length > 0 ? value : [{ text: "", href: "" }]);
 
   useEffect(() => {
     if (value && value.length > 0) {
@@ -29,15 +24,22 @@ export function SourcesInput({
     }
   }, [value]);
 
-  const handleSourceChange = (index: number, newValue: string) => {
+  const handleSourceTextChange = (index: number, newText: string) => {
     const updatedSources = [...sources];
-    updatedSources[index] = newValue;
+    updatedSources[index] = { ...updatedSources[index], text: newText };
+    setSources(updatedSources);
+    onChange?.(updatedSources);
+  };
+
+  const handleSourceHrefChange = (index: number, newHref: string) => {
+    const updatedSources = [...sources];
+    updatedSources[index] = { ...updatedSources[index], href: newHref };
     setSources(updatedSources);
     onChange?.(updatedSources);
   };
 
   const addSource = () => {
-    const updatedSources = [...sources, ""];
+    const updatedSources = [...sources, { text: "", href: "" }];
     setSources(updatedSources);
     onChange?.(updatedSources);
   };
@@ -55,32 +57,36 @@ export function SourcesInput({
       {sources.map((source, index) => (
         <div key={index} className="flex items-end gap-2">
           <div className="flex-1">
-            <TextInput
-              value={source}
-              label="Source"
-              onChange={(newValue) => handleSourceChange(index, newValue)}
-              placeholder={placeholder}
-              className="w-full"
-            />
+            <label>{"Sources"}</label>
+            <Grid col span={2} gap={2}>
+              <GridCol span={1}>
+                <TextInput
+                  value={source.text}
+                  label=""
+                  onChange={(newValue) => handleSourceTextChange(index, newValue)}
+                  placeholder="Enter source title"
+                  className="w-full"
+                />
+              </GridCol>
+              <GridCol span={1}>
+                <TextInput
+                  value={source.href}
+                  label=""
+                  onChange={(newValue) => handleSourceHrefChange(index, newValue)}
+                  placeholder="Enter source URL or citation"
+                  className="w-full"
+                />
+              </GridCol>
+            </Grid>
           </div>
           {sources.length > 1 && (
-            <Button
-              onClick={() => removeSource(index)}
-              aria-label="Remove source"
-              variant="outline"
-              color="red"
-            >
+            <Button onClick={() => removeSource(index)} aria-label="Remove source" variant="outline" color="red">
               <Icon icon="trash" size="sm" color="red" />
             </Button>
           )}
         </div>
       ))}
-      <Button
-        onClick={addSource}
-        className="flex w-full items-center justify-center gap-2"
-        variant="outline"
-        color="sage-green"
-      >
+      <Button onClick={addSource} className="flex w-full items-center justify-center gap-2" variant="outline" color="sage-green">
         <div className="flex items-center gap-2">
           <Icon icon="plus" size="md" />
           <Text>Add Source</Text>

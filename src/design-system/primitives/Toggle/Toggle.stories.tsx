@@ -1,23 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Toggle } from "./Toggle";
 import React from "react";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
-const colors = [
-  //"white", // white exists but doesn't really serve a purpose
-  "black",
-  "gray",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 
 const meta: Meta<typeof Toggle> = {
   component: Toggle,

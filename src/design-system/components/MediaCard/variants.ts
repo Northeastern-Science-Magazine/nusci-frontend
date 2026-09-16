@@ -2,6 +2,7 @@ import { CardProps } from "../../primitives/Card/variants";
 import { BoxProps } from "@/primitives/Box/variants";
 import { ImageProps } from "../../primitives/Image/variants";
 import { VideoProps } from "../../primitives/Video/variants";
+import { IconName, IconVariants, IconSize } from "../../primitives/Icon/variants";
 import { tv, type VariantProps } from "tailwind-variants";
 
 // variants.ts
@@ -208,5 +209,15 @@ export interface VideoMediaCardProps extends BaseMediaCardProps {
   videoProps: Omit<VideoProps, "width" | "ratio">;
 }
 
+// Icon-specific media card
+export interface IconMediaCardProps extends BaseMediaCardProps {
+  mediaType: "icon";
+  iconProps: {
+    icon: IconName;
+    size?: IconSize;
+    color?: IconVariants["color"];
+  };
+}
+
 // Union type for the component
-export type MediaCardProps = ImageMediaCardProps | VideoMediaCardProps;
+export type MediaCardProps = ImageMediaCardProps | VideoMediaCardProps | IconMediaCardProps;

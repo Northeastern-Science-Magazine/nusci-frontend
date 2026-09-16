@@ -14,6 +14,7 @@ import { SourcesInput } from "./components/SourcesInput";
 import { Controller } from "react-hook-form";
 import ImageUpload from "@/design-system/components/ImageUpload";
 import ArticleInput from "./components/ArticleInput";
+import { Category, ArticleSource } from "@/lib/types/types";
 
 /* IDEAS: 
     - Author selection: would be cool to have a dropdown that updates as you type system
@@ -29,7 +30,7 @@ type ArticleSubmissionFormValues = {
   content: string;
   pullQuote: string;
   image?: File;
-  sources: string[];
+  sources: ArticleSource[];
 };
 
 type FormProgress = {
@@ -75,7 +76,9 @@ const FormContent = () => {
             .trim().length > 0,
         pullQuote: !!watchedFields.pullQuote && watchedFields.pullQuote.trim().length > 0,
         sources:
-          Array.isArray(watchedFields.sources) && watchedFields.sources.length > 0 && watchedFields.sources[0]?.trim().length > 0,
+          Array.isArray(watchedFields.sources) &&
+          watchedFields.sources.length > 0 &&
+          (watchedFields.sources[0]?.href?.trim()?.length ?? 0) > 0,
       });
     };
     updateProgress();
@@ -111,23 +114,7 @@ const FormContent = () => {
                 <div>
                   <label>{"Categories"}</label>
                   <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
-                    <Checkbox
-                      options={[
-                        "Biology",
-                        "Chemistry",
-                        "Environment",
-                        "Health",
-                        "Newsletter",
-                        "Opinion",
-                        "Physics",
-                        "Psychology",
-                        "Space",
-                        "Technology",
-                        "World",
-                      ]}
-                      value={field.value || []}
-                      onChange={field.onChange}
-                    />
+                    <Checkbox options={Object.values(Category)} value={field.value || []} onChange={field.onChange} />
                   </div>
                 </div>
               )}
@@ -144,7 +131,7 @@ const FormContent = () => {
           {/* Pull Quote */}
           <div id="pull-quote" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="pullQuote">
-              <TextInput placeholder="Enter a pull quote" label="Pull Quote" className="w-full" rows={3} />
+              <TextInput placeholder="Enter a pull quote" label="Pull Quote" className="w-full" rows={3} multiline={true} />
             </FormField>
           </div>
 

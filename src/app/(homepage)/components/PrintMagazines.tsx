@@ -1,3 +1,4 @@
+// app/components/PrintMagazines.tsx (REPLACE entire file)
 "use client";
 
 import MediaCarousel from "@/design-system/components/MediaCarousel";
@@ -9,7 +10,27 @@ import { breakpoints } from "../../../../tailwind.config";
 import useWindowSize from "@/lib/hooks/useWindowSize";
 import { useMemo } from "react";
 
-export default function PrintMagazines() {
+interface Magazine {
+  id: string;
+  issueNumber: number;
+  thumbnailUrl: string;
+  title: string;
+  date: string;
+}
+
+interface PrintMagazinesProps {
+  magazines: Magazine[];
+  content: {
+    title: string;
+    description: string;
+    archiveButtonText: string;
+  };
+}
+
+export default function PrintMagazines({
+  magazines,
+  content,
+}: PrintMagazinesProps) {
   const { width } = useWindowSize();
 
   const issueThumbnails = useMemo(
@@ -75,7 +96,7 @@ export default function PrintMagazines() {
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue57.png",
       "https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue59.png",
     ],
-    []
+    [],
   );
 
   return (
@@ -84,10 +105,11 @@ export default function PrintMagazines() {
         <Box className="flex flex-col items-start justify-between gap-6 laptop:flex-row laptop:items-end">
           <Box>
             <Text size={36} className="tracking-tight">
-              Our Magazines
+              {content.title}
             </Text>
             <Text size={16} className="mt-2 max-w-2xl text-black/70">
-              Look through our print archive - click a cover to bring it front and center.
+              Look through our print archive - click a cover to bring it front
+              and center.
             </Text>
           </Box>
 
@@ -97,19 +119,20 @@ export default function PrintMagazines() {
               newWindow
               className="rounded-full border border-black/15 px-4 py-2 text-[14px] text-black/80 hover:bg-black/5"
             >
-              View the archive
+              {content.archiveButtonText}
             </Link>
           </Box>
         </Box>
-
         <Divider mt={8} />
 
-        {/* Technically responsive - renders w/ different props at breakpoint laptop */}
         <MediaCarousel
           media={issueThumbnails}
           size={width && width > breakpoints.laptop ? "lg" : "md"}
           visibleCount={width && width > breakpoints.laptop ? 7 : 3}
           initialIndex={0}
+          centerLink={() => {
+            return "https://northeasternsciencemagazine.github.io/nusci-issuu/";
+          }}
         />
 
         <Divider mt={8} />

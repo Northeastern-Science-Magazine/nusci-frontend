@@ -2,25 +2,11 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Badge } from "./Badge";
 import React from "react";
 import Text from "@/design-system/primitives/Text";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
 /* Modify this when adding variants to Badge */
 const variants = ["default", "outline", "blur"] as const;
-const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 const roundedOptions = ["sm", "md", "lg"] as const;
 
 /** Define the control fields for Storybook */

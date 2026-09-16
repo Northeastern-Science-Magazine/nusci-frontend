@@ -1,25 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { TextInput } from "./TextInput";
 import React from "react";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
 const variants = ["outline", "filled"] as const;
 const sizes = ["lg", "md", "sm"] as const;
-const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof TextInput> = {

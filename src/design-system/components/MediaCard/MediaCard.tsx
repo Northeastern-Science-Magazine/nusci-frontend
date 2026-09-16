@@ -13,7 +13,7 @@ export const MediaCard = (props: MediaCardProps) => {
   const textSizes = mediaCardTextSizes[size ?? "md"];
 
   return (
-    <Box color={color} className={mediaCardVariants(props)}>
+    <Box color={color} className={mediaCardVariants(variantProps)}>
       <Box className="flex-1" p={4} pt={8} pb={8}>
         {subtitle && (
           <Text size={textSizes.subtitle} className="font-light text-inherit">

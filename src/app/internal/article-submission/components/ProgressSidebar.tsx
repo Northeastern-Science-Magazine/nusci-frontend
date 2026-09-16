@@ -9,7 +9,7 @@ type FormProgress = {
   title: boolean;
   categories: boolean;
   content: boolean;
-  pullQuote: boolean;
+  pullQuotes: boolean;
   sources: boolean;
 };
 
@@ -83,6 +83,11 @@ export const ProgressSidebar = ({ progress }: { progress: FormProgress }) => {
       <div className="space-y-4">
         <ProgressCircle
           filled={progress.author}
+          label="Issue"
+          href="#issue-number"
+        />
+        <ProgressCircle
+          filled={progress.author}
           label="Author"
           href="#author"
         />
@@ -98,9 +103,9 @@ export const ProgressSidebar = ({ progress }: { progress: FormProgress }) => {
           href="#content"
         />
         <ProgressCircle
-          filled={progress.pullQuote}
-          label="Pull Quote"
-          href="#pull-quote"
+          filled={progress.pullQuotes}
+          label="Pull Quotes"
+          href="#pull-quotes "
         />
         <ProgressCircle
           filled={progress.sources}

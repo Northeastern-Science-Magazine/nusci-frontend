@@ -12,6 +12,18 @@ function extractFirstImageUrl(articleContent: Array<{ contentType: string; conte
   return imageItem?.content;
 }
 
+/** Backend may return a display string or a populated user document. */
+function formatPersonName(person: unknown): string | undefined {
+  if (person == null) return undefined;
+  if (typeof person === "string") return person.trim() || undefined;
+  if (typeof person === "object" && "firstName" in person && "lastName" in person) {
+    const p = person as { firstName?: string; lastName?: string };
+    const name = `${p.firstName ?? ""} ${p.lastName ?? ""}`.trim();
+    return name || undefined;
+  }
+  return undefined;
+}
+
 // Format date for display
 function formatDate(date: Date | string): string {
   if (typeof date === "string") {
@@ -38,22 +50,19 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const article = result.data;
 
   // Extract first image URL for featured image
-  const firstImageUrl = extractFirstImageUrl(article.articleContent);
+  // const firstImageUrl = extractFirstImageUrl(article.articleContent);
 
   // Format publish date (using creationTime as publish date)
   const publishDate = formatDate(article.creationTime);
 
-  // Get first author (or "Unknown" if no authors)
-  const author = article.authors?.length > 0 ? article.authors[0] : "NU Sci Magazine";
+  // Get first author name (or default if no authors)
+  const author = article.authors?.length > 0 ? formatPersonName(article.authors[0]) ?? "NU Sci Magazine" : "NU Sci Magazine";
 
-  // Get first editor if available
-  const editor = article.editors?.length > 0 ? article.editors[0] : undefined;
-
-  // Format issue number
-  const issueNumber = `Issue ${article.issueNumber}`;
+  // Get first editor if available (API may return a user object or string)
+  const editor = article.editors?.length > 0 ? formatPersonName(article.editors[0]) : undefined;
 
   // Only use image if it actually exists in the content (no placeholder fallback)
-  const imageUrl = firstImageUrl;
+  // const imageUrl = firstImageUrl;
 
   return (
     <ArticleTemplate
@@ -61,19 +70,19 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       author={author}
       editor={editor}
       categories={article.categories}
-      //issueNumber={issueNumber} //issue number later when we can clean data and figure out where each one is
+      issueNumber={article.issueNumber}
       publishDate={publishDate}
       articleContent={article.articleContent}
       sources={article.sources}
-      featuredImage={
-        imageUrl
-          ? {
-              src: imageUrl,
-              alt: article.title,
-              width: "w-full",
-            }
-          : undefined
-      }
+      // featuredImage={
+      //   imageUrl
+      //     ? {
+      //         src: imageUrl,
+      //         alt: article.title,
+      //         width: "w-full",
+      //       }
+      //     : undefined
+      // }
       imageCaption={undefined} // TODO: Add image caption if available in article
     />
   );

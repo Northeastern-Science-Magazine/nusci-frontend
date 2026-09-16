@@ -38,6 +38,10 @@ import {
   Cpu,
   Globe,
   BookText,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  MicVocal,
 } from "lucide-react";
 import { InstagramLogoIcon, LinkedInLogoIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
@@ -152,6 +156,10 @@ export const iconMap = {
   cpu: Cpu,
   globe: Globe,
   book: BookText,
+  check: Check,
+  chevronDown: ChevronDown,
+  chevronUp: ChevronUp,
+  micVocal: MicVocal,
 };
 
 export type IconName = keyof typeof iconMap;

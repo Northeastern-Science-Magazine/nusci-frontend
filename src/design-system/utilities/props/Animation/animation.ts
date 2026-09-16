@@ -13,6 +13,7 @@ export const animationVariants = tv({
       moveRightHover: "hover:translate-x-3",
       moveLeftHover: "hover:-translate-x-3",
       scale125Hover: "hover:scale-125",
+      scale110Hover: "hover:scale-110"
     },
     duration: {
       100: "[animation-duration:100ms]",

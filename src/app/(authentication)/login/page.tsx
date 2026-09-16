@@ -9,7 +9,6 @@ import Box from "@/primitives/Box";
 import Text from "@/primitives/Text";
 import { Flex } from "@/primitives/Flex";
 import { apiLogin } from "@/lib/api/users";
-import { handleLogin } from "@/lib/helpers/auth";
 
 type LoginFormValues = {
   email: string;
@@ -18,7 +17,13 @@ type LoginFormValues = {
 
 export default function LoginPage() {
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    handleLogin(data);
+    console.log("Login data:", data);
+    const result = await apiLogin(data);
+    if (result.ok) {
+      console.log("Login process happened");
+    } else {
+      console.log("Login process failed");
+    }
   };
 
   return (
@@ -63,7 +68,7 @@ export default function LoginPage() {
               size="md"
               color="black"
               label="Email"
-              placeholder="name@company.com"
+              placeholder="email@northeastern.edu"
               className="w-full"
             />
           </FormField>
@@ -87,15 +92,15 @@ export default function LoginPage() {
             </FormField>
           </Box>
 
-          <Button variant="default" size="md" color="forest-green" className="w-full">
+          <Button variant="default" size="md" color="forest-green" type="submit" className="w-full">
             Sign In
           </Button>
 
-          <Box className="text-left">
+          <Box className="flex flex-col gap-2 text-left mt-4">
             <Text size={12} color="sage-green">
-              Don&#39;t have an account?{" "}
-              <a href="/signup" className="underline">
-                Sign up
+              Or sign in with a{" "}
+              <a href="/otp" className="underline">
+                one-time password
               </a>
             </Text>
           </Box>

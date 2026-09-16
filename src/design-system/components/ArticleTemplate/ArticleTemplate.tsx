@@ -1,30 +1,80 @@
 import React from "react";
-import {
-  ArticleWithoutImageProps,
-  articleTemplateVariants,
-} from "./variants";
+import { ArticleTemplateProps, articleTemplateVariants, ContentBlock } from "./variants";
 import clsx from "clsx";
 import Text from "@/primitives/Text";
 import Link from "@/primitives/Link";
+import Image from "@/primitives/Image";
 import Badge from "@/primitives/Badge";
+import { OverlayMedia, Overlay } from "@/components/MediaOverlay";
 
-export default function ArticleWithoutImage({
+// Convert ArticleContent to ContentBlock format
+function convertArticleContentToContentBlocks(articleContent: ArticleTemplateProps["articleContent"]): ContentBlock[] {
+  const blocks: ContentBlock[] = [];
+
+  // articleContent is an array of paragraphs; each paragraph is an array of segments.
+  articleContent.forEach((paragraph) => {
+    if (!paragraph || paragraph.length === 0) return;
+
+    // If this paragraph is a pull_quote, treat entire paragraph as a quote block
+    if (paragraph.length === 1 && paragraph[0].contentType === "pull_quote") {
+      blocks.push({
+        type: "quote",
+        content: paragraph[0].content,
+      });
+      return;
+    }
+
+    // Skip images here; featured image is handled separately
+    if (paragraph.some((seg) => seg.contentType === "image")) {
+      return;
+    }
+
+    // Body paragraph: map segments to text/link segments
+    const segments = paragraph.map((seg) => {
+      if (seg.href) {
+        return {
+          type: "link" as const,
+          text: seg.content,
+          href: seg.href,
+          newWindow: true,
+        };
+      }
+
+      return {
+        type: "text" as const,
+        content: seg.content,
+      };
+    });
+
+    blocks.push({
+      type: "paragraph",
+      segments,
+    });
+  });
+
+  return blocks;
+}
+
+export default function ArticleTemplate({
   title,
   author,
   editor,
   categories = [],
   issueNumber,
   publishDate,
-  content,
+  featuredImage,
+  imageCaption,
+  articleContent,
   sources,
   className,
   ...variantProps
-}: ArticleWithoutImageProps) {
+}: ArticleTemplateProps) {
+  // Convert articleContent to ContentBlock format
+  const content = convertArticleContentToContentBlocks(articleContent);
   return (
     <>
-      <article
-        className={clsx(articleTemplateVariants(variantProps), className)}
-      >
+      <article className={clsx(articleTemplateVariants(variantProps), className)}>
+        {/* Header Section */}
         <header className="mb-8 mt-8">
           {/* Title */}
           <div className="mb-4">
@@ -68,12 +118,33 @@ export default function ArticleWithoutImage({
               </Badge>
             ))}
             {issueNumber && (
-              <Badge color="neutral" variant="outline">
-                {issueNumber}
+              <Badge color="aqua" variant="blur">
+                Issue {issueNumber}
               </Badge>
             )}
           </div>
         </header>
+
+        {/* Featured Image with Media Overlay */}
+        {featuredImage && (
+          <>
+            <div className="mb-2 rounded-lg overflow-hidden">
+              <OverlayMedia>
+                <Image {...featuredImage} />
+                <Overlay background="gradient-black">{undefined}</Overlay>
+              </OverlayMedia>
+            </div>
+
+            {/* Image Caption Below */}
+            {imageCaption && (
+              <div className="mb-8">
+                <Text size={14} style="italic" color="black">
+                  {imageCaption}
+                </Text>
+              </div>
+            )}
+          </>
+        )}
 
         {/* Article Content */}
         <div className="flex flex-col gap-6">
@@ -96,13 +167,16 @@ export default function ArticleWithoutImage({
                       <React.Fragment key={segIndex}>
                         {segment.type === "text" && segment.content}
                         {segment.type === "link" && (
-                          <Link
-                            href={segment.href}
-                            newWindow={segment.newWindow ?? true}
-                            className="font-bold underline text-aqua hover:text-forest-green"
-                          >
-                            {segment.text}
-                          </Link>
+                          <>
+                            {" "}
+                            <Link
+                              href={segment.href}
+                              newWindow={segment.newWindow ?? true}
+                              className="font-bold underline text-aqua hover:text-forest-green"
+                            >
+                              {segment.text}
+                            </Link>{" "}
+                          </>
                         )}
                       </React.Fragment>
                     ))}
@@ -113,10 +187,7 @@ export default function ArticleWithoutImage({
 
             if (block.type === "quote") {
               return (
-                <div
-                  key={index}
-                  className="my-8 border-l-4 border-aqua pl-6 py-4 bg-aqua-light/20"
-                >
+                <div key={index} className="my-8 border-l-4 border-aqua pl-6 py-4 bg-aqua-light/20">
                   <Text size={24} style="italic" color="black">
                     {block.content}
                   </Text>
@@ -139,11 +210,7 @@ export default function ArticleWithoutImage({
             <div className="flex flex-col gap-2">
               {sources.map((source, index) => (
                 <div key={index} className="leading-relaxed">
-                  <Link
-                    href={source.href}
-                    newWindow={true}
-                    className="underline text-aqua hover:text-forest-green"
-                  >
+                  <Link href={source.href} newWindow={true} className="underline text-aqua hover:text-forest-green">
                     <Text size={14} color="black">
                       {source.text}
                     </Text>

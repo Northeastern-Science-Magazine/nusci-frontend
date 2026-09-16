@@ -29,20 +29,22 @@ export type DialogWindowVariants = VariantProps<typeof dialogWindowVariants>;
 export interface DialogWindowProps extends DialogWindowVariants, BasicColorProps {
   children?: React.ReactNode;
   className?: string;
+  /** When false, hides the corner close control. Default true. */
+  showCloseButton?: boolean;
+  /** When true, blocks closing via overlay click or Escape (content still unmounts if Root `open` becomes false). */
+  preventDismiss?: boolean;
 }
 
 export const dialogWindowVariantsCN = (variantProps: VariantProps<any>) =>
   clsx(dialogWindowVariants(variantProps), basicColorVariants(variantProps));
 
 /** Dialog */
-type DialogTriggerElement = React.ReactElement<DialogTriggerProps>;
-type DialogWindowElement = React.ReactElement<DialogWindowProps>;
-export type DialogChildren = [DialogTriggerElement, DialogWindowElement];
-
 export const dialogVariants = tv({});
 
 export type DialogVariants = VariantProps<typeof dialogVariants>;
 
 export interface DialogProps extends DialogVariants {
-  children: DialogChildren;
+  children: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Card from "./Card";
 import React from "react";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
 /* Modify this when adding variants to Card */
 const positions = ["static", "fixed", "absolute", "relative", "sticky"] as const;
@@ -25,22 +26,7 @@ const pts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 1
 const pbs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const prs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const pls = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Card> = {
@@ -154,37 +140,5 @@ export const Default: Story = {
     m: 8,
     height: "full",
     p: 4,
-  },
-};
-
-/** Gallery Story for some Card variants with ranging background color, width, and height */
-export const Gallery: Story = {
-  args: {},
-  render: (args) => {
-    return (
-      <div>
-        {colors.map((backgroundColor) => {
-          return (
-            <div key={backgroundColor}>
-              <div className={`grid grid-cols-3 gap-2`}>
-                {widths.map((width) => (
-                  <React.Fragment key={width}>
-                    <div className="flex flex-col">
-                      {heights.map((height) => (
-                        <div key={`${width}-${height}`} className="flex justify-left p-2">
-                          <Card height={height} width={width} color={backgroundColor}>
-                            {width} x {height}
-                          </Card>
-                        </div>
-                      ))}
-                    </div>
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
   },
 };

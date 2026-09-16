@@ -1,10 +1,4 @@
-import {
-  FlexProps,
-  flexVariants,
-  FlexChildProps,
-  flexChildVariants,
-} from "./variants";
-import clsx from "clsx";
+import { FlexProps, flexVariantsCN, FlexChildProps, flexChildVariantsCN } from "./variants";
 
 /**
  * Flex Component
@@ -13,15 +7,9 @@ import clsx from "clsx";
  * @returns Flex Component
  */
 export function Flex({ children, className, ...props }: FlexProps) {
-  return (
-    <FlexChild className={clsx(flexVariants(props), className)}>
-      {children}
-    </FlexChild>
-  );
+  return <FlexChild className={flexVariantsCN(props, className)}>{children}</FlexChild>;
 }
 
 export function FlexChild({ className, children, ...props }: FlexChildProps) {
-  return (
-    <div className={clsx(flexChildVariants(props), className)}>{children}</div>
-  );
+  return <div className={flexChildVariantsCN(props, className)}>{children}</div>;
 }

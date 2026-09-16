@@ -1,26 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Button from "./Button";
 import React from "react";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
 /* Modify this when adding variants to Button */
 const variants = ["default", "emphasis", "outline"] as const;
 const sizes = ["lg", "md", "sm"] as const;
-const colors = [
-    "black",
-    "white",
-    "red",
-    "aqua",
-    "aqua-light",
-    "forest-green",
-    "sage-green",
-    "border",
-    "neutral",
-    "purple",
-    "pink",
-    "maroon",
-    "coral",
-    "marigold",
-  ] as const;
+const colors = storyColors;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Button> = {

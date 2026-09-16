@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import applySetCookieHeaders from "../helpers/applyGetSetCookie";
 
 export type ApiResponse<T> =
   | { ok: true; data: T; headers?: Response["headers"]; setCookieHeaders?: string[] }
@@ -24,7 +25,6 @@ export async function api<T>(method: HttpMethod, endpoint: string, body?: any, i
       body: isFormData ? body : body ? JSON.stringify(body) : undefined,
     };
 
-    console.log(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, options);
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, options);
     const rawText = await res.text();
 
@@ -33,8 +33,10 @@ export async function api<T>(method: HttpMethod, endpoint: string, body?: any, i
       parsed = JSON.parse(rawText);
     } catch {}
 
-    // Extract Set-Cookie headers
-    const setCookieHeaders = res.headers.getSetCookie();
+    // Extract Set-Cookie headers from the response and mirror them to the browser
+    applySetCookieHeaders(res.headers, cookieStore);
+    const setCookieHeaders =
+      typeof (res.headers as any).getSetCookie === "function" ? ((res.headers as any).getSetCookie() as string[]) : undefined;
 
     if (!res.ok) {
       const message = typeof parsed === "string" ? parsed : parsed?.message || "Request failed";

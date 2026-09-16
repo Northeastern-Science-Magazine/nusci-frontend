@@ -109,7 +109,7 @@ export const gridVariantsCN = (variantProps: VariantProps<any>, className?: stri
     className
   );
 
-export const gridColVariants = tv({
+const gridColVariants = tv({
   base: "",
   variants: {
     span: {
@@ -130,12 +130,23 @@ export const gridColVariants = tv({
 });
 
 export type GridColVariants = VariantProps<typeof gridColVariants>;
+export const gridColVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    gridColVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    className
+  );
+
 export interface GridColProps extends GridColVariants {
   className?: string;
   children: React.ReactNode;
 }
 
-export const gridRowVariants = tv({
+const gridRowVariants = tv({
   base: "",
   variants: {
     span: {
@@ -156,6 +167,17 @@ export const gridRowVariants = tv({
 });
 
 export type GridRowVariants = VariantProps<typeof gridRowVariants>;
+export const gridRowVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+  clsx(
+    gridRowVariants(variantProps),
+    animationVariants(variantProps),
+    displayVariants(variantProps),
+    marginVariants(variantProps),
+    paddingVariants(variantProps),
+    positionVariants(variantProps),
+    className
+  );
+
 export interface GridRowProps extends GridRowVariants {
   className?: string;
   children: React.ReactNode;

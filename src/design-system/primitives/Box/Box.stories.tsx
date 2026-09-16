@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Box } from "./Box";
 import React from "react";
+import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
 
 /* Modify this when adding variants to Box */
 const positions = ["static", "fixed", "absolute", "relative", "sticky"] as const;
@@ -212,22 +213,7 @@ const pts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 1
 const pbs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const prs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
 const pls = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Box> = {
@@ -357,82 +343,5 @@ export const Default: Story = {
     m: 8,
     height: "full",
     p: 4,
-  },
-};
-
-/** Gallery story for some box variants with ranging background colors, min/max width and height */
-export const MinMaxGallery: Story = {
-  args: {},
-  render: (args) => {
-    return (
-      <div>
-        {colors.map((backgroundColor) => (
-          <div key={backgroundColor}>
-            <div className="grid grid-cols-3 gap-2">
-              {minWidths.map((minWidth) => (
-                <React.Fragment key={`minWidth-${minWidth}`}>
-                  <div className="flex flex-col">
-                    {maxWidths.map((maxWidth) => (
-                      <div key={`min-${minWidth}-max-${maxWidth}`} className="flex justify-left p-2">
-                        <Box minWidth={minWidth} maxWidth={maxWidth} color={backgroundColor} p={4}>
-                          min-w: {minWidth}, max-w: {maxWidth}
-                        </Box>
-                      </div>
-                    ))}
-                  </div>
-                </React.Fragment>
-              ))}
-            </div>
-            <div className="grid grid-cols-3 gap-2 mt-4">
-              {minHeights.map((minHeight) => (
-                <React.Fragment key={`minHeight-${minHeight}`}>
-                  <div className="flex flex-col">
-                    {maxHeights.map((maxHeight) => (
-                      <div key={`minH-${minHeight}-maxH-${maxHeight}`} className="flex justify-left p-2">
-                        <Box minHeight={minHeight} maxHeight={maxHeight} color={backgroundColor} p={4}>
-                          min-h: {minHeight}, max-h: {maxHeight}
-                        </Box>
-                      </div>
-                    ))}
-                  </div>
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  },
-};
-
-/** Gallery Story for some box variants with ranging background color, width, and height */
-export const Gallery: Story = {
-  args: {},
-  render: (args) => {
-    return (
-      <div>
-        {colors.map((backgroundColor) => {
-          return (
-            <div key={backgroundColor}>
-              <div className={`grid grid-cols-3 gap-2`}>
-                {widths.map((width) => (
-                  <React.Fragment key={width}>
-                    <div className="flex flex-col">
-                      {heights.map((height) => (
-                        <div key={`${width}-${height}`} className="flex justify-left p-2">
-                          <Box height={height} width={width} color={backgroundColor}>
-                            {width} x {height}
-                          </Box>
-                        </div>
-                      ))}
-                    </div>
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
   },
 };

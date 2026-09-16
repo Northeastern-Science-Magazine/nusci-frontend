@@ -1,5 +1,6 @@
 import { tv, type VariantProps } from "tailwind-variants";
 import { ImageProps } from "@/primitives/Image";
+import { ArticleSource, ArticleContent } from "@/lib/types/types";
 
 export const articleTemplateVariants = tv({
   base: "max-w-4xl mx-auto px-4 pt-24 pb-8 bg-white",
@@ -25,21 +26,16 @@ export type ContentBlock =
   | { type: "paragraph"; segments: ContentSegment[] }
   | { type: "quote"; content: string };
 
-export interface Source {
-    text: string;
-    href: string;
-  }
-
 export interface ArticleTemplateProps extends VariantProps<typeof articleTemplateVariants> {
   title: string;
   author: string;
   editor?: string;
   categories?: string[];
-  issueNumber?: string;
+  issueNumber?: number;
   publishDate: string;
-  featuredImage: ImageProps;
+  featuredImage?: ImageProps;
   imageCaption?: string;
-  content: ContentBlock[];
-  sources?: Source[]
+  articleContent: ArticleContent[];
+  sources?: ArticleSource[];
   className?: string;
 }

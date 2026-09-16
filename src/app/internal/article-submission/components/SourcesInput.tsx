@@ -1,85 +1,100 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import TextInput from "@/design-system/primitives/TextInput";
 import Icon from "@/design-system/primitives/Icon";
 import Button from "@/design-system/primitives/Button";
 import Text from "@/design-system/primitives/Text";
+import { Grid, GridCol } from "@/design-system/primitives/Grid";
+import { ArticleSource } from "@/lib/types/types";
 
 type SourcesInputProps = {
-  value?: string[];
-  onChange?: (sources: string[]) => void;
+  value?: ArticleSource[];
+  onChange?: (sources: ArticleSource[]) => void;
   label?: string;
   placeholder?: string;
+  disabled?: boolean;
 };
 
-export function SourcesInput({
-  value = [],
-  onChange,
-  label = "Sources",
-  placeholder = "Enter source URL or citation",
-}: SourcesInputProps) {
-  const [sources, setSources] = useState<string[]>(
-    value.length > 0 ? value : [""]
-  );
+export function SourcesInput({ value = [], onChange, label = "Sources", disabled = false }: SourcesInputProps) {
+  // Derive current sources from the controlled value; ensure at least one row exists
+  const sources: ArticleSource[] = value.length > 0 ? value : [{ text: "", href: "" }];
 
-  useEffect(() => {
-    if (value && value.length > 0) {
-      setSources(value);
-    }
-  }, [value]);
-
-  const handleSourceChange = (index: number, newValue: string) => {
+  const handleSourceTextChange = (index: number, newText: string) => {
     const updatedSources = [...sources];
-    updatedSources[index] = newValue;
-    setSources(updatedSources);
+    updatedSources[index] = { ...updatedSources[index], text: newText };
+    onChange?.(updatedSources);
+  };
+
+  const handleSourceHrefChange = (index: number, newHref: string) => {
+    const updatedSources = [...sources];
+    updatedSources[index] = { ...updatedSources[index], href: newHref };
     onChange?.(updatedSources);
   };
 
   const addSource = () => {
-    const updatedSources = [...sources, ""];
-    setSources(updatedSources);
+    const updatedSources = [...sources, { text: "", href: "" }];
     onChange?.(updatedSources);
   };
 
   const removeSource = (index: number) => {
     if (sources.length > 1) {
       const updatedSources = sources.filter((_, i) => i !== index);
-      setSources(updatedSources);
       onChange?.(updatedSources);
     }
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className={`flex flex-col gap-3 ${disabled ? "opacity-60" : ""}`}>
+      <label className="block text-sm font-medium text-black">{label}</label>
       {sources.map((source, index) => (
-        <div key={index} className="flex items-end gap-2">
+        <div key={index} className="flex items-center gap-2">
           <div className="flex-1">
-            <TextInput
-              value={source}
-              label="Source"
-              onChange={(newValue) => handleSourceChange(index, newValue)}
-              placeholder={placeholder}
-              className="w-full"
-            />
+            <Grid col span={2} gap={2}>
+              <GridCol span={1}>
+                <TextInput
+                  value={source.text}
+                  label=""
+                  onChange={(newValue) => handleSourceTextChange(index, newValue)}
+                  placeholder="Enter source title"
+                  className="w-full"
+                  disabled={disabled}
+                />
+              </GridCol>
+              <GridCol span={1}>
+                <TextInput
+                  value={source.href}
+                  label=""
+                  onChange={(newValue) => handleSourceHrefChange(index, newValue)}
+                  placeholder="Enter source URL"
+                  className="w-full"
+                  disabled={disabled}
+                />
+              </GridCol>
+            </Grid>
           </div>
           {sources.length > 1 && (
             <Button
+              type="button"
               onClick={() => removeSource(index)}
               aria-label="Remove source"
               variant="outline"
               color="red"
+              className="group shrink-0 hover:bg-red-500 disabled:pointer-events-none disabled:hover:bg-transparent disabled:hover:text-red-600"
+              disabled={disabled}
             >
-              <Icon icon="trash" size="sm" color="red" />
+              <Icon icon="trash" size="sm" color="red" className="group-hover:text-white group-disabled:text-red" />
             </Button>
           )}
         </div>
       ))}
       <Button
+        type="button"
         onClick={addSource}
         className="flex w-full items-center justify-center gap-2"
         variant="outline"
         color="sage-green"
+        disabled={disabled}
       >
         <div className="flex items-center gap-2">
           <Icon icon="plus" size="md" />

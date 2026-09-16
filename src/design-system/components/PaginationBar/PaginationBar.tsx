@@ -30,36 +30,24 @@ export function PaginationBar({
   }
 
   const pages = [];
-  console.log(start, end);
   for (let i = start; i <= end; i++) {
     pages.push(
       <div className={clsx(className, i !== activeItem && "opacity-50")}>
-        <Button
-          onClick={onClickFunctionGenerator(i)}
-          color={variantProps.color}
-        >
+        <Button onClick={onClickFunctionGenerator(i)} color={variantProps.color}>
           {i.toString()}
         </Button>
-      </div>
+      </div>,
     );
   }
 
   return (
     <div className={"flex items-center gap-2"}>
       {activeItem !== 1 && (
-        <Icon
-          icon={"arrowleft"}
-          onClick={onClickFunctionGenerator(activeItem - 1)}
-          color={variantProps.color}
-        />
+        <Icon icon={"arrowleft"} onClick={onClickFunctionGenerator(activeItem - 1)} color={variantProps.color} />
       )}
       <div className={clsx("flex items-center gap-2", className)}>{pages}</div>
       {activeItem !== maxItems && (
-        <Icon
-          icon={"arrowright"}
-          onClick={onClickFunctionGenerator(activeItem + 1)}
-          color={variantProps.color}
-        />
+        <Icon icon={"arrowright"} onClick={onClickFunctionGenerator(activeItem + 1)} color={variantProps.color} />
       )}
     </div>
   );

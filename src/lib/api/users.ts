@@ -15,7 +15,7 @@ type RolesString = {
   roles: string[];
 };
 
-type PublicUser = {
+export type PublicUser = {
   firstName: string;
   lastName: string;
   pronouns?: string[];
@@ -26,6 +26,7 @@ type PublicUser = {
   bannerImage?: string;
   bio: string;
   email: string;
+  phone?: string;
   roles: string[];
   creationTime: string;
   modificationTime: string;
@@ -113,12 +114,28 @@ export async function getMyProfile(): Promise<ProfileData> {
   }
 }
 
+export type ProfileUpdate = {
+  firstName?: string;
+  lastName?: string;
+  pronouns?: string[];
+  graduationYear?: number;
+  major?: string;
+  location?: string;
+  bio?: string;
+  email?: string;
+  phone?: string;
+};
+
 export async function apiGetUserRoles(): Promise<ApiResponse<RolesString>> {
   return api("GET", "/user/roles");
 }
 
 export async function apiGetMyProfile(): Promise<ApiResponse<PublicUser>> {
   return api("GET", "/user/me");
+}
+
+export async function apiUpdateMyProfile(update: ProfileUpdate): Promise<ApiResponse<PublicUser>> {
+  return api("PATCH", "/user/me", update);
 }
 
 export async function apiLogin(data: { email: string; password: string }): Promise<ApiResponse<void>> {

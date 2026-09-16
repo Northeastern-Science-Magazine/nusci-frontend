@@ -12,7 +12,7 @@ import MediaCard from "@/design-system/components/MediaCard";
 import ImageUpload from "@/design-system/components/ImageUpload";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import { PublicUser, updateMyProfile } from "@/lib/api/users";
+import { PublicUser, apiUpdateMyProfile } from "@/lib/api/users";
 
 interface ProfileFormValues {
   firstName: string;
@@ -76,17 +76,10 @@ function ProfileEditor({ user }: { user: PublicUser }) {
   // Store image previews
   const [profileImagePreview, setProfileImagePreview] = useState<string>(user.profileImage || DEFAULT_PROFILE_IMAGE);
   const [bannerImagePreview, setBannerImagePreview] = useState<string>(user.bannerImage || DEFAULT_BANNER_IMAGE);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const onSubmit = async (data: ProfileFormValues) => {
-    // Image uploads aren't wired up to storage yet, so only the preview updates locally.
-    if (data.bannerImage) {
-      setBannerImagePreview(URL.createObjectURL(data.bannerImage));
-    }
-    if (data.profileImage) {
-      setProfileImagePreview(URL.createObjectURL(data.profileImage));
-    }
-
-    const updated = await updateMyProfile({
+    const response = await apiUpdateMyProfile({
       firstName: data.firstName,
       lastName: data.lastName,
       pronouns: data.pronouns
@@ -100,27 +93,27 @@ function ProfileEditor({ user }: { user: PublicUser }) {
       phone: data.phone,
     });
 
-    if (updated) {
-      setCurrentData({
-        ...data,
-        firstName: updated.name.split(" ")[0] ?? data.firstName,
-        lastName: updated.name.split(" ").slice(1).join(" ") || data.lastName,
-        pronouns: updated.pronouns,
-        graduationYear: updated.graduationYear,
-        major: updated.major,
-        location: updated.location,
-        bio: updated.bio,
-        email: updated.email,
-      });
-    } else {
-      setCurrentData(data);
+    if (!response.ok || !response.data) {
+      setSaveError("Something went wrong saving your profile. Please try again.");
+      return;
     }
 
+    // Image uploads aren't wired up to storage yet, so only the preview updates locally.
+    if (data.bannerImage) {
+      setBannerImagePreview(URL.createObjectURL(data.bannerImage));
+    }
+    if (data.profileImage) {
+      setProfileImagePreview(URL.createObjectURL(data.profileImage));
+    }
+
+    setCurrentData(userToFormValues(response.data));
+    setSaveError(null);
     setIsEditing(false);
   };
 
   const handleCancel = () => {
     setIsEditing(false);
+    setSaveError(null);
     setFormKey((k) => k + 1);
   };
 
@@ -168,6 +161,13 @@ function ProfileEditor({ user }: { user: PublicUser }) {
             </>
           )}
         </Box>
+        {isEditing && saveError && (
+          <Box className="absolute top-16 right-4 laptop:right-8 z-20">
+            <Text style="regular" size={14} color="red">
+              {saveError}
+            </Text>
+          </Box>
+        )}
 
         <Box className="max-w-6xl mx-auto px-4 laptop:px-8 pt-8 pb-10">
           <Box className="grid grid-cols-1 laptop:grid-cols-12 gap-8 items-end">

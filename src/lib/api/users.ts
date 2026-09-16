@@ -126,24 +126,6 @@ export type ProfileUpdate = {
   phone?: string;
 };
 
-export async function updateMyProfile(update: ProfileUpdate): Promise<ProfileData | null> {
-  try {
-    const response = await apiUpdateMyProfile(update);
-
-    if (!response.ok || !response.data) {
-      if (process.env.NODE_ENV === "development") {
-        console.warn("Update my profile endpoint failed");
-      }
-      return null;
-    }
-
-    return mapPublicUserToProfile(response.data);
-  } catch (error) {
-    console.error("Error updating my profile:", error);
-    return null;
-  }
-}
-
 export async function apiGetUserRoles(): Promise<ApiResponse<RolesString>> {
   return api("GET", "/user/roles");
 }

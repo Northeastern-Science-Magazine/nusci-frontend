@@ -1,6 +1,6 @@
-import { ImageUploadProps, imageUploadVariants } from "./variants";
-import clsx from "clsx";
-import React from "react";
+import { ImageUploadProps, imageUploadVariants } from './variants';
+import clsx from 'clsx';
+import React from 'react';
 
 /**
  * ImageUpload Component
@@ -25,7 +25,7 @@ export default function ImageUpload({
         htmlFor="image-upload"
         className="p-4 border border-1 rounded-md cursor-pointer"
       >
-        {value ? `Selected: ${value.name}` : "Upload Image"}
+        {value ? `Selected: ${value.name}` : 'Upload Image'}
       </label>
 
       <input

@@ -1,14 +1,20 @@
-import React from "react";
-import { ArticleTemplateProps, articleTemplateVariants, ContentBlock } from "./variants";
-import clsx from "clsx";
-import Text from "@/primitives/Text";
-import Link from "@/primitives/Link";
-import Image from "@/primitives/Image";
-import Badge from "@/primitives/Badge";
-import { OverlayMedia, Overlay } from "@/components/MediaOverlay";
+import React from 'react';
+import {
+  ArticleTemplateProps,
+  articleTemplateVariants,
+  ContentBlock,
+} from './variants';
+import clsx from 'clsx';
+import Text from '@/primitives/Text';
+import Link from '@/primitives/Link';
+import Image from '@/primitives/Image';
+import Badge from '@/primitives/Badge';
+import { OverlayMedia, Overlay } from '@/components/MediaOverlay';
 
 // Convert ArticleContent to ContentBlock format
-function convertArticleContentToContentBlocks(articleContent: ArticleTemplateProps["articleContent"]): ContentBlock[] {
+function convertArticleContentToContentBlocks(
+  articleContent: ArticleTemplateProps['articleContent'],
+): ContentBlock[] {
   const blocks: ContentBlock[] = [];
 
   // articleContent is an array of paragraphs; each paragraph is an array of segments.
@@ -16,16 +22,16 @@ function convertArticleContentToContentBlocks(articleContent: ArticleTemplatePro
     if (!paragraph || paragraph.length === 0) return;
 
     // If this paragraph is a pull_quote, treat entire paragraph as a quote block
-    if (paragraph.length === 1 && paragraph[0].contentType === "pull_quote") {
+    if (paragraph.length === 1 && paragraph[0].contentType === 'pull_quote') {
       blocks.push({
-        type: "quote",
+        type: 'quote',
         content: paragraph[0].content,
       });
       return;
     }
 
     // Skip images here; featured image is handled separately
-    if (paragraph.some((seg) => seg.contentType === "image")) {
+    if (paragraph.some((seg) => seg.contentType === 'image')) {
       return;
     }
 
@@ -33,7 +39,7 @@ function convertArticleContentToContentBlocks(articleContent: ArticleTemplatePro
     const segments = paragraph.map((seg) => {
       if (seg.href) {
         return {
-          type: "link" as const,
+          type: 'link' as const,
           text: seg.content,
           href: seg.href,
           newWindow: true,
@@ -41,13 +47,13 @@ function convertArticleContentToContentBlocks(articleContent: ArticleTemplatePro
       }
 
       return {
-        type: "text" as const,
+        type: 'text' as const,
         content: seg.content,
       };
     });
 
     blocks.push({
-      type: "paragraph",
+      type: 'paragraph',
       segments,
     });
   });
@@ -73,7 +79,9 @@ export default function ArticleTemplate({
   const content = convertArticleContentToContentBlocks(articleContent);
   return (
     <>
-      <article className={clsx(articleTemplateVariants(variantProps), className)}>
+      <article
+        className={clsx(articleTemplateVariants(variantProps), className)}
+      >
         {/* Header Section */}
         <header className="mb-8 mt-8">
           {/* Title */}
@@ -149,7 +157,7 @@ export default function ArticleTemplate({
         {/* Article Content */}
         <div className="flex flex-col gap-6">
           {content.map((block, index) => {
-            if (block.type === "heading") {
+            if (block.type === 'heading') {
               return (
                 <div key={index} className="mt-8 mb-4">
                   <Text size={30} style="bold" color="black">
@@ -159,23 +167,23 @@ export default function ArticleTemplate({
               );
             }
 
-            if (block.type === "paragraph") {
+            if (block.type === 'paragraph') {
               return (
                 <div key={index} className="leading-relaxed">
                   <Text size={18} color="black">
                     {block.segments.map((segment, segIndex) => (
                       <React.Fragment key={segIndex}>
-                        {segment.type === "text" && segment.content}
-                        {segment.type === "link" && (
+                        {segment.type === 'text' && segment.content}
+                        {segment.type === 'link' && (
                           <>
-                            {" "}
+                            {' '}
                             <Link
                               href={segment.href}
                               newWindow={segment.newWindow ?? true}
                               className="font-bold underline text-aqua hover:text-forest-green"
                             >
                               {segment.text}
-                            </Link>{" "}
+                            </Link>{' '}
                           </>
                         )}
                       </React.Fragment>
@@ -185,9 +193,12 @@ export default function ArticleTemplate({
               );
             }
 
-            if (block.type === "quote") {
+            if (block.type === 'quote') {
               return (
-                <div key={index} className="my-8 border-l-4 border-aqua pl-6 py-4 bg-aqua-light/20">
+                <div
+                  key={index}
+                  className="my-8 border-l-4 border-aqua pl-6 py-4 bg-aqua-light/20"
+                >
                   <Text size={24} style="italic" color="black">
                     {block.content}
                   </Text>
@@ -210,7 +221,11 @@ export default function ArticleTemplate({
             <div className="flex flex-col gap-2">
               {sources.map((source, index) => (
                 <div key={index} className="leading-relaxed">
-                  <Link href={source.href} newWindow={true} className="underline text-aqua hover:text-forest-green">
+                  <Link
+                    href={source.href}
+                    newWindow={true}
+                    className="underline text-aqua hover:text-forest-green"
+                  >
                     <Text size={14} color="black">
                       {source.text}
                     </Text>

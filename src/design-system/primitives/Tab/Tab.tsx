@@ -1,4 +1,4 @@
-import { Tabs as RadixTab } from "radix-ui";
+import { Tabs as RadixTab } from 'radix-ui';
 import {
   tabRootVariants,
   tabTriggerVariants,
@@ -8,7 +8,7 @@ import {
   TabListProps,
   TabTriggerProps,
   TabContentProps,
-} from "./variants";
+} from './variants';
 
 /**
  * Tab Component

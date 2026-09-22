@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import TextInput from "@/design-system/primitives/TextInput";
-import Icon from "@/design-system/primitives/Icon";
-import Button from "@/design-system/primitives/Button";
-import Text from "@/design-system/primitives/Text";
+import React from 'react';
+import TextInput from '@/design-system/primitives/TextInput';
+import Icon from '@/design-system/primitives/Icon';
+import Button from '@/design-system/primitives/Button';
+import Text from '@/design-system/primitives/Text';
 
 type PullQuoteInputProps = {
   value?: string[];
@@ -17,11 +17,11 @@ type PullQuoteInputProps = {
 export function PullQuoteInput({
   value = [],
   onChange,
-  label = "Pull Quotes",
-  placeholder = "Enter a pull quote",
+  label = 'Pull Quotes',
+  placeholder = 'Enter a pull quote',
   disabled = false,
 }: PullQuoteInputProps) {
-  const quotes = value.length > 0 ? value : [""];
+  const quotes = value.length > 0 ? value : [''];
 
   const handleQuoteChange = (index: number, newText: string) => {
     const updatedQuote = [...quotes];
@@ -30,7 +30,7 @@ export function PullQuoteInput({
   };
 
   const addQuote = () => {
-    const updatedQuote = [...quotes, ""];
+    const updatedQuote = [...quotes, ''];
     onChange?.(updatedQuote);
   };
 
@@ -42,7 +42,7 @@ export function PullQuoteInput({
   };
 
   return (
-    <div className={`flex flex-col gap-3 ${disabled ? "opacity-60" : ""}`}>
+    <div className={`flex flex-col gap-3 ${disabled ? 'opacity-60' : ''}`}>
       <label className="block text-sm font-medium text-black">{label}</label>
       {quotes.map((quote, index) => (
         <div key={index} className="flex items-center gap-2">

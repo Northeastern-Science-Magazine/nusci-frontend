@@ -1,4 +1,4 @@
-import { type IconProps, iconMap, iconVariantsCN } from "./variants";
+import { type IconProps, iconMap, iconVariantsCN } from './variants';
 
 /**
  * Icon Component
@@ -6,7 +6,14 @@ import { type IconProps, iconMap, iconVariantsCN } from "./variants";
  * @param { IconProps } props
  * @returns Icon Component
  */
-export default function Icon({ icon, color, size, className, onClick, ...props }: IconProps) {
+export default function Icon({
+  icon,
+  color,
+  size,
+  className,
+  onClick,
+  ...props
+}: IconProps) {
   const LucideIcon = iconMap[icon];
 
   if (!LucideIcon) {
@@ -16,10 +23,5 @@ export default function Icon({ icon, color, size, className, onClick, ...props }
 
   const iconClassName = iconVariantsCN({ color, size, ...props }, className);
 
-  return (
-    <LucideIcon 
-      onClick={onClick} 
-      className={iconClassName}
-    />
-  );
+  return <LucideIcon onClick={onClick} className={iconClassName} />;
 }

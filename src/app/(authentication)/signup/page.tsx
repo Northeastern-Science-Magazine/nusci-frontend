@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { Form, FormField } from "@/primitives/Form";
-import { SubmitHandler } from "react-hook-form";
-import MediaCard from "@/design-system/components/MediaCard";
-import TextInput from "@/primitives/TextInput";
-import Button from "@/primitives/Button";
-import Box from "@/primitives/Box";
-import Text from "@/primitives/Text";
-import { Flex } from "@/primitives/Flex";
+import { Form, FormField } from '@/primitives/Form';
+import { SubmitHandler } from 'react-hook-form';
+import MediaCard from '@/design-system/components/MediaCard';
+import TextInput from '@/primitives/TextInput';
+import Button from '@/primitives/Button';
+import Box from '@/primitives/Box';
+import Text from '@/primitives/Text';
+import { Flex } from '@/primitives/Flex';
 
 type SignUpFormValues = {
   email: string;
@@ -19,7 +19,7 @@ type SignUpFormValues = {
 
 export default function SignUpPage() {
   const onSubmit: SubmitHandler<SignUpFormValues> = (data) => {
-    console.log("Sign up data:", data);
+    console.log('Sign up data:', data);
     // Handle sign up logic here
   };
 
@@ -29,8 +29,8 @@ export default function SignUpPage() {
         mediaType="image"
         mediaDirection="left"
         imageProps={{
-          src: "https://media.istockphoto.com/id/488961976/photo/exploding-nebula.jpg?s=612x612&w=0&k=20&c=QEfXvnU0ckq0SWNEXTzZnzUpjBDwmweU3a8VoIcBveA=",
-          alt: "signup",
+          src: 'https://media.istockphoto.com/id/488961976/photo/exploding-nebula.jpg?s=612x612&w=0&k=20&c=QEfXvnU0ckq0SWNEXTzZnzUpjBDwmweU3a8VoIcBveA=',
+          alt: 'signup',
         }}
         size="lg"
         rounded="rounded"
@@ -43,11 +43,11 @@ export default function SignUpPage() {
           onSubmit={onSubmit}
           options={{
             defaultValues: {
-              email: "",
-              password: "",
-              bio: "",
-              year: "",
-              major: "",
+              email: '',
+              password: '',
+              bio: '',
+              year: '',
+              major: '',
             },
           }}
           className="space-y-6 mt-6 p-5"
@@ -55,10 +55,10 @@ export default function SignUpPage() {
           <FormField<SignUpFormValues>
             name="email"
             rules={{
-              required: "Email is required",
+              required: 'Email is required',
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: "Please enter a valid email",
+                message: 'Please enter a valid email',
               },
             }}
           >
@@ -75,10 +75,10 @@ export default function SignUpPage() {
           <FormField<SignUpFormValues>
             name="password"
             rules={{
-              required: "Password is required",
+              required: 'Password is required',
               minLength: {
                 value: 8,
-                message: "Password must be at least 8 characters",
+                message: 'Password must be at least 8 characters',
               },
             }}
           >
@@ -96,7 +96,7 @@ export default function SignUpPage() {
           <FormField<SignUpFormValues>
             name="year"
             rules={{
-              required: "Year is required",
+              required: 'Year is required',
               // pattern: {
               //   value: /^202\d$/,
               //   mes
@@ -109,7 +109,7 @@ export default function SignUpPage() {
 
                 // Check if it's 4 digits
                 if (!/^\d{4}$/.test(value)) {
-                  return "Year must be 4 digits";
+                  return 'Year must be 4 digits';
                 }
 
                 // Check if it's in valid range
@@ -135,7 +135,7 @@ export default function SignUpPage() {
           <FormField<SignUpFormValues>
             name="major"
             rules={{
-              required: "Major is required",
+              required: 'Major is required',
             }}
           >
             <TextInput
@@ -151,10 +151,10 @@ export default function SignUpPage() {
           <FormField<SignUpFormValues>
             name="bio"
             rules={{
-              required: "Bio is required",
+              required: 'Bio is required',
               maxLength: {
                 value: 500,
-                message: "Bio must be less than 500 characters",
+                message: 'Bio must be less than 500 characters',
               },
             }}
           >
@@ -179,7 +179,7 @@ export default function SignUpPage() {
 
           <Box className="text-left">
             <Text size={12} color="sage-green">
-              Already have an account?{" "}
+              Already have an account?{' '}
               <a href="/login" className="underline">
                 Log in
               </a>

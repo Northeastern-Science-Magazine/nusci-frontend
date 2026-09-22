@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { OverlayMedia, Overlay } from "@/design-system/components/MediaOverlay";
-import Button from "@/design-system/primitives/Button";
-import Text from "@/design-system/primitives/Text";
-import Image from "@/design-system/primitives/Image";
-import Box from "@/design-system/primitives/Box";
+import { OverlayMedia, Overlay } from '@/design-system/components/MediaOverlay';
+import Button from '@/design-system/primitives/Button';
+import Text from '@/design-system/primitives/Text';
+import Image from '@/design-system/primitives/Image';
+import Box from '@/design-system/primitives/Box';
 
 export default function CTA() {
   return (
@@ -39,7 +39,7 @@ export default function CTA() {
                   className="inline-flex"
                   color="aqua-light"
                   size="lg"
-                  onClick={() => (window.location.href = "/teams/eboard")}
+                  onClick={() => (window.location.href = '/teams/eboard')}
                 >
                   Learn about NU Sci
                 </Button>
@@ -50,7 +50,7 @@ export default function CTA() {
                   size="lg"
                   onClick={() =>
                     (window.location.href =
-                      "https://docs.google.com/forms/d/e/1FAIpQLSc0KfCGiODcLw2tZEUouDnkhXP4XAocen_sNg8SO9F01GO25g/viewform?usp=send_form")
+                      'https://docs.google.com/forms/d/e/1FAIpQLSc0KfCGiODcLw2tZEUouDnkhXP4XAocen_sNg8SO9F01GO25g/viewform?usp=send_form')
                   }
                 >
                   Join the team

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Button from "@/primitives/Button";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Button from '@/primitives/Button';
 
 export default function NotFound() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function NotFound() {
       setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          router.push("/");
+          router.push('/');
           return 0;
         }
         return prev - 1;
@@ -30,7 +30,8 @@ export default function NotFound() {
         {/* 404 Number */}
         <div className="mb-8">
           <h1 className="text-1xl font-bold bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
-            The page you&apos;re looking for doesn&apos;t exist or has been moved.
+            The page you&apos;re looking for doesn&apos;t exist or has been
+            moved.
           </h1>
         </div>
 
@@ -43,7 +44,14 @@ export default function NotFound() {
         <div className="mb-8 flex justify-center">
           <div className="relative w-32 h-32">
             <svg className="w-full h-full transform -rotate-90">
-              <circle cx="64" cy="64" r="60" stroke="#e5e7eb" strokeWidth="8" fill="none" />
+              <circle
+                cx="64"
+                cy="64"
+                r="60"
+                stroke="#e5e7eb"
+                strokeWidth="8"
+                fill="none"
+              />
               <circle
                 cx="64"
                 cy="64"
@@ -56,7 +64,13 @@ export default function NotFound() {
                 className="transition-all duration-1000 ease-linear"
               />
               <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <linearGradient
+                  id="gradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
                   <stop offset="0%" stopColor="#9333ea" />
                   <stop offset="100%" stopColor="#ec4899" />
                 </linearGradient>
@@ -65,7 +79,9 @@ export default function NotFound() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
                 <div className="text-xs text-gray-500">Redirecting in </div>
-                <div className="text-4xl font-bold text-gray-900">{countdown}</div>
+                <div className="text-4xl font-bold text-gray-900">
+                  {countdown}
+                </div>
                 <div className="text-xs text-gray-500">seconds</div>
               </div>
             </div>
@@ -74,7 +90,7 @@ export default function NotFound() {
 
         {/* CTA Buttons */}
         <div className="flex gap-4 justify-center">
-          <Link href={"/"}>
+          <Link href={'/'}>
             <Button>Go Home Now</Button>
           </Link>
         </div>

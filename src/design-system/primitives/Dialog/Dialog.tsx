@@ -1,10 +1,15 @@
-import * as React from "react";
-import * as RDialog from "@radix-ui/react-dialog";
+import * as React from 'react';
+import * as RDialog from '@radix-ui/react-dialog';
 
-import { DialogProps, DialogTriggerProps, DialogWindowProps, dialogWindowVariantsCN } from "./variants";
-import clsx from "clsx";
-import Icon from "../Icon";
-import Box from "../Box";
+import {
+  DialogProps,
+  DialogTriggerProps,
+  DialogWindowProps,
+  dialogWindowVariantsCN,
+} from './variants';
+import clsx from 'clsx';
+import Icon from '../Icon';
+import Box from '../Box';
 
 export function Dialog({ children, open, onOpenChange }: DialogProps) {
   return (
@@ -31,8 +36,12 @@ export function DialogWindow({
         <RDialog.Overlay className="fixed inset-0 bg-black/50" />
         <RDialog.Content
           className={clsx(dialogWindowVariantsCN(variantProps), className)}
-          onPointerDownOutside={preventDismiss ? (e) => e.preventDefault() : undefined}
-          onEscapeKeyDown={preventDismiss ? (e) => e.preventDefault() : undefined}
+          onPointerDownOutside={
+            preventDismiss ? (e) => e.preventDefault() : undefined
+          }
+          onEscapeKeyDown={
+            preventDismiss ? (e) => e.preventDefault() : undefined
+          }
         >
           {children}
           {showCloseButton && (

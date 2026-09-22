@@ -1,45 +1,45 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { MediaCard } from "./MediaCard";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { MediaCard } from './MediaCard';
+import React from 'react';
 
-const mediaDirections = ["right", "left", "top", "bottom"] as const;
-const mediaTypes = ["image", "video", "icon"] as const;
-const sizes = ["sm", "md", "lg"] as const;
-const roundedOptions = ["rounded", "none"] as const;
-const shadow = ["shadow", "none"] as const;
-const border = ["bordered", "none"] as const;
-const opacity = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, "none"] as const;
+const mediaDirections = ['right', 'left', 'top', 'bottom'] as const;
+const mediaTypes = ['image', 'video', 'icon'] as const;
+const sizes = ['sm', 'md', 'lg'] as const;
+const roundedOptions = ['rounded', 'none'] as const;
+const shadow = ['shadow', 'none'] as const;
+const border = ['bordered', 'none'] as const;
+const opacity = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 'none'] as const;
 
 const meta: Meta<typeof MediaCard> = {
   component: MediaCard,
-  title: "Components/MediaCard",
+  title: 'Components/MediaCard',
   argTypes: {
     mediaDirection: {
-      control: "select",
+      control: 'select',
       options: mediaDirections,
     },
     mediaType: {
-      control: "select",
+      control: 'select',
       options: mediaTypes,
     },
     size: {
-      control: "select",
+      control: 'select',
       options: sizes,
     },
     shadow: {
-      control: "select",
+      control: 'select',
       options: shadow,
     },
     border: {
-      control: "select",
+      control: 'select',
       options: border,
     },
     rounded: {
-      control: "select",
+      control: 'select',
       options: roundedOptions,
     },
     backgroundOpacity: {
-      control: "select",
+      control: 'select',
       options: opacity,
     },
   },
@@ -49,39 +49,41 @@ export default meta;
 type Story = StoryObj<typeof MediaCard>;
 
 const sampleDescription =
-  "A paragraph is a distinct section of writing, consisting of one or more sentences, that focuses on a single, unified idea or topic.";
-const sampleImage = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop";
-const sampleVideo = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+  'A paragraph is a distinct section of writing, consisting of one or more sentences, that focuses on a single, unified idea or topic.';
+const sampleImage =
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop';
+const sampleVideo =
+  'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
 
 // Basic Examples
 export const Default: Story = {
   args: {
-    mediaType: "image",
-    mediaDirection: "right",
-    size: "md",
-    title: "Beautiful Landscape",
-    subtitle: "Mountain Landscape",
+    mediaType: 'image',
+    mediaDirection: 'right',
+    size: 'md',
+    title: 'Beautiful Landscape',
+    subtitle: 'Mountain Landscape',
     description: sampleDescription,
     imageProps: {
       src: sampleImage,
-      alt: "Mountain landscape",
+      alt: 'Mountain landscape',
     },
   },
 };
 
 export const Vertical: Story = {
   args: {
-    mediaType: "image",
-    mediaDirection: "top",
-    size: "sm",
-    rounded: "rounded",
-    border: "bordered",
-    title: "Beautiful Landscape",
-    subtitle: "Mountain Landscape",
+    mediaType: 'image',
+    mediaDirection: 'top',
+    size: 'sm',
+    rounded: 'rounded',
+    border: 'bordered',
+    title: 'Beautiful Landscape',
+    subtitle: 'Mountain Landscape',
     description: sampleDescription,
     imageProps: {
       src: sampleImage,
-      alt: "Mountain landscape",
+      alt: 'Mountain landscape',
     },
   },
 };
@@ -104,7 +106,7 @@ export const RoundingVariants: Story = {
             description={sampleDescription}
             imageProps={{
               src: sampleImage,
-              alt: "Sample image",
+              alt: 'Sample image',
             }}
           />
         </div>
@@ -131,7 +133,7 @@ export const DirectionVariants: Story = {
             description={`Media positioned ${direction}`}
             imageProps={{
               src: sampleImage,
-              alt: "Sample image",
+              alt: 'Sample image',
             }}
           />
         </div>
@@ -157,7 +159,7 @@ export const MediaTypeComparison: Story = {
             description={sampleDescription}
             imageProps={{
               src: sampleImage,
-              alt: "Sample image",
+              alt: 'Sample image',
             }}
           />
         </div>
@@ -188,7 +190,7 @@ export const MediaTypeComparison: Story = {
             description={sampleDescription}
             imageProps={{
               src: sampleImage,
-              alt: "Sample image",
+              alt: 'Sample image',
             }}
           />
         </div>
@@ -234,7 +236,7 @@ export const ImageSizesHorizontal: Story = {
                 description={sampleDescription}
                 imageProps={{
                   src: sampleImage,
-                  alt: "Sample image",
+                  alt: 'Sample image',
                 }}
               />
             </div>
@@ -251,7 +253,7 @@ export const ImageSizesHorizontal: Story = {
                 description={sampleDescription}
                 imageProps={{
                   src: sampleImage,
-                  alt: "Sample image",
+                  alt: 'Sample image',
                 }}
               />
             </div>
@@ -283,7 +285,7 @@ export const ImageSizesVertical: Story = {
                 description={sampleDescription}
                 imageProps={{
                   src: sampleImage,
-                  alt: "Sample image",
+                  alt: 'Sample image',
                 }}
               />
             </div>
@@ -300,7 +302,7 @@ export const ImageSizesVertical: Story = {
                 description={sampleDescription}
                 imageProps={{
                   src: sampleImage,
-                  alt: "Sample image",
+                  alt: 'Sample image',
                 }}
               />
             </div>
@@ -330,7 +332,7 @@ export const ShadowVariants: Story = {
               description={sampleDescription}
               imageProps={{
                 src: sampleImage,
-                alt: "Sample image",
+                alt: 'Sample image',
               }}
             />
           </div>
@@ -359,7 +361,7 @@ export const BorderVariants: Story = {
               description={sampleDescription}
               imageProps={{
                 src: sampleImage,
-                alt: "Sample image",
+                alt: 'Sample image',
               }}
             />
           </div>
@@ -388,7 +390,7 @@ export const ShadowAndBorderCombination: Story = {
             description={sampleDescription}
             imageProps={{
               src: sampleImage,
-              alt: "Sample image",
+              alt: 'Sample image',
             }}
           />
         </div>
@@ -404,7 +406,7 @@ export const ShadowAndBorderCombination: Story = {
             description={sampleDescription}
             imageProps={{
               src: sampleImage,
-              alt: "Sample image",
+              alt: 'Sample image',
             }}
           />
         </div>
@@ -421,7 +423,7 @@ export const ShadowAndBorderCombination: Story = {
             description={sampleDescription}
             imageProps={{
               src: sampleImage,
-              alt: "Sample image",
+              alt: 'Sample image',
             }}
           />
         </div>
@@ -437,7 +439,7 @@ export const ShadowAndBorderCombination: Story = {
             description={sampleDescription}
             imageProps={{
               src: sampleImage,
-              alt: "Sample image",
+              alt: 'Sample image',
             }}
           />
         </div>
@@ -467,7 +469,7 @@ export const OpacityVariants: Story = {
               description={sampleDescription}
               imageProps={{
                 src: sampleImage,
-                alt: "Sample image",
+                alt: 'Sample image',
               }}
             />
           </div>
@@ -480,16 +482,16 @@ export const OpacityVariants: Story = {
 // Icon Variant
 export const IconVariant: Story = {
   args: {
-    mediaType: "icon",
-    mediaDirection: "right",
-    size: "md",
-    title: "Icon Card",
-    subtitle: "Feature Highlight",
+    mediaType: 'icon',
+    mediaDirection: 'right',
+    size: 'md',
+    title: 'Icon Card',
+    subtitle: 'Feature Highlight',
     description: sampleDescription,
     iconProps: {
-      icon: "star",
+      icon: 'star',
       size: 256,
-      color: "purple",
+      color: 'purple',
     },
   },
 };

@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { PaginationBar } from "@/components/PaginationBar";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { PaginationBar } from '@/components/PaginationBar';
+import React from 'react';
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof PaginationBar> = {
   component: PaginationBar,
-  title: "Components/PaginationBar",
+  title: 'Components/PaginationBar',
   argTypes: {},
 };
 
@@ -22,9 +22,10 @@ export const Default: Story = {
           maxItems={10}
           activeItem={2}
           onClickFunctionGenerator={(index) => () =>
-            alert(`Clicked on page ${index}`)}
-          onClickLeft={() => alert("Clicked Left")}
-          onClickRight={() => alert("Clicked Right")}
+            alert(`Clicked on page ${index}`)
+          }
+          onClickLeft={() => alert('Clicked Left')}
+          onClickRight={() => alert('Clicked Right')}
         />
       </div>
     );
@@ -44,10 +45,11 @@ export const PaginationGallery: Story = {
           maxItems={10}
           activeItem={i}
           onClickFunctionGenerator={(index) => () =>
-            alert(`Clicked on page ${index}`)}
-          onClickLeft={() => alert("Clicked Left")}
-          onClickRight={() => alert("Clicked Right")}
-        />
+            alert(`Clicked on page ${index}`)
+          }
+          onClickLeft={() => alert('Clicked Left')}
+          onClickRight={() => alert('Clicked Right')}
+        />,
       );
     }
     return <div className="grid grid-cols-1 gap-2">{bars}</div>;

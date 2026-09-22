@@ -16,9 +16,7 @@ export default function InvalidInvitePage() {
 
             {/* Description */}
             <div className="space-y-3 text-gray-600 mb-8">
-              <Text>
-                This invitation link is no longer valid. 
-              </Text>
+              <Text>This invitation link is no longer valid.</Text>
             </div>
 
             {/* Call to Action */}
@@ -26,7 +24,8 @@ export default function InvalidInvitePage() {
               <div className="text-sm text-gray-700 bg-gray-50 rounded-md p-4">
                 <p className="font-medium mb-1">Need a new invitation?</p>
                 <p className="text-gray-600">
-                  Please contact your team administrator to request a new invitation link.
+                  Please contact your team administrator to request a new
+                  invitation link.
                 </p>
               </div>
 

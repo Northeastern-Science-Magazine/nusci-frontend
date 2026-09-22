@@ -1,12 +1,15 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Box from "@/design-system/primitives/Box";
-import Button from "@/design-system/primitives/Button";
-import Link from "@/design-system/primitives/Link";
-import Image from "@/design-system/primitives/Image";
-import { DropdownInput, DropdownItem } from "@/design-system/primitives/DropdownInput";
-import Icon from "@/design-system/primitives/Icon";
+import React, { useState, useEffect } from 'react';
+import Box from '@/design-system/primitives/Box';
+import Button from '@/design-system/primitives/Button';
+import Link from '@/design-system/primitives/Link';
+import Image from '@/design-system/primitives/Image';
+import {
+  DropdownInput,
+  DropdownItem,
+} from '@/design-system/primitives/DropdownInput';
+import Icon from '@/design-system/primitives/Icon';
 
 interface InternalHeaderProps {
   userProfile: {
@@ -17,7 +20,10 @@ interface InternalHeaderProps {
   emailPrefix: string;
 }
 
-export default function InternalHeader({ userProfile, emailPrefix }: InternalHeaderProps) {
+export default function InternalHeader({
+  userProfile,
+  emailPrefix,
+}: InternalHeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -27,8 +33,8 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
       setIsScrolled(scrollTop > 50);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleMobileMenu = () => {
@@ -37,34 +43,35 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
 
   // Navigation items - public site links
   const navigationItems: { label: string; href: string }[] = [
-    { label: "Home", href: "/" },
-    { label: "Print Articles", href: "/articles" },
+    { label: 'Home', href: '/' },
+    { label: 'Print Articles', href: '/articles' },
   ];
 
   const categories = [
-    { value: "biology", label: "Biology" },
-    { value: "chemistry", label: "Chemistry" },
-    { value: "environment", label: "Environment" },
-    { value: "health", label: "Health" },
-    { value: "newsletter", label: "Newsletter" },
-    { value: "opinion", label: "Opinion" },
-    { value: "physics", label: "Physics" },
-    { value: "psychology", label: "Psychology" },
-    { value: "space", label: "Space" },
-    { value: "technology", label: "Technology" },
-    { value: "world", label: "World" },
+    { value: 'biology', label: 'Biology' },
+    { value: 'chemistry', label: 'Chemistry' },
+    { value: 'environment', label: 'Environment' },
+    { value: 'health', label: 'Health' },
+    { value: 'newsletter', label: 'Newsletter' },
+    { value: 'opinion', label: 'Opinion' },
+    { value: 'physics', label: 'Physics' },
+    { value: 'psychology', label: 'Psychology' },
+    { value: 'space', label: 'Space' },
+    { value: 'technology', label: 'Technology' },
+    { value: 'world', label: 'World' },
   ];
 
   const handleLogout = async () => {
-    document.cookie = 'auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie =
+      'auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     window.location.href = '/';
   };
 
   const handleAboutUsChange = (value: string) => {
-    if (value === "about") {
-      window.location.href = "/about-us";
-    } else if (value === "eboard") {
-      window.location.href = "/teams/eboard";
+    if (value === 'about') {
+      window.location.href = '/about-us';
+    } else if (value === 'eboard') {
+      window.location.href = '/teams/eboard';
     }
   };
 
@@ -73,9 +80,9 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
   };
 
   const handleProfileChange = (value: string) => {
-    if (value === "profile") {
+    if (value === 'profile') {
       window.location.href = `/internal/profile`;
-    } else if (value === "logout") {
+    } else if (value === 'logout') {
       handleLogout();
     }
   };
@@ -91,7 +98,7 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
       className={`
         z-50 transition-all duration-300 ease-in-out
         h-16
-        ${isScrolled ? "shadow-lg" : ""}
+        ${isScrolled ? 'shadow-lg' : ''}
         border-b border-black
       `}
     >
@@ -100,18 +107,24 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
         <Box className="flex items-center justify-between h-full">
           {/* Logo */}
           <Box className="flex-shrink-0">
-            <Link href={`/internal/dashboard/${emailPrefix}`} newWindow={false} className="flex items-center">
+            <Link
+              href={`/internal/dashboard/${emailPrefix}`}
+              newWindow={false}
+              className="flex items-center"
+            >
               <Box className="transition-all duration-300 w-10">
-                <Image 
-                  src="/logo.png" 
-                  alt="NU Sci Magazine" 
-                  width="w-10" 
-                  ratio={1} 
-                  borderColor="black" 
-                  borderWidth={2} 
+                <Image
+                  src="/logo.png"
+                  alt="NU Sci Magazine"
+                  width="w-10"
+                  ratio={1}
+                  borderColor="black"
+                  borderWidth={2}
                 />
               </Box>
-              <span className="ml-3 font-semibold text-gray-800 text-sm">Internal Portal</span>
+              <span className="ml-3 font-semibold text-gray-800 text-sm">
+                Internal Portal
+              </span>
             </Link>
           </Box>
 
@@ -130,7 +143,10 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
 
             {/* About Us Dropdown */}
             <Box className="relative">
-              <DropdownInput placeholder="About Us" onChange={handleAboutUsChange}>
+              <DropdownInput
+                placeholder="About Us"
+                onChange={handleAboutUsChange}
+              >
                 <DropdownItem value="about">Teams</DropdownItem>
                 <DropdownItem value="eboard">Eboard & Editors</DropdownItem>
               </DropdownInput>
@@ -138,7 +154,10 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
 
             {/* Categories Dropdown */}
             <Box className="relative">
-              <DropdownInput placeholder="Categories" onChange={handleCategoryChange}>
+              <DropdownInput
+                placeholder="Categories"
+                onChange={handleCategoryChange}
+              >
                 {categories.map((category) => (
                   <DropdownItem key={category.value} value={category.value}>
                     {category.label}
@@ -152,7 +171,7 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
               variant="outline"
               size="sm"
               color="black"
-              onClick={() => (window.location.href = "/search")}
+              onClick={() => (window.location.href = '/search')}
               className="flex items-center h-[35px]"
             >
               <Icon icon="search" size="sm" className="mr-1" />
@@ -162,7 +181,10 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
             {/* Profile Dropdown */}
             <Box className="relative flex items-center">
               <Icon icon="user" size="sm" className="mr-2" />
-              <DropdownInput placeholder={userProfile.name} onChange={handleProfileChange}>
+              <DropdownInput
+                placeholder={userProfile.name}
+                onChange={handleProfileChange}
+              >
                 <DropdownItem value="profile">Profile</DropdownItem>
                 <DropdownItem value="logout">Logout</DropdownItem>
               </DropdownInput>
@@ -171,14 +193,18 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
 
           {/* Mobile Menu Button */}
           <Box className="lg:hidden">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              color="black" 
-              onClick={toggleMobileMenu} 
+            <Button
+              variant="outline"
+              size="sm"
+              color="black"
+              onClick={toggleMobileMenu}
               className="p-2"
             >
-              {isMobileMenuOpen ? <Icon icon="x" size="sm" /> : <Icon icon="menu" size="sm" />}
+              {isMobileMenuOpen ? (
+                <Icon icon="x" size="sm" />
+              ) : (
+                <Icon icon="menu" size="sm" />
+              )}
             </Button>
           </Box>
         </Box>
@@ -191,16 +217,23 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
               <Box className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg mb-2">
                 <Icon icon="user" size="md" />
                 <Box>
-                  <div className="font-semibold text-gray-900">{userProfile.name}</div>
+                  <div className="font-semibold text-gray-900">
+                    {userProfile.name}
+                  </div>
                   {userProfile.role && (
-                    <div className="text-sm text-gray-600">{userProfile.role}</div>
+                    <div className="text-sm text-gray-600">
+                      {userProfile.role}
+                    </div>
                   )}
                 </Box>
               </Box>
 
               {/* Navigation Items */}
               {navigationItems.map((item) => (
-                <div key={item.label} onClick={() => setIsMobileMenuOpen(false)}>
+                <div
+                  key={item.label}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   <Link
                     href={item.href}
                     newWindow={false}
@@ -250,7 +283,7 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
                 size="sm"
                 color="black"
                 onClick={() => {
-                  window.location.href = "/search";
+                  window.location.href = '/search';
                   setIsMobileMenuOpen(false);
                 }}
                 className="flex items-center justify-center w-full"
@@ -266,7 +299,7 @@ export default function InternalHeader({ userProfile, emailPrefix }: InternalHea
                   size="sm"
                   color="black"
                   onClick={() => {
-                    handleProfileChange("profile");
+                    handleProfileChange('profile');
                     setIsMobileMenuOpen(false);
                   }}
                   className="w-full justify-center"

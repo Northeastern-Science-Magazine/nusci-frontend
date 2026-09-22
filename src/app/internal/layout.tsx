@@ -1,5 +1,5 @@
-import { InternalHeader } from "@/design-system/components/InternalHeader";
-import { getMyProfile } from "@/lib/api/users";
+import { InternalHeader } from '@/design-system/components/InternalHeader';
+import { getMyProfile } from '@/lib/api/users';
 
 export default async function InternalLayout({
   children,
@@ -7,7 +7,7 @@ export default async function InternalLayout({
   children: React.ReactNode;
 }>) {
   const profile = await getMyProfile();
-  const emailPrefix = profile.email.split("@")[0];
+  const emailPrefix = profile.email.split('@')[0];
 
   const userProfile = {
     name: profile.name,

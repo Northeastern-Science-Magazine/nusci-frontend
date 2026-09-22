@@ -1,34 +1,34 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { ParallaxScrollSection } from "./ParallaxScrollSection";
-import Box from "@/design-system/primitives/Box";
-import Text from "@/design-system/primitives/Text";
-import MediaCard from "@/design-system/components/MediaCard";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { ParallaxScrollSection } from './ParallaxScrollSection';
+import Box from '@/design-system/primitives/Box';
+import Text from '@/design-system/primitives/Text';
+import MediaCard from '@/design-system/components/MediaCard';
+import React from 'react';
 
 const meta: Meta<typeof ParallaxScrollSection> = {
-  title: "Components/ParallaxScrollSection",
+  title: 'Components/ParallaxScrollSection',
   component: ParallaxScrollSection,
   parameters: {
-    layout: "fullscreen",
+    layout: 'fullscreen',
   },
   argTypes: {
     height: {
-      control: "select",
-      options: ["sm", "md", "lg"],
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
     },
     parallaxIntensity: {
-      control: "select",
-      options: ["light", "medium", "strong"],
+      control: 'select',
+      options: ['light', 'medium', 'strong'],
     },
     offset: {
-      control: "select",
-      options: ["sm", "md", "lg"],
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
     },
     imageSrc: {
-      control: "text",
+      control: 'text',
     },
     imageAlt: {
-      control: "text",
+      control: 'text',
     },
   },
 };
@@ -36,8 +36,8 @@ const meta: Meta<typeof ParallaxScrollSection> = {
 export default meta;
 type Story = StoryObj<typeof ParallaxScrollSection>;
 
-const heights = ["sm", "md", "lg"] as const;
-const parallaxIntensities = ["light", "medium", "strong"] as const;
+const heights = ['sm', 'md', 'lg'] as const;
+const parallaxIntensities = ['light', 'medium', 'strong'] as const;
 
 // Helper component for consistent content
 const SampleContent = () => (
@@ -46,13 +46,13 @@ const SampleContent = () => (
       Sample Content
     </Text>
     <Text size={18} className="mb-6">
-      This is a sample content area within the parallax scroll section. The newspaper-style container animates in when it comes
-      into view.
+      This is a sample content area within the parallax scroll section. The
+      newspaper-style container animates in when it comes into view.
     </Text>
     <Box className="grid gap-6 laptop:grid-cols-3">
       <MediaCard
         mediaType="image"
-        imageProps={{ src: "/icy.png", alt: "Sample" }}
+        imageProps={{ src: '/icy.png', alt: 'Sample' }}
         subtitle="Example"
         title="Sample Card 1"
         description="This is a sample media card."
@@ -65,7 +65,7 @@ const SampleContent = () => (
       />
       <MediaCard
         mediaType="image"
-        imageProps={{ src: "/eclipse-image.png", alt: "Sample" }}
+        imageProps={{ src: '/eclipse-image.png', alt: 'Sample' }}
         subtitle="Example"
         title="Sample Card 2"
         description="This is another sample media card."
@@ -78,7 +78,7 @@ const SampleContent = () => (
       />
       <MediaCard
         mediaType="image"
-        imageProps={{ src: "/logo.png", alt: "Sample" }}
+        imageProps={{ src: '/logo.png', alt: 'Sample' }}
         subtitle="Example"
         title="Sample Card 3"
         description="This is a third sample media card."
@@ -96,11 +96,11 @@ const SampleContent = () => (
 /** Default ParallaxScrollSection with default parameters */
 export const Default: Story = {
   args: {
-    imageSrc: "/succulent.png",
-    imageAlt: "Parallax background image",
-    height: "md",
-    parallaxIntensity: "medium",
-    offset: "md",
+    imageSrc: '/succulent.png',
+    imageAlt: 'Parallax background image',
+    height: 'md',
+    parallaxIntensity: 'medium',
+    offset: 'md',
     children: <SampleContent />,
   },
 };
@@ -109,7 +109,7 @@ export const Default: Story = {
 export const SmallHeight: Story = {
   args: {
     ...Default.args,
-    height: "sm",
+    height: 'sm',
   },
 };
 
@@ -117,7 +117,7 @@ export const SmallHeight: Story = {
 export const MediumHeight: Story = {
   args: {
     ...Default.args,
-    height: "md",
+    height: 'md',
   },
 };
 
@@ -125,7 +125,7 @@ export const MediumHeight: Story = {
 export const LargeHeight: Story = {
   args: {
     ...Default.args,
-    height: "lg",
+    height: 'lg',
   },
 };
 
@@ -133,7 +133,7 @@ export const LargeHeight: Story = {
 export const LightParallax: Story = {
   args: {
     ...Default.args,
-    parallaxIntensity: "light",
+    parallaxIntensity: 'light',
   },
 };
 
@@ -141,7 +141,7 @@ export const LightParallax: Story = {
 export const MediumParallax: Story = {
   args: {
     ...Default.args,
-    parallaxIntensity: "medium",
+    parallaxIntensity: 'medium',
   },
 };
 
@@ -149,7 +149,7 @@ export const MediumParallax: Story = {
 export const StrongParallax: Story = {
   args: {
     ...Default.args,
-    parallaxIntensity: "strong",
+    parallaxIntensity: 'strong',
   },
 };
 
@@ -165,7 +165,9 @@ export const Gallery: Story = {
             <div className="space-y-32">
               {parallaxIntensities.map((parallaxIntensity) => (
                 <div key={`${height}-${parallaxIntensity}`}>
-                  <h3 className="text-xl font-semibold mb-4 px-4">Parallax Intensity: {parallaxIntensity}</h3>
+                  <h3 className="text-xl font-semibold mb-4 px-4">
+                    Parallax Intensity: {parallaxIntensity}
+                  </h3>
                   <ParallaxScrollSection
                     imageSrc="/succulent.png"
                     imageAlt="Parallax background image"

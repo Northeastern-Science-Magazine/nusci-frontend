@@ -1,12 +1,30 @@
-import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
-import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
-import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
-import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
-import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
-import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
-import clsx from "clsx";
-import React from "react";
-import { tv, type VariantProps } from "tailwind-variants";
+import {
+  AnimationProps,
+  animationVariants,
+} from '@/design-system/utilities/props/Animation/animation';
+import {
+  DisplayProps,
+  displayVariants,
+} from '@/design-system/utilities/props/Display/display';
+import {
+  MarginProps,
+  marginVariants,
+} from '@/design-system/utilities/props/Margin/margin';
+import {
+  PaddingProps,
+  paddingVariants,
+} from '@/design-system/utilities/props/Padding/padding';
+import {
+  PositionProps,
+  positionVariants,
+} from '@/design-system/utilities/props/Position/position';
+import {
+  SizeProps,
+  sizeVariants,
+} from '@/design-system/utilities/props/Size/size';
+import clsx from 'clsx';
+import React from 'react';
+import { tv, type VariantProps } from 'tailwind-variants';
 
 export const linkVariants = tv({});
 
@@ -15,7 +33,8 @@ export type LinkVariants = VariantProps<typeof linkVariants>;
 
 /** Export LinkProps as one type */
 export interface LinkProps
-  extends LinkVariants,
+  extends
+    LinkVariants,
     AnimationProps,
     DisplayProps,
     MarginProps,
@@ -28,7 +47,10 @@ export interface LinkProps
   children: React.ReactNode;
 }
 
-export const linkVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+export const linkVariantsCN = (
+  variantProps: VariantProps<any>,
+  className?: string,
+) =>
   clsx(
     linkVariants(variantProps),
     animationVariants(variantProps),
@@ -37,5 +59,5 @@ export const linkVariantsCN = (variantProps: VariantProps<any>, className?: stri
     paddingVariants(variantProps),
     positionVariants(variantProps),
     sizeVariants(variantProps),
-    className
+    className,
   );

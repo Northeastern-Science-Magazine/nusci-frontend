@@ -1,33 +1,40 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import Text from "./Text";
-import React from "react";
-import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
+import type { Meta, StoryObj } from '@storybook/react';
+import Text from './Text';
+import React from 'react';
+import { storyColors } from '@/design-system/utilities/storyTypes/storyColors';
 
 /* Modify this when adding variants to Text */
-const styles = ["regular", "bold", "italic", "underline", "overline", "strikethrough"] as const;
+const styles = [
+  'regular',
+  'bold',
+  'italic',
+  'underline',
+  'overline',
+  'strikethrough',
+] as const;
 const sizes = [8, 12, 14, 16, 18, 20, 24, 30, 36, 48, 60, 72, 96, 128] as const;
-const spacingOptions = ["xs", "sm", "md", "lg", "xl"] as const;
+const spacingOptions = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 const colors = storyColors;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Text> = {
   component: Text,
-  title: "Primitives/Text",
+  title: 'Primitives/Text',
   argTypes: {
     style: {
-      control: "select",
+      control: 'select',
       options: styles,
     },
     color: {
-      control: "select",
+      control: 'select',
       options: colors,
     },
     size: {
-      control: "select",
+      control: 'select',
       options: sizes,
     },
     spacing: {
-      control: "select",
+      control: 'select',
       options: spacingOptions,
     },
   },
@@ -39,7 +46,7 @@ type Story = StoryObj<typeof Text>;
 /** Story for Default Variant */
 export const Default: Story = {
   args: {
-    children: "The Quick Brown Fox Jumps Over The Lazy Dog",
+    children: 'The Quick Brown Fox Jumps Over The Lazy Dog',
   },
 };
 
@@ -94,7 +101,10 @@ export const TextGallery: Story = {
   render: () => (
     <div className="flex flex-col gap-16 p-8 bg-white">
       {colors.map((color) => (
-        <div key={color} className={`flex flex-col gap-8 ${color === "white" ? "bg-zinc-300 p-4 rounded-md" : ""}`}>
+        <div
+          key={color}
+          className={`flex flex-col gap-8 ${color === 'white' ? 'bg-zinc-300 p-4 rounded-md' : ''}`}
+        >
           {sizes.map((size) => (
             <Text key={`${color}-${size}`} color={color} size={size}>
               example text

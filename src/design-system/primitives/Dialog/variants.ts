@@ -1,6 +1,9 @@
-import { BasicColorProps, basicColorVariants } from "@/design-system/utilities/props/BasicColor/basiccolor";
-import clsx from "clsx";
-import { tv, type VariantProps } from "tailwind-variants";
+import {
+  BasicColorProps,
+  basicColorVariants,
+} from '@/design-system/utilities/props/BasicColor/basiccolor';
+import clsx from 'clsx';
+import { tv, type VariantProps } from 'tailwind-variants';
 
 /** Dialog Trigger */
 export const dialogTriggerVariants = tv({});
@@ -11,22 +14,23 @@ export interface DialogTriggerProps extends DialogTriggerVariants {
 
 /** Dialog Window */
 export const dialogWindowVariants = tv({
-  base: "fixed inset-0 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shadow-xl rounded-md",
+  base: 'fixed inset-0 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shadow-xl rounded-md',
   variants: {
     size: {
-      xs: "max-w-xs",
-      sm: "max-w-md",
-      md: "max-w-xl",
-      lg: "max-w-2xl",
-      xl: "max-w-4xl",
+      xs: 'max-w-xs',
+      sm: 'max-w-md',
+      md: 'max-w-xl',
+      lg: 'max-w-2xl',
+      xl: 'max-w-4xl',
     },
   },
-  defaultVariants: { size: "md", color: "white" },
+  defaultVariants: { size: 'md', color: 'white' },
 });
 
 export type DialogWindowVariants = VariantProps<typeof dialogWindowVariants>;
 
-export interface DialogWindowProps extends DialogWindowVariants, BasicColorProps {
+export interface DialogWindowProps
+  extends DialogWindowVariants, BasicColorProps {
   children?: React.ReactNode;
   className?: string;
   /** When false, hides the corner close control. Default true. */

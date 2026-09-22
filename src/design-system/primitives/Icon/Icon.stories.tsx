@@ -1,54 +1,57 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import Icon from "./Icon";
-import type { IconProps } from "./variants";
-import React from "react";
-import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
+import type { Meta, StoryObj } from '@storybook/react';
+import Icon from './Icon';
+import type { IconProps } from './variants';
+import React from 'react';
+import { storyColors } from '@/design-system/utilities/storyTypes/storyColors';
 
-const stringSizes: IconProps["size"][] = ["xs", "sm", "md", "lg", "xl"];
-const numericSizes: IconProps["size"][] = [4, 8, 12, 14, 16, 18, 20, 24, 30, 36, 48, 60, 72, 96, 128, 256, 324, 400, 500, 600, 700, 800, 900, 1000];
-const allSizes: IconProps["size"][] = [...stringSizes, ...numericSizes];
+const stringSizes: IconProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
+const numericSizes: IconProps['size'][] = [
+  4, 8, 12, 14, 16, 18, 20, 24, 30, 36, 48, 60, 72, 96, 128, 256, 324, 400, 500,
+  600, 700, 800, 900, 1000,
+];
+const allSizes: IconProps['size'][] = [...stringSizes, ...numericSizes];
 const colors = storyColors;
 
-const icons: IconProps["icon"][] = [
-  "search",
-  "loader",
-  "share",
-  "arrowright",
-  "arrowleft",
-  "bookmark",
-  "user",
-  "ellipsis",
-  "ellipsisv",
-  "image",
-  "instagram",
-  "linkedin",
-  "star",
-  "trash",
-  "zoomin",
-  "zoomout",
-  "cross",
-  "email",
-  "menu",
-  "x",
-  "plus",
-  "info",
-  "camera",
+const icons: IconProps['icon'][] = [
+  'search',
+  'loader',
+  'share',
+  'arrowright',
+  'arrowleft',
+  'bookmark',
+  'user',
+  'ellipsis',
+  'ellipsisv',
+  'image',
+  'instagram',
+  'linkedin',
+  'star',
+  'trash',
+  'zoomin',
+  'zoomout',
+  'cross',
+  'email',
+  'menu',
+  'x',
+  'plus',
+  'info',
+  'camera',
 ];
 
 const meta: Meta<typeof Icon> = {
   component: Icon,
-  title: "Primitives/Icon",
+  title: 'Primitives/Icon',
   argTypes: {
     icon: {
-      control: "select",
+      control: 'select',
       options: icons,
     },
     size: {
-      control: "select",
+      control: 'select',
       options: allSizes,
     },
     color: {
-      control: "select",
+      control: 'select',
       options: colors,
     },
   },
@@ -60,10 +63,10 @@ type Story = StoryObj<typeof Icon>;
 
 export const Default: Story = {
   args: {
-    icon: "search",
-    color: "black",
-    size: "md",
-    animation: "scale125Hover",
+    icon: 'search',
+    color: 'black',
+    size: 'md',
+    animation: 'scale125Hover',
   },
 };
 
@@ -80,8 +83,8 @@ export const Color: Story = {
   ),
   // default setting, but can changed in the story book
   args: {
-    icon: "share",
-    size: "md",
+    icon: 'share',
+    size: 'md',
   },
 };
 
@@ -114,8 +117,8 @@ export const Size: Story = {
   ),
   args: {
     // default setting, but can changed in the story book
-    icon: "loader",
-    color: "black",
+    icon: 'loader',
+    color: 'black',
   },
 };
 
@@ -125,11 +128,14 @@ export const Gallery: Story = {
       {icons.map((icon) =>
         colors.map((color) =>
           stringSizes.map((size) => {
-            const isWhite = color === "white";
+            const isWhite = color === 'white';
 
             return (
-              <div key={`${icon}-${color}-${size}`} className="flex flex-col items-center text-center">
-                <div className={`p-2 rounded ${isWhite ? "bg-zinc-300" : ""}`}>
+              <div
+                key={`${icon}-${color}-${size}`}
+                className="flex flex-col items-center text-center"
+              >
+                <div className={`p-2 rounded ${isWhite ? 'bg-zinc-300' : ''}`}>
                   <Icon icon={icon} color={color} size={size} />
                 </div>
                 <span className="text-[10px] mt-1">
@@ -150,7 +156,8 @@ export const NumericSize: Story = {
       <div>
         <h3 className="mb-4 text-lg font-semibold">Numeric Size Values</h3>
         <p className="mb-4 text-sm text-gray-600">
-          The size prop accepts numeric values (pixels) from the Tailwind variants. All sizes use Tailwind classes for consistent styling.
+          The size prop accepts numeric values (pixels) from the Tailwind
+          variants. All sizes use Tailwind classes for consistent styling.
         </p>
         <div className="flex flex-wrap gap-6 items-end">
           {numericSizes.map((size) => (
@@ -162,7 +169,9 @@ export const NumericSize: Story = {
         </div>
       </div>
       <div>
-        <h3 className="mb-4 text-lg font-semibold">Large Icons (Image Replacement)</h3>
+        <h3 className="mb-4 text-lg font-semibold">
+          Large Icons (Image Replacement)
+        </h3>
         <div className="flex flex-wrap gap-6 items-center">
           <div className="flex flex-col items-center p-4 border rounded">
             <Icon icon="camera" color="aqua" size={128} />
@@ -189,7 +198,7 @@ export const NumericSize: Story = {
     </div>
   ),
   args: {
-    icon: "star",
-    color: "purple",
+    icon: 'star',
+    color: 'purple',
   },
 };

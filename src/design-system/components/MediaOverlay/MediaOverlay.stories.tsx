@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import React from "react";
-import { OverlayMedia, Overlay } from "@/components/MediaOverlay";
-import Image from "@/primitives/Image";
-import Icon from "@/primitives/Icon";
-import Badge from "@/primitives/Badge";
-import Box from "@/primitives/Box";
-import Text from "@/primitives/Text";
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+import { OverlayMedia, Overlay } from '@/components/MediaOverlay';
+import Image from '@/primitives/Image';
+import Icon from '@/primitives/Icon';
+import Badge from '@/primitives/Badge';
+import Box from '@/primitives/Box';
+import Text from '@/primitives/Text';
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof OverlayMedia> = {
   component: OverlayMedia,
-  title: "Components/MediaOverlay",
+  title: 'Components/MediaOverlay',
   argTypes: {},
 };
 
@@ -22,14 +22,18 @@ export const Default: Story = {
     <OverlayMedia>
       <Image
         ratio={1}
-        src={"https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"}
+        src={
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg'
+        }
         alt="cat"
         width="w-[300px]"
         emphasis="default"
         rounded="default"
       />
       <Overlay background="solid-black">
-        <div className="flex items-center justify-center h-full text-2xl">Overlay Text</div>
+        <div className="flex items-center justify-center h-full text-2xl">
+          Overlay Text
+        </div>
       </Overlay>
     </OverlayMedia>
   ),
@@ -38,20 +42,20 @@ export const Default: Story = {
 export const Solid: Story = {
   render: () => {
     const solids = [
-      "solid-black",
-      "solid-white",
-      "solid-red",
-      "solid-aqua",
-      "solid-aqua-light",
-      "solid-forest-green",
-      "solid-sage-green",
-      "solid-border",
-      "solid-neutral",
-      "solid-purple",
-      "solid-pink",
-      "solid-maroon",
-      "solid-coral",
-      "solid-marigold",
+      'solid-black',
+      'solid-white',
+      'solid-red',
+      'solid-aqua',
+      'solid-aqua-light',
+      'solid-forest-green',
+      'solid-sage-green',
+      'solid-border',
+      'solid-neutral',
+      'solid-purple',
+      'solid-pink',
+      'solid-maroon',
+      'solid-coral',
+      'solid-marigold',
     ] as const;
 
     return (
@@ -60,7 +64,9 @@ export const Solid: Story = {
           <OverlayMedia key={index}>
             <Image
               ratio={1}
-              src={"https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"}
+              src={
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg'
+              }
               alt="cat"
               width="w-[300px]"
               emphasis="default"
@@ -84,20 +90,20 @@ export const Solid: Story = {
 export const Gradient: Story = {
   render: () => {
     const gradients = [
-      "gradient-black",
-      "gradient-white",
-      "gradient-red",
-      "gradient-aqua",
-      "gradient-aqua-light",
-      "gradient-forest-green",
-      "gradient-sage-green",
-      "gradient-border",
-      "gradient-neutral",
-      "gradient-purple",
-      "gradient-pink",
-      "gradient-maroon",
-      "gradient-coral",
-      "gradient-marigold",
+      'gradient-black',
+      'gradient-white',
+      'gradient-red',
+      'gradient-aqua',
+      'gradient-aqua-light',
+      'gradient-forest-green',
+      'gradient-sage-green',
+      'gradient-border',
+      'gradient-neutral',
+      'gradient-purple',
+      'gradient-pink',
+      'gradient-maroon',
+      'gradient-coral',
+      'gradient-marigold',
     ] as const;
 
     return (
@@ -106,7 +112,9 @@ export const Gradient: Story = {
           <OverlayMedia key={index}>
             <Image
               ratio={1}
-              src={"https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"}
+              src={
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg'
+              }
               alt="cat"
               width="w-[300px]"
               emphasis="default"
@@ -134,7 +142,9 @@ export const Ratios: Story = {
         <OverlayMedia key={ratio}>
           <Image
             ratio={ratio}
-            src={"https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"}
+            src={
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg'
+            }
             alt={`cat ${ratio}`}
             width="w-[300px]"
             emphasis="default"
@@ -156,12 +166,20 @@ export const Ratios: Story = {
 export const IconVariant: Story = {
   render: () => {
     const iconExamples = [
-      { icon: "star" as const, size: 128 as const, color: "purple" as const },
-      { icon: "bookmark" as const, size: 128 as const, color: "aqua" as const },
-      { icon: "share" as const, size: 128 as const, color: "white" as const },
-      { icon: "dna" as const, size: 128 as const, color: "forest-green" as const },
-      { icon: "flask" as const, size: 128 as const, color: "marigold" as const },
-      { icon: "brain" as const, size: 128 as const, color: "pink" as const },
+      { icon: 'star' as const, size: 128 as const, color: 'purple' as const },
+      { icon: 'bookmark' as const, size: 128 as const, color: 'aqua' as const },
+      { icon: 'share' as const, size: 128 as const, color: 'white' as const },
+      {
+        icon: 'dna' as const,
+        size: 128 as const,
+        color: 'forest-green' as const,
+      },
+      {
+        icon: 'flask' as const,
+        size: 128 as const,
+        color: 'marigold' as const,
+      },
+      { icon: 'brain' as const, size: 128 as const, color: 'pink' as const },
     ];
 
     return (
@@ -216,7 +234,12 @@ export const Gallery: Story = {
           />
         </Box>
       </Box>,
-      <Badge key="photographer" color="black" className="absolute bottom-2 right-2 bg-white/70" variant="outline">
+      <Badge
+        key="photographer"
+        color="black"
+        className="absolute bottom-2 right-2 bg-white/70"
+        variant="outline"
+      >
         Photographer: Jia^2
       </Badge>,
       <Box
@@ -233,13 +256,21 @@ export const Gallery: Story = {
       <Badge key="new-issue" color="marigold" className="absolute top-2 left-2">
         NEW ISSUE
       </Badge>,
-      <Box key="biology" className="h-full flex items-center justify-center text-center bg-black/70 to-transparent">
+      <Box
+        key="biology"
+        className="h-full flex items-center justify-center text-center bg-black/70 to-transparent"
+      >
         <Text color="white" style="bold" size={24}>
           Biology
         </Text>
       </Box>,
-      <Box key="progress-bar" className="absolute top-0 left-0 right-0 h-6 bg-neutral/80">
-        <Box className="h-full bg-sage-green text-black text-xs font-bold flex items-center justify-center w-[70%]">70%</Box>
+      <Box
+        key="progress-bar"
+        className="absolute top-0 left-0 right-0 h-6 bg-neutral/80"
+      >
+        <Box className="h-full bg-sage-green text-black text-xs font-bold flex items-center justify-center w-[70%]">
+          70%
+        </Box>
       </Box>,
     ];
 
@@ -252,7 +283,9 @@ export const Gallery: Story = {
             <OverlayMedia key={`${ratio}-${index}`}>
               <Image
                 ratio={ratio}
-                src={"https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg"}
+                src={
+                  'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/A-Cat.jpg/2560px-A-Cat.jpg'
+                }
                 alt={`cat ratio ${ratio}`}
                 width="w-[300px]"
                 emphasis="default"
@@ -260,7 +293,7 @@ export const Gallery: Story = {
               />
               <Overlay>{overlayContent}</Overlay>
             </OverlayMedia>
-          ))
+          )),
         )}
       </div>
     );

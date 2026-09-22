@@ -29,7 +29,7 @@ export default function CreateAccountForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Validate invite token 
+  // Validate invite token
   useEffect(() => {
     const validateToken = async () => {
       if (!inviteToken) {
@@ -39,7 +39,7 @@ export default function CreateAccountForm() {
       }
 
       // Replace with actual API call for token validation
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       if (inviteToken.length >= 5) {
         setIsTokenValid(true);
@@ -69,14 +69,13 @@ export default function CreateAccountForm() {
         inviteToken,
       });
 
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Alert for account successfully created
       alert('Account created successfully!');
-      
+
       // Redirect to private profile (replace with actual path to private profile)
       router.push('/profile/private');
-
     } catch (error) {
       console.error('Error creating account:', error);
       setSubmitError('An unexpected error occurred. Please try again.');
@@ -103,11 +102,15 @@ export default function CreateAccountForm() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center max-w-md">
           <div className="text-red-500 text-5xl mb-4"></div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Invalid Invitation</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Invalid Invitation
+          </h1>
           <p className="text-gray-600 mb-4">
             This invitation link is invalid or has already been used.
           </p>
-          <p className="text-sm text-gray-500">Redirecting you to the invalid invite page...</p>
+          <p className="text-sm text-gray-500">
+            Redirecting you to the invalid invite page...
+          </p>
         </div>
       </div>
     );
@@ -117,7 +120,12 @@ export default function CreateAccountForm() {
   return (
     <div className="min-h-screen bg-sage-green flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Text size={30} style="bold" color="forest-green" className="p-5 pb-0 text-center">
+        <Text
+          size={30}
+          style="bold"
+          color="forest-green"
+          className="p-5 pb-0 text-center"
+        >
           Create Your Account
         </Text>
         <p className="mt-2 text-center text-sm text-gray-600">
@@ -234,7 +242,8 @@ export default function CreateAccountForm() {
                 />
               </FormField>
               <p className="mt-2 text-xs text-gray-500">
-                Must be at least 8 characters with uppercase, lowercase, and numbers
+                Must be at least 8 characters with uppercase, lowercase, and
+                numbers
               </p>
             </Box>
 
@@ -268,13 +277,7 @@ export default function CreateAccountForm() {
                 color="forest-green"
                 className="w-full"
               >
-                {isSubmitting ? (
-                  <>
-                    Creating Account...
-                  </>
-                ) : (
-                  'Create Account'
-                )}
+                {isSubmitting ? <>Creating Account...</> : 'Create Account'}
               </Button>
             </Box>
           </Form>
@@ -287,7 +290,10 @@ export default function CreateAccountForm() {
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-white text-gray-500">
                   Already have an account?{' '}
-                  <a href="/login" className="font-medium text-forest-green hover:text-forest-green">
+                  <a
+                    href="/login"
+                    className="font-medium text-forest-green hover:text-forest-green"
+                  >
                     Sign in
                   </a>
                 </span>

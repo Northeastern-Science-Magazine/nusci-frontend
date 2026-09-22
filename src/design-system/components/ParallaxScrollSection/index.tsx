@@ -1,2 +1,5 @@
-export { ParallaxScrollSection } from "./ParallaxScrollSection";
-export type { ParallaxScrollSectionProps, ParallaxScrollSectionVariants } from "./variants";
+export { ParallaxScrollSection } from './ParallaxScrollSection';
+export type {
+  ParallaxScrollSectionProps,
+  ParallaxScrollSectionVariants,
+} from './variants';

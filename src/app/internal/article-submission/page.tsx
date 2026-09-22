@@ -1,5 +1,5 @@
-import { apiGetBasicUserList } from "@/lib/api/users";
-import ArticleSubmissionForm from "./ArticleSubmissionForm";
+import { apiGetBasicUserList } from '@/lib/api/users';
+import ArticleSubmissionForm from './ArticleSubmissionForm';
 
 export default async function ArticleSubmissionPage() {
   const res = await apiGetBasicUserList();

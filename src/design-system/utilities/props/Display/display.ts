@@ -1,12 +1,12 @@
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv, type VariantProps } from 'tailwind-variants';
 
 export const displayVariants = tv({
   variants: {
     display: {
-      inline: "inline",
-      block: "block",
-      "inline-block": "inline-block",
-      hidden: "hidden",
+      inline: 'inline',
+      block: 'block',
+      'inline-block': 'inline-block',
+      hidden: 'hidden',
     },
   },
 });

@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import clsx from "clsx";
-import Image from "@/primitives/Image";
+import { useEffect, useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
+import clsx from 'clsx';
+import Image from '@/primitives/Image';
 import {
   mediaCarouselEmptyStateVariants,
   mediaCarouselLayoutBySize,
@@ -9,12 +9,12 @@ import {
   mediaCarouselRootVariants,
   mediaCarouselViewportVariants,
   type MediaCarouselProps,
-} from "./variants";
+} from './variants';
 
 export function MediaCarousel({
   media,
   visibleCount = 7,
-  size = "lg",
+  size = 'lg',
   initialIndex = 0,
   onIndexChange,
   className,
@@ -75,19 +75,19 @@ export function MediaCarousel({
           const isCenter = offset == 0;
 
           const entranceInitial = {
-            x: "calc(-50% + 0px)",
-            y: "-50%",
+            x: 'calc(-50% + 0px)',
+            y: '-50%',
             rotateY: 0,
             scale: 0.85,
           };
 
           const paginateInitial = {
             x: `calc(-50% + ${-direction}px)`,
-            y: "-50%",
+            y: '-50%',
             rotateY: -direction * 25,
             scale: 0.85,
           };
-          const href = centerLink ? centerLink(itemIndex) : "";
+          const href = centerLink ? centerLink(itemIndex) : '';
 
           return (
             <motion.div
@@ -97,7 +97,7 @@ export function MediaCarousel({
                 hasEnteredView
                   ? {
                       x: `calc(-50% + ${x}px)`,
-                      y: "-50%",
+                      y: '-50%',
                       rotateY,
                       scale,
                     }
@@ -106,15 +106,13 @@ export function MediaCarousel({
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               onClick={
-                isCenter
-                  ? () => (window.open(href))
-                  : () => paginate(offset)
+                isCenter ? () => window.open(href) : () => paginate(offset)
               }
               style={{ zIndex }}
               className={clsx(
-                "absolute left-1/2 top-1/2 [transform-style:preserve-3d]",
+                'absolute left-1/2 top-1/2 [transform-style:preserve-3d]',
                 mediaCarouselPanelVariants({ size }),
-                "cursor-pointer",
+                'cursor-pointer',
               )}
             >
               <Image

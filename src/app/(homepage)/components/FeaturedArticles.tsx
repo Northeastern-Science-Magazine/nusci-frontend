@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import MediaCard from "@/design-system/components/MediaCard";
-import { OverlayMedia, Overlay } from "@/design-system/components/MediaOverlay";
-import Button from "@/design-system/primitives/Button";
-import Divider from "@/design-system/primitives/Divider";
-import { ChevronRight } from "lucide-react";
-import Image from "@/design-system/primitives/Image";
-import Text from "@/design-system/primitives/Text";
-import Box from "@/design-system/primitives/Box";
-import Link from "@/design-system/primitives/Link";
-import Font from "@/design-system/primitives/Font";
-import { ParallaxScrollSection } from "@/design-system/components/ParallaxScrollSection";
-import categoryToIcon from "@/lib/helpers/categoryToIcon";
-import categoryToIconColor from "@/lib/helpers/categoryToIconColor";
-import { IconName } from "@/design-system/primitives/Icon";
+import MediaCard from '@/design-system/components/MediaCard';
+import { OverlayMedia, Overlay } from '@/design-system/components/MediaOverlay';
+import Button from '@/design-system/primitives/Button';
+import Divider from '@/design-system/primitives/Divider';
+import { ChevronRight } from 'lucide-react';
+import Image from '@/design-system/primitives/Image';
+import Text from '@/design-system/primitives/Text';
+import Box from '@/design-system/primitives/Box';
+import Link from '@/design-system/primitives/Link';
+import Font from '@/design-system/primitives/Font';
+import { ParallaxScrollSection } from '@/design-system/components/ParallaxScrollSection';
+import categoryToIcon from '@/lib/helpers/categoryToIcon';
+import categoryToIconColor from '@/lib/helpers/categoryToIconColor';
+import { IconName } from '@/design-system/primitives/Icon';
 
 interface Article {
   id: string;
@@ -26,20 +26,20 @@ interface Article {
 }
 
 const truncateByWords = (text: string, wordLimit: number): string => {
-  if (!text) return "No description available.";
+  if (!text) return 'No description available.';
   const words = text.trim().split(/\s+/);
   if (words.length <= wordLimit) {
     return text;
   }
-  return words.slice(0, wordLimit).join(" ") + "...";
+  return words.slice(0, wordLimit).join(' ') + '...';
 };
 
 const truncateTitle = (text: string, charLimit: number): string => {
-  if (!text) return "";
+  if (!text) return '';
   if (text.length <= charLimit) {
     return text;
   }
-  return text.slice(0, charLimit) + "...";
+  return text.slice(0, charLimit) + '...';
 };
 
 interface FeaturedArticlesProps {
@@ -60,7 +60,7 @@ export default function FeaturedArticles({
 
   return (
     <Font serif>
-      <ParallaxScrollSection imageSrc={"/succulent.png"}>
+      <ParallaxScrollSection imageSrc={'/succulent.png'}>
         <Box className="relative px-4 laptop:px-16 py-16">
           <Box className="flex flex-col items-start justify-between gap-4 laptop:flex-row laptop:items-end">
             <Text size={48} className="mt-2 tracking-tight laptop:text-[56px]">
@@ -199,8 +199,11 @@ export default function FeaturedArticles({
                     <Link href={article.slug} key={article.id}>
                       <MediaCard
                         mediaType="image"
-                        imageProps={{ src: article.imageUrl, alt: article.title }}
-                        subtitle={article.subtitle || "Article"}
+                        imageProps={{
+                          src: article.imageUrl,
+                          alt: article.title,
+                        }}
+                        subtitle={article.subtitle || 'Article'}
                         title={truncateTitle(article.title, 40)}
                         description={truncateByWords(article.description, 15)}
                         mediaDirection="top"
@@ -216,11 +219,17 @@ export default function FeaturedArticles({
                       <MediaCard
                         mediaType="icon"
                         iconProps={{
-                          icon: categoryToIcon(article.category || "uncategorized") as IconName,
+                          icon: categoryToIcon(
+                            article.category || 'uncategorized',
+                          ) as IconName,
                           size: 128,
-                          color: categoryToIconColor(article.category || "uncategorized"),
+                          color: categoryToIconColor(
+                            article.category || 'uncategorized',
+                          ),
                         }}
-                        subtitle={article.subtitle || article.category || "Article"}
+                        subtitle={
+                          article.subtitle || article.category || 'Article'
+                        }
                         title={truncateTitle(article.title, 40)}
                         description={truncateByWords(article.description, 15)}
                         mediaDirection="top"
@@ -246,7 +255,7 @@ export default function FeaturedArticles({
                     <MediaCard
                       mediaType="image"
                       imageProps={{ src: article.imageUrl, alt: article.title }}
-                      subtitle={article.subtitle || "Article"}
+                      subtitle={article.subtitle || 'Article'}
                       title={truncateTitle(article.title, 50)}
                       description={truncateByWords(article.description, 20)}
                       mediaDirection="top"
@@ -263,14 +272,16 @@ export default function FeaturedArticles({
                       mediaType="icon"
                       iconProps={{
                         icon: categoryToIcon(
-                          article.category || "uncategorized",
+                          article.category || 'uncategorized',
                         ) as IconName,
                         size: 128,
                         color: categoryToIconColor(
-                          article.category || "uncategorized",
+                          article.category || 'uncategorized',
                         ),
                       }}
-                      subtitle={article.subtitle || article.category || "Article"}
+                      subtitle={
+                        article.subtitle || article.category || 'Article'
+                      }
                       title={truncateTitle(article.title, 50)}
                       description={truncateByWords(article.description, 20)}
                       mediaDirection="top"

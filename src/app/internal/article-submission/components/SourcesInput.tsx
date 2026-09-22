@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React from "react";
-import TextInput from "@/design-system/primitives/TextInput";
-import Icon from "@/design-system/primitives/Icon";
-import Button from "@/design-system/primitives/Button";
-import Text from "@/design-system/primitives/Text";
-import { Grid, GridCol } from "@/design-system/primitives/Grid";
-import { ArticleSource } from "@/lib/types/types";
+import React from 'react';
+import TextInput from '@/design-system/primitives/TextInput';
+import Icon from '@/design-system/primitives/Icon';
+import Button from '@/design-system/primitives/Button';
+import Text from '@/design-system/primitives/Text';
+import { Grid, GridCol } from '@/design-system/primitives/Grid';
+import { ArticleSource } from '@/lib/types/types';
 
 type SourcesInputProps = {
   value?: ArticleSource[];
@@ -16,9 +16,15 @@ type SourcesInputProps = {
   disabled?: boolean;
 };
 
-export function SourcesInput({ value = [], onChange, label = "Sources", disabled = false }: SourcesInputProps) {
+export function SourcesInput({
+  value = [],
+  onChange,
+  label = 'Sources',
+  disabled = false,
+}: SourcesInputProps) {
   // Derive current sources from the controlled value; ensure at least one row exists
-  const sources: ArticleSource[] = value.length > 0 ? value : [{ text: "", href: "" }];
+  const sources: ArticleSource[] =
+    value.length > 0 ? value : [{ text: '', href: '' }];
 
   const handleSourceTextChange = (index: number, newText: string) => {
     const updatedSources = [...sources];
@@ -33,7 +39,7 @@ export function SourcesInput({ value = [], onChange, label = "Sources", disabled
   };
 
   const addSource = () => {
-    const updatedSources = [...sources, { text: "", href: "" }];
+    const updatedSources = [...sources, { text: '', href: '' }];
     onChange?.(updatedSources);
   };
 
@@ -45,7 +51,7 @@ export function SourcesInput({ value = [], onChange, label = "Sources", disabled
   };
 
   return (
-    <div className={`flex flex-col gap-3 ${disabled ? "opacity-60" : ""}`}>
+    <div className={`flex flex-col gap-3 ${disabled ? 'opacity-60' : ''}`}>
       <label className="block text-sm font-medium text-black">{label}</label>
       {sources.map((source, index) => (
         <div key={index} className="flex items-center gap-2">
@@ -55,7 +61,9 @@ export function SourcesInput({ value = [], onChange, label = "Sources", disabled
                 <TextInput
                   value={source.text}
                   label=""
-                  onChange={(newValue) => handleSourceTextChange(index, newValue)}
+                  onChange={(newValue) =>
+                    handleSourceTextChange(index, newValue)
+                  }
                   placeholder="Enter source title"
                   className="w-full"
                   disabled={disabled}
@@ -65,7 +73,9 @@ export function SourcesInput({ value = [], onChange, label = "Sources", disabled
                 <TextInput
                   value={source.href}
                   label=""
-                  onChange={(newValue) => handleSourceHrefChange(index, newValue)}
+                  onChange={(newValue) =>
+                    handleSourceHrefChange(index, newValue)
+                  }
                   placeholder="Enter source URL"
                   className="w-full"
                   disabled={disabled}
@@ -83,7 +93,12 @@ export function SourcesInput({ value = [], onChange, label = "Sources", disabled
               className="group shrink-0 hover:bg-red-500 disabled:pointer-events-none disabled:hover:bg-transparent disabled:hover:text-red-600"
               disabled={disabled}
             >
-              <Icon icon="trash" size="sm" color="red" className="group-hover:text-white group-disabled:text-red" />
+              <Icon
+                icon="trash"
+                size="sm"
+                color="red"
+                className="group-hover:text-white group-disabled:text-red"
+              />
             </Button>
           )}
         </div>

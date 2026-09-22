@@ -1,36 +1,55 @@
-import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
-import { BorderProps, borderVariants } from "@/design-system/utilities/props/Border/border";
-import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
-import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
-import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
-import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
-import { sizeVariants } from "@/design-system/utilities/props/Size/size";
-import clsx from "clsx";
-import { tv, type VariantProps } from "tailwind-variants";
+import {
+  AnimationProps,
+  animationVariants,
+} from '@/design-system/utilities/props/Animation/animation';
+import {
+  BorderProps,
+  borderVariants,
+} from '@/design-system/utilities/props/Border/border';
+import {
+  DisplayProps,
+  displayVariants,
+} from '@/design-system/utilities/props/Display/display';
+import {
+  MarginProps,
+  marginVariants,
+} from '@/design-system/utilities/props/Margin/margin';
+import {
+  PaddingProps,
+  paddingVariants,
+} from '@/design-system/utilities/props/Padding/padding';
+import {
+  PositionProps,
+  positionVariants,
+} from '@/design-system/utilities/props/Position/position';
+import { sizeVariants } from '@/design-system/utilities/props/Size/size';
+import clsx from 'clsx';
+import { tv, type VariantProps } from 'tailwind-variants';
 
 export const imageVariants = tv({
-  base: "w-full h-full object-cover",
+  base: 'w-full h-full object-cover',
   variants: {
     rounded: {
-      default: "",
-      rounded: "rounded-md",
+      default: '',
+      rounded: 'rounded-md',
     },
     emphasis: {
-      default: "",
-      emphasis: "shadow-lg",
+      default: '',
+      emphasis: 'shadow-lg',
     },
   },
   defaultVariants: {
-    ratio: "1/1",
-    rounded: "default",
-    emphasis: "default",
+    ratio: '1/1',
+    rounded: 'default',
+    emphasis: 'default',
   },
 });
 
 export type ImageVariants = VariantProps<typeof imageVariants>;
 
 export interface ImageProps
-  extends ImageVariants,
+  extends
+    ImageVariants,
     AnimationProps,
     BorderProps,
     DisplayProps,
@@ -46,7 +65,10 @@ export interface ImageProps
   height?: string;
 }
 
-export const imageVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+export const imageVariantsCN = (
+  variantProps: VariantProps<any>,
+  className?: string,
+) =>
   clsx(
     imageVariants(variantProps),
     animationVariants(variantProps),

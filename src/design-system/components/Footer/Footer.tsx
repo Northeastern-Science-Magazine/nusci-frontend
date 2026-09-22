@@ -1,36 +1,50 @@
-import React from "react";
-import Link from "@/primitives/Link";
-import Icon from "@/primitives/Icon";
-import Image from "@/design-system/primitives/Image";
-import Box from "@/design-system/primitives/Box";
+import React from 'react';
+import Link from '@/primitives/Link';
+import Icon from '@/primitives/Icon';
+import Image from '@/design-system/primitives/Image';
+import Box from '@/design-system/primitives/Box';
 
 export interface FooterProps {
   className?: string;
 }
 
-const Footer: React.FC<FooterProps> = ({ className = "" }) => {
+const Footer: React.FC<FooterProps> = ({ className = '' }) => {
   const currentYear = new Date().getFullYear();
 
   //Making the links to each social media correspond to their logos.
   const socialLinks = [
     {
-      label: "Instagram",
-      href: "https://www.instagram.com/nuscimag/",
+      label: 'Instagram',
+      href: 'https://www.instagram.com/nuscimag/',
       icon: (
-        <Icon icon="instagram" size="md" className="text-black-400 group-hover:text-black-500 transition-colors duration-200" />
+        <Icon
+          icon="instagram"
+          size="md"
+          className="text-black-400 group-hover:text-black-500 transition-colors duration-200"
+        />
       ),
     },
     {
-      label: "LinkedIn",
-      href: "https://www.linkedin.com/company/nu-sci-magazine/",
+      label: 'LinkedIn',
+      href: 'https://www.linkedin.com/company/nu-sci-magazine/',
       icon: (
-        <Icon icon="linkedin" size="md" className="text-black-400 group-hover:text-black-500 transition-colors duration-200" />
+        <Icon
+          icon="linkedin"
+          size="md"
+          className="text-black-400 group-hover:text-black-500 transition-colors duration-200"
+        />
       ),
     },
     {
-      label: "Email",
-      href: "mailto:northeasternsciencemagazine@gmail.com",
-      icon: <Icon icon="email" size="md" className="text-black-400 group-hover:text-black-500 transition-colors duration-200" />,
+      label: 'Email',
+      href: 'mailto:northeasternsciencemagazine@gmail.com',
+      icon: (
+        <Icon
+          icon="email"
+          size="md"
+          className="text-black-400 group-hover:text-black-500 transition-colors duration-200"
+        />
+      ),
     },
   ];
 
@@ -41,13 +55,23 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
           <div className="flex items-center gap-6">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Image src="/logo.png" alt="NU Sci Magazine" width="w-10" ratio={1} />
+              <Image
+                src="/logo.png"
+                alt="NU Sci Magazine"
+                width="w-10"
+                ratio={1}
+              />
             </div>
 
             {/* Social media icons */}
             <div className="flex items-center space-x-6">
               {socialLinks.map((social) => (
-                <Link key={social.label} href={social.href} newWindow={true} className="group">
+                <Link
+                  key={social.label}
+                  href={social.href}
+                  newWindow={true}
+                  className="group"
+                >
                   {social.icon}
                   <span className="sr-only">{social.label}</span>
                 </Link>

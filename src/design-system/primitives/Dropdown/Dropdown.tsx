@@ -1,11 +1,18 @@
-"use client";
+'use client';
 
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
-import { createPortal } from "react-dom";
-import clsx from "clsx";
-import Divider from "../Divider";
-import Icon from "../Icon";
-import { dropdownVariants, DropdownProps, DropdownOption } from "./variants";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+} from 'react';
+import { createPortal } from 'react-dom';
+import clsx from 'clsx';
+import Divider from '../Divider';
+import Icon from '../Icon';
+import { dropdownVariants, DropdownProps, DropdownOption } from './variants';
 
 export function Dropdown(props: DropdownProps) {
   const {
@@ -13,11 +20,11 @@ export function Dropdown(props: DropdownProps) {
     value: valueProp,
     defaultValue,
     onChange,
-    placeholder = "Select...",
+    placeholder = 'Select...',
     maxVisibleItems = 8,
     itemHeight = 36,
     className,
-    color = "neutral",
+    color = 'neutral',
   } = props;
 
   /* Determines what type of dropdown, and which subcomponents to render */
@@ -26,7 +33,11 @@ export function Dropdown(props: DropdownProps) {
   const isControlled = valueProp !== undefined;
 
   const normalizeSelection = (source: string | string[] | undefined) =>
-    Array.isArray(source) ? source : typeof source === "string" && source ? [source] : [];
+    Array.isArray(source)
+      ? source
+      : typeof source === 'string' && source
+        ? [source]
+        : [];
 
   const [selected, setSelected] = useState<string[]>(() =>
     normalizeSelection(isControlled ? valueProp : defaultValue),
@@ -36,11 +47,13 @@ export function Dropdown(props: DropdownProps) {
     if (!isControlled) return;
     const next = normalizeSelection(valueProp);
     setSelected((prev) =>
-      prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next,
+      prev.length === next.length && prev.every((v, i) => v === next[i])
+        ? prev
+        : next,
     );
   }, [isControlled, valueProp]);
 
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -62,11 +75,14 @@ export function Dropdown(props: DropdownProps) {
       setSelected([value]);
       onChange?.(value);
       setOpen(false);
-      setQuery("");
+      setQuery('');
     }
   };
 
-  const selectedOptions = useMemo(() => options.filter((o) => selectedSet.has(o.value)), [options, selectedSet]);
+  const selectedOptions = useMemo(
+    () => options.filter((o) => selectedSet.has(o.value)),
+    [options, selectedSet],
+  );
 
   const availableOptions = useMemo(() => {
     const unselected = options.filter((o) => !selectedSet.has(o.value));
@@ -79,15 +95,15 @@ export function Dropdown(props: DropdownProps) {
   const displayValue = useMemo(() => {
     if (cfg.isTypeahead) {
       if (query) return query;
-      if (!cfg.isMulti) return selectedOptions[0]?.label ?? "";
-      return "";
+      if (!cfg.isMulti) return selectedOptions[0]?.label ?? '';
+      return '';
     }
 
     if (cfg.isMulti) {
-      return selectedOptions.length ? `${selectedOptions.length} selected` : "";
+      return selectedOptions.length ? `${selectedOptions.length} selected` : '';
     }
 
-    return selectedOptions[0]?.label ?? "";
+    return selectedOptions[0]?.label ?? '';
   }, [query, selectedOptions, cfg]);
 
   /* Input Controller */
@@ -100,7 +116,7 @@ export function Dropdown(props: DropdownProps) {
 
     if (!cfg.isMulti && value && selected.length) {
       setSelected([]);
-      onChange?.("");
+      onChange?.('');
     }
   };
 
@@ -116,12 +132,13 @@ export function Dropdown(props: DropdownProps) {
 
     const handler = (e: MouseEvent) => {
       const t = e.target as Node;
-      if (containerRef.current?.contains(t) || popupRef.current?.contains(t)) return;
+      if (containerRef.current?.contains(t) || popupRef.current?.contains(t))
+        return;
       setOpen(false);
     };
 
-    document.addEventListener("click", handler, true);
-    return () => document.removeEventListener("click", handler, true);
+    document.addEventListener('click', handler, true);
+    return () => document.removeEventListener('click', handler, true);
   }, [open]);
 
   /* TV slots for styling subcomponents */
@@ -134,7 +151,11 @@ export function Dropdown(props: DropdownProps) {
     typeahead: cfg.isTypeahead,
   });
 
-  const inputClassName = clsx(styles.input(), !cfg.isTypeahead && "cursor-pointer", className);
+  const inputClassName = clsx(
+    styles.input(),
+    !cfg.isTypeahead && 'cursor-pointer',
+    className,
+  );
 
   return (
     <div ref={containerRef} className="relative w-full flex">
@@ -146,7 +167,11 @@ export function Dropdown(props: DropdownProps) {
 
       {cfg.showChevron && (
         <span className={styles.chevronContainer()}>
-          <Icon icon={open ? "chevronUp" : "chevronDown"} size="md" color={color} />
+          <Icon
+            icon={open ? 'chevronUp' : 'chevronDown'}
+            size="md"
+            color={color}
+          />
         </span>
       )}
 
@@ -177,7 +202,13 @@ export function Dropdown(props: DropdownProps) {
               {cfg.isMulti && selectedOptions.length > 0 && (
                 <>
                   {selectedOptions.map((opt) => (
-                    <OptionRow key={opt.value} option={opt} selected onSelect={select} className={styles.optionRow()} />
+                    <OptionRow
+                      key={opt.value}
+                      option={opt}
+                      selected
+                      onSelect={select}
+                      className={styles.optionRow()}
+                    />
                   ))}
                   {availableOptions.length >= 0 && <Divider />}
                 </>
@@ -193,7 +224,9 @@ export function Dropdown(props: DropdownProps) {
                 />
               ))}
 
-              {visibleItems === 0 && <div className={styles.emptyState()}>No matches</div>}
+              {visibleItems === 0 && (
+                <div className={styles.emptyState()}>No matches</div>
+              )}
             </div>
           </div>,
           document.body,
@@ -214,7 +247,12 @@ function OptionRow({
   className?: string;
 }) {
   return (
-    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => onSelect(option.value)} className={className}>
+    <button
+      type="button"
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={() => onSelect(option.value)}
+      className={className}
+    >
       <span className="w-4">{selected && <Icon icon="check" size="sm" />}</span>
       {option.label}
     </button>
@@ -276,7 +314,10 @@ function rankAndFilter(options: DropdownOption[], query: string) {
  * @param open
  * @returns
  */
-function useAnchorPosition(anchorRef: React.RefObject<HTMLElement>, open: boolean) {
+function useAnchorPosition(
+  anchorRef: React.RefObject<HTMLElement>,
+  open: boolean,
+) {
   const [rect, setRect] = useState<DOMRect | null>(null);
 
   const update = useCallback(() => {
@@ -290,11 +331,11 @@ function useAnchorPosition(anchorRef: React.RefObject<HTMLElement>, open: boolea
 
   useEffect(() => {
     if (!open) return;
-    window.addEventListener("scroll", update, true);
-    window.addEventListener("resize", update);
+    window.addEventListener('scroll', update, true);
+    window.addEventListener('resize', update);
     return () => {
-      window.removeEventListener("scroll", update, true);
-      window.removeEventListener("resize", update);
+      window.removeEventListener('scroll', update, true);
+      window.removeEventListener('resize', update);
     };
   }, [open, update]);
 

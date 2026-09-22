@@ -1,10 +1,15 @@
-import { TeamMemberProps, teamMemberVariants, teamMemberTextSizes, teamMemberAvatarSizes } from "./variants";
-import Box from "@/primitives/Box";
-import { Avatar } from "@/primitives/Avatar/Avatar";
-import Text, { TextProps } from "@/primitives/Text";
-import { Badge } from "@/primitives/Badge/Badge";
-import Icon from "@/primitives/Icon";
-import Link from "@/primitives/Link";
+import {
+  TeamMemberProps,
+  teamMemberVariants,
+  teamMemberTextSizes,
+  teamMemberAvatarSizes,
+} from './variants';
+import Box from '@/primitives/Box';
+import { Avatar } from '@/primitives/Avatar/Avatar';
+import Text, { TextProps } from '@/primitives/Text';
+import { Badge } from '@/primitives/Badge/Badge';
+import Icon from '@/primitives/Icon';
+import Link from '@/primitives/Link';
 
 export const TeamMember = (props: TeamMemberProps) => {
   const {
@@ -16,14 +21,14 @@ export const TeamMember = (props: TeamMemberProps) => {
     major,
     email,
     avatarUrl,
-    profileBaseUrl = "/profile",
+    profileBaseUrl = '/profile',
     size,
     children,
     ...variantProps
   } = props;
 
-  const textSizes = teamMemberTextSizes[size ?? "md"];
-  const avatarSize = teamMemberAvatarSizes[size ?? "md"];
+  const textSizes = teamMemberTextSizes[size ?? 'md'];
+  const avatarSize = teamMemberAvatarSizes[size ?? 'md'];
 
   return (
     <Link href={``} newWindow={false} className={teamMemberVariants(props)}>
@@ -33,9 +38,9 @@ export const TeamMember = (props: TeamMemberProps) => {
           src={avatarUrl}
           alt={`${name}'s avatar`}
           fallback={name
-            .split(" ")
+            .split(' ')
             .map((n) => n[0])
-            .join("")
+            .join('')
             .slice(0, 2)}
           size={avatarSize}
         />
@@ -78,7 +83,10 @@ export const TeamMember = (props: TeamMemberProps) => {
       {email && (
         <Box className="flex items-center gap-2 pt-2 border-t border-black/20">
           <Icon icon="email" size="sm" color="black" />
-          <Text size={textSizes.email as TextProps["size"]} className="text-inherit">
+          <Text
+            size={textSizes.email as TextProps['size']}
+            className="text-inherit"
+          >
             {email}
           </Text>
         </Box>

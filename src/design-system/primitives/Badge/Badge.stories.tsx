@@ -1,29 +1,29 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Badge } from "./Badge";
-import React from "react";
-import Text from "@/design-system/primitives/Text";
-import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Badge } from './Badge';
+import React from 'react';
+import Text from '@/design-system/primitives/Text';
+import { storyColors } from '@/design-system/utilities/storyTypes/storyColors';
 
 /* Modify this when adding variants to Badge */
-const variants = ["default", "outline", "blur"] as const;
+const variants = ['default', 'outline', 'blur'] as const;
 const colors = storyColors;
-const roundedOptions = ["sm", "md", "lg"] as const;
+const roundedOptions = ['sm', 'md', 'lg'] as const;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Badge> = {
   component: Badge,
-  title: "Primitives/Badge",
+  title: 'Primitives/Badge',
   argTypes: {
     variant: {
-      control: "select",
+      control: 'select',
       options: variants,
     },
     color: {
-      control: "select",
+      control: 'select',
       options: colors,
     },
     rounded: {
-      control: "select",
+      control: 'select',
       options: roundedOptions,
     },
   },
@@ -35,18 +35,18 @@ type Story = StoryObj<typeof Badge>;
 /** Story for Default Variant */
 export const Default: Story = {
   args: {
-    children: "Culture",
-    variant: "default",
-    color: "black",
+    children: 'Culture',
+    variant: 'default',
+    color: 'black',
   },
 };
 
 /** Story for Outline Variant */
 export const Outline: Story = {
   args: {
-    children: "Outline",
-    variant: "outline",
-    color: "black",
+    children: 'Outline',
+    variant: 'outline',
+    color: 'black',
   },
 };
 
@@ -112,23 +112,30 @@ export const Gallery: Story = {
     return (
       <div className="space-y-8 p-4">
         {colors.map((color) => {
-          const isWhiteColor = color === "white";
+          const isWhiteColor = color === 'white';
           const needsBackground =
             isWhiteColor ||
-            color === "aqua-light" ||
-            color === "sage-green" ||
-            color === "neutral" ||
-            color === "pink" ||
-            color === "coral" ||
-            color === "marigold";
+            color === 'aqua-light' ||
+            color === 'sage-green' ||
+            color === 'neutral' ||
+            color === 'pink' ||
+            color === 'coral' ||
+            color === 'marigold';
           return (
-            <div key={color} className={needsBackground ? "bg-zinc-300 p-4 rounded" : ""}>
+            <div
+              key={color}
+              className={needsBackground ? 'bg-zinc-300 p-4 rounded' : ''}
+            >
               <Text size={16} style="bold" className="mb-4 capitalize">
                 {color}
               </Text>
               <div className="flex flex-wrap gap-4">
                 {variants.map((variant) => (
-                  <Badge key={`${variant}-${color}`} color={color} variant={variant}>
+                  <Badge
+                    key={`${variant}-${color}`}
+                    color={color}
+                    variant={variant}
+                  >
                     {`${variant} | ${color}`}
                   </Badge>
                 ))}

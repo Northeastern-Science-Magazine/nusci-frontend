@@ -1,27 +1,27 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { TextInput } from "./TextInput";
-import React from "react";
-import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
+import type { Meta, StoryObj } from '@storybook/react';
+import { TextInput } from './TextInput';
+import React from 'react';
+import { storyColors } from '@/design-system/utilities/storyTypes/storyColors';
 
-const variants = ["outline", "filled"] as const;
-const sizes = ["lg", "md", "sm"] as const;
+const variants = ['outline', 'filled'] as const;
+const sizes = ['lg', 'md', 'sm'] as const;
 const colors = storyColors;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof TextInput> = {
   component: TextInput,
-  title: "Primitives/TextInput",
+  title: 'Primitives/TextInput',
   argTypes: {
     variant: {
-      control: "select",
+      control: 'select',
       options: variants,
     },
     size: {
-      control: "select",
+      control: 'select',
       options: sizes,
     },
     color: {
-      control: "select",
+      control: 'select',
       options: colors,
     },
   },
@@ -34,20 +34,20 @@ type Story = StoryObj<typeof TextInput>;
 /** Story for Outline Variant */
 export const Outline: Story = {
   args: {
-    size: "md",
-    variant: "outline",
-    color: "black",
-    label: "",
+    size: 'md',
+    variant: 'outline',
+    color: 'black',
+    label: '',
   },
 };
 
 /** Story for Filled Variant */
 export const Filled: Story = {
   args: {
-    size: "md",
-    variant: "filled",
-    color: "black",
-    label: "",
+    size: 'md',
+    variant: 'filled',
+    color: 'black',
+    label: '',
   },
 };
 
@@ -57,9 +57,9 @@ export const Gallery: Story = {
     return (
       <div className="space-y-8">
         {colors.map((color) => {
-          const isWhite = color == "white";
+          const isWhite = color == 'white';
           return (
-            <div key={color} className={isWhite ? "bg-zinc-300 p-4" : ""}>
+            <div key={color} className={isWhite ? 'bg-zinc-300 p-4' : ''}>
               <h2 className="text-xl font-bold mb-4 capitalize">{color}</h2>
               <div className="grid grid-cols-2 gap-4">
                 {variants.map((variant) => (
@@ -91,11 +91,11 @@ export const Gallery: Story = {
 /** Story demonstrating single-line input (default behavior) */
 export const SingleLineInput: Story = {
   args: {
-    size: "md",
-    variant: "outline",
-    color: "black",
-    label: "Email Address",
-    placeholder: "Enter your email",
+    size: 'md',
+    variant: 'outline',
+    color: 'black',
+    label: 'Email Address',
+    placeholder: 'Enter your email',
     multiline: false,
   },
 };
@@ -106,7 +106,9 @@ export const SingleLineExamples: Story = {
     return (
       <div className="space-y-6 max-w-md">
         <div>
-          <h3 className="text-lg font-semibold mb-4">Single-Line Input Examples</h3>
+          <h3 className="text-lg font-semibold mb-4">
+            Single-Line Input Examples
+          </h3>
           <div className="space-y-4">
             <TextInput
               label="Email"
@@ -154,11 +156,11 @@ export const SingleLineExamples: Story = {
 /** Story demonstrating multi-line textarea */
 export const MultiLineTextarea: Story = {
   args: {
-    size: "md",
-    variant: "outline",
-    color: "black",
-    label: "Bio",
-    placeholder: "Tell us about yourself...",
+    size: 'md',
+    variant: 'outline',
+    color: 'black',
+    label: 'Bio',
+    placeholder: 'Tell us about yourself...',
     multiline: true,
     rows: 4,
     resize: false,
@@ -171,7 +173,9 @@ export const MultiLineExamples: Story = {
     return (
       <div className="space-y-6 max-w-md">
         <div>
-          <h3 className="text-lg font-semibold mb-4">Multi-Line Textarea Examples</h3>
+          <h3 className="text-lg font-semibold mb-4">
+            Multi-Line Textarea Examples
+          </h3>
           <div className="space-y-4">
             <TextInput
               label="Short Comment (1 row, no resize)"

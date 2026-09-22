@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { Form, FormField } from "@/primitives/Form";
-import { SubmitHandler } from "react-hook-form";
-import MediaCard from "@/design-system/components/MediaCard";
-import TextInput from "@/primitives/TextInput";
-import Button from "@/primitives/Button";
-import Box from "@/primitives/Box";
-import Text from "@/primitives/Text";
-import { Flex } from "@/primitives/Flex";
-import { apiLogin } from "@/lib/api/users";
+import { Form, FormField } from '@/primitives/Form';
+import { SubmitHandler } from 'react-hook-form';
+import MediaCard from '@/design-system/components/MediaCard';
+import TextInput from '@/primitives/TextInput';
+import Button from '@/primitives/Button';
+import Box from '@/primitives/Box';
+import Text from '@/primitives/Text';
+import { Flex } from '@/primitives/Flex';
+import { apiLogin } from '@/lib/api/users';
 
 type LoginFormValues = {
   email: string;
@@ -17,12 +17,12 @@ type LoginFormValues = {
 
 export default function LoginPage() {
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    console.log("Login data:", data);
+    console.log('Login data:', data);
     const result = await apiLogin(data);
     if (result.ok) {
-      console.log("Login process happened");
+      console.log('Login process happened');
     } else {
-      console.log("Login process failed");
+      console.log('Login process failed');
     }
   };
 
@@ -32,8 +32,8 @@ export default function LoginPage() {
         mediaType="image"
         mediaDirection="right"
         imageProps={{
-          src: "https://media.istockphoto.com/id/488961976/photo/exploding-nebula.jpg?s=612x612&w=0&k=20&c=QEfXvnU0ckq0SWNEXTzZnzUpjBDwmweU3a8VoIcBveA=",
-          alt: "landing",
+          src: 'https://media.istockphoto.com/id/488961976/photo/exploding-nebula.jpg?s=612x612&w=0&k=20&c=QEfXvnU0ckq0SWNEXTzZnzUpjBDwmweU3a8VoIcBveA=',
+          alt: 'landing',
         }}
         size="lg"
         rounded="rounded"
@@ -47,8 +47,8 @@ export default function LoginPage() {
           onSubmit={onSubmit}
           options={{
             defaultValues: {
-              email: "",
-              password: "",
+              email: '',
+              password: '',
             },
           }}
           className="space-y-8 mt-6 p-5"
@@ -56,10 +56,10 @@ export default function LoginPage() {
           <FormField<LoginFormValues>
             name="email"
             rules={{
-              required: "Email is required",
+              required: 'Email is required',
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: "Please enter a valid email",
+                message: 'Please enter a valid email',
               },
             }}
           >
@@ -77,7 +77,7 @@ export default function LoginPage() {
             <FormField<LoginFormValues>
               name="password"
               rules={{
-                required: "Password is required",
+                required: 'Password is required',
               }}
             >
               <TextInput
@@ -92,13 +92,19 @@ export default function LoginPage() {
             </FormField>
           </Box>
 
-          <Button variant="default" size="md" color="forest-green" type="submit" className="w-full">
+          <Button
+            variant="default"
+            size="md"
+            color="forest-green"
+            type="submit"
+            className="w-full"
+          >
             Sign In
           </Button>
 
           <Box className="flex flex-col gap-2 text-left mt-4">
             <Text size={12} color="sage-green">
-              Or sign in with a{" "}
+              Or sign in with a{' '}
               <a href="/otp" className="underline">
                 one-time password
               </a>

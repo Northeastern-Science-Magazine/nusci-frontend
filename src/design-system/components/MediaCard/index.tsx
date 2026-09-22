@@ -1,5 +1,5 @@
-import {MediaCard}  from "./MediaCard";
-import { type MediaCardProps } from "./variants"
+import { MediaCard } from './MediaCard';
+import { type MediaCardProps } from './variants';
 
-export { MediaCardProps }
+export { MediaCardProps };
 export default MediaCard;

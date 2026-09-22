@@ -1,9 +1,17 @@
-"use client";
+'use client';
 
-import { useForm, FormProvider, SubmitHandler, FieldValues, UseFormProps, RegisterOptions, Path } from "react-hook-form";
-import { ReactNode } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import { ReactElement, cloneElement } from "react";
+import {
+  useForm,
+  FormProvider,
+  SubmitHandler,
+  FieldValues,
+  UseFormProps,
+  RegisterOptions,
+  Path,
+} from 'react-hook-form';
+import { ReactNode } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { ReactElement, cloneElement } from 'react';
 
 type FormProps<T extends FieldValues> = {
   onSubmit: SubmitHandler<T>;
@@ -15,7 +23,12 @@ type FormProps<T extends FieldValues> = {
 /**
  * Form Wraps <form>
  */
-export function Form<T extends FieldValues>({ onSubmit, children, options, className }: FormProps<T>) {
+export function Form<T extends FieldValues>({
+  onSubmit,
+  children,
+  options,
+  className,
+}: FormProps<T>) {
   const methods = useForm<T>(options);
 
   return (
@@ -40,19 +53,20 @@ type ControlledChildProps = {
   onChange?: (...args: any[]) => any;
 };
 
-type FormFieldProps<TFieldValues extends FieldValues = FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+type FormFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends Path<TFieldValues> = Path<TFieldValues>,
+> = {
   name: TName;
   label?: string;
   rules?: RegisterOptions<TFieldValues, TName>;
   children: ReactElement<ControlledChildProps>;
 };
 
-export function FormField<TFieldValues extends FieldValues = FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
-  name,
-  label,
-  rules,
-  children,
-}: FormFieldProps<TFieldValues, TName>) {
+export function FormField<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends Path<TFieldValues> = Path<TFieldValues>,
+>({ name, label, rules, children }: FormFieldProps<TFieldValues, TName>) {
   const {
     control,
     formState: { errors },
@@ -77,7 +91,11 @@ export function FormField<TFieldValues extends FieldValues = FieldValues, TName 
         }
       />
 
-      {fieldError?.message && <span className="text-sm text-red-500">{String(fieldError.message)}</span>}
+      {fieldError?.message && (
+        <span className="text-sm text-red-500">
+          {String(fieldError.message)}
+        </span>
+      )}
     </div>
   );
 }

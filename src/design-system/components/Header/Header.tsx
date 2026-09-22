@@ -1,13 +1,16 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Box from "@/design-system/primitives/Box";
-import Button from "@/design-system/primitives/Button";
-import Link from "@/design-system/primitives/Link";
-import Image from "@/design-system/primitives/Image";
-import { DropdownInput, DropdownItem } from "@/design-system/primitives/DropdownInput";
-import Icon from "@/design-system/primitives/Icon";
-import { Category } from "@/lib/types/types";
+import React, { useState, useEffect } from 'react';
+import Box from '@/design-system/primitives/Box';
+import Button from '@/design-system/primitives/Button';
+import Link from '@/design-system/primitives/Link';
+import Image from '@/design-system/primitives/Image';
+import {
+  DropdownInput,
+  DropdownItem,
+} from '@/design-system/primitives/DropdownInput';
+import Icon from '@/design-system/primitives/Icon';
+import { Category } from '@/lib/types/types';
 
 interface HeaderProps {
   isLoggedIn?: boolean;
@@ -18,7 +21,11 @@ interface HeaderProps {
   forceFullMenu?: boolean;
 }
 
-export default function Header({ isLoggedIn = false, userProfile, forceFullMenu = false }: HeaderProps) {
+export default function Header({
+  isLoggedIn = false,
+  userProfile,
+  forceFullMenu = false,
+}: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -28,15 +35,15 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
       setIsScrolled(scrollTop > 50);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const navigationItems = [{ label: "Print Articles", href: "/articles" }];
+  const navigationItems = [{ label: 'Print Articles', href: '/articles' }];
 
   const categories = Object.values(Category);
 
@@ -50,7 +57,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
       color="white"
       className={`
         z-50 transition-all duration-300 ease-in-out
-        ${isScrolled ? "shadow-lg py-2" : "py-4"}
+        ${isScrolled ? 'shadow-lg py-2' : 'py-4'}
         border-b border-black
       `}
     >
@@ -61,13 +68,22 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
           <Box className="flex-shrink-0">
             <Link href="/" newWindow={false} className="flex items-center">
               <Box className="transition-all duration-300 w-12">
-                <Image src="/logo.png" alt="NU Sci Magazine" width="w-12" ratio={1} borderColor="black" borderWidth={2} />
+                <Image
+                  src="/logo.png"
+                  alt="NU Sci Magazine"
+                  width="w-12"
+                  ratio={1}
+                  borderColor="black"
+                  borderWidth={2}
+                />
               </Box>
             </Link>
           </Box>
 
           {/* Desktop Navigation - Show always when forceFullMenu is true */}
-          <Box className={`${forceFullMenu ? "flex" : "hidden lg:flex"} items-center space-x-8`}>
+          <Box
+            className={`${forceFullMenu ? 'flex' : 'hidden lg:flex'} items-center space-x-8`}
+          >
             {/* {navigationItems.map((item) => (
               <Link
                 key={item.label}
@@ -118,7 +134,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
               variant="outline"
               size="sm"
               color="black"
-              onClick={() => (window.location.href = "/article-search")}
+              onClick={() => (window.location.href = '/article-search')}
               className="flex items-center h-[35px]"
             >
               <Icon icon="search" size="sm" className="mr-1" />
@@ -140,7 +156,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                 variant="outline"
                 size="sm"
                 color="black"
-                onClick={() => (window.location.href = "/login")}
+                onClick={() => (window.location.href = '/login')}
                 className="h-[32.5px]"
               >
                 Login
@@ -151,8 +167,18 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
           {/* Mobile Menu Button - Hide when forceFullMenu is true */}
           {!forceFullMenu && (
             <Box className="lg:hidden">
-              <Button variant="outline" size="sm" color="black" onClick={toggleMobileMenu} className="p-2">
-                {isMobileMenuOpen ? <Icon icon="x" size="sm" /> : <Icon icon="menu" size="sm" />}
+              <Button
+                variant="outline"
+                size="sm"
+                color="black"
+                onClick={toggleMobileMenu}
+                className="p-2"
+              >
+                {isMobileMenuOpen ? (
+                  <Icon icon="x" size="sm" />
+                ) : (
+                  <Icon icon="menu" size="sm" />
+                )}
               </Button>
             </Box>
           )}
@@ -221,7 +247,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                 size="sm"
                 color="black"
                 onClick={() => {
-                  window.location.href = "/search";
+                  window.location.href = '/search';
                   setIsMobileMenuOpen(false);
                 }}
                 className="flex items-center justify-center"
@@ -248,7 +274,7 @@ export default function Header({ isLoggedIn = false, userProfile, forceFullMenu 
                   size="sm"
                   color="black"
                   onClick={() => {
-                    window.location.href = "/login";
+                    window.location.href = '/login';
                     setIsMobileMenuOpen(false);
                   }}
                 >

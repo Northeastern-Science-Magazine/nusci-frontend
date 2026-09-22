@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { OverlayMedia, Overlay } from "@/design-system/components/MediaOverlay";
-import Button from "@/design-system/primitives/Button";
-import Box from "@/design-system/primitives/Box";
-import Image from "@/design-system/primitives/Image";
-import Text from "@/design-system/primitives/Text";
-import { useEffect, useState } from "react";
-import Badge from "@/design-system/primitives/Badge";
+import { OverlayMedia, Overlay } from '@/design-system/components/MediaOverlay';
+import Button from '@/design-system/primitives/Button';
+import Box from '@/design-system/primitives/Box';
+import Image from '@/design-system/primitives/Image';
+import Text from '@/design-system/primitives/Text';
+import { useEffect, useState } from 'react';
+import Badge from '@/design-system/primitives/Badge';
 
 function useCountUp(target: number, durationMs: number) {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
     const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
 
     if (prefersReducedMotion || durationMs <= 0) {
       setValue(target);
@@ -84,7 +84,7 @@ export default function Hero() {
                 className="inline-flex"
                 color="aqua"
                 size="lg"
-                onClick={() => (window.location.href = "/article-search")}
+                onClick={() => (window.location.href = '/article-search')}
               >
                 Browse articles
               </Button>
@@ -93,7 +93,7 @@ export default function Hero() {
                 variant="outline"
                 color="white"
                 size="lg"
-                onClick={() => (window.location.href = "/teams/eboard")}
+                onClick={() => (window.location.href = '/teams/eboard')}
               >
                 Learn more
               </Button>

@@ -1,31 +1,49 @@
-"use server";
+'use server';
 
-import { cookies } from "next/headers";
-import applySetCookieHeaders from "../helpers/applyGetSetCookie";
+import { cookies } from 'next/headers';
+import applySetCookieHeaders from '../helpers/applyGetSetCookie';
 
 export type ApiResponse<T> =
-  | { ok: true; data: T; headers?: Response["headers"]; setCookieHeaders?: string[] }
-  | { ok: false; error: string; headers?: Response["headers"]; setCookieHeaders?: string[] };
+  | {
+      ok: true;
+      data: T;
+      headers?: Response['headers'];
+      setCookieHeaders?: string[];
+    }
+  | {
+      ok: false;
+      error: string;
+      headers?: Response['headers'];
+      setCookieHeaders?: string[];
+    };
 
-type HttpMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
+type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 
-export async function api<T>(method: HttpMethod, endpoint: string, body?: any, isFormData?: boolean): Promise<ApiResponse<T>> {
+export async function api<T>(
+  method: HttpMethod,
+  endpoint: string,
+  body?: any,
+  isFormData?: boolean,
+): Promise<ApiResponse<T>> {
   try {
     const cookieStore = await cookies();
     const cookieString = cookieStore.toString();
 
     const headers: HeadersInit = {};
-    if (!isFormData) headers["Content-Type"] = "application/json";
-    if (cookieString) headers["Cookie"] = cookieString;
+    if (!isFormData) headers['Content-Type'] = 'application/json';
+    if (cookieString) headers['Cookie'] = cookieString;
 
     const options: RequestInit = {
       method,
       headers,
-      credentials: "include",
+      credentials: 'include',
       body: isFormData ? body : body ? JSON.stringify(body) : undefined,
     };
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, options);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`,
+      options,
+    );
     const rawText = await res.text();
 
     let parsed: any = rawText;
@@ -36,10 +54,15 @@ export async function api<T>(method: HttpMethod, endpoint: string, body?: any, i
     // Extract Set-Cookie headers from the response and mirror them to the browser
     applySetCookieHeaders(res.headers, cookieStore);
     const setCookieHeaders =
-      typeof (res.headers as any).getSetCookie === "function" ? ((res.headers as any).getSetCookie() as string[]) : undefined;
+      typeof (res.headers as any).getSetCookie === 'function'
+        ? ((res.headers as any).getSetCookie() as string[])
+        : undefined;
 
     if (!res.ok) {
-      const message = typeof parsed === "string" ? parsed : parsed?.message || "Request failed";
+      const message =
+        typeof parsed === 'string'
+          ? parsed
+          : parsed?.message || 'Request failed';
 
       return {
         ok: false,
@@ -58,7 +81,7 @@ export async function api<T>(method: HttpMethod, endpoint: string, body?: any, i
   } catch (e) {
     return {
       ok: false,
-      error: e instanceof Error ? e.message : "Unknown error",
+      error: e instanceof Error ? e.message : 'Unknown error',
     };
   }
 }

@@ -7,6 +7,7 @@ import DashboardCard from './components/dashboardCard';
 import { OverlayMedia, Overlay } from '@/design-system/components/MediaOverlay';
 import Image from '@/design-system/primitives/Image';
 import Box from '@/design-system/primitives/Box';
+import { getMyProfile } from '@/lib/api/users';
 
 interface PublicProfilePageProps {
   params: Promise<{ emailPrefix: string }>;
@@ -16,21 +17,15 @@ export default async function DashboardPage({
   params,
 }: PublicProfilePageProps) {
   const { emailPrefix } = await params;
-  let roles: Roles[] = [];
-  let userName: string = '';
+  const profile = await getMyProfile();
+  const myEmailPrefix = profile.email.split('@')[0];
 
-  //Note: the below is in place of an api call using emailPrefix to get data
-
-  if (emailPrefix == 'admin') {
-    roles = [Roles.Admin];
-  } else if (emailPrefix == 'editor') {
-    roles = [Roles.Editor];
-  } else if (emailPrefix == 'photo') {
-    roles = [Roles.Photographer];
-  } else {
+  if (emailPrefix !== myEmailPrefix) {
     notFound();
   }
-  userName = 'John';
+
+  const roles: Roles[] = profile.roles;
+  const userName: string = profile.name;
 
   return (
     <OverlayMedia className="relative w-full overflow-hidden">

@@ -62,8 +62,7 @@ export default function InternalHeader({
   ];
 
   const handleLogout = async () => {
-    document.cookie =
-      'auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    await fetch('/api/logout', { method: 'POST' });
     window.location.href = '/';
   };
 

@@ -1,5 +1,5 @@
-import { Video } from "./Video";
-import { type VideoProps } from "./variants";
+import { Video } from './Video';
+import { type VideoProps } from './variants';
 
 /** Define safe exports for this component folder */
 export { VideoProps };

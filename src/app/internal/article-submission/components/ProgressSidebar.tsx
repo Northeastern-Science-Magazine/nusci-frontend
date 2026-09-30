@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Text from "@/design-system/primitives/Text";
-import { ProgressBar } from "@/design-system/primitives/ProgressBar";
+import React, { useState } from 'react';
+import Text from '@/design-system/primitives/Text';
+import { ProgressBar } from '@/design-system/primitives/ProgressBar';
 
 type FormProgress = {
   author: boolean;
   title: boolean;
   categories: boolean;
   content: boolean;
-  pullQuote: boolean;
+  pullQuotes: boolean;
   sources: boolean;
 };
 
@@ -27,8 +27,8 @@ const ProgressCircle = ({
       <div
         className={`h-8 w-8 rounded-full border-2 transition-all duration-300 ${
           filled
-            ? "border-sage-green bg-sage-green"
-            : "border-gray-300 bg-white"
+            ? 'border-sage-green bg-sage-green'
+            : 'border-gray-300 bg-white'
         }`}
       >
         {filled && (
@@ -49,9 +49,9 @@ const ProgressCircle = ({
       </div>
       <a href={href}>
         <Text
-          color={filled ? "sage-green" : "neutral"}
+          color={filled ? 'sage-green' : 'neutral'}
           size={14}
-          style={filled ? "bold" : "regular"}
+          style={filled ? 'bold' : 'regular'}
         >
           {label}
         </Text>
@@ -83,6 +83,11 @@ export const ProgressSidebar = ({ progress }: { progress: FormProgress }) => {
       <div className="space-y-4">
         <ProgressCircle
           filled={progress.author}
+          label="Issue"
+          href="#issue-number"
+        />
+        <ProgressCircle
+          filled={progress.author}
           label="Author"
           href="#author"
         />
@@ -98,9 +103,9 @@ export const ProgressSidebar = ({ progress }: { progress: FormProgress }) => {
           href="#content"
         />
         <ProgressCircle
-          filled={progress.pullQuote}
-          label="Pull Quote"
-          href="#pull-quote"
+          filled={progress.pullQuotes}
+          label="Pull Quotes"
+          href="#pull-quotes "
         />
         <ProgressCircle
           filled={progress.sources}

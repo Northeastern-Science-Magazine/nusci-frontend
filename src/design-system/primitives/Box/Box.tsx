@@ -1,6 +1,6 @@
-import React from "react";
-import { BoxProps, boxVariantsCN } from "./variants";
-import clsx from "clsx";
+import React from 'react';
+import { BoxProps, boxVariantsCN } from './variants';
+import clsx from 'clsx';
 
 /**
  * Box Component
@@ -11,5 +11,9 @@ import clsx from "clsx";
  * @returns Box Component
  */
 export const Box = ({ className, children, ...variantProps }: BoxProps) => {
-  return <div className={clsx(boxVariantsCN(variantProps), className)}>{children}</div>;
+  return (
+    <div className={clsx(boxVariantsCN(variantProps), className)}>
+      {children}
+    </div>
+  );
 };

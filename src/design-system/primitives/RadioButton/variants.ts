@@ -1,11 +1,29 @@
-import { AnimationProps, animationVariants } from "@/design-system/utilities/props/Animation/animation";
-import { DisplayProps, displayVariants } from "@/design-system/utilities/props/Display/display";
-import { MarginProps, marginVariants } from "@/design-system/utilities/props/Margin/margin";
-import { PaddingProps, paddingVariants } from "@/design-system/utilities/props/Padding/padding";
-import { PositionProps, positionVariants } from "@/design-system/utilities/props/Position/position";
-import { SizeProps, sizeVariants } from "@/design-system/utilities/props/Size/size";
-import clsx from "clsx";
-import { tv, type VariantProps } from "tailwind-variants";
+import {
+  AnimationProps,
+  animationVariants,
+} from '@/design-system/utilities/props/Animation/animation';
+import {
+  DisplayProps,
+  displayVariants,
+} from '@/design-system/utilities/props/Display/display';
+import {
+  MarginProps,
+  marginVariants,
+} from '@/design-system/utilities/props/Margin/margin';
+import {
+  PaddingProps,
+  paddingVariants,
+} from '@/design-system/utilities/props/Padding/padding';
+import {
+  PositionProps,
+  positionVariants,
+} from '@/design-system/utilities/props/Position/position';
+import {
+  SizeProps,
+  sizeVariants,
+} from '@/design-system/utilities/props/Size/size';
+import clsx from 'clsx';
+import { tv, type VariantProps } from 'tailwind-variants';
 
 /** Define RadioButton Variants
  * applies dynamic styling for checked/unchecked state using Radix data-state
@@ -13,29 +31,34 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const radioButtonVariants = tv({
   variants: {
     color: {
-      black: "border-black data-[state=checked]:bg-black focus:ring-black",
-      white: "border-white data-[state=checked]:bg-white focus:ring-white",
-      red: "border-red-500 data-[state=checked]:bg-red-500 focus:ring-red-500",
-      aqua: "border-aqua data-[state=checked]:bg-aqua focus:ring-aqua",
-      "aqua-light": "border-aqua-light data-[state=checked]:bg-aqua-light focus:ring-aqua-light",
-      "forest-green": "border-forest-green data-[state=checked]:bg-forest-green focus:ring-forest-green",
-      "sage-green": "border-sage-green data-[state=checked]:bg-sage-green focus:ring-sage-green",
-      border: "border-border data-[state=checked]:bg-border focus:ring-border",
-      neutral: "border-neutral data-[state=checked]:bg-neutral focus:ring-neutral",
-      purple: "border-purple data-[state=checked]:bg-purple focus:ring-purple",
-      pink: "border-pink data-[state=checked]:bg-pink focus:ring-pink",
-      maroon: "border-maroon data-[state=checked]:bg-maroon focus:ring-maroon",
-      coral: "border-coral data-[state=checked]:bg-coral focus:ring-coral",
-      marigold: "border-marigold data-[state=checked]:bg-marigold focus:ring-marigold",
+      black: 'border-black data-[state=checked]:bg-black focus:ring-black',
+      white: 'border-white data-[state=checked]:bg-white focus:ring-white',
+      red: 'border-red-500 data-[state=checked]:bg-red-500 focus:ring-red-500',
+      aqua: 'border-aqua data-[state=checked]:bg-aqua focus:ring-aqua',
+      'aqua-light':
+        'border-aqua-light data-[state=checked]:bg-aqua-light focus:ring-aqua-light',
+      'forest-green':
+        'border-forest-green data-[state=checked]:bg-forest-green focus:ring-forest-green',
+      'sage-green':
+        'border-sage-green data-[state=checked]:bg-sage-green focus:ring-sage-green',
+      border: 'border-border data-[state=checked]:bg-border focus:ring-border',
+      neutral:
+        'border-neutral data-[state=checked]:bg-neutral focus:ring-neutral',
+      purple: 'border-purple data-[state=checked]:bg-purple focus:ring-purple',
+      pink: 'border-pink data-[state=checked]:bg-pink focus:ring-pink',
+      maroon: 'border-maroon data-[state=checked]:bg-maroon focus:ring-maroon',
+      coral: 'border-coral data-[state=checked]:bg-coral focus:ring-coral',
+      marigold:
+        'border-marigold data-[state=checked]:bg-marigold focus:ring-marigold',
     },
     direction: {
-      vertical: "",
-      horizontal: "",
+      vertical: '',
+      horizontal: '',
     },
   },
   defaultVariants: {
-    color: "black",
-    direction: "horizontal",
+    color: 'black',
+    direction: 'horizontal',
   },
 });
 
@@ -52,7 +75,8 @@ export type RadioButtonVariants = VariantProps<typeof radioButtonVariants>;
  */
 
 export interface RadioButtonProps
-  extends RadioButtonVariants,
+  extends
+    RadioButtonVariants,
     AnimationProps,
     DisplayProps,
     MarginProps,
@@ -67,7 +91,10 @@ export interface RadioButtonProps
   className?: string;
 }
 
-export const radioButtonVariantsCN = (variantProps: VariantProps<any>, className?: string) =>
+export const radioButtonVariantsCN = (
+  variantProps: VariantProps<any>,
+  className?: string,
+) =>
   clsx(
     radioButtonVariants(variantProps),
     animationVariants(variantProps),
@@ -76,5 +103,5 @@ export const radioButtonVariantsCN = (variantProps: VariantProps<any>, className
     paddingVariants(variantProps),
     positionVariants(variantProps),
     sizeVariants(variantProps),
-    className
+    className,
   );

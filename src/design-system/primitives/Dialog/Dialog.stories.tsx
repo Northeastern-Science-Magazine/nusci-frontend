@@ -1,29 +1,15 @@
-import * as React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
-import { Dialog, DialogTrigger, DialogWindow } from "./Dialog";
-import Button from "../Button";
-import Box from "../Box";
-import Text from "../Text";
-import { Grid, GridCol, GridRow } from "../Grid";
+import * as React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Dialog, DialogTrigger, DialogWindow } from './Dialog';
+import Button from '../Button';
+import Box from '../Box';
+import Text from '../Text';
+import { Grid, GridCol, GridRow } from '../Grid';
+import { storyColors } from '@/design-system/utilities/storyTypes/storyColors';
 
-const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 
-const sizes = ["xs", "sm", "md", "lg", "xl"] as const;
+const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 type DialogStoryArgs = {
   windowSize: (typeof sizes)[number];
@@ -32,14 +18,14 @@ type DialogStoryArgs = {
 
 const meta: Meta<DialogStoryArgs> = {
   component: Dialog,
-  title: "Primitives/Dialog",
+  title: 'Primitives/Dialog',
   argTypes: {
     windowSize: {
-      control: "select",
+      control: 'select',
       options: sizes,
     },
     windowColor: {
-      control: "select",
+      control: 'select',
       options: colors,
     },
   },
@@ -50,8 +36,8 @@ type Story = StoryObj<DialogStoryArgs>;
 
 export const Default: Story = {
   args: {
-    windowSize: "md",
-    windowColor: "white",
+    windowSize: 'md',
+    windowColor: 'white',
   },
   render: (args) => {
     return (

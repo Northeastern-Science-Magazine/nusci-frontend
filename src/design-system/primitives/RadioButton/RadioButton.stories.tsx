@@ -1,32 +1,18 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import RadioButton from "./RadioButton";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import RadioButton from './RadioButton';
+import React from 'react';
+import { storyColors } from '@/design-system/utilities/storyTypes/storyColors';
 
 // color vairants
-const colors = [
-  "black",
-  "white",
-  "red",
-  "aqua",
-  "aqua-light",
-  "forest-green",
-  "sage-green",
-  "border",
-  "neutral",
-  "purple",
-  "pink",
-  "maroon",
-  "coral",
-  "marigold",
-] as const;
+const colors = storyColors;
 
 // Define Storybook metadata
 const meta: Meta<typeof RadioButton> = {
   component: RadioButton,
-  title: "Primitives/RadioButton",
+  title: 'Primitives/RadioButton',
   argTypes: {
     color: {
-      control: "select",
+      control: 'select',
       options: colors,
     },
   },
@@ -37,28 +23,28 @@ type Story = StoryObj<typeof RadioButton>;
 
 // sample options
 const options = [
-  { label: "Option A", value: "a" },
-  { label: "Option B", value: "b" },
-  { label: "Option C", value: "c" },
+  { label: 'Option A', value: 'a' },
+  { label: 'Option B', value: 'b' },
+  { label: 'Option C', value: 'c' },
 ];
 
 // default story
 export const Default: Story = {
   args: {
-    name: "default-radio",
-    color: "black",
+    name: 'default-radio',
+    color: 'black',
     options,
-    defaultValue: "a",
+    defaultValue: 'a',
   },
 };
 
 export const Vertical: Story = {
   args: {
-    name: "default-radio",
-    color: "black",
+    name: 'default-radio',
+    color: 'black',
     options,
-    defaultValue: "a",
-    direction: "vertical",
+    defaultValue: 'a',
+    direction: 'vertical',
   },
 };
 
@@ -68,11 +54,16 @@ export const Gallery: Story = {
   render: () => (
     <div className="space-y-4">
       {colors.map((color) => {
-        const isWhite = color === "white";
+        const isWhite = color === 'white';
         return (
-          <div key={color} className={isWhite ? "bg-zinc-300 p-4" : "p-4"}>
+          <div key={color} className={isWhite ? 'bg-zinc-300 p-4' : 'p-4'}>
             <h4 className="mb-2 font-semibold capitalize">{color}</h4>
-            <RadioButton name={`radio-${color}`} color={color} options={options} defaultValue="b" />
+            <RadioButton
+              name={`radio-${color}`}
+              color={color}
+              options={options}
+              defaultValue="b"
+            />
           </div>
         );
       })}

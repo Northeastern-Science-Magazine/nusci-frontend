@@ -1,23 +1,23 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Flex, FlexChild } from "./Flex";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Flex, FlexChild } from './Flex';
+import React from 'react';
 
-const wraps = ["noWrap", "wrap", "reverse"] as const;
-const directions = ["row", "rowReverse", "col", "colReverse"] as const;
+const wraps = ['noWrap', 'wrap', 'reverse'] as const;
+const directions = ['row', 'rowReverse', 'col', 'colReverse'] as const;
 const gaps = [
   0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
 ] as const;
-const auto = ["base", "auto"] as const;
-const basis = ["base", "full"] as const;
+const auto = ['base', 'auto'] as const;
+const basis = ['base', 'full'] as const;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Flex> = {
   component: Flex,
-  title: "Primitives/Flex",
+  title: 'Primitives/Flex',
   argTypes: {
-    gap: { control: "select", options: gaps },
-    wrap: { control: "select", options: wraps },
-    direction: { control: "select", options: directions },
+    gap: { control: 'select', options: gaps },
+    wrap: { control: 'select', options: wraps },
+    direction: { control: 'select', options: directions },
   },
 };
 
@@ -118,14 +118,17 @@ export const ChangingSize: Story = {
           direction="row"
           wrap="wrap"
         >
-          <FlexChild className="bg-sage-green p-4 text-white rounded" grow="grow">
-            {"grow"}
+          <FlexChild
+            className="bg-sage-green p-4 text-white rounded"
+            grow="grow"
+          >
+            {'grow'}
           </FlexChild>
           <FlexChild
             className="bg-forest-green p-4 text-white rounded"
             grow="noGrow"
           >
-            {"noGrow"}
+            {'noGrow'}
           </FlexChild>
         </Flex>
         <Flex
@@ -134,14 +137,17 @@ export const ChangingSize: Story = {
           direction="row"
           wrap="wrap"
         >
-          <FlexChild className="bg-sage-green p-4 text-white rounded" grow="grow">
-            {"grow"}
+          <FlexChild
+            className="bg-sage-green p-4 text-white rounded"
+            grow="grow"
+          >
+            {'grow'}
           </FlexChild>
           <FlexChild
             className="bg-forest-green p-4 text-white rounded"
             grow="noGrow"
           >
-            {"noGrow"}
+            {'noGrow'}
           </FlexChild>
         </Flex>
       </div>

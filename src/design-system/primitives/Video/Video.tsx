@@ -1,6 +1,6 @@
-import * as AspectRatio from "@radix-ui/react-aspect-ratio";
-import { VideoProps, videoVariantsCN } from "./variants";
-import Box from "../Box";
+import * as AspectRatio from '@radix-ui/react-aspect-ratio';
+import { VideoProps, videoVariantsCN } from './variants';
+import Box from '../Box';
 
 /**
  * Video component.

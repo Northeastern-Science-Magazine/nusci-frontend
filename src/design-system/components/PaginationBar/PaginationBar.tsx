@@ -1,8 +1,8 @@
-import { PaginationBarProps } from "./variants";
-import Button from "../../primitives/Button";
-import { Icon } from "../../primitives/Icon";
-import React from "react";
-import clsx from "clsx";
+import { PaginationBarProps } from './variants';
+import Button from '../../primitives/Button';
+import { Icon } from '../../primitives/Icon';
+import React from 'react';
+import clsx from 'clsx';
 
 export function PaginationBar({
   className,
@@ -30,33 +30,32 @@ export function PaginationBar({
   }
 
   const pages = [];
-  console.log(start, end);
   for (let i = start; i <= end; i++) {
     pages.push(
-      <div className={clsx(className, i !== activeItem && "opacity-50")}>
+      <div className={clsx(className, i !== activeItem && 'opacity-50')}>
         <Button
           onClick={onClickFunctionGenerator(i)}
           color={variantProps.color}
         >
           {i.toString()}
         </Button>
-      </div>
+      </div>,
     );
   }
 
   return (
-    <div className={"flex items-center gap-2"}>
+    <div className={'flex items-center gap-2'}>
       {activeItem !== 1 && (
         <Icon
-          icon={"arrowleft"}
+          icon={'arrowleft'}
           onClick={onClickFunctionGenerator(activeItem - 1)}
           color={variantProps.color}
         />
       )}
-      <div className={clsx("flex items-center gap-2", className)}>{pages}</div>
+      <div className={clsx('flex items-center gap-2', className)}>{pages}</div>
       {activeItem !== maxItems && (
         <Icon
-          icon={"arrowright"}
+          icon={'arrowright'}
           onClick={onClickFunctionGenerator(activeItem + 1)}
           color={variantProps.color}
         />

@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import clsx from "clsx";
-import Image from "@/primitives/Image";
+import { useEffect, useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
+import clsx from 'clsx';
+import Image from '@/primitives/Image';
 import {
   mediaCarouselEmptyStateVariants,
   mediaCarouselLayoutBySize,
@@ -9,19 +9,22 @@ import {
   mediaCarouselRootVariants,
   mediaCarouselViewportVariants,
   type MediaCarouselProps,
-} from "./variants";
+} from './variants';
 
 export function MediaCarousel({
   media,
   visibleCount = 7,
-  size = "lg",
+  size = 'lg',
   initialIndex = 0,
   onIndexChange,
   className,
+  centerLink,
 }: MediaCarouselProps) {
   const layout = mediaCarouselLayoutBySize[size];
   const mod = (n: number, m: number) => ((n % m) + m) % m;
-  const [index, setIndex] = useState(() => (media.length ? mod(initialIndex, media.length) : 0));
+  const [index, setIndex] = useState(() =>
+    media.length ? mod(initialIndex, media.length) : 0,
+  );
   const [direction, setDirection] = useState<-1 | 0 | 1>(0); // -1 = left, +1 = right
   const rootRef = useRef<HTMLDivElement>(null);
   const hasEnteredView = useInView(rootRef, { once: true, amount: 0.25 });
@@ -31,7 +34,11 @@ export function MediaCarousel({
   }, [index, onIndexChange]);
 
   if (!media.length) {
-    return <div className={mediaCarouselEmptyStateVariants()}>No items to display</div>;
+    return (
+      <div className={mediaCarouselEmptyStateVariants()}>
+        No items to display
+      </div>
+    );
   }
 
   const safeVisibleCount = Math.max(1, Math.floor(visibleCount));
@@ -53,7 +60,11 @@ export function MediaCarousel({
   };
 
   return (
-    <div ref={rootRef} className={clsx(mediaCarouselRootVariants({ size }), className)} aria-roledescription="carousel">
+    <div
+      ref={rootRef}
+      className={clsx(mediaCarouselRootVariants({ size }), className)}
+      aria-roledescription="carousel"
+    >
       <div className={mediaCarouselViewportVariants({ size })}>
         {visibleItems.map(({ url, index: itemIndex, offset }) => {
           const scale = 1 - Math.abs(offset) * 0.08;
@@ -61,21 +72,22 @@ export function MediaCarousel({
           const rotateY = offset * -15;
           const zIndex = 20 - Math.abs(offset);
 
-          const isInteractive = offset !== 0;
+          const isCenter = offset == 0;
 
           const entranceInitial = {
-            x: "calc(-50% + 0px)",
-            y: "-50%",
+            x: 'calc(-50% + 0px)',
+            y: '-50%',
             rotateY: 0,
             scale: 0.85,
           };
 
           const paginateInitial = {
             x: `calc(-50% + ${-direction}px)`,
-            y: "-50%",
+            y: '-50%',
             rotateY: -direction * 25,
             scale: 0.85,
           };
+          const href = centerLink ? centerLink(itemIndex) : '';
 
           return (
             <motion.div
@@ -85,7 +97,7 @@ export function MediaCarousel({
                 hasEnteredView
                   ? {
                       x: `calc(-50% + ${x}px)`,
-                      y: "-50%",
+                      y: '-50%',
                       rotateY,
                       scale,
                     }
@@ -93,15 +105,22 @@ export function MediaCarousel({
               }
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              onClick={isInteractive ? () => paginate(offset) : undefined}
+              onClick={
+                isCenter ? () => window.open(href) : () => paginate(offset)
+              }
               style={{ zIndex }}
               className={clsx(
-                "absolute left-1/2 top-1/2 [transform-style:preserve-3d]",
+                'absolute left-1/2 top-1/2 [transform-style:preserve-3d]',
                 mediaCarouselPanelVariants({ size }),
-                isInteractive && "cursor-pointer"
+                'cursor-pointer',
               )}
             >
-              <Image src={url} alt={`Carousel image ${itemIndex + 1}`} raw width="auto" />
+              <Image
+                src={url}
+                alt={`Carousel image ${itemIndex + 1}`}
+                raw
+                width="auto"
+              />
             </motion.div>
           );
         })}

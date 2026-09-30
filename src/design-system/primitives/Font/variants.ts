@@ -1,51 +1,51 @@
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv, type VariantProps } from 'tailwind-variants';
 
 /** Define Font Variants using Tailwind Variant Definitions */
 export const fontVariants = tv({
   variants: {
     sans: {
-      true: "font-sans",
-      false: "",
+      true: 'font-sans',
+      false: '',
     },
     serif: {
-      true: "font-serif",
-      false: "",
+      true: 'font-serif',
+      false: '',
     },
     mono: {
-      true: "font-mono",
-      false: "",
+      true: 'font-mono',
+      false: '',
     },
     arial: {
-      true: "font-[Arial,sans-serif]",
-      false: "",
+      true: 'font-[Arial,sans-serif]',
+      false: '',
     },
     georgia: {
-      true: "font-[Georgia,serif]",
-      false: "",
+      true: 'font-[Georgia,serif]',
+      false: '',
     },
     poppins: {
-      true: "font-[Poppins,sans-serif]",
-      false: "",
+      true: 'font-[Poppins,sans-serif]',
+      false: '',
     },
     verdana: {
-      true: "font-[Verdana,sans-serif]",
-      false: "",
+      true: 'font-[Verdana,sans-serif]',
+      false: '',
     },
     tahoma: {
-      true: "font-[Tahoma,sans-serif]",
-      false: "",
+      true: 'font-[Tahoma,sans-serif]',
+      false: '',
     },
     courier: {
-      true: "font-[Courier,monospace]",
-      false: "",
+      true: 'font-[Courier,monospace]',
+      false: '',
     },
-    "lucida-console": {
+    'lucida-console': {
       true: 'font-["Lucida Console",monospace]',
-      false: "",
+      false: '',
     },
     futura: {
-      true: "font-[Futura,sans-serif]",
-      false: "",
+      true: 'font-[Futura,sans-serif]',
+      false: '',
     },
   },
   defaultVariants: {

@@ -1,7 +1,7 @@
-import { Checkbox as RadixCheckbox } from "radix-ui";
-import { checkboxVariants, CheckboxProps, indicatorVariants } from "./variants";
-import React, { useState, useEffect } from "react";
-import clsx from "clsx";
+import { Checkbox as RadixCheckbox } from 'radix-ui';
+import { checkboxVariants, CheckboxProps, indicatorVariants } from './variants';
+import React, { useState, useEffect } from 'react';
+import clsx from 'clsx';
 /**
  * Checkbox Component
  *
@@ -36,13 +36,13 @@ export const Checkbox = ({
           <label
             key={option}
             className={`flex items-center gap-2 mb-3 relative ${
-              disabled ? "pointer-events-none opacity-50" : ""
+              disabled ? 'pointer-events-none opacity-50' : ''
             }`}
           >
             <RadixCheckbox.Root
               className={`${checkboxVariants({
                 size,
-                color: disabled ? "neutral" : color,
+                color: disabled ? 'neutral' : color,
               })} relative`}
               checked={isChecked}
               onCheckedChange={(checked) => handleToggle(option, !!checked)}
@@ -52,7 +52,7 @@ export const Checkbox = ({
               <RadixCheckbox.Indicator
                 className={indicatorVariants({
                   size,
-                  color: disabled ? "neutral" : color,
+                  color: disabled ? 'neutral' : color,
                 })}
               />
             </RadixCheckbox.Root>

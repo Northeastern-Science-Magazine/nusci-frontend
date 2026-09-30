@@ -43,8 +43,6 @@ export default function Header({
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const navigationItems = [{ label: 'Print Articles', href: '/articles' }];
-
   const categories = Object.values(Category);
 
   return (
@@ -84,41 +82,31 @@ export default function Header({
           <Box
             className={`${forceFullMenu ? 'flex' : 'hidden lg:flex'} items-center space-x-8`}
           >
-            {/* {navigationItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                newWindow={false}
-                className="text-gray-700 hover:text-black transition-colors duration-200 font-medium"
-              >
-                {item.label}
-              </Link>
-            ))} */}
-
             {/* About Us Dropdown */}
-            {/* <Box className="relative">
+            <Box className="relative">
               <DropdownInput
                 placeholder="About Us"
                 onChange={(value) => {
-                  if (value === "about") {
-                    window.location.href = "/about-us";
-                  } else if (value === "eboard") {
-                    window.location.href = "/teams/eboard";
+                  if (value === 'teams') {
+                    window.location.href = '/teams';
+                  } else if (value === 'eboard') {
+                    window.location.href = '/teams/eboard';
                   }
                 }}
               >
-                <DropdownItem value="about">Teams</DropdownItem>
+                <DropdownItem value="teams">Teams</DropdownItem>
                 <DropdownItem value="eboard">Eboard & Editors</DropdownItem>
               </DropdownInput>
-            </Box> */}
+            </Box>
 
             {/* Categories Dropdown */}
-            {/* <Box className="relative">
+            <Box className="relative">
               <DropdownInput
                 placeholder="Categories"
                 onChange={(value) => {
-                  // Handle category selection
-                  window.location.href = `/${value}`;
+                  window.location.href = `/article-search?category=${encodeURIComponent(
+                    value,
+                  )}`;
                 }}
               >
                 {categories.map((category) => (
@@ -127,7 +115,7 @@ export default function Header({
                   </DropdownItem>
                 ))}
               </DropdownInput>
-            </Box> */}
+            </Box>
 
             {/* Search Articles Button */}
             <Button
@@ -188,48 +176,34 @@ export default function Header({
         {!forceFullMenu && isMobileMenuOpen && (
           <Box className="lg:hidden mt-4 pb-4 border-t border-gray-200">
             <Box className="flex flex-col space-y-4 pt-4">
-              {/* {navigationItems.map((item) => (
-                <Button
-                  key={item.label}
-                  variant="outline"
-                  size="sm"
-                  color="black"
-                  onClick={() => {
-                    window.location.href = item.href;
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="w-full justify-center"
-                >
-                  {item.label}
-                </Button>
-              ))} */}
-
               {/* Mobile About Us Dropdown */}
-              {/* <Box className="w-full">
+              <Box className="w-full">
                 <DropdownInput
                   placeholder="About Us"
                   className="w-full"
                   onChange={(value) => {
-                    if (value === "about") {
-                      window.location.href = "/about-us";
-                    } else if (value === "eboard") {
-                      window.location.href = "/teams/eboard";
+                    if (value === 'teams') {
+                      window.location.href = '/teams';
+                    } else if (value === 'eboard') {
+                      window.location.href = '/teams/eboard';
                     }
                     setIsMobileMenuOpen(false);
                   }}
                 >
-                  <DropdownItem value="about">Teams</DropdownItem>
+                  <DropdownItem value="teams">Teams</DropdownItem>
                   <DropdownItem value="eboard">Eboard & Editors</DropdownItem>
                 </DropdownInput>
-              </Box> */}
+              </Box>
 
               {/* Mobile Categories Dropdown */}
-              {/* <Box className="w-full">
+              <Box className="w-full">
                 <DropdownInput
                   placeholder="Categories"
                   className="w-full"
                   onChange={(value) => {
-                    window.location.href = `/${value}`;
+                    window.location.href = `/article-search?category=${encodeURIComponent(
+                      value,
+                    )}`;
                     setIsMobileMenuOpen(false);
                   }}
                 >
@@ -239,7 +213,7 @@ export default function Header({
                     </DropdownItem>
                   ))}
                 </DropdownInput>
-              </Box> */}
+              </Box>
 
               {/* Mobile Search Button */}
               <Button
@@ -247,7 +221,7 @@ export default function Header({
                 size="sm"
                 color="black"
                 onClick={() => {
-                  window.location.href = '/search';
+                  window.location.href = '/article-search';
                   setIsMobileMenuOpen(false);
                 }}
                 className="flex items-center justify-center"

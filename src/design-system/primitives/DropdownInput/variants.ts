@@ -73,6 +73,7 @@ export interface DropdownInputProps
   className?: string;
   children: ReactElement<DropdownItemProps> | ReactElement<DropdownItemProps>[];
   placeholder?: string;
+  defaultValue?: string;
 }
 
 export const dropdownInputVariantsCN = (

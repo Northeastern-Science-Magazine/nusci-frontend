@@ -43,7 +43,6 @@ export default function InternalHeader({
 
   // Navigation items - public site links
   const navigationItems: { label: string; href: string }[] = [
-    { label: 'Home', href: '/' },
     { label: 'Print Articles', href: '/articles' },
   ];
 
@@ -105,12 +104,8 @@ export default function InternalHeader({
         {/* Main Navigation */}
         <Box className="flex items-center justify-between h-full">
           {/* Logo */}
-          <Box className="flex-shrink-0">
-            <Link
-              href={`/internal/dashboard/${emailPrefix}`}
-              newWindow={false}
-              className="flex items-center"
-            >
+          <Box className="flex-shrink-0 flex items-center">
+            <Link href="/" newWindow={false} className="flex items-center">
               <Box className="transition-all duration-300 w-10">
                 <Image
                   src="/logo.png"
@@ -121,9 +116,13 @@ export default function InternalHeader({
                   borderWidth={2}
                 />
               </Box>
-              <span className="ml-3 font-semibold text-gray-800 text-sm">
-                Internal Portal
-              </span>
+            </Link>
+            <Link
+              href={`/internal/dashboard/${emailPrefix}`}
+              newWindow={false}
+              className="ml-3 font-semibold text-gray-800 text-sm"
+            >
+              Internal Portal
             </Link>
           </Box>
 

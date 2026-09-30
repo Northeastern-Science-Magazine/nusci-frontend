@@ -20,7 +20,9 @@ export default function LoginPage() {
     console.log('Login data:', data);
     const result = await apiLogin(data);
     if (result.ok) {
-      console.log('Login process happened');
+      // redirects to the dashboard on login
+      const emailPrefix = data.email.split('@')[0];
+      window.location.href = `/internal/dashboard/${emailPrefix}`;
     } else {
       console.log('Login process failed');
     }

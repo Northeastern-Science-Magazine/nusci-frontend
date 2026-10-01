@@ -20,7 +20,8 @@ export default function LoginPage() {
     console.log('Login data:', data);
     const result = await apiLogin(data);
     if (result.ok) {
-      console.log('Login process happened');
+      // redirects to the profile on login
+      window.location.href = `/internal/profile`;
     } else {
       console.log('Login process failed');
     }

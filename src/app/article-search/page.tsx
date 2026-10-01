@@ -59,10 +59,23 @@ const getArticleDescription = (article: Article): string => {
   return firstParagraph.map((seg) => seg.content).join(' ');
 };
 
-export default function ArticleSearchPage() {
+interface ArticleSearchPageProps {
+  searchParams: { category?: string | string[] };
+}
+
+export default function ArticleSearchPage({
+  searchParams,
+}: ArticleSearchPageProps) {
+  // preset the category filter from ?category= (e.g. links from the header)
+  const initialCategory =
+    typeof searchParams.category === 'string' &&
+    Object.values(Category).includes(searchParams.category as Category)
+      ? searchParams.category
+      : 'all';
+
   const [title, setTitle] = useState('');
   const [debouncedTitle, setDebouncedTitle] = useState('');
-  const [category, setCategory] = useState<string>('all');
+  const [category, setCategory] = useState<string>(initialCategory);
   const [sortBy, setSortBy] = useState<'asc' | 'desc'>('desc');
   const [issueNumber, setIssueNumber] = useState('');
   const [articles, setArticles] = useState<Article[]>([]);
@@ -72,7 +85,9 @@ export default function ArticleSearchPage() {
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [resultsCount, setResultsCount] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(
+    initialCategory !== 'all',
+  );
   const [initialLoad, setInitialLoad] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(15);
 
@@ -359,6 +374,12 @@ export default function ArticleSearchPage() {
                           <DropdownInput
                             placeholder="All categories"
                             key={keys.category}
+                            // only preset on first render; cleared once the filter is reset
+                            defaultValue={
+                              keys.category === 0 && initialCategory !== 'all'
+                                ? initialCategory
+                                : undefined
+                            }
                             onChange={setCategory}
                           >
                             {Object.entries(CATEGORY_LABEL).map(

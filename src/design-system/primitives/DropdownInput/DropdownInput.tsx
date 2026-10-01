@@ -39,10 +39,11 @@ export function DropdownInput({
   className,
   children,
   placeholder,
+  defaultValue,
   ...props
 }: DropdownInputProps) {
   return (
-    <Select.Root onValueChange={onChange}>
+    <Select.Root onValueChange={onChange} defaultValue={defaultValue}>
       <Select.Trigger
         className={clsx(
           dropdownInputVariantsCN(props),

@@ -20,9 +20,8 @@ export default function LoginPage() {
     console.log('Login data:', data);
     const result = await apiLogin(data);
     if (result.ok) {
-      // redirects to the dashboard on login
-      const emailPrefix = data.email.split('@')[0];
-      window.location.href = `/internal/dashboard/${emailPrefix}`;
+      // redirects to the profile on login
+      window.location.href = `/internal/profile`;
     } else {
       console.log('Login process failed');
     }

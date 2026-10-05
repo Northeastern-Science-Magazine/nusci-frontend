@@ -90,7 +90,7 @@ export default function EboardPage() {
       bio: 'Raina is a 2nd year Cell and Molecular Biology major with a minor in Chemistry. She joined NU Sci her first semester as a writer, and loves be able to express her love of science creatively. Outside of NU Sci she enjoys spending time in the lab, crocheting, and watching movies with her friends!',
       graduationYear: 2029,
       major: 'Cell and Molecular Biology',
-      email: '@northeastern.edu',
+      email: 'langlais.r@northeastern.edu',
       avatarUrl: '/headshots/raina_headshot.jpg',
     },
     {

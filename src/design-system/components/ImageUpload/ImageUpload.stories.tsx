@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import ImageUpload from "./ImageUpload";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import ImageUpload from './ImageUpload';
+import React from 'react';
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof ImageUpload> = {
   component: ImageUpload,
-  title: "Components/ImageUpload",
+  title: 'Components/ImageUpload',
 };
 
 export default meta;
@@ -17,7 +17,7 @@ export const Default: Story = {
   render: (args) => {
     return (
       <div className="grid grid-cols-1 gap-2">
-        <ImageUpload/>
+        <ImageUpload />
       </div>
     );
   },

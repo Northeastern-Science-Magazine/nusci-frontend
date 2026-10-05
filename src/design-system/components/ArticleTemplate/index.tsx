@@ -1,3 +1,3 @@
-import ArticleTemplate from "./ArticleTemplate";
+import ArticleTemplate from './ArticleTemplate';
 
 export { ArticleTemplate };

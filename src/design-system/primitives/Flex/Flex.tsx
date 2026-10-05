@@ -1,4 +1,9 @@
-import { FlexProps, flexVariantsCN, FlexChildProps, flexChildVariantsCN } from "./variants";
+import {
+  FlexProps,
+  flexVariantsCN,
+  FlexChildProps,
+  flexChildVariantsCN,
+} from './variants';
 
 /**
  * Flex Component
@@ -7,9 +12,15 @@ import { FlexProps, flexVariantsCN, FlexChildProps, flexChildVariantsCN } from "
  * @returns Flex Component
  */
 export function Flex({ children, className, ...props }: FlexProps) {
-  return <FlexChild className={flexVariantsCN(props, className)}>{children}</FlexChild>;
+  return (
+    <FlexChild className={flexVariantsCN(props, className)}>
+      {children}
+    </FlexChild>
+  );
 }
 
 export function FlexChild({ className, children, ...props }: FlexChildProps) {
-  return <div className={flexChildVariantsCN(props, className)}>{children}</div>;
+  return (
+    <div className={flexChildVariantsCN(props, className)}>{children}</div>
+  );
 }

@@ -1,32 +1,34 @@
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv, type VariantProps } from 'tailwind-variants';
 
 export const parallaxScrollSectionVariants = tv({
-  base: "relative",
+  base: 'relative',
   variants: {
     height: {
-      sm: "[&_.parallax-container]:h-[300px]",
-      md: "[&_.parallax-container]:h-[400px]",
-      lg: "[&_.parallax-container]:h-[500px]",
+      sm: '[&_.parallax-container]:h-[300px]',
+      md: '[&_.parallax-container]:h-[400px]',
+      lg: '[&_.parallax-container]:h-[500px]',
     },
     parallaxIntensity: {
-      light: "[&_.parallax-image]:translate-y-[-10%]",
-      medium: "[&_.parallax-image]:translate-y-[-20%]",
-      strong: "[&_.parallax-image]:translate-y-[-30%]",
+      light: '[&_.parallax-image]:translate-y-[-10%]',
+      medium: '[&_.parallax-image]:translate-y-[-20%]',
+      strong: '[&_.parallax-image]:translate-y-[-30%]',
     },
     offset: {
-      sm: "[&_.newspaper-section]:-mt-24",
-      md: "[&_.newspaper-section]:-mt-32",
-      lg: "[&_.newspaper-section]:-mt-40",
+      sm: '[&_.newspaper-section]:-mt-24',
+      md: '[&_.newspaper-section]:-mt-32',
+      lg: '[&_.newspaper-section]:-mt-40',
     },
   },
   defaultVariants: {
-    height: "md",
-    parallaxIntensity: "medium",
-    offset: "md",
+    height: 'md',
+    parallaxIntensity: 'medium',
+    offset: 'md',
   },
 });
 
-export type ParallaxScrollSectionVariants = VariantProps<typeof parallaxScrollSectionVariants>;
+export type ParallaxScrollSectionVariants = VariantProps<
+  typeof parallaxScrollSectionVariants
+>;
 
 export interface ParallaxScrollSectionProps extends ParallaxScrollSectionVariants {
   /** Source URL for the parallax background image */

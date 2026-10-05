@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { DropdownInput, DropdownItem } from "./DropdownInput";
-import React from "react";
-import Image from "../Image";
-import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
+import type { Meta, StoryObj } from '@storybook/react';
+import { DropdownInput, DropdownItem } from './DropdownInput';
+import React from 'react';
+import Image from '../Image';
+import { storyColors } from '@/design-system/utilities/storyTypes/storyColors';
 
-const sizes = ["xl", "lg", "md", "sm", "xs"] as const;
+const sizes = ['xl', 'lg', 'md', 'sm', 'xs'] as const;
 const colors = storyColors;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof DropdownInput> = {
   component: DropdownInput,
-  title: "Primitives/DropdownInput",
+  title: 'Primitives/DropdownInput',
 };
 
 export default meta;

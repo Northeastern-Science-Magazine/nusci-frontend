@@ -13,68 +13,68 @@ export enum CommentStatus {
 }
 
 export enum ArticleStatus {
-  Pending = "pending",
-  Print = "print",
-  Online = "online",
+  Pending = 'pending',
+  Print = 'print',
+  Online = 'online',
 }
 
 export enum WritingStatus {
-  NeedsEditor = "needs_editor",
-  HasEditor = "has_editor",
-  RoughDraftComplete = "rough_draft_complete",
-  EditsComplete = "edits_complete",
-  CopyEditsComplete = "copy_edits_complete",
-  EICApproved = "eic_approved",
-  Dropped = "dropped",
+  NeedsEditor = 'needs_editor',
+  HasEditor = 'has_editor',
+  RoughDraftComplete = 'rough_draft_complete',
+  EditsComplete = 'edits_complete',
+  CopyEditsComplete = 'copy_edits_complete',
+  EICApproved = 'eic_approved',
+  Dropped = 'dropped',
 }
 
 export enum DesignStatus {
-  NeedsDesigner = "needs_designer",
-  HasDesigner = "has_designer",
-  InProgress = "in_progress",
-  Completed = "completed",
+  NeedsDesigner = 'needs_designer',
+  HasDesigner = 'has_designer',
+  InProgress = 'in_progress',
+  Completed = 'completed',
 }
 
 export enum PhotographyStatus {
-  NoPhoto = "no_photo",
-  NeedsPhotographer = "needs_photographer",
-  PhotographerAssigned = "photographer_assigned",
-  PhotoComplete = "photo_complete",
+  NoPhoto = 'no_photo',
+  NeedsPhotographer = 'needs_photographer',
+  PhotographerAssigned = 'photographer_assigned',
+  PhotoComplete = 'photo_complete',
 }
 
 export enum Roles {
-  Author = "author",
-  Editor = "editor",
-  Photographer = "photographer",
-  Developer = "developer",
-  Designer = "designer",
-  Admin = "admin",
+  Author = 'author',
+  Editor = 'editor',
+  Photographer = 'photographer',
+  Developer = 'developer',
+  Designer = 'designer',
+  Admin = 'admin',
 }
 
 export enum Category {
-  Biology = "Biology",
-  Chemistry = "Chemistry",
-  Culture = "Culture",
-  Environment = "Environment",
-  Health = "Health",
-  Local = "Local",
-  Mathematics = "Mathematics",
-  Neuroscience = "Neuroscience",
-  Newsletter = "Newsletter",
-  Opinion = "Opinion",
-  Philosophy = "Philosophy",
-  Physics = "Physics",
-  Politics = "Politics",
-  Psychology = "Psychology",
-  Space = "Space",
-  Technology = "Technology",
-  World = "World",
-  Uncategorized = "Uncategorized",
-  Interview = "Interview",
+  Biology = 'Biology',
+  Chemistry = 'Chemistry',
+  Culture = 'Culture',
+  Environment = 'Environment',
+  Health = 'Health',
+  Local = 'Local',
+  Mathematics = 'Mathematics',
+  Neuroscience = 'Neuroscience',
+  Newsletter = 'Newsletter',
+  Opinion = 'Opinion',
+  Philosophy = 'Philosophy',
+  Physics = 'Physics',
+  Politics = 'Politics',
+  Psychology = 'Psychology',
+  Space = 'Space',
+  Technology = 'Technology',
+  World = 'World',
+  Uncategorized = 'Uncategorized',
+  Interview = 'Interview',
 }
 
 export type ArticleContentSegment = {
-  contentType: "text" | "pull_quote" | "image" | "link";
+  contentType: 'text' | 'pull_quote' | 'image' | 'link';
   content: string;
   href?: string;
 };
@@ -162,12 +162,12 @@ export type PublicUser = {
 };
 
 export enum EmailType {
-  REMINDER = "reminder",
-  DEADLINE = "deadline",
-  RESET_PASSWORD = "reset_password",
-  INVITE_USER = "invite_user",
-  OTP = "otp",
-  CUSTOM = "custom",
+  REMINDER = 'reminder',
+  DEADLINE = 'deadline',
+  RESET_PASSWORD = 'reset_password',
+  INVITE_USER = 'invite_user',
+  OTP = 'otp',
+  CUSTOM = 'custom',
 }
 
 export type Email = {

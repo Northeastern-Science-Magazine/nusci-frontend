@@ -1,9 +1,16 @@
-import * as React from "react";
-import * as Switch from "@radix-ui/react-switch";
-import { toggleVariantsCN } from "./variants";
-import type { ToggleProps } from "./variants";
+import * as React from 'react';
+import * as Switch from '@radix-ui/react-switch';
+import { toggleVariantsCN } from './variants';
+import type { ToggleProps } from './variants';
 
-export const Toggle = ({ className, defaultValue, value, onChange, color = "black", ...props }: ToggleProps) => {
+export const Toggle = ({
+  className,
+  defaultValue,
+  value,
+  onChange,
+  color = 'black',
+  ...props
+}: ToggleProps) => {
   return (
     <Switch.Root
       checked={value}

@@ -1,20 +1,22 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Grid, GridCol, GridRow } from "./Grid";
-import React from "react";
-import { GridColVariants, GridVariants } from "./variants";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Grid, GridCol, GridRow } from './Grid';
+import React from 'react';
+import { GridColVariants, GridVariants } from './variants';
 
 const spans = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
-const gaps = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const gaps = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Grid> = {
   component: Grid,
-  title: "Primitives/Grid",
+  title: 'Primitives/Grid',
   argTypes: {
-    col: { control: "boolean" },
-    row: { control: "boolean" },
-    span: { control: "select", options: spans },
-    gap: { control: "select", options: gaps },
+    col: { control: 'boolean' },
+    row: { control: 'boolean' },
+    span: { control: 'select', options: spans },
+    gap: { control: 'select', options: gaps },
   },
 };
 
@@ -31,7 +33,11 @@ export const Default: Story = {
           <p className="mb-2 font-medium">Grid col span = {span}</p>
           <Grid col span={span} gap={2} className="border border-black p-2">
             {Array.from({ length: span }).map((_, i) => (
-              <GridCol key={i} span={1} className="bg-gray-100 text-center border border-dashed border-gray-400 py-4">
+              <GridCol
+                key={i}
+                span={1}
+                className="bg-gray-100 text-center border border-dashed border-gray-400 py-4"
+              >
                 {i + 1}
               </GridCol>
             ))}
@@ -49,9 +55,18 @@ export const GalleryRows: Story = {
       {spans.map((span) => (
         <div key={span}>
           <p className="mb-2 font-medium">Grid row span = {span}</p>
-          <Grid row span={span} gap={2} className="border border-black p-2 h-[700px]">
+          <Grid
+            row
+            span={span}
+            gap={2}
+            className="border border-black p-2 h-[700px]"
+          >
             {Array.from({ length: span }).map((_, i) => (
-              <GridRow key={i} span={1} className="bg-gray-100 text-center border border-dashed border-gray-400 py-4">
+              <GridRow
+                key={i}
+                span={1}
+                className="bg-gray-100 text-center border border-dashed border-gray-400 py-4"
+              >
                 {i + 1}
               </GridRow>
             ))}
@@ -80,11 +95,16 @@ export const MutliLengthSpan: Story = {
       ].map(({ total, parts }, i) => (
         <div key={i}>
           <p className="mb-2 font-medium">Grid col span = {total}</p>
-          <Grid col span={total as GridVariants["span"]} gap={2} className="border border-black p-2">
+          <Grid
+            col
+            span={total as GridVariants['span']}
+            gap={2}
+            className="border border-black p-2"
+          >
             {parts.map((p, j) => (
               <GridCol
                 key={j}
-                span={p as GridColVariants["span"]}
+                span={p as GridColVariants['span']}
                 className="bg-gray-100 text-center border border-dashed border-gray-400 py-4"
               >
                 Span {p}

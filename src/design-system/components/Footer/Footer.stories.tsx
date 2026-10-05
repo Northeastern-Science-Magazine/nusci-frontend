@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import Footer from "./Footer";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import Footer from './Footer';
+import React from 'react';
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Footer> = {
   component: Footer,
-  title: "Components/Footer",
+  title: 'Components/Footer',
   argTypes: {},
 };
 

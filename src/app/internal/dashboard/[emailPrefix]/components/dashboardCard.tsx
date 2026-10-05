@@ -1,7 +1,7 @@
-import Card from "@/design-system/primitives/Card";
-import Text from "@/design-system/primitives/Text";
-import Link from "next/link";
-import Font from "@/design-system/primitives/Font";
+import Card from '@/design-system/primitives/Card';
+import Text from '@/design-system/primitives/Text';
+import Link from 'next/link';
+import Font from '@/design-system/primitives/Font';
 
 interface DashboardCardProps {
   text: string;
@@ -21,9 +21,13 @@ export default function DashboardCard({ text, href }: DashboardCardProps) {
           animation="scale110Hover"
           className="flex items-center justify-center shadow-lg"
         >
-          <Text size={24} color = "black" className="text-center whitespace-normal break-words">
-            {" "}
-            {text}{" "}
+          <Text
+            size={24}
+            color="black"
+            className="text-center whitespace-normal break-words"
+          >
+            {' '}
+            {text}{' '}
           </Text>
         </Card>
       </Link>

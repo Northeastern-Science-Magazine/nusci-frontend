@@ -1,17 +1,23 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Box } from "./Box";
-import React from "react";
-import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Box } from './Box';
+import React from 'react';
+import { storyColors } from '@/design-system/utilities/storyTypes/storyColors';
 
 /* Modify this when adding variants to Box */
-const positions = ["static", "fixed", "absolute", "relative", "sticky"] as const;
-const displays = ["inline", "block", "inline-block", "hidden"] as const;
+const positions = [
+  'static',
+  'fixed',
+  'absolute',
+  'relative',
+  'sticky',
+] as const;
+const displays = ['inline', 'block', 'inline-block', 'hidden'] as const;
 const widths = [
-  "full",
-  "screen",
-  "auto",
-  "min",
-  "max",
+  'full',
+  'screen',
+  'auto',
+  'min',
+  'max',
   4,
   8,
   12,
@@ -38,11 +44,11 @@ const widths = [
   1000,
 ] as const;
 const minWidths = [
-  "full",
-  "screen",
-  "auto",
-  "min",
-  "max",
+  'full',
+  'screen',
+  'auto',
+  'min',
+  'max',
   4,
   8,
   12,
@@ -69,11 +75,11 @@ const minWidths = [
   1000,
 ] as const;
 const maxWidths = [
-  "full",
-  "screen",
-  "auto",
-  "min",
-  "max",
+  'full',
+  'screen',
+  'auto',
+  'min',
+  'max',
   4,
   8,
   12,
@@ -100,12 +106,12 @@ const maxWidths = [
   1000,
 ] as const;
 const heights = [
-  "full",
-  "screen",
-  "auto",
-  "min",
-  "max",
-  "fit",
+  'full',
+  'screen',
+  'auto',
+  'min',
+  'max',
+  'fit',
   4,
   8,
   12,
@@ -132,12 +138,12 @@ const heights = [
   1000,
 ] as const;
 const minHeights = [
-  "full",
-  "screen",
-  "auto",
-  "min",
-  "max",
-  "fit",
+  'full',
+  'screen',
+  'auto',
+  'min',
+  'max',
+  'fit',
   4,
   8,
   12,
@@ -164,12 +170,12 @@ const minHeights = [
   1000,
 ] as const;
 const maxHeights = [
-  "full",
-  "screen",
-  "auto",
-  "min",
-  "max",
-  "fit",
+  'full',
+  'screen',
+  'auto',
+  'min',
+  'max',
+  'fit',
   4,
   8,
   12,
@@ -195,137 +201,173 @@ const maxHeights = [
   900,
   1000,
 ] as const;
-const tops = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const bottoms = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const lefts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const rights = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const ms = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const mxs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const mys = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const mts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const mbs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const mrs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const mls = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const ps = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const pxs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const pys = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const pts = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const pbs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const prs = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
-const pls = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128] as const;
+const tops = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const bottoms = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const lefts = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const rights = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const ms = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const mxs = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const mys = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const mts = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const mbs = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const mrs = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const mls = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const ps = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const pxs = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const pys = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const pts = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const pbs = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const prs = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
+const pls = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 64, 72, 96, 128,
+] as const;
 const colors = storyColors;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Box> = {
   component: Box,
-  title: "Primitives/Box",
+  title: 'Primitives/Box',
   argTypes: {
     position: {
-      control: "select",
+      control: 'select',
       options: positions,
     },
     display: {
-      control: "select",
+      control: 'select',
       options: displays,
     },
     width: {
-      control: "select",
+      control: 'select',
       options: widths,
     },
     height: {
-      control: "select",
+      control: 'select',
       options: heights,
     },
     minWidth: {
-      control: "select",
+      control: 'select',
       options: minWidths,
     },
     maxWidth: {
-      control: "select",
+      control: 'select',
       options: maxWidths,
     },
     minHeight: {
-      control: "select",
+      control: 'select',
       options: minHeights,
     },
     maxHeight: {
-      control: "select",
+      control: 'select',
       options: maxHeights,
     },
     top: {
-      control: "select",
+      control: 'select',
       options: tops,
     },
     bottom: {
-      control: "select",
+      control: 'select',
       options: bottoms,
     },
     left: {
-      control: "select",
+      control: 'select',
       options: lefts,
     },
     right: {
-      control: "select",
+      control: 'select',
       options: rights,
     },
     m: {
-      control: "select",
+      control: 'select',
       options: ms,
     },
     mx: {
-      control: "select",
+      control: 'select',
       options: mxs,
     },
     my: {
-      control: "select",
+      control: 'select',
       options: mys,
     },
     mt: {
-      control: "select",
+      control: 'select',
       options: mts,
     },
     mb: {
-      control: "select",
+      control: 'select',
       options: mbs,
     },
     mr: {
-      control: "select",
+      control: 'select',
       options: mrs,
     },
     ml: {
-      control: "select",
+      control: 'select',
       options: mls,
     },
     p: {
-      control: "select",
+      control: 'select',
       options: ps,
     },
     px: {
-      control: "select",
+      control: 'select',
       options: pxs,
     },
     py: {
-      control: "select",
+      control: 'select',
       options: pys,
     },
     pt: {
-      control: "select",
+      control: 'select',
       options: pts,
     },
     pb: {
-      control: "select",
+      control: 'select',
       options: pbs,
     },
     pr: {
-      control: "select",
+      control: 'select',
       options: prs,
     },
     pl: {
-      control: "select",
+      control: 'select',
       options: pls,
     },
     color: {
-      control: "select",
+      control: 'select',
       options: colors,
     },
   },
@@ -337,11 +379,11 @@ type Story = StoryObj<typeof Box>;
 /** Story for Default Variant */
 export const Default: Story = {
   args: {
-    children: "Text to put within box",
-    color: "red",
-    width: "full",
+    children: 'Text to put within box',
+    color: 'red',
+    width: 'full',
     m: 8,
-    height: "full",
+    height: 'full',
     p: 4,
   },
 };

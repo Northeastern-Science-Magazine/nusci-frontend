@@ -1,23 +1,23 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Toggle } from "./Toggle";
-import React from "react";
-import { storyColors } from "@/design-system/utilities/storyTypes/storyColors";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Toggle } from './Toggle';
+import React from 'react';
+import { storyColors } from '@/design-system/utilities/storyTypes/storyColors';
 
 const colors = storyColors;
 
 const meta: Meta<typeof Toggle> = {
   component: Toggle,
-  title: "Primitives/Toggle",
+  title: 'Primitives/Toggle',
   argTypes: {
     color: {
-      control: "select",
+      control: 'select',
       options: colors,
     },
     value: {
-      control: "boolean",
+      control: 'boolean',
     },
     disabled: {
-      control: "boolean",
+      control: 'boolean',
     },
   },
 };
@@ -27,7 +27,7 @@ type Story = StoryObj<typeof Toggle>;
 
 export const Default: Story = {
   args: {
-    color: "black",
+    color: 'black',
   },
 };
 

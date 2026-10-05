@@ -1,24 +1,30 @@
-import { notFound } from "next/navigation";
-import { getArticleBySlug } from "@/lib/api/articles";
-import { ArticleTemplate } from "@/design-system/components/ArticleTemplate";
+import { notFound } from 'next/navigation';
+import { getArticleBySlug } from '@/lib/api/articles';
+import { ArticleTemplate } from '@/design-system/components/ArticleTemplate';
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
 
 // Extract the first image URL from articleContent for featured image
-function extractFirstImageUrl(articleContent: Array<{ contentType: string; content: string }>): string | undefined {
-  const imageItem = articleContent.find((item) => item.contentType === "image");
+function extractFirstImageUrl(
+  articleContent: Array<{ contentType: string; content: string }>,
+): string | undefined {
+  const imageItem = articleContent.find((item) => item.contentType === 'image');
   return imageItem?.content;
 }
 
 /** Backend may return a display string or a populated user document. */
 function formatPersonName(person: unknown): string | undefined {
   if (person == null) return undefined;
-  if (typeof person === "string") return person.trim() || undefined;
-  if (typeof person === "object" && "firstName" in person && "lastName" in person) {
+  if (typeof person === 'string') return person.trim() || undefined;
+  if (
+    typeof person === 'object' &&
+    'firstName' in person &&
+    'lastName' in person
+  ) {
     const p = person as { firstName?: string; lastName?: string };
-    const name = `${p.firstName ?? ""} ${p.lastName ?? ""}`.trim();
+    const name = `${p.firstName ?? ''} ${p.lastName ?? ''}`.trim();
     return name || undefined;
   }
   return undefined;
@@ -26,17 +32,17 @@ function formatPersonName(person: unknown): string | undefined {
 
 // Format date for display
 function formatDate(date: Date | string): string {
-  if (typeof date === "string") {
-    return new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+  if (typeof date === 'string') {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
   }
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   });
 }
 
@@ -56,10 +62,16 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const publishDate = formatDate(article.creationTime);
 
   // Get first author name (or default if no authors)
-  const author = article.authors?.length > 0 ? formatPersonName(article.authors[0]) ?? "NU Sci Magazine" : "NU Sci Magazine";
+  const author =
+    article.authors?.length > 0
+      ? (formatPersonName(article.authors[0]) ?? 'NU Sci Magazine')
+      : 'NU Sci Magazine';
 
   // Get first editor if available (API may return a user object or string)
-  const editor = article.editors?.length > 0 ? formatPersonName(article.editors[0]) : undefined;
+  const editor =
+    article.editors?.length > 0
+      ? formatPersonName(article.editors[0])
+      : undefined;
 
   // Only use image if it actually exists in the content (no placeholder fallback)
   // const imageUrl = firstImageUrl;

@@ -1,4 +1,4 @@
-import { Dialog, DialogTrigger, DialogWindow } from "./Dialog";
+import { Dialog, DialogTrigger, DialogWindow } from './Dialog';
 import {
   type DialogVariants,
   type DialogProps,
@@ -6,7 +6,14 @@ import {
   type DialogTriggerProps,
   type DialogWindowVariants,
   type DialogWindowProps,
-} from "./variants";
+} from './variants';
 
-export { DialogVariants, DialogProps, DialogTriggerVariants, DialogTriggerProps, DialogWindowVariants, DialogWindowProps };
+export {
+  DialogVariants,
+  DialogProps,
+  DialogTriggerVariants,
+  DialogTriggerProps,
+  DialogWindowVariants,
+  DialogWindowProps,
+};
 export { Dialog, DialogTrigger, DialogWindow };

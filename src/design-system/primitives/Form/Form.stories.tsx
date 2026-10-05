@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import React from "react";
-import { Form, FormField } from "./Form";
-import TextInput from "../TextInput";
-import Checkbox from "../Checkbox";
-import RadioButton from "../RadioButton";
-import Toggle from "../Toggle";
-import { SubmitHandler } from "react-hook-form";
-import Box from "../Box";
-import Text from "../Text";
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+import { Form, FormField } from './Form';
+import TextInput from '../TextInput';
+import Checkbox from '../Checkbox';
+import RadioButton from '../RadioButton';
+import Toggle from '../Toggle';
+import { SubmitHandler } from 'react-hook-form';
+import Box from '../Box';
+import Text from '../Text';
 
 type ExampleFormValues = {
   username: string;
@@ -22,7 +22,7 @@ type ExampleFormValues = {
 };
 
 const meta: Meta<typeof Form<ExampleFormValues>> = {
-  title: "Primitives/Form",
+  title: 'Primitives/Form',
   component: Form,
 };
 export default meta;
@@ -41,14 +41,14 @@ export const BasicForm: Story = {
           onSubmit={onSubmit}
           options={{
             defaultValues: {
-              username: "",
-              email: "",
-              password: "",
+              username: '',
+              email: '',
+              password: '',
               terms: [],
               interests: [],
-              color: "",
-              gender: "",
-              bio: "",
+              color: '',
+              gender: '',
+              bio: '',
               notifications: false,
             },
           }}
@@ -74,7 +74,7 @@ export const BasicForm: Story = {
                 </Box>
                 <FormField<ExampleFormValues>
                   name="username"
-                  rules={{ required: "Please tell us your username" }}
+                  rules={{ required: 'Please tell us your username' }}
                 >
                   <TextInput
                     label="Username"
@@ -95,10 +95,10 @@ export const BasicForm: Story = {
                 <FormField<ExampleFormValues>
                   name="email"
                   rules={{
-                    required: "We need your email address",
+                    required: 'We need your email address',
                     pattern: {
                       value: /^\S+@\S+$/i,
-                      message: "Please enter a valid email",
+                      message: 'Please enter a valid email',
                     },
                   }}
                 >
@@ -121,10 +121,10 @@ export const BasicForm: Story = {
                 <FormField<ExampleFormValues>
                   name="password"
                   rules={{
-                    required: "Please set a password",
+                    required: 'Please set a password',
                     minLength: {
                       value: 6,
-                      message: "Use at least 6 characters",
+                      message: 'Use at least 6 characters',
                     },
                   }}
                 >
@@ -166,11 +166,11 @@ export const BasicForm: Story = {
                     validate: (value) =>
                       Array.isArray(value) && value.length > 0
                         ? true
-                        : "Pick at least one interest",
+                        : 'Pick at least one interest',
                   }}
                 >
                   <Checkbox
-                    options={["Sports", "Music", "Travel"]}
+                    options={['Sports', 'Music', 'Travel']}
                     color="sage-green"
                   />
                 </FormField>
@@ -186,14 +186,14 @@ export const BasicForm: Story = {
                 </Box>
                 <FormField<ExampleFormValues>
                   name="color"
-                  rules={{ required: "Select a favorite color" }}
+                  rules={{ required: 'Select a favorite color' }}
                 >
                   <RadioButton
                     name="color"
                     options={[
-                      { label: "Red", value: "red" },
-                      { label: "Green", value: "green" },
-                      { label: "Blue", value: "blue" },
+                      { label: 'Red', value: 'red' },
+                      { label: 'Green', value: 'green' },
+                      { label: 'Blue', value: 'blue' },
                     ]}
                   />
                 </FormField>
@@ -209,14 +209,14 @@ export const BasicForm: Story = {
                 </Box>
                 <FormField<ExampleFormValues>
                   name="gender"
-                  rules={{ required: "Please choose an option" }}
+                  rules={{ required: 'Please choose an option' }}
                 >
                   <RadioButton
                     name="gender"
                     options={[
-                      { label: "Male", value: "male" },
-                      { label: "Female", value: "female" },
-                      { label: "Other / Prefer not to say", value: "other" },
+                      { label: 'Male', value: 'male' },
+                      { label: 'Female', value: 'female' },
+                      { label: 'Other / Prefer not to say', value: 'other' },
                     ]}
                   />
                 </FormField>
@@ -229,10 +229,10 @@ export const BasicForm: Story = {
                 <FormField<ExampleFormValues>
                   name="bio"
                   rules={{
-                    required: "Please tell us about yourself",
+                    required: 'Please tell us about yourself',
                     minLength: {
                       value: 6,
-                      message: "Use at least 6 characters",
+                      message: 'Use at least 6 characters',
                     },
                   }}
                 >
@@ -289,12 +289,12 @@ export const BasicForm: Story = {
                   rules={{
                     validate: (value) =>
                       Array.isArray(value) &&
-                      value.includes("Agree to terms and conditions")
+                      value.includes('Agree to terms and conditions')
                         ? true
-                        : "You must agree before continuing",
+                        : 'You must agree before continuing',
                   }}
                 >
-                  <Checkbox options={["Agree to terms and conditions"]} />
+                  <Checkbox options={['Agree to terms and conditions']} />
                 </FormField>
               </Box>
             </Box>

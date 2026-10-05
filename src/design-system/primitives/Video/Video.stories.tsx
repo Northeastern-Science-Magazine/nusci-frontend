@@ -1,40 +1,40 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Video } from "./Video";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Video } from './Video';
+import React from 'react';
 
-const emphasis = ["default", "emphasis"] as const;
-const rounded = ["default", "rounded"] as const;
+const emphasis = ['default', 'emphasis'] as const;
+const rounded = ['default', 'rounded'] as const;
 
 const meta: Meta<typeof Video> = {
   component: Video,
-  title: "Primitives/Video",
+  title: 'Primitives/Video',
   argTypes: {
     emphasis: {
-      control: "select",
+      control: 'select',
       options: emphasis,
     },
     rounded: {
-      control: "select",
+      control: 'select',
       options: rounded,
     },
     ratio: {
-      control: "number",
+      control: 'number',
     },
     controls: {
-      control: "boolean",
+      control: 'boolean',
     },
     autoPlay: {
-      control: "boolean",
+      control: 'boolean',
     },
     muted: {
-      control: "boolean",
+      control: 'boolean',
     },
     loop: {
-      control: "boolean",
+      control: 'boolean',
     },
     preload: {
-      control: "select",
-      options: ["none", "metadata", "auto"],
+      control: 'select',
+      options: ['none', 'metadata', 'auto'],
     },
   },
 };
@@ -46,10 +46,10 @@ type Story = StoryObj<typeof Video>;
 export const Default: Story = {
   args: {
     ratio: 16 / 9,
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
     width: 400,
-    emphasis: "default",
-    rounded: "default",
+    emphasis: 'default',
+    rounded: 'default',
     controls: true,
     muted: true,
   },
@@ -58,10 +58,10 @@ export const Default: Story = {
 export const AspectRatio: Story = {
   args: {
     ratio: 1,
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
     width: 324,
-    emphasis: "default",
-    rounded: "default",
+    emphasis: 'default',
+    rounded: 'default',
     controls: true,
     muted: true,
   },
@@ -70,10 +70,10 @@ export const AspectRatio: Story = {
 export const Rounded: Story = {
   args: {
     ratio: 16 / 9,
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
     width: 400,
-    emphasis: "default",
-    rounded: "rounded",
+    emphasis: 'default',
+    rounded: 'rounded',
     controls: true,
     muted: true,
   },
@@ -82,10 +82,10 @@ export const Rounded: Story = {
 export const WithEmphasis: Story = {
   args: {
     ratio: 16 / 9,
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
     width: 400,
-    emphasis: "emphasis",
-    rounded: "default",
+    emphasis: 'emphasis',
+    rounded: 'default',
     controls: true,
     muted: true,
   },
@@ -94,10 +94,10 @@ export const WithEmphasis: Story = {
 export const AutoplayLoop: Story = {
   args: {
     ratio: 16 / 9,
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
     width: 400,
-    emphasis: "default",
-    rounded: "default",
+    emphasis: 'default',
+    rounded: 'default',
     controls: false,
     autoPlay: true,
     muted: true, // Required for autoplay in most browsers
@@ -108,13 +108,14 @@ export const AutoplayLoop: Story = {
 export const WithPoster: Story = {
   args: {
     ratio: 16 / 9,
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
     width: 400,
-    emphasis: "default",
-    rounded: "default",
+    emphasis: 'default',
+    rounded: 'default',
     controls: true,
-    poster: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
-    preload: "metadata",
+    poster:
+      'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg',
+    preload: 'metadata',
   },
 };
 
@@ -127,7 +128,10 @@ export const Gallery: Story = {
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
           {rounded.map((roundedVariant) =>
             emphasis.map((emphasisVariant) => (
-              <div key={`${roundedVariant}-${emphasisVariant}`} className="flex flex-col gap-2">
+              <div
+                key={`${roundedVariant}-${emphasisVariant}`}
+                className="flex flex-col gap-2"
+              >
                 <Video
                   ratio={16 / 9}
                   rounded={roundedVariant}
@@ -143,7 +147,7 @@ export const Gallery: Story = {
                   <p>Emphasis: {emphasisVariant}</p>
                 </div>
               </div>
-            ))
+            )),
           )}
         </div>
       </div>

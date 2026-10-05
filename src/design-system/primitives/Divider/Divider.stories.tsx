@@ -1,21 +1,21 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Divider } from "./Divider";
-import { Flex, FlexChild } from "../Flex";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Divider } from './Divider';
+import { Flex, FlexChild } from '../Flex';
 
-const orientations = ["horizontal", "vertical"] as const;
-const widths = ["thin", "thick"] as const;
-const colors = ["black", "white", "neutral"] as const;
+const orientations = ['horizontal', 'vertical'] as const;
+const widths = ['thin', 'thick'] as const;
+const colors = ['black', 'white', 'neutral'] as const;
 const margins = [2, 4, 6] as const;
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof Divider> = {
   component: Divider,
-  title: "Primitives/Divider",
+  title: 'Primitives/Divider',
   argTypes: {
-    orientation: { control: "select", options: orientations },
-    margin: { control: "select", options: margins },
-    color: { control: "select", options: colors },
-    width: { control: "select", options: widths },
+    orientation: { control: 'select', options: orientations },
+    margin: { control: 'select', options: margins },
+    color: { control: 'select', options: colors },
+    width: { control: 'select', options: widths },
   },
 };
 
@@ -25,8 +25,8 @@ type Story = StoryObj<typeof Divider>;
 /** Story for Default Variant */
 export const Default: Story = {
   args: {
-    color: "black",
-    width: "thin",
+    color: 'black',
+    width: 'thin',
     margin: 2,
   },
   render: (args) => (
@@ -66,12 +66,12 @@ export const Gallery: Story = {
                       direction="col"
                       key={`${orientation}-${width}-${margin}-${color}`}
                       className={` ${
-                        color === "white" ? "bg-neutral p-4 rounded-md" : ""
+                        color === 'white' ? 'bg-neutral p-4 rounded-md' : ''
                       } `}
                     >
                       <Flex
-                        className={"w-[50px]"}
-                        direction={orientation === "horizontal" ? "col" : "row"}
+                        className={'w-[50px]'}
+                        direction={orientation === 'horizontal' ? 'col' : 'row'}
                       >
                         <FlexChild className="flex-none">NU Sci</FlexChild>
                         <FlexChild>
@@ -92,8 +92,8 @@ export const Gallery: Story = {
                       </div>
                     </Flex>
                   );
-                })
-              )
+                }),
+              ),
             )}
           </div>
         </div>

@@ -1,14 +1,14 @@
-"use server";
+'use server';
 
-import Hero from "./components/Hero";
-import PrintMagazines from "./components/PrintMagazines";
-import FeaturedArticles from "./components/FeaturedArticles";
-import CTA from "./components/CTA";
+import Hero from './components/Hero';
+import PrintMagazines from './components/PrintMagazines';
+import FeaturedArticles from './components/FeaturedArticles';
+import CTA from './components/CTA';
 import {
   getMagazineIssues,
   getRecentArticles,
   getFeaturedArticles,
-} from "@/lib/api/articles";
+} from '@/lib/api/articles';
 
 export default async function Homepage() {
   try {
@@ -30,7 +30,7 @@ export default async function Homepage() {
       </main>
     );
   } catch (error) {
-    console.error("Failed to fetch homepage data:", error);
+    console.error('Failed to fetch homepage data:', error);
 
     return (
       <main>

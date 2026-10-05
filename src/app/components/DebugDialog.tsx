@@ -1,45 +1,57 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import * as RDialog from "@radix-ui/react-dialog";
-import TextInput from "@/design-system/primitives/TextInput";
-import Button from "@/design-system/primitives/Button";
-import Box from "@/design-system/primitives/Box";
-import Text from "@/design-system/primitives/Text";
-import { Flex } from "@/design-system/primitives/Flex";
-import { api } from "@/lib/api/api";
-import Icon from "@/design-system/primitives/Icon";
+import { useState, useEffect } from 'react';
+import * as RDialog from '@radix-ui/react-dialog';
+import TextInput from '@/design-system/primitives/TextInput';
+import Button from '@/design-system/primitives/Button';
+import Box from '@/design-system/primitives/Box';
+import Text from '@/design-system/primitives/Text';
+import { Flex } from '@/design-system/primitives/Flex';
+import { api } from '@/lib/api/api';
+import Icon from '@/design-system/primitives/Icon';
 
 export default function DebugDialog() {
   const [open, setOpen] = useState(false);
-  const [url, setUrl] = useState("");
-  const [jsonBody, setJsonBody] = useState("");
-  const [method, setMethod] = useState<"GET" | "POST" | "PATCH" | "PUT" | "DELETE">("GET");
+  const [url, setUrl] = useState('');
+  const [jsonBody, setJsonBody] = useState('');
+  const [method, setMethod] = useState<
+    'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE'
+  >('GET');
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [response, setResponse] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
   // Listen for "q" key press
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       // Only trigger if not typing in an input/textarea
-      if (e.key === "q" && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) {
+      if (
+        e.key === 'q' &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey &&
+        !e.shiftKey
+      ) {
         const target = e.target as HTMLElement;
-        if (target.tagName !== "INPUT" && target.tagName !== "TEXTAREA" && target.isContentEditable !== true) {
+        if (
+          target.tagName !== 'INPUT' &&
+          target.tagName !== 'TEXTAREA' &&
+          target.isContentEditable !== true
+        ) {
           e.preventDefault();
           setOpen((prev) => !prev);
         }
       }
     };
 
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
   }, []);
 
   const handleExecute = async () => {
     setLoading(true);
-    setError("");
-    setResponse("");
+    setError('');
+    setResponse('');
 
     try {
       // Parse JSON body if provided
@@ -48,7 +60,7 @@ export default function DebugDialog() {
         try {
           body = JSON.parse(jsonBody);
         } catch (e) {
-          setError("Invalid JSON in body");
+          setError('Invalid JSON in body');
           setLoading(false);
           return;
         }
@@ -56,11 +68,11 @@ export default function DebugDialog() {
 
       // Extract endpoint from URL (remove base URL if present)
       let endpoint = url.trim();
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
       if (endpoint.startsWith(apiUrl)) {
-        endpoint = endpoint.replace(apiUrl, "");
+        endpoint = endpoint.replace(apiUrl, '');
       }
-      if (!endpoint.startsWith("/")) {
+      if (!endpoint.startsWith('/')) {
         endpoint = `/${endpoint}`;
       }
 
@@ -69,13 +81,22 @@ export default function DebugDialog() {
       if (result.ok) {
         setResponse(JSON.stringify(result.data, null, 2));
       } else {
-        setError(result.error || "Request failed");
+        setError(result.error || 'Request failed');
         if (result.headers) {
-          setResponse(JSON.stringify({ error: result.error, headers: Object.fromEntries(result.headers.entries()) }, null, 2));
+          setResponse(
+            JSON.stringify(
+              {
+                error: result.error,
+                headers: Object.fromEntries(result.headers.entries()),
+              },
+              null,
+              2,
+            ),
+          );
         }
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Unknown error");
+      setError(e instanceof Error ? e.message : 'Unknown error');
     } finally {
       setLoading(false);
     }
@@ -106,17 +127,19 @@ export default function DebugDialog() {
                   Method
                 </Text>
                 <Flex direction="row" gap={2}>
-                  {(["GET", "POST", "PATCH", "PUT", "DELETE"] as const).map((m) => (
-                    <Button
-                      key={m}
-                      variant={method === m ? "default" : "outline"}
-                      size="sm"
-                      color="forest-green"
-                      onClick={() => setMethod(m)}
-                    >
-                      {m}
-                    </Button>
-                  ))}
+                  {(['GET', 'POST', 'PATCH', 'PUT', 'DELETE'] as const).map(
+                    (m) => (
+                      <Button
+                        key={m}
+                        variant={method === m ? 'default' : 'outline'}
+                        size="sm"
+                        color="forest-green"
+                        onClick={() => setMethod(m)}
+                      >
+                        {m}
+                      </Button>
+                    ),
+                  )}
                 </Flex>
               </Box>
 
@@ -135,7 +158,9 @@ export default function DebugDialog() {
               </Box>
 
               {/* JSON Body Input */}
-              {(method === "POST" || method === "PATCH" || method === "PUT") && (
+              {(method === 'POST' ||
+                method === 'PATCH' ||
+                method === 'PUT') && (
                 <Box>
                   <TextInput
                     variant="outline"
@@ -161,7 +186,7 @@ export default function DebugDialog() {
                 disabled={loading || !url.trim()}
                 className="w-full"
               >
-                {loading ? "Executing..." : "Execute Request"}
+                {loading ? 'Executing...' : 'Execute Request'}
               </Button>
 
               {/* Error Display */}
@@ -183,7 +208,9 @@ export default function DebugDialog() {
                     Response
                   </Text>
                   <Box className="p-4 bg-neutral/5 border border-neutral/20 rounded overflow-auto max-h-96">
-                    <pre className="text-xs font-mono whitespace-pre-wrap break-words">{response}</pre>
+                    <pre className="text-xs font-mono whitespace-pre-wrap break-words">
+                      {response}
+                    </pre>
                   </Box>
                 </Box>
               )}

@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { ProgressBar } from "./ProgressBar";
-import React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { ProgressBar } from './ProgressBar';
+import React from 'react';
 
 /** Define the control fields for Storybook */
 const meta: Meta<typeof ProgressBar> = {
   component: ProgressBar,
-  title: "Primitives/ProgressBar",
+  title: 'Primitives/ProgressBar',
 };
 
 export default meta;

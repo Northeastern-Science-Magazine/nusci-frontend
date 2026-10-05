@@ -195,7 +195,7 @@ export default function EboardPage() {
       graduationYear: 2028,
       major: 'Biology',
       email: '',
-      avatarUrl: '/headshots/marina_headshot.jpg',
+      avatarUrl: '/headshots/marina_headshot.JPG',
     },
     {
       name: 'Saumya Sawant',

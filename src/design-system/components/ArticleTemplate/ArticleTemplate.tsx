@@ -121,9 +121,14 @@ export default function ArticleTemplate({
           {/* Categories and Issue Number */}
           <div className="flex flex-wrap gap-2 mb-6">
             {categories.map((category, index) => (
-              <Badge key={index} color="aqua" variant="default">
-                {category}
-              </Badge>
+              <Link
+                key={index}
+                href={`/article-search?category=${encodeURIComponent(category)}`}
+              >
+                <Badge color="aqua" variant="default">
+                  {category}
+                </Badge>
+              </Link>
             ))}
             {issueNumber && (
               <Badge color="aqua" variant="blur">

@@ -54,9 +54,9 @@ export default function ArticleEditForm({
     ),
     // Existing records may contain null source titles or URLs.
     sources: (article.sources ?? []).map((source) => ({
-        text: source.text ?? '',
-        href: source.href ?? '',
-})),
+      text: source.text ?? '',
+      href: source.href ?? '',
+    })),
   }));
 
   const [isSaving, setIsSaving] = useState(false);
@@ -85,8 +85,7 @@ export default function ArticleEditForm({
       'articleContent',
       values.articleContent.map((paragraph, currentParagraph) =>
         paragraph.map((segment, currentSegment) =>
-          currentParagraph === paragraphIndex &&
-          currentSegment === segmentIndex
+          currentParagraph === paragraphIndex && currentSegment === segmentIndex
             ? { ...segment, ...changes }
             : segment,
         ),
@@ -118,7 +117,6 @@ export default function ArticleEditForm({
     value: category,
   }));
 
-
   // Validates the form and submits changes without discarding edits on failure.
   async function handleSave(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -134,10 +132,7 @@ export default function ArticleEditForm({
 
     // TODO(BACKEND-339): Confirm whether an existing issue number
     // can be cleared and what value the backend expects for that.
-    if (
-      article.issueNumber !== undefined &&
-      values.issueNumber === undefined
-    ) {
+    if (article.issueNumber !== undefined && values.issueNumber === undefined) {
       setError('Please enter an issue number for this article.');
       return;
     }
@@ -165,11 +160,11 @@ export default function ArticleEditForm({
     }
 
     const sources = values.sources
-        .map((source) => ({
-            text: (source.text ?? '').trim(),
-            href: (source.href ?? '').trim(),
-    }))
-    .filter((source) => source.text || source.href);
+      .map((source) => ({
+        text: (source.text ?? '').trim(),
+        href: (source.href ?? '').trim(),
+      }))
+      .filter((source) => source.text || source.href);
 
     if (sources.some((source) => !source.text || !source.href)) {
       setError('Each source needs both a title and URL.');
@@ -305,10 +300,7 @@ export default function ArticleEditForm({
           <h2 className="text-lg font-bold">Article content</h2>
 
           {values.articleContent.map((paragraph, paragraphIndex) => (
-            <div
-              key={paragraphIndex}
-              className="space-y-3 rounded border p-4"
-            >
+            <div key={paragraphIndex} className="space-y-3 rounded border p-4">
               <h3>Paragraph {paragraphIndex + 1}</h3>
 
               {paragraph.map((segment, segmentIndex) => (
@@ -318,7 +310,6 @@ export default function ArticleEditForm({
                 >
                   <label className="block">
                     Segment type
-
                     <select
                       value={segment.contentType}
                       className="ml-2 rounded border p-2"
@@ -456,11 +447,7 @@ export default function ArticleEditForm({
           disabled={isSaving}
         />
 
-        <Button
-          type="submit"
-          color="forest-green"
-          disabled={isSaving}
-        >
+        <Button type="submit" color="forest-green" disabled={isSaving}>
           {isSaving ? 'Saving…' : 'Save changes'}
         </Button>
       </fieldset>

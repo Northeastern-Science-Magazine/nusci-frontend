@@ -8,9 +8,7 @@ import { Roles } from '@/lib/types/types';
  * Checks whether the user's roles allow article creation and editing.
  */
 export function canManageArticles(roles: readonly string[]): boolean {
-  return roles.some(
-    (role) => role === Roles.Admin || role === Roles.Editor,
-  );
+  return roles.some((role) => role === Roles.Admin || role === Roles.Editor);
 }
 
 /**

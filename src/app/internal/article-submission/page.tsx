@@ -10,9 +10,6 @@ export default async function ArticleSubmissionPage() {
   const basicUsers = result.ok && result.data ? result.data : [];
 
   return (
-    <ArticleSubmissionForm
-      basicUsers={basicUsers}
-      defaultAuthorEmails={[]}
-    />
+    <ArticleSubmissionForm basicUsers={basicUsers} defaultAuthorEmails={[]} />
   );
 }

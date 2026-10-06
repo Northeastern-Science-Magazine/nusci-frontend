@@ -17,7 +17,7 @@ type ArticleEditPageProps = {
 export default async function ArticleEditPage({
   params,
 }: ArticleEditPageProps) {
-// Check access before fetching the article or user list.
+  // Check access before fetching the article or user list.
   await requireArticlePermission();
 
   const { slug } = await params;
@@ -29,11 +29,7 @@ export default async function ArticleEditPage({
   ]);
 
   if (!articleResult.ok) {
-    return (
-      <p role="alert">
-        Unable to load article: {articleResult.error}
-      </p>
-    );
+    return <p role="alert">Unable to load article: {articleResult.error}</p>;
   }
 
   if (!articleResult.data) {
@@ -42,9 +38,7 @@ export default async function ArticleEditPage({
 
   if (!usersResult.ok) {
     return (
-      <p role="alert">
-        Unable to load author options: {usersResult.error}
-      </p>
+      <p role="alert">Unable to load author options: {usersResult.error}</p>
     );
   }
 

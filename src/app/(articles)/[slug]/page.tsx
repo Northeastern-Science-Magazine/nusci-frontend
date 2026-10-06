@@ -58,11 +58,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   const article = result.data;
 
- // Only show the edit button to users with article permissions.
+  // Only show the edit button to users with article permissions.
   const rolesResult = await apiGetUserRoles();
 
-  const canEdit =
-    rolesResult.ok && canManageArticles(rolesResult.data.roles);
+  const canEdit = rolesResult.ok && canManageArticles(rolesResult.data.roles);
 
   // Extract first image URL for featured image
   // const firstImageUrl = extractFirstImageUrl(article.articleContent);
@@ -99,27 +98,27 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </div>
       )}
 
-    <ArticleTemplate
-      className={canEdit ? '!pt-0 [&>header]:!mt-3' : undefined}
-      title={article.title}
-      author={author}
-      editor={editor}
-      categories={article.categories}
-      issueNumber={article.issueNumber}
-      publishDate={publishDate}
-      articleContent={article.articleContent}
-      sources={article.sources}
-      // featuredImage={
-      //   imageUrl
-      //     ? {
-      //         src: imageUrl,
-      //         alt: article.title,
-      //         width: "w-full",
-      //       }
-      //     : undefined
-      // }
-      imageCaption={undefined} // TODO: Add image caption if available in article
-    />
+      <ArticleTemplate
+        className={canEdit ? '!pt-0 [&>header]:!mt-3' : undefined}
+        title={article.title}
+        author={author}
+        editor={editor}
+        categories={article.categories}
+        issueNumber={article.issueNumber}
+        publishDate={publishDate}
+        articleContent={article.articleContent}
+        sources={article.sources}
+        // featuredImage={
+        //   imageUrl
+        //     ? {
+        //         src: imageUrl,
+        //         alt: article.title,
+        //         width: "w-full",
+        //       }
+        //     : undefined
+        // }
+        imageCaption={undefined} // TODO: Add image caption if available in article
+      />
     </>
   );
 }

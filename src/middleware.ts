@@ -33,7 +33,6 @@ export async function middleware(request: NextRequest) {
 
   // Block pages from access for maintenance
   const blockedURLs = [
-    '/signup',
     '/teams/writing',
     '/teams/design',
     '/teams/photography',

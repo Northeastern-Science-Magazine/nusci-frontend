@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+import { notFound, useRouter } from 'next/navigation';
 import { Form, FormField } from '@/primitives/Form';
 import { SubmitHandler } from 'react-hook-form';
 import MediaCard from '@/design-system/components/MediaCard';
@@ -8,20 +10,92 @@ import Button from '@/primitives/Button';
 import Box from '@/primitives/Box';
 import Text from '@/primitives/Text';
 import { Flex } from '@/primitives/Flex';
+import { apiGetInvite, apiSignup } from '@/lib/api/users';
 
 type SignUpFormValues = {
-  email: string;
+  firstName: string;
+  lastName: string;
+  graduationYear: string;
   password: string;
-  bio: string;
-  year: string;
-  major: string;
 };
 
+type PageState = 'loading' | 'ready' | 'error';
+
 export default function SignUpPage() {
-  const onSubmit: SubmitHandler<SignUpFormValues> = (data) => {
-    console.log('Sign up data:', data);
-    // Handle sign up logic here
+  const router = useRouter();
+  // Invite token is kept in memory only; never logged or stored.
+  const tokenRef = useRef<string | null>(null);
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [pageState, setPageState] = useState<PageState>('loading');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Validate the invite from /signup?token=...
+  useEffect(() => {
+    // Strict mode runs effects twice, and the first run already removed the token from the URL.
+    if (tokenRef.current !== null) return;
+
+    const token = new URLSearchParams(window.location.search).get('token');
+    tokenRef.current = token ?? '';
+    // Remove the token from the URL so it doesn't leak via history or Referer.
+    window.history.replaceState(null, '', window.location.pathname);
+
+    if (!token) {
+      setPageState('error');
+      return;
+    }
+
+    // Safe to call on every load; it does not use up the invite.
+    apiGetInvite(token)
+      .then((result) => {
+        if (result.ok) {
+          setInviteEmail(result.data.email);
+          setPageState('ready');
+        } else {
+          setPageState('error');
+        }
+      })
+      .catch(() => setPageState('error'));
+  }, []);
+
+  const onSubmit: SubmitHandler<SignUpFormValues> = async (data) => {
+    setIsSubmitting(true);
+    try {
+      const result = await apiSignup({
+        token: tokenRef.current ?? '',
+        password: data.password,
+        firstName: data.firstName.trim(),
+        lastName: data.lastName.trim(),
+        // Backend requires a number, but inputs give strings.
+        graduationYear: Number(data.graduationYear),
+      });
+
+      if (result.ok) {
+        // Login cookie is already set by the signup response.
+        router.push('/');
+      } else {
+        setPageState('error');
+      }
+    } catch {
+      setPageState('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  if (pageState === 'error') {
+    notFound();
+  }
+
+  if (pageState === 'loading') {
+    return (
+      <Flex className="min-h-screen items-center justify-center p-4 bg-sage-green">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-forest-green mb-4"></div>
+          <Text color="forest-green">Validating your invitation...</Text>
+        </div>
+      </Flex>
+    );
+  }
 
   return (
     <Flex className="min-h-screen items-center justify-center p-4 bg-sage-green">
@@ -43,22 +117,82 @@ export default function SignUpPage() {
           onSubmit={onSubmit}
           options={{
             defaultValues: {
-              email: '',
+              firstName: '',
+              lastName: '',
+              graduationYear: '',
               password: '',
-              bio: '',
-              year: '',
-              major: '',
             },
           }}
           className="space-y-6 mt-6 p-5"
         >
+          {/* Email comes from the invite and cannot be changed */}
+          <TextInput
+            variant="outline"
+            size="md"
+            color="black"
+            label="Email"
+            value={inviteEmail}
+            className="w-full"
+            disabled
+          />
+
           <FormField<SignUpFormValues>
-            name="email"
+            name="firstName"
             rules={{
-              required: 'Email is required',
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: 'Please enter a valid email',
+              required: 'First name is required',
+              validate: (value) =>
+                value.trim().length > 0 || 'First name is required',
+            }}
+          >
+            <TextInput
+              variant="outline"
+              size="md"
+              color="black"
+              label="First Name"
+              placeholder="Enter your first name"
+              className="w-full"
+            />
+          </FormField>
+
+          <FormField<SignUpFormValues>
+            name="lastName"
+            rules={{
+              required: 'Last name is required',
+              validate: (value) =>
+                value.trim().length > 0 || 'Last name is required',
+            }}
+          >
+            <TextInput
+              variant="outline"
+              size="md"
+              color="black"
+              label="Last Name"
+              placeholder="Enter your last name"
+              className="w-full"
+            />
+          </FormField>
+
+          <FormField<SignUpFormValues>
+            name="graduationYear"
+            rules={{
+              required: 'Graduation year is required',
+              validate: (value) => {
+                const currentYear = new Date().getFullYear();
+                const minYear = currentYear;
+                const maxYear = currentYear + 6; // Adjust range as needed
+
+                // Check if it's 4 digits
+                if (!/^\d{4}$/.test(value)) {
+                  return 'Year must be 4 digits';
+                }
+
+                // Check if it's in valid range
+                const year = parseInt(value);
+                if (year < minYear || year > maxYear) {
+                  return `Year must be between ${minYear} and ${maxYear}`;
+                }
+
+                return true;
               },
             }}
           >
@@ -66,8 +200,8 @@ export default function SignUpPage() {
               variant="outline"
               size="md"
               color="black"
-              label="Email"
-              placeholder="name@northeastern.edu"
+              label="Graduation Year"
+              placeholder="e.g., 2027"
               className="w-full"
             />
           </FormField>
@@ -93,88 +227,15 @@ export default function SignUpPage() {
             />
           </FormField>
 
-          <FormField<SignUpFormValues>
-            name="year"
-            rules={{
-              required: 'Year is required',
-              // pattern: {
-              //   value: /^202\d$/,
-              //   mes
-              // sage: "Please enter a valid year",
-              // },
-              validate: (value) => {
-                const currentYear = new Date().getFullYear();
-                const minYear = currentYear;
-                const maxYear = currentYear + 6; // Adjust range as needed
-
-                // Check if it's 4 digits
-                if (!/^\d{4}$/.test(value)) {
-                  return 'Year must be 4 digits';
-                }
-
-                // Check if it's in valid range
-                const year = parseInt(value);
-                if (year < minYear || year > maxYear) {
-                  return `Year must be between ${minYear} and ${maxYear}`;
-                }
-
-                return true;
-              },
-            }}
-          >
-            <TextInput
-              variant="outline"
-              size="md"
-              color="black"
-              label="Year"
-              placeholder="e.g., 2026"
-              className="w-full"
-            />
-          </FormField>
-
-          <FormField<SignUpFormValues>
-            name="major"
-            rules={{
-              required: 'Major is required',
-            }}
-          >
-            <TextInput
-              variant="outline"
-              size="md"
-              color="black"
-              label="Major"
-              placeholder="e.g., Computer Science"
-              className="w-full"
-            />
-          </FormField>
-
-          <FormField<SignUpFormValues>
-            name="bio"
-            rules={{
-              required: 'Bio is required',
-              maxLength: {
-                value: 500,
-                message: 'Bio must be less than 500 characters',
-              },
-            }}
-          >
-            <TextInput
-              variant="outline"
-              size="md"
-              color="black"
-              label="Bio"
-              placeholder="Tell us about yourself..."
-              className="w-full"
-            />
-          </FormField>
-
           <Button
             variant="default"
             size="md"
             color="forest-green"
+            type="submit"
+            disabled={isSubmitting}
             className="w-full"
           >
-            Sign Up
+            {isSubmitting ? 'Signing Up...' : 'Sign Up'}
           </Button>
 
           <Box className="text-left">

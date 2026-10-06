@@ -1,6 +1,9 @@
 import { notFound } from 'next/navigation';
 import { getArticleBySlug } from '@/lib/api/articles';
 import { ArticleTemplate } from '@/design-system/components/ArticleTemplate';
+import Link from 'next/link';
+import { apiGetUserRoles } from '@/lib/api/users';
+import { canManageArticles } from '@/lib/helpers/articlePermissions';
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
@@ -55,6 +58,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   const article = result.data;
 
+ // Only show the edit button to users with article permissions.
+  const rolesResult = await apiGetUserRoles();
+
+  const canEdit =
+    rolesResult.ok && canManageArticles(rolesResult.data.roles);
+
   // Extract first image URL for featured image
   // const firstImageUrl = extractFirstImageUrl(article.articleContent);
 
@@ -77,7 +86,21 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   // const imageUrl = firstImageUrl;
 
   return (
+    // Edit action aligned with the article's left margin
+    <>
+      {canEdit && (
+        <div className="mx-auto max-w-4xl px-4 pt-8">
+          <Link
+            href={`/internal/article-edit/${encodeURIComponent(article.slug)}`}
+            className="inline-flex items-center rounded-md bg-forest-green px-4 py-2 text-sm font-semibold text-white hover:bg-forest-green/90"
+          >
+            Edit article
+          </Link>
+        </div>
+      )}
+
     <ArticleTemplate
+      className={canEdit ? '!pt-0 [&>header]:!mt-3' : undefined}
       title={article.title}
       author={author}
       editor={editor}
@@ -97,5 +120,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       // }
       imageCaption={undefined} // TODO: Add image caption if available in article
     />
+    </>
   );
 }

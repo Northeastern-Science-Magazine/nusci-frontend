@@ -4,6 +4,9 @@ import { api, ApiResponse } from './api';
 import { Article as ArticleType } from '@/lib/types/types';
 import { ArticleCreate } from '@/lib/types/types';
 import { Category } from '@/lib/types/types';
+import type { ArticleUpdate } from '@/lib/types/types';
+import { apiGetUserRoles } from './users';
+import { canManageArticles } from '@/lib/helpers/articlePermissions';
 
 export interface Article {
   id: string;
@@ -281,4 +284,62 @@ export async function getArticleBySlug(
 
 export async function createArticle(articleData: ArticleCreate) {
   return api<ArticleCreate>('POST', '/articles/create', articleData);
+}
+
+/**
+ * Checks the current user's permissions and submits article changes.
+ * Returns success or an error for the editing form to display.
+ */
+export async function updateArticle(
+  slug: string,
+  changes: ArticleUpdate,
+): Promise<ApiResponse<null>> {
+  // Check permissions again because the save action can be called directly.
+  const rolesResult = await apiGetUserRoles();
+
+  if (!rolesResult.ok) {
+    return {
+      ok: false,
+      error: rolesResult.error,
+    };
+  }
+
+  if (!canManageArticles(rolesResult.data.roles)) {
+    return {
+      ok: false,
+      error: 'You do not have permission to edit articles.',
+    };
+  }
+
+  // TODO(BACKEND-339): Replace this proposed URL with Kalina's
+  // final update endpoint. If she uses separate endpoints,
+  // replace this single request with the required requests.
+  const endpoint = `/articles/update/${encodeURIComponent(slug)}`;
+
+  // TODO(BACKEND-339): Match expected request fields.
+  // Confirm support for categories, sources, and issueNumber.
+  // Authors currently contain email addresses.
+  const result = await api<unknown>('PATCH', endpoint, {
+    title: changes.title,
+    issueNumber: changes.issueNumber,
+    authors: changes.authors,
+    categories: changes.categories,
+    articleContent: changes.articleContent,
+    sources: changes.sources,
+  });
+
+  if (!result.ok) {
+    return {
+      ok: false,
+      error: result.error,
+    };
+  }
+
+  // TODO(BACKEND-339): If saving uses separate requests,
+  // return success only after all required updates succeed.
+  // Report partial saves if some succeed and others fail.
+  return {
+    ok: true,
+    data: null,
+  };
 }

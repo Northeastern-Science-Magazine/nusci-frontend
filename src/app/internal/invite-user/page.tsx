@@ -1,15 +1,15 @@
-"use client";
-import Box from "@/design-system/primitives/Box";
-import Button from "@/design-system/primitives/Button";
-import Checkbox from "@/design-system/primitives/Checkbox";
-import { Form, FormField } from "@/design-system/primitives/Form";
-import Text from "@/design-system/primitives/Text";
-import { Roles } from "@/lib/types/types";
-import { useState } from "react";
-import { apiInviteUser } from "@/lib/api/users";
-import { SubmitHandler } from "react-hook-form";
-import EmailSearch from "./EmailSearch";
-import { Controller } from "react-hook-form";
+'use client';
+import Box from '@/design-system/primitives/Box';
+import Button from '@/design-system/primitives/Button';
+import Checkbox from '@/design-system/primitives/Checkbox';
+import { Form, FormField } from '@/design-system/primitives/Form';
+import Text from '@/design-system/primitives/Text';
+import { Roles } from '@/lib/types/types';
+import { useState } from 'react';
+import { apiInviteUser } from '@/lib/api/users';
+import { SubmitHandler } from 'react-hook-form';
+import EmailSearch from './EmailSearch';
+import { Controller } from 'react-hook-form';
 
 export default function InviteUser() {
   type InviteUserFormValues = {
@@ -37,7 +37,7 @@ export default function InviteUser() {
 
     if (result.ok) {
       setSuccess(
-        `Invite sent to ${emails.length} ${emails.length === 1 ? "person" : "people"}.`,
+        `Invite sent to ${emails.length} ${emails.length === 1 ? 'person' : 'people'}.`,
       );
       setEmails([]);
       setRoles([]);
@@ -73,10 +73,10 @@ export default function InviteUser() {
             <FormField
               name="emails"
               rules={{
-                required: "Email is required",
+                required: 'Email is required',
                 pattern: {
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                  message: "Please enter a valid email",
+                  message: 'Please enter a valid email',
                 },
               }}
             >
@@ -89,7 +89,7 @@ export default function InviteUser() {
                 render={({ field }) => (
                   <div className="space-y-3">
                     <label className="block text-sm font-semibold uppercase tracking-wide text-gray-700">
-                      {"Categories"}
+                      {'Categories'}
                     </label>
                     <div className="rounded-xl border border-gray-200 bg-gray-50/60 p-4 transition-colors focus-within:border-gray-300 [&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-8 [&>div]:gap-y-3 [&_label]:mb-0 [&_label]:cursor-pointer [&_label]:text-gray-800">
                       <Checkbox
@@ -112,23 +112,26 @@ export default function InviteUser() {
               </p>
             )}
             {success && (
-              <p role="status" className="px-2 text-sm font-medium text-green-700">
+              <p
+                role="status"
+                className="px-2 text-sm font-medium text-green-700"
+              >
                 {success}
               </p>
             )}
 
             <div className="flex flex-col-reverse items-stretch gap-3 border-t border-gray-100 px-2 pt-6 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-gray-500">
-                {emails.length} {emails.length === 1 ? "person" : "people"}{" "}
-                &middot; {roles.length} {roles.length === 1 ? "role" : "roles"}
+                {emails.length} {emails.length === 1 ? 'person' : 'people'}{' '}
+                &middot; {roles.length} {roles.length === 1 ? 'role' : 'roles'}
               </p>
               <Button
-                color={canSend ? "forest-green" : "border"}
+                color={canSend ? 'forest-green' : 'border'}
                 type="submit"
                 disabled={!canSend || isSending}
                 className="w-full rounded-xl px-8 py-3 font-semibold shadow-sm transition-all enabled:hover:-translate-y-0.5 enabled:hover:shadow-md disabled:cursor-not-allowed sm:w-auto"
               >
-                {isSending ? "Sending..." : "Invite"}
+                {isSending ? 'Sending...' : 'Invite'}
               </Button>
             </div>
           </div>

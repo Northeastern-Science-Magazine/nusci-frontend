@@ -1,7 +1,8 @@
 'use server';
 
-import { Roles } from '../types/types';
+import { EmailType, Roles } from '../types/types';
 import { api, ApiResponse } from './api';
+import { apiSendEmail } from './email';
 import { ProfileData } from '@/app/profile/[emailPrefix]/page';
 
 /**
@@ -167,4 +168,14 @@ export async function apiVerifyOTPToken(
 
 export async function apiGetBasicUserList(): Promise<ApiResponse<BasicUser[]>> {
   return api<BasicUser[]>('GET', '/user/list/basic');
+}
+
+/**
+ * Sends an invite email to each address in `emails`, all pointing at `inviteUrl`.
+ */
+export async function apiInviteUser(
+  emails: string[],
+  inviteUrl: string,
+): Promise<ApiResponse<void>> {
+  return apiSendEmail({ type: EmailType.INVITE_USER, to: emails, inviteUrl });
 }

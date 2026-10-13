@@ -2,7 +2,7 @@ import { tv, type VariantProps } from 'tailwind-variants';
 
 /** Define Avatar Variants using Tailwind Variant Definitions */
 export const avatarVariants = tv({
-  base: 'flex items-center justify-center rounded-full border-4 border-white shadow-xl',
+  base: 'flex items-center justify-center rounded-full border-4 border-white shadow-xl object-cover',
   variants: {
     size: {
       sm: 'w-16 h-16 md:w-24 md:h-24 text-lg',

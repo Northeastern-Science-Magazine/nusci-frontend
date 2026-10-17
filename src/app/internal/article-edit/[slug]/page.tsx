@@ -43,10 +43,10 @@ export default async function ArticleEditPage({
   }
 
   return (
-  <ArticleEditForm
-    key={articleResult.data.slug}
-    article={articleResult.data}
-    basicUsers={usersResult.data}
-  />
+    <ArticleEditForm
+      key={articleResult.data.slug}
+      article={articleResult.data}
+      basicUsers={usersResult.data}
+    />
   );
 }

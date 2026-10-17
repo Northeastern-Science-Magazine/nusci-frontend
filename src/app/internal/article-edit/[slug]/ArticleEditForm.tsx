@@ -17,11 +17,7 @@ import { SourcesInput } from '@/app/internal/article-submission/components/Sourc
 
 import { updateArticle } from '@/lib/api/articles';
 import type { BasicUser } from '@/lib/api/users';
-import {
-  Category,
-  type Article,
-  type ArticleSource,
-} from '@/lib/types/types';
+import { Category, type Article, type ArticleSource } from '@/lib/types/types';
 
 import {
   articleContentToHtml,
@@ -139,8 +135,7 @@ export default function ArticleEditForm({
   );
 
   const labelForEmail = (email: string) =>
-    authorOptions.find((option) => option.value === email)?.label ??
-    email;
+    authorOptions.find((option) => option.value === email)?.label ?? email;
 
   // Match submission's options and retain the article's existing issue.
   const issueOptions = [
@@ -150,9 +145,7 @@ export default function ArticleEditForm({
 
   if (
     article.issueNumber != null &&
-    !issueOptions.some(
-      (option) => option.value === String(article.issueNumber),
-    )
+    !issueOptions.some((option) => option.value === String(article.issueNumber))
   ) {
     issueOptions.push({
       label: `Issue ${article.issueNumber}`,
@@ -161,10 +154,7 @@ export default function ArticleEditForm({
   }
 
   const categoryOptions = Array.from(
-    new Set([
-      ...Object.values(Category),
-      ...(article.categories ?? []),
-    ]),
+    new Set([...Object.values(Category), ...(article.categories ?? [])]),
   );
 
   // Validate and save without discarding edits when a request fails.
@@ -217,8 +207,7 @@ export default function ArticleEditForm({
 
     if (
       sources.some(
-        (source) =>
-          !source.text || !source.href || !isHttpUrl(source.href),
+        (source) => !source.text || !source.href || !isHttpUrl(source.href),
       )
     ) {
       setError('Each source needs a title and a valid http or https URL.');
@@ -290,10 +279,7 @@ export default function ArticleEditForm({
             Edit an Article
           </Text>
 
-          <fieldset
-            disabled={isSaving}
-            className="min-w-0 space-y-8"
-          >
+          <fieldset disabled={isSaving} className="min-w-0 space-y-8">
             {/* Issue Number */}
             <div className="flex flex-col gap-1">
               <Text size={16} color="black">
@@ -343,11 +329,7 @@ export default function ArticleEditForm({
                 onChange={(value) =>
                   changeField(
                     'authors',
-                    Array.isArray(value)
-                      ? value
-                      : value
-                        ? [value]
-                        : [],
+                    Array.isArray(value) ? value : value ? [value] : [],
                   )
                 }
               />
@@ -355,11 +337,7 @@ export default function ArticleEditForm({
               {values.authors.length > 0 && (
                 <Box className="mt-3">
                   <div className="flex flex-wrap items-center gap-2">
-                    <Text
-                      size={14}
-                      color="black"
-                      className="mr-2 opacity-70"
-                    >
+                    <Text size={14} color="black" className="mr-2 opacity-70">
                       Selected authors:
                     </Text>
 
@@ -399,9 +377,7 @@ export default function ArticleEditForm({
                 <Checkbox
                   options={categoryOptions}
                   value={values.categories}
-                  onChange={(value) =>
-                    changeField('categories', value)
-                  }
+                  onChange={(value) => changeField('categories', value)}
                   disabled={isSaving}
                 />
               </div>
@@ -424,9 +400,7 @@ export default function ArticleEditForm({
               <Checkbox
                 options={['This article has no pull quotes']}
                 value={
-                  values.noPullQuotes
-                    ? ['This article has no pull quotes']
-                    : []
+                  values.noPullQuotes ? ['This article has no pull quotes'] : []
                 }
                 onChange={(value) =>
                   changeField(
@@ -448,11 +422,7 @@ export default function ArticleEditForm({
               />
               <Checkbox
                 options={['This article has no sources']}
-                value={
-                  values.noSources
-                    ? ['This article has no sources']
-                    : []
-                }
+                value={values.noSources ? ['This article has no sources'] : []}
                 onChange={(value) =>
                   changeField(
                     'noSources',

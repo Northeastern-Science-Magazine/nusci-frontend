@@ -135,11 +135,7 @@ export default function ArticleTemplate({
               )}
             </div>
 
-            {editAction && (
-              <div className="ml-auto shrink-0">
-                {editAction}
-              </div>
-            )}
+            {editAction && <div className="ml-auto shrink-0">{editAction}</div>}
           </div>
         </header>
 

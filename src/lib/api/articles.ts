@@ -337,16 +337,12 @@ export async function updateArticle(
 
   const sameAuthors =
     JSON.stringify(changes.authors) ===
-    JSON.stringify(
-      (current.authors ?? []).map((author) => author.email),
-    );
+    JSON.stringify((current.authors ?? []).map((author) => author.email));
 
   const updates = [
     {
       label: 'issue number',
-      changed:
-        (changes.issueNumber ?? null) !==
-        (current.issueNumber ?? null),
+      changed: (changes.issueNumber ?? null) !== (current.issueNumber ?? null),
 
       // TODO(BACKEND-339): Proposed endpoint and payload.
       // Confirm with Kalina when issue-number updating is implemented.
@@ -400,11 +396,7 @@ export async function updateArticle(
   for (const update of updates) {
     if (!update.changed) continue;
 
-    const result = await api<unknown>(
-      'PATCH',
-      update.endpoint,
-      update.body,
-    );
+    const result = await api<unknown>('PATCH', update.endpoint, update.body);
 
     if (!result.ok) {
       const previousUpdates = saved.length

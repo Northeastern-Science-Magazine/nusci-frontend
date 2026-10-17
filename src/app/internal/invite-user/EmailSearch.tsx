@@ -1,8 +1,8 @@
-"use client";
-import Text from "@/design-system/primitives/Text";
-import TextInput from "@/design-system/primitives/TextInput";
-import Badge from "@/design-system/primitives/Badge";
-import { Dispatch, SetStateAction, useState } from "react";
+'use client';
+import Text from '@/design-system/primitives/Text';
+import TextInput from '@/design-system/primitives/TextInput';
+import Badge from '@/design-system/primitives/Badge';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 const NORTHEASTERN_EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@northeastern\.edu$/i;
 
@@ -13,7 +13,7 @@ export default function EmailSearch({
   emails: string[];
   setEmails: Dispatch<SetStateAction<string[]>>;
 }) {
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
   const addEmail = () => {
@@ -21,12 +21,12 @@ export default function EmailSearch({
     if (!trimmed) return;
 
     if (!NORTHEASTERN_EMAIL_REGEX.test(trimmed)) {
-      setError("Email must be a valid @northeastern.edu address");
+      setError('Email must be a valid @northeastern.edu address');
       return;
     }
 
     setEmails((prev) => [...prev, trimmed]);
-    setEmail("");
+    setEmail('');
     setError(null);
   };
 
@@ -78,8 +78,8 @@ export default function EmailSearch({
       <div
         className={`email-search w-full px-2 [&_label]:mb-2 [&_label]:block [&_label]:text-sm [&_label]:font-semibold [&_label]:uppercase [&_label]:tracking-wide [&_label]:text-gray-700 [&_input]:min-h-14 [&_input]:w-full [&_input]:rounded-xl [&_input]:px-5 [&_input]:py-4 [&_input]:text-lg [&_input]:transition-shadow focus-within:[&_input]:ring-2 focus-within:[&_input]:ring-black/10 ${
           error
-            ? "[&_input]:border-red-500 focus-within:[&_input]:ring-red-500/20"
-            : ""
+            ? '[&_input]:border-red-500 focus-within:[&_input]:ring-red-500/20'
+            : ''
         }`}
       >
         <TextInput
@@ -93,7 +93,7 @@ export default function EmailSearch({
             if (error) setError(null);
           }}
           onKeyDown={(e: any) => {
-            if (e.key === "Enter") {
+            if (e.key === 'Enter') {
               e.preventDefault();
               addEmail();
             }

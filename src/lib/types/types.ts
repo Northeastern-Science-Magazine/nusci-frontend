@@ -144,6 +144,17 @@ export type ArticleCreate = {
   modificationTime: Date;
 };
 
+// TODO(BACKEND-339): Match this payload to the final backend
+// update schema, including author emails and optional fields.
+export type ArticleUpdate = {
+  title: string;
+  issueNumber?: number;
+  authors: string[];
+  categories: string[];
+  articleContent: ArticleContent[];
+  sources: ArticleSource[];
+};
+
 export type PublicUser = {
   _id: string;
   firstName: string;

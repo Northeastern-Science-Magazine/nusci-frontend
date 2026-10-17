@@ -73,6 +73,7 @@ export default function ArticleTemplate({
   articleContent,
   sources,
   className,
+  editAction,
   ...variantProps
 }: ArticleTemplateProps) {
   // Convert articleContent to ContentBlock format
@@ -119,17 +120,22 @@ export default function ArticleTemplate({
           </div>
 
           {/* Categories and Issue Number */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {categories.map((category, index) => (
-              <Badge key={index} color="aqua" variant="default">
-                {category}
-              </Badge>
-            ))}
-            {issueNumber && (
-              <Badge color="aqua" variant="blur">
-                Issue {issueNumber}
-              </Badge>
-            )}
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center gap-2">
+              {categories.map((category, index) => (
+                <Badge key={index} color="aqua" variant="default">
+                  {category}
+                </Badge>
+              ))}
+
+              {issueNumber && (
+                <Badge color="aqua" variant="blur">
+                  Issue {issueNumber}
+                </Badge>
+              )}
+            </div>
+
+            {editAction && <div className="ml-auto shrink-0">{editAction}</div>}
           </div>
         </header>
 

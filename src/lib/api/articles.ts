@@ -4,6 +4,9 @@ import { api, ApiResponse } from './api';
 import { Article as ArticleType } from '@/lib/types/types';
 import { ArticleCreate } from '@/lib/types/types';
 import { Category } from '@/lib/types/types';
+import type { ArticleUpdate } from '@/lib/types/types';
+import { apiGetUserRoles } from './users';
+import { canManageArticles } from '@/lib/helpers/articlePermissions';
 
 export interface Article {
   id: string;
@@ -281,4 +284,136 @@ export async function getArticleBySlug(
 
 export async function createArticle(articleData: ArticleCreate) {
   return api<ArticleCreate>('POST', '/articles/create', articleData);
+}
+
+/**
+ * Saves changed article fields through separate update endpoints.
+ * Reports partial saves if a later request fails.
+ */
+export async function updateArticle(
+  slug: string,
+  changes: ArticleUpdate,
+): Promise<ApiResponse<null>> {
+  const rolesResult = await apiGetUserRoles();
+
+  if (!rolesResult.ok) {
+    return { ok: false, error: rolesResult.error };
+  }
+
+  if (!canManageArticles(rolesResult.data.roles)) {
+    return {
+      ok: false,
+      error: 'You do not have permission to edit articles.',
+    };
+  }
+
+  const currentResult = await getArticleBySlug(slug);
+
+  if (!currentResult.ok) {
+    return {
+      ok: false,
+      error: `Unable to load the saved article: ${currentResult.error}`,
+    };
+  }
+
+  const current = currentResult.data;
+  const encodedSlug = encodeURIComponent(slug);
+
+  const normalizeSources = (sources: ArticleUpdate['sources']) =>
+    sources
+      .map((source) => ({
+        text: (source.text ?? '').trim(),
+        href: (source.href ?? '').trim(),
+      }))
+      .filter((source) => source.text || source.href);
+
+  const sameCategories =
+    JSON.stringify([...changes.categories].sort()) ===
+    JSON.stringify([...(current.categories ?? [])].sort());
+
+  const sameSources =
+    JSON.stringify(normalizeSources(changes.sources)) ===
+    JSON.stringify(normalizeSources(current.sources ?? []));
+
+  const sameAuthors =
+    JSON.stringify(changes.authors) ===
+    JSON.stringify((current.authors ?? []).map((author) => author.email));
+
+  const updates = [
+    {
+      label: 'issue number',
+      changed: (changes.issueNumber ?? null) !== (current.issueNumber ?? null),
+
+      // TODO(BACKEND-339): Proposed endpoint and payload.
+      // Confirm with Kalina when issue-number updating is implemented.
+      endpoint: `/articles/issue-number/${encodedSlug}`,
+      body: { issueNumber: changes.issueNumber },
+    },
+    {
+      label: 'categories',
+      changed: !sameCategories,
+
+      // TODO(BACKEND-339): Proposed endpoint and payload.
+      // Confirm with Kalina when category updating is implemented.
+      endpoint: `/articles/categories/${encodedSlug}`,
+      body: { categories: changes.categories },
+    },
+    {
+      label: 'sources',
+      changed: !sameSources,
+
+      // TODO(BACKEND-339): Proposed endpoint and payload.
+      // Confirm with Kalina when source updating is implemented.
+      endpoint: `/articles/sources/${encodedSlug}`,
+      body: { sources: changes.sources },
+    },
+    {
+      label: 'title',
+      changed: changes.title !== current.title,
+      endpoint: `/articles/title/${encodedSlug}`,
+      body: { title: changes.title },
+    },
+    {
+      label: 'content',
+      changed:
+        JSON.stringify(changes.articleContent) !==
+        JSON.stringify(current.articleContent ?? []),
+      endpoint: `/articles/content/${encodedSlug}`,
+      body: { articleContent: changes.articleContent },
+    },
+    {
+      label: 'authors',
+      changed: !sameAuthors,
+      endpoint: `/articles/authors/${encodedSlug}`,
+      body: { authors: changes.authors },
+    },
+  ];
+
+  const saved: string[] = [];
+
+  // Try pending endpoints first when their fields changed.
+  // Stop on the first failure and retain the edits in the form.
+  for (const update of updates) {
+    if (!update.changed) continue;
+
+    const result = await api<unknown>('PATCH', update.endpoint, update.body);
+
+    if (!result.ok) {
+      const previousUpdates = saved.length
+        ? `Already saved: ${saved.join(', ')}. `
+        : '';
+
+      return {
+        ok: false,
+        error:
+          `${previousUpdates}Could not confirm the ${update.label} update. ` +
+          `${result.error || 'Request failed.'} ` +
+          'Your edits are still in the form. Check the saved article before retrying.',
+      };
+    }
+
+    saved.push(update.label);
+  }
+
+  return { ok: true, data: null };
 }

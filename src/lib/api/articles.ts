@@ -287,21 +287,17 @@ export async function createArticle(articleData: ArticleCreate) {
 }
 
 /**
- * Checks the current user's permissions and submits article changes.
- * Returns success or an error for the editing form to display.
+ * Saves changed article fields through separate update endpoints.
+ * Reports partial saves if a later request fails.
  */
 export async function updateArticle(
   slug: string,
   changes: ArticleUpdate,
 ): Promise<ApiResponse<null>> {
-  // Check permissions again because the save action can be called directly.
   const rolesResult = await apiGetUserRoles();
 
   if (!rolesResult.ok) {
-    return {
-      ok: false,
-      error: rolesResult.error,
-    };
+    return { ok: false, error: rolesResult.error };
   }
 
   if (!canManageArticles(rolesResult.data.roles)) {
@@ -311,35 +307,121 @@ export async function updateArticle(
     };
   }
 
-  // TODO(BACKEND-339): Replace this proposed URL with Kalina's
-  // final update endpoint. If she uses separate endpoints,
-  // replace this single request with the required requests.
-  const endpoint = `/articles/update/${encodeURIComponent(slug)}`;
+  const currentResult = await getArticleBySlug(slug);
 
-  // TODO(BACKEND-339): Match expected request fields.
-  // Confirm support for categories, sources, and issueNumber.
-  // Authors currently contain email addresses.
-  const result = await api<unknown>('PATCH', endpoint, {
-    title: changes.title,
-    issueNumber: changes.issueNumber,
-    authors: changes.authors,
-    categories: changes.categories,
-    articleContent: changes.articleContent,
-    sources: changes.sources,
-  });
-
-  if (!result.ok) {
+  if (!currentResult.ok) {
     return {
       ok: false,
-      error: result.error,
+      error: `Unable to load the saved article: ${currentResult.error}`,
     };
   }
 
-  // TODO(BACKEND-339): If saving uses separate requests,
-  // return success only after all required updates succeed.
-  // Report partial saves if some succeed and others fail.
-  return {
-    ok: true,
-    data: null,
-  };
+  const current = currentResult.data;
+  const encodedSlug = encodeURIComponent(slug);
+
+  const normalizeSources = (sources: ArticleUpdate['sources']) =>
+    sources
+      .map((source) => ({
+        text: (source.text ?? '').trim(),
+        href: (source.href ?? '').trim(),
+      }))
+      .filter((source) => source.text || source.href);
+
+  const sameCategories =
+    JSON.stringify([...changes.categories].sort()) ===
+    JSON.stringify([...(current.categories ?? [])].sort());
+
+  const sameSources =
+    JSON.stringify(normalizeSources(changes.sources)) ===
+    JSON.stringify(normalizeSources(current.sources ?? []));
+
+  const sameAuthors =
+    JSON.stringify(changes.authors) ===
+    JSON.stringify(
+      (current.authors ?? []).map((author) => author.email),
+    );
+
+  const updates = [
+    {
+      label: 'issue number',
+      changed:
+        (changes.issueNumber ?? null) !==
+        (current.issueNumber ?? null),
+
+      // TODO(BACKEND-339): Proposed endpoint and payload.
+      // Confirm with Kalina when issue-number updating is implemented.
+      endpoint: `/articles/issue-number/${encodedSlug}`,
+      body: { issueNumber: changes.issueNumber },
+    },
+    {
+      label: 'categories',
+      changed: !sameCategories,
+
+      // TODO(BACKEND-339): Proposed endpoint and payload.
+      // Confirm with Kalina when category updating is implemented.
+      endpoint: `/articles/categories/${encodedSlug}`,
+      body: { categories: changes.categories },
+    },
+    {
+      label: 'sources',
+      changed: !sameSources,
+
+      // TODO(BACKEND-339): Proposed endpoint and payload.
+      // Confirm with Kalina when source updating is implemented.
+      endpoint: `/articles/sources/${encodedSlug}`,
+      body: { sources: changes.sources },
+    },
+    {
+      label: 'title',
+      changed: changes.title !== current.title,
+      endpoint: `/articles/title/${encodedSlug}`,
+      body: { title: changes.title },
+    },
+    {
+      label: 'content',
+      changed:
+        JSON.stringify(changes.articleContent) !==
+        JSON.stringify(current.articleContent ?? []),
+      endpoint: `/articles/content/${encodedSlug}`,
+      body: { articleContent: changes.articleContent },
+    },
+    {
+      label: 'authors',
+      changed: !sameAuthors,
+      endpoint: `/articles/authors/${encodedSlug}`,
+      body: { authors: changes.authors },
+    },
+  ];
+
+  const saved: string[] = [];
+
+  // Try pending endpoints first when their fields changed.
+  // Stop on the first failure and retain the edits in the form.
+  for (const update of updates) {
+    if (!update.changed) continue;
+
+    const result = await api<unknown>(
+      'PATCH',
+      update.endpoint,
+      update.body,
+    );
+
+    if (!result.ok) {
+      const previousUpdates = saved.length
+        ? `Already saved: ${saved.join(', ')}. `
+        : '';
+
+      return {
+        ok: false,
+        error:
+          `${previousUpdates}Could not confirm the ${update.label} update. ` +
+          `${result.error || 'Request failed.'} ` +
+          'Your edits are still in the form. Check the saved article before retrying.',
+      };
+    }
+
+    saved.push(update.label);
+  }
+
+  return { ok: true, data: null };
 }

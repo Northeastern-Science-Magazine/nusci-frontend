@@ -2,10 +2,17 @@
 
 import { useRef, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { X } from 'lucide-react';
 
+import Box from '@/design-system/primitives/Box';
+import Text from '@/design-system/primitives/Text';
 import TextInput from '@/design-system/primitives/TextInput';
+import Checkbox from '@/design-system/primitives/Checkbox';
 import Button from '@/design-system/primitives/Button';
 import { Dropdown } from '@/design-system/primitives/Dropdown';
+
+import ArticleInput from '@/app/internal/article-submission/components/ArticleInput';
+import { PullQuoteInput } from '@/app/internal/article-submission/components/PullQuoteInput';
 import { SourcesInput } from '@/app/internal/article-submission/components/SourcesInput';
 
 import { updateArticle } from '@/lib/api/articles';
@@ -13,16 +20,34 @@ import type { BasicUser } from '@/lib/api/users';
 import {
   Category,
   type Article,
-  type ArticleContentSegment,
-  type ArticleUpdate,
+  type ArticleSource,
 } from '@/lib/types/types';
+
+import {
+  articleContentToHtml,
+  getPullQuotes,
+  htmlToArticleContent,
+  restorePullQuotes,
+} from '@/lib/helpers/articleContentEditor';
 
 type ArticleEditFormProps = {
   article: Article;
   basicUsers: BasicUser[];
 };
 
-// Only accept http and https URLs for sources, links, and images.
+type EditValues = {
+  title: string;
+  issueNumber: number | undefined;
+  authors: string[];
+  categories: string[];
+  content: string;
+  pullQuotes: string[];
+  noPullQuotes: boolean;
+  sources: ArticleSource[];
+  noSources: boolean;
+};
+
+// Only accept http and https URLs for sources.
 function isHttpUrl(value: string): boolean {
   try {
     const url = new URL(value);
@@ -33,67 +58,71 @@ function isHttpUrl(value: string): boolean {
 }
 
 /**
- * Separate form for editing an existing article.
- * Preserves paragraph segments and displays save, success, and error states.
+ * Uses the submission form's input components with existing article values.
+ * Converts editor HTML into backend content before saving.
  */
 export default function ArticleEditForm({
   article,
   basicUsers,
 }: ArticleEditFormProps) {
   const router = useRouter();
-  // Prevent duplicate submissions before the saving state updates.
+
+  // Prevent duplicate requests before the saving state updates.
   const saving = useRef(false);
 
-  const [values, setValues] = useState<ArticleUpdate>(() => ({
-    title: article.title,
-    issueNumber: article.issueNumber,
-    authors: (article.authors ?? []).map((author) => author.email),
-    categories: [...article.categories],
-    articleContent: (article.articleContent ?? []).map((paragraph) =>
-      paragraph.map((segment) => ({ ...segment })),
-    ),
-    // Existing records may contain null source titles or URLs.
-    sources: (article.sources ?? []).map((source) => ({
+  // Load saved content into the same editor used for submission.
+  const [initialEditor] = useState(() => {
+    try {
+      return {
+        html: articleContentToHtml(article.articleContent ?? []),
+        error: null as string | null,
+      };
+    } catch (error) {
+      return {
+        html: '',
+        error:
+          error instanceof Error
+            ? error.message
+            : 'Unable to load article content.',
+      };
+    }
+  });
+
+  const [values, setValues] = useState<EditValues>(() => {
+    const pullQuotes = getPullQuotes(article.articleContent ?? []);
+    const sources = (article.sources ?? []).map((source) => ({
       text: source.text ?? '',
       href: source.href ?? '',
-    })),
-  }));
+    }));
+
+    return {
+      title: article.title,
+      issueNumber: article.issueNumber ?? undefined,
+      authors: (article.authors ?? []).map((author) => author.email),
+      categories: [...(article.categories ?? [])],
+      content: initialEditor.html,
+      pullQuotes,
+      noPullQuotes: pullQuotes.length === 0,
+      sources,
+      noSources: sources.length === 0,
+    };
+  });
 
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
-  // Update a field and clear feedback from the previous save attempt.
-  function changeField<K extends keyof ArticleUpdate>(
+  // Update a field and clear the previous error.
+  function changeField<K extends keyof EditValues>(
     field: K,
-    value: ArticleUpdate[K],
+    value: EditValues[K],
   ) {
     if (saving.current) return;
 
     setValues((previous) => ({ ...previous, [field]: value }));
     setError(null);
-    setSuccess(false);
   }
 
-  // Update one segment while preserving the remaining paragraphs and segments.
-  function changeSegment(
-    paragraphIndex: number,
-    segmentIndex: number,
-    changes: Partial<ArticleContentSegment>,
-  ) {
-    changeField(
-      'articleContent',
-      values.articleContent.map((paragraph, currentParagraph) =>
-        paragraph.map((segment, currentSegment) =>
-          currentParagraph === paragraphIndex && currentSegment === segmentIndex
-            ? { ...segment, ...changes }
-            : segment,
-        ),
-      ),
-    );
-  }
-
-  // Keep existing authors available even if missing from the user list.
+  // Keep existing authors available even if absent from the user list.
   const authorOptions = Array.from(
     new Map(
       [
@@ -109,39 +138,53 @@ export default function ArticleEditForm({
     ).values(),
   );
 
-  // Include existing categories even if they are absent from the current enum.
-  const categoryOptions = Array.from(
-    new Set([...Object.values(Category), ...article.categories]),
-  ).map((category) => ({
-    label: category,
-    value: category,
-  }));
+  const labelForEmail = (email: string) =>
+    authorOptions.find((option) => option.value === email)?.label ??
+    email;
 
-  // Validates the form and submits changes without discarding edits on failure.
+  // Match submission's options and retain the article's existing issue.
+  const issueOptions = [
+    { label: 'Issue 67: Intrepid', value: '67' },
+    { label: 'Issue 68: Dissonance', value: '68' },
+  ];
+
+  if (
+    article.issueNumber != null &&
+    !issueOptions.some(
+      (option) => option.value === String(article.issueNumber),
+    )
+  ) {
+    issueOptions.push({
+      label: `Issue ${article.issueNumber}`,
+      value: String(article.issueNumber),
+    });
+  }
+
+  const categoryOptions = Array.from(
+    new Set([
+      ...Object.values(Category),
+      ...(article.categories ?? []),
+    ]),
+  );
+
+  // Validate and save without discarding edits when a request fails.
   async function handleSave(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (saving.current) return;
 
     setError(null);
-    setSuccess(false);
 
     if (!values.title.trim()) {
       setError('Please enter a title.');
       return;
     }
 
-    // TODO(BACKEND-339): Confirm whether an existing issue number
-    // can be cleared and what value the backend expects for that.
-    if (article.issueNumber !== undefined && values.issueNumber === undefined) {
-      setError('Please enter an issue number for this article.');
-      return;
-    }
-
     if (
-      values.issueNumber !== undefined &&
-      (!Number.isInteger(values.issueNumber) || values.issueNumber < 1)
+      values.issueNumber === undefined ||
+      !Number.isInteger(values.issueNumber) ||
+      values.issueNumber < 1
     ) {
-      setError('Please enter a valid issue number.');
+      setError('Please select an issue.');
       return;
     }
 
@@ -151,45 +194,34 @@ export default function ArticleEditForm({
     }
 
     if (
-      !values.articleContent.some((paragraph) =>
-        paragraph.some((segment) => segment.content.trim()),
-      )
+      !values.noPullQuotes &&
+      !values.pullQuotes.some((quote) => quote.trim())
     ) {
-      setError('Please enter article content.');
+      setError('Enter a pull quote or select no pull quotes.');
       return;
     }
 
-    const sources = values.sources
-      .map((source) => ({
-        text: (source.text ?? '').trim(),
-        href: (source.href ?? '').trim(),
-      }))
-      .filter((source) => source.text || source.href);
+    const sources = values.noSources
+      ? []
+      : values.sources
+          .map((source) => ({
+            text: (source.text ?? '').trim(),
+            href: (source.href ?? '').trim(),
+          }))
+          .filter((source) => source.text || source.href);
 
-    if (sources.some((source) => !source.text || !source.href)) {
-      setError('Each source needs both a title and URL.');
+    if (!values.noSources && !sources.length) {
+      setError('Enter a source or select no sources.');
       return;
     }
-
-    const invalidContentUrl = values.articleContent.some((paragraph) =>
-      paragraph.some((segment) => {
-        if (segment.contentType === 'link') {
-          return !isHttpUrl(segment.href ?? '');
-        }
-
-        if (segment.contentType === 'image') {
-          return !isHttpUrl(segment.content);
-        }
-
-        return false;
-      }),
-    );
 
     if (
-      sources.some((source) => !isHttpUrl(source.href)) ||
-      invalidContentUrl
+      sources.some(
+        (source) =>
+          !source.text || !source.href || !isHttpUrl(source.href),
+      )
     ) {
-      setError('Sources, links, and images need valid http or https URLs.');
+      setError('Each source needs a title and a valid http or https URL.');
       return;
     }
 
@@ -197,10 +229,27 @@ export default function ArticleEditForm({
     setIsSaving(true);
 
     try {
-      // Backend endpoint details are handled in updateArticle().
+      const body = htmlToArticleContent(values.content);
+
+      if (!body.length) {
+        setError('Please enter article content.');
+        return;
+      }
+
+      // Restore separately edited quotes near their original positions.
+      const articleContent = restorePullQuotes(
+        body,
+        values.noPullQuotes ? [] : values.pullQuotes,
+        article.articleContent ?? [],
+      );
+
+      // Endpoint details and pending backend contracts live in updateArticle().
       const result = await updateArticle(article.slug, {
-        ...values,
         title: values.title.trim(),
+        issueNumber: values.issueNumber,
+        authors: values.authors,
+        categories: values.categories,
+        articleContent,
         sources,
       });
 
@@ -209,260 +258,229 @@ export default function ArticleEditForm({
         return;
       }
 
-      setSuccess(true);
+      // The backend preserves the slug when updating the title.
+      router.push(`/${encodeURIComponent(article.slug)}`);
       router.refresh();
-    } catch {
-      setError('Unable to save changes. Please try again.');
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : 'Unable to save changes. Please try again.',
+      );
     } finally {
       saving.current = false;
       setIsSaving(false);
     }
   }
 
+  if (initialEditor.error) {
+    return <p role="alert">{initialEditor.error}</p>;
+  }
+
   return (
-    <form onSubmit={handleSave} className="space-y-6">
-      <fieldset disabled={isSaving} className="space-y-6">
-        <TextInput
-          label="Title"
-          value={values.title}
-          onChange={(value) => changeField('title', value)}
-        />
+    <Box className="mx-auto w-full max-w-3xl px-4 py-8">
+      <form onSubmit={handleSave}>
+        <Box className="space-y-8 rounded-2xl bg-white p-8 shadow-xl ring-1 ring-black/5">
+          <Text
+            color="sage-green"
+            size={36}
+            style="bold"
+            className="mb-8 text-left"
+          >
+            Edit an Article
+          </Text>
 
-        <div>
-          <label htmlFor="issueNumber" className="mb-2 block">
-            Issue number
-          </label>
+          <fieldset
+            disabled={isSaving}
+            className="min-w-0 space-y-8"
+          >
+            {/* Issue Number */}
+            <div className="flex flex-col gap-1">
+              <Text size={16} color="black">
+                Issue Number
+              </Text>
+              <Dropdown
+                color="black"
+                options={issueOptions}
+                value={
+                  values.issueNumber === undefined
+                    ? ''
+                    : String(values.issueNumber)
+                }
+                placeholder="Select issue"
+                onChange={(value) =>
+                  changeField(
+                    'issueNumber',
+                    typeof value === 'string' && value
+                      ? Number(value)
+                      : undefined,
+                  )
+                }
+              />
+            </div>
 
-          <input
-            id="issueNumber"
-            type="number"
-            min={1}
-            step={1}
-            value={values.issueNumber ?? ''}
-            onChange={(event) =>
-              changeField(
-                'issueNumber',
-                event.target.value === ''
-                  ? undefined
-                  : Number(event.target.value),
-              )
-            }
-            className="w-full rounded border p-2"
-          />
-        </div>
-
-        <div>
-          <p className="mb-2">Authors</p>
-
-          {isSaving ? (
-            <p>Saving selections…</p>
-          ) : (
-            <Dropdown
-              color="black"
-              typeahead
-              multiSelect
-              options={authorOptions}
-              value={values.authors}
-              placeholder="Select authors"
-              onChange={(value) =>
-                changeField(
-                  'authors',
-                  Array.isArray(value) ? value : value ? [value] : [],
-                )
-              }
+            {/* Title */}
+            <TextInput
+              placeholder="Enter article title"
+              label="Title"
+              className="w-full"
+              value={values.title}
+              onChange={(value) => changeField('title', value)}
             />
-          )}
-        </div>
 
-        <div>
-          <p className="mb-2">Categories</p>
+            {/* Authors */}
+            <div className="flex flex-col gap-1">
+              <Text size={16} color="black">
+                Authors
+              </Text>
+              <Dropdown
+                color="black"
+                typeahead
+                multiSelect
+                options={authorOptions}
+                value={values.authors}
+                placeholder="Search authors…"
+                onChange={(value) =>
+                  changeField(
+                    'authors',
+                    Array.isArray(value)
+                      ? value
+                      : value
+                        ? [value]
+                        : [],
+                  )
+                }
+              />
 
-          {isSaving ? (
-            <p>Saving selections…</p>
-          ) : (
-            <Dropdown
-              color="black"
-              multiSelect
-              options={categoryOptions}
-              value={values.categories}
-              placeholder="Select categories"
-              onChange={(value) =>
-                changeField(
-                  'categories',
-                  Array.isArray(value) ? value : value ? [value] : [],
-                )
-              }
-            />
-          )}
-        </div>
-
-        <section className="space-y-4">
-          <h2 className="text-lg font-bold">Article content</h2>
-
-          {values.articleContent.map((paragraph, paragraphIndex) => (
-            <div key={paragraphIndex} className="space-y-3 rounded border p-4">
-              <h3>Paragraph {paragraphIndex + 1}</h3>
-
-              {paragraph.map((segment, segmentIndex) => (
-                <div
-                  key={segmentIndex}
-                  className="space-y-2 rounded border p-3"
-                >
-                  <label className="block">
-                    Segment type
-                    <select
-                      value={segment.contentType}
-                      className="ml-2 rounded border p-2"
-                      onChange={(event) =>
-                        changeSegment(paragraphIndex, segmentIndex, {
-                          contentType: event.target
-                            .value as ArticleContentSegment['contentType'],
-                        })
-                      }
+              {values.authors.length > 0 && (
+                <Box className="mt-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Text
+                      size={14}
+                      color="black"
+                      className="mr-2 opacity-70"
                     >
-                      <option value="text">Text</option>
-                      <option value="pull_quote">Pull quote</option>
-                      <option value="image">Image URL</option>
-                      <option value="link">Link</option>
-                    </select>
-                  </label>
+                      Selected authors:
+                    </Text>
 
-                  <label
-                    htmlFor={`content-${paragraphIndex}-${segmentIndex}`}
-                    className="block"
-                  >
-                    {segment.contentType === 'image'
-                      ? 'Image URL'
-                      : segment.contentType === 'pull_quote'
-                        ? 'Pull quote'
-                        : segment.contentType === 'link'
-                          ? 'Link text'
-                          : 'Text'}
-                  </label>
+                    {values.authors.map((email) => (
+                      <Box
+                        key={email}
+                        className="inline-flex items-center gap-2 rounded-full border-2 border-forest-green/30 bg-forest-green/10 px-4 py-1.5 text-sm text-forest-green transition-colors hover:bg-forest-green/20"
+                      >
+                        <span>{labelForEmail(email)}</span>
+                        <button
+                          type="button"
+                          disabled={isSaving}
+                          onClick={() =>
+                            changeField(
+                              'authors',
+                              values.authors.filter(
+                                (author) => author !== email,
+                              ),
+                            )
+                          }
+                          className="rounded-full p-0.5 transition-colors hover:bg-forest-green/20"
+                          aria-label={`Remove ${labelForEmail(email)}`}
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                      </Box>
+                    ))}
+                  </div>
+                </Box>
+              )}
+            </div>
 
-                  <textarea
-                    id={`content-${paragraphIndex}-${segmentIndex}`}
-                    value={segment.content}
-                    onChange={(event) =>
-                      changeSegment(paragraphIndex, segmentIndex, {
-                        content: event.target.value,
-                      })
-                    }
-                    rows={segment.contentType === 'text' ? 4 : 2}
-                    className="w-full rounded border p-2"
-                  />
-
-                  {segment.contentType === 'link' && (
-                    <TextInput
-                      label="Link URL"
-                      value={segment.href ?? ''}
-                      onChange={(value) =>
-                        changeSegment(paragraphIndex, segmentIndex, {
-                          href: value,
-                        })
-                      }
-                    />
-                  )}
-
-                  <Button
-                    type="button"
-                    color="border"
-                    onClick={() =>
-                      changeField(
-                        'articleContent',
-                        values.articleContent.map((existing, index) =>
-                          index === paragraphIndex
-                            ? existing.filter(
-                                (_, index) => index !== segmentIndex,
-                              )
-                            : existing,
-                        ),
-                      )
-                    }
-                  >
-                    Remove segment
-                  </Button>
-                </div>
-              ))}
-
-              <div className="flex flex-wrap gap-3">
-                <Button
-                  type="button"
-                  color="border"
-                  onClick={() =>
-                    changeField(
-                      'articleContent',
-                      values.articleContent.map((existing, index) =>
-                        index === paragraphIndex
-                          ? [
-                              ...existing,
-                              {
-                                contentType: 'text' as const,
-                                content: '',
-                              },
-                            ]
-                          : existing,
-                      ),
-                    )
+            {/* Categories */}
+            <div>
+              <label>Categories</label>
+              <div className="[&>div]:flex [&>div]:flex-wrap [&>div]:gap-x-6 [&>div]:gap-y-2 [&_label]:mb-0">
+                <Checkbox
+                  options={categoryOptions}
+                  value={values.categories}
+                  onChange={(value) =>
+                    changeField('categories', value)
                   }
-                >
-                  Add segment
-                </Button>
-
-                <Button
-                  type="button"
-                  color="border"
-                  onClick={() =>
-                    changeField(
-                      'articleContent',
-                      values.articleContent.filter(
-                        (_, index) => index !== paragraphIndex,
-                      ),
-                    )
-                  }
-                >
-                  Remove paragraph
-                </Button>
+                  disabled={isSaving}
+                />
               </div>
             </div>
-          ))}
 
-          <Button
-            type="button"
-            color="border"
-            onClick={() =>
-              changeField('articleContent', [
-                ...values.articleContent,
-                [{ contentType: 'text', content: '' }],
-              ])
-            }
-          >
-            Add paragraph
-          </Button>
-        </section>
+            {/* Content */}
+            <ArticleInput
+              value={values.content}
+              onChange={(value) => changeField('content', value)}
+            />
 
-        <SourcesInput
-          value={values.sources}
-          onChange={(sources) => changeField('sources', sources)}
-          disabled={isSaving}
-        />
+            {/* Pull Quotes */}
+            <div className="space-y-3">
+              <PullQuoteInput
+                value={values.pullQuotes}
+                onChange={(value) => changeField('pullQuotes', value)}
+                placeholder="Enter a pull quote"
+                disabled={isSaving || values.noPullQuotes}
+              />
+              <Checkbox
+                options={['This article has no pull quotes']}
+                value={
+                  values.noPullQuotes
+                    ? ['This article has no pull quotes']
+                    : []
+                }
+                onChange={(value) =>
+                  changeField(
+                    'noPullQuotes',
+                    value.includes('This article has no pull quotes'),
+                  )
+                }
+                disabled={isSaving}
+              />
+            </div>
 
-        <Button type="submit" color="forest-green" disabled={isSaving}>
-          {isSaving ? 'Saving…' : 'Save changes'}
-        </Button>
-      </fieldset>
+            {/* Sources */}
+            <div className="space-y-3">
+              <SourcesInput
+                value={values.sources}
+                onChange={(value) => changeField('sources', value)}
+                placeholder="Enter source URL or citation"
+                disabled={isSaving || values.noSources}
+              />
+              <Checkbox
+                options={['This article has no sources']}
+                value={
+                  values.noSources
+                    ? ['This article has no sources']
+                    : []
+                }
+                onChange={(value) =>
+                  changeField(
+                    'noSources',
+                    value.includes('This article has no sources'),
+                  )
+                }
+                disabled={isSaving}
+              />
+            </div>
 
-      {error && (
-        <p role="alert" className="text-red-600">
-          {error}
-        </p>
-      )}
+            {/* Save button without the submission progress sidebar. */}
+            <Button
+              type="submit"
+              color="forest-green"
+              disabled={isSaving}
+              className="w-full"
+            >
+              {isSaving ? 'Saving…' : 'Save changes'}
+            </Button>
+          </fieldset>
 
-      {success && (
-        <p role="status" className="text-green-700">
-          Changes saved.
-        </p>
-      )}
-    </form>
+          {error && (
+            <p role="alert" className="text-red-600">
+              {error}
+            </p>
+          )}
+        </Box>
+      </form>
+    </Box>
   );
 }

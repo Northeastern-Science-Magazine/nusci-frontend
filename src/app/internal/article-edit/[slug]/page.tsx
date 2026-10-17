@@ -43,14 +43,10 @@ export default async function ArticleEditPage({
   }
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 p-8">
-      <h1 className="text-2xl font-bold">Edit Article</h1>
-
-      <ArticleEditForm
-        key={articleResult.data.slug}
-        article={articleResult.data}
-        basicUsers={usersResult.data}
-      />
-    </div>
+  <ArticleEditForm
+    key={articleResult.data.slug}
+    article={articleResult.data}
+    basicUsers={usersResult.data}
+  />
   );
 }

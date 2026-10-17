@@ -70,16 +70,7 @@ export default function InviteUser() {
 
         <Form<InviteUserFormValues> onSubmit={onSubmit}>
           <div className="space-y-8">
-            <FormField
-              name="emails"
-              rules={{
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                  message: "Please enter a valid email",
-                },
-              }}
-            >
+            <FormField name="emails">
               <EmailSearch emails={emails} setEmails={setEmails}></EmailSearch>
             </FormField>
 

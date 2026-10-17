@@ -171,7 +171,7 @@ export enum EmailType {
 }
 
 export type Email = {
-  to: String[];
+  to: string[];
   type: EmailType;
   inviteUrl?: string;
 };

@@ -60,7 +60,7 @@ const getArticleDescription = (article: Article): string => {
 };
 
 interface ArticleSearchPageProps {
-  searchParams: { category?: string | string[] };
+  searchParams: { category?: string | string[]; issue?: string | string[] };
 }
 
 export default function ArticleSearchPage({
@@ -72,12 +72,17 @@ export default function ArticleSearchPage({
     Object.values(Category).includes(searchParams.category as Category)
       ? searchParams.category
       : 'all';
+  // preset the issue filter from ?issue= (e.g. links from article headers)
+  const initialIssue =
+    typeof searchParams.issue === 'string' && /^\d+$/.test(searchParams.issue)
+      ? searchParams.issue
+      : '';
 
   const [title, setTitle] = useState('');
   const [debouncedTitle, setDebouncedTitle] = useState('');
   const [category, setCategory] = useState<string>(initialCategory);
   const [sortBy, setSortBy] = useState<'asc' | 'desc'>('desc');
-  const [issueNumber, setIssueNumber] = useState('');
+  const [issueNumber, setIssueNumber] = useState(initialIssue);
   const [articles, setArticles] = useState<Article[]>([]);
   const [issueNumbers, setIssueNumbers] = useState<string[]>([]);
 
@@ -86,7 +91,7 @@ export default function ArticleSearchPage({
   const [resultsCount, setResultsCount] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(
-    initialCategory !== 'all',
+    initialCategory !== 'all' || initialIssue !== '',
   );
   const [initialLoad, setInitialLoad] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(15);
@@ -272,10 +277,16 @@ export default function ArticleSearchPage({
   useEffect(() => {
     const fetchIssueNumbers = async () => {
       const issues = await getMagazineIssues();
-      setIssueNumbers(issues.map((i) => String(i.issueNumber)));
+      const available = issues.map((i) => String(i.issueNumber));
+      setIssueNumbers(available);
+      // drop a preset ?issue= that doesn't match a real issue
+      if (initialIssue && !available.includes(initialIssue)) {
+        setIssueNumber((current) => (current === initialIssue ? '' : current));
+        setKeys((k) => ({ ...k, issueNumber: k.issueNumber + 1 }));
+      }
     };
     fetchIssueNumbers();
-  }, []);
+  }, [initialIssue]);
 
   const hasActiveFilters = filterTags.length > 0;
   const showResults = searchPerformed && !loading;
@@ -398,6 +409,12 @@ export default function ArticleSearchPage({
                           <DropdownInput
                             key={keys.issueNumber}
                             placeholder="All issues"
+                            // only preset on first render; cleared once the filter is reset
+                            defaultValue={
+                              keys.issueNumber === 0 && initialIssue
+                                ? initialIssue
+                                : undefined
+                            }
                             onChange={(value) => setIssueNumber(value)}
                           >
                             {issueNumbers.map((num) => (

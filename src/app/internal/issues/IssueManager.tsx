@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import Text from '@/design-system/primitives/Text/Text';
 import Card from '@/design-system/primitives/Card';
 import { Box } from '@/design-system/primitives/Box/Box';
@@ -90,6 +91,26 @@ function IssueFields() {
   );
 }
 
+/**
+ * Keeps the create form's issue number in sync with the next available number
+ * (e.g. after the latest issue is deleted), unless the user has edited it.
+ */
+function SyncIssueNumber({ value }: { value: number }) {
+  const {
+    resetField,
+    formState: { dirtyFields },
+  } = useFormContext<IssueFormValues>();
+  const isDirty = Boolean(dirtyFields.issueNumber);
+
+  useEffect(() => {
+    if (!isDirty) {
+      resetField('issueNumber', { defaultValue: String(value) });
+    }
+  }, [value, isDirty, resetField]);
+
+  return null;
+}
+
 interface IssueManagerProps {
   initialIssues: IssueSummary[];
   loadError: string | null;
@@ -152,6 +173,7 @@ export default function IssueManager({
                 },
               }}
             >
+              <SyncIssueNumber value={nextIssueNumber(issues)} />
               <IssueFields />
 
               {submitError && (
@@ -234,12 +256,14 @@ interface IssueRowProps {
 }
 
 function IssueRow({ issue, onUpdated, onDeleted }: IssueRowProps) {
-  const [mode, setMode] = useState<'view' | 'edit' | 'confirmDelete'>('view');
+  const [mode, setMode] = useState<'view' | 'edit'>('view');
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isBusy, setIsBusy] = useState(false);
 
   const changeMode = (next: typeof mode) => {
     setError(null);
+    setConfirmingDelete(false);
     setMode(next);
   };
 
@@ -293,25 +317,68 @@ function IssueRow({ issue, onUpdated, onDeleted }: IssueRowProps) {
               {error}
             </Text>
           )}
-          <Box className="flex gap-3">
-            <Button
-              type="submit"
-              variant="default"
-              color="forest-green"
-              size="sm"
-              disabled={isBusy}
-            >
-              {isBusy ? 'Saving...' : 'Save'}
-            </Button>
-            <Button
-              onClick={() => changeMode('view')}
-              variant="outline"
-              color="black"
-              size="sm"
-              disabled={isBusy}
-            >
-              Cancel
-            </Button>
+          <Box className="flex items-center justify-between gap-3">
+            <Box className="flex gap-3">
+              <Button
+                type="submit"
+                variant="default"
+                color="forest-green"
+                size="sm"
+                disabled={isBusy}
+              >
+                {isBusy && !confirmingDelete ? 'Saving...' : 'Save'}
+              </Button>
+              <Button
+                onClick={() => changeMode('view')}
+                variant="outline"
+                color="black"
+                size="sm"
+                disabled={isBusy}
+              >
+                Cancel
+              </Button>
+            </Box>
+
+            {confirmingDelete ? (
+              <Box className="flex items-center gap-3">
+                <Text
+                  style="regular"
+                  size={14}
+                  color="black"
+                  className="whitespace-nowrap"
+                >
+                  Delete this issue?
+                </Text>
+                <Button
+                  onClick={onConfirmDelete}
+                  variant="default"
+                  color="red"
+                  size="sm"
+                  disabled={isBusy}
+                >
+                  {isBusy ? 'Deleting...' : 'Delete'}
+                </Button>
+                <Button
+                  onClick={() => setConfirmingDelete(false)}
+                  variant="outline"
+                  color="black"
+                  size="sm"
+                  disabled={isBusy}
+                >
+                  Keep
+                </Button>
+              </Box>
+            ) : (
+              <Button
+                onClick={() => setConfirmingDelete(true)}
+                variant="outline"
+                color="red"
+                size="sm"
+                disabled={isBusy}
+              >
+                Delete
+              </Button>
+            )}
           </Box>
         </Form>
       </Box>
@@ -330,61 +397,15 @@ function IssueRow({ issue, onUpdated, onDeleted }: IssueRowProps) {
           </Text>
         </Box>
 
-        {mode === 'confirmDelete' ? (
-          <Box className="flex items-center gap-3">
-            <Text
-              style="regular"
-              size={14}
-              color="black"
-              className="whitespace-nowrap"
-            >
-              Delete this issue?
-            </Text>
-            <Button
-              onClick={onConfirmDelete}
-              variant="default"
-              color="red"
-              size="sm"
-              disabled={isBusy}
-            >
-              {isBusy ? 'Deleting...' : 'Delete'}
-            </Button>
-            <Button
-              onClick={() => changeMode('view')}
-              variant="outline"
-              color="black"
-              size="sm"
-              disabled={isBusy}
-            >
-              Cancel
-            </Button>
-          </Box>
-        ) : (
-          <Box className="flex gap-3">
-            <Button
-              onClick={() => changeMode('edit')}
-              variant="outline"
-              color="black"
-              size="sm"
-            >
-              Edit
-            </Button>
-            <Button
-              onClick={() => changeMode('confirmDelete')}
-              variant="outline"
-              color="red"
-              size="sm"
-            >
-              Delete
-            </Button>
-          </Box>
-        )}
+        <Button
+          onClick={() => changeMode('edit')}
+          variant="outline"
+          color="black"
+          size="sm"
+        >
+          Edit
+        </Button>
       </Box>
-      {error && (
-        <Text style="regular" size={14} color="red" className="mt-2">
-          {error}
-        </Text>
-      )}
     </Box>
   );
 }

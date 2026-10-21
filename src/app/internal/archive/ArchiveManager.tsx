@@ -10,6 +10,7 @@ import Text from '@/design-system/primitives/Text';
 import TextInput from '@/design-system/primitives/TextInput';
 import { Form, FormField } from '@/design-system/primitives/Form';
 import { ProgressBar } from '@/design-system/primitives/ProgressBar/ProgressBar';
+import { ConfirmDialog } from '@/components/ConfirmDialog';
 import {
   ArchivedIssue,
   apiCreateArchivedIssue,
@@ -49,7 +50,9 @@ export default function ArchiveManager({
   const [status, setStatus] = useState<string | null>(null);
   const [progress, setProgress] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [deleting, setDeleting] = useState<number | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<ArchivedIssue | null>(
+    null,
+  );
 
   const onSubmit = async (data: ArchiveFormValues) => {
     if (!data.pdf) return;
@@ -98,18 +101,8 @@ export default function ArchiveManager({
   };
 
   const onDelete = async (issueNumber: number) => {
-    if (
-      !window.confirm(
-        `Delete issue ${issueNumber}? It will be removed from the site, but its files are kept and it can be restored.`,
-      )
-    ) {
-      return;
-    }
-
     setError(null);
-    setDeleting(issueNumber);
     const response = await apiDeleteArchivedIssue(issueNumber);
-    setDeleting(null);
 
     if (!response.ok) {
       setError(response.error);
@@ -282,15 +275,32 @@ export default function ArchiveManager({
                 variant="outline"
                 color="red"
                 size="sm"
-                disabled={deleting === issue.issueNumber}
-                onClick={() => onDelete(issue.issueNumber)}
+                onClick={() => setPendingDelete(issue)}
               >
-                {deleting === issue.issueNumber ? 'Deleting...' : 'Delete'}
+                Delete
               </Button>
             </Box>
           ))}
         </Box>
       </Card>
+
+      <ConfirmDialog
+        tone="danger"
+        open={pendingDelete !== null}
+        onOpenChange={(open) => !open && setPendingDelete(null)}
+        title={`Delete issue ${pendingDelete?.issueNumber}?`}
+        description={
+          <>
+            <strong>{pendingDelete?.title}</strong> will be removed from the
+            site, but its files are kept and it can be restored.
+          </>
+        }
+        confirmLabel="Delete"
+        pendingLabel="Deleting..."
+        onConfirm={async () => {
+          if (pendingDelete) await onDelete(pendingDelete.issueNumber);
+        }}
+      />
     </Box>
   );
 }

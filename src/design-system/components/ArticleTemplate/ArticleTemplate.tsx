@@ -136,7 +136,11 @@ export default function ArticleTemplate({
                 href={`/article-search?issue=${encodeURIComponent(issueNumber)}`}
                 className="flex"
               >
-                <Badge color="aqua" variant="blur">
+                <Badge
+                  color="aqua"
+                  variant="blur"
+                  className="border-2 border-solid border-transparent"
+                >
                   Issue {issueNumber}
                 </Badge>
               </Link>

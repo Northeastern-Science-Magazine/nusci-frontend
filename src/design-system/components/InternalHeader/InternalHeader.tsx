@@ -10,6 +10,7 @@ import {
   DropdownItem,
 } from '@/design-system/primitives/DropdownInput';
 import Icon from '@/design-system/primitives/Icon';
+import { Category } from '@/lib/types/types';
 
 interface InternalHeaderProps {
   userProfile: {
@@ -41,24 +42,7 @@ export default function InternalHeader({
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Navigation items - public site links
-  const navigationItems: { label: string; href: string }[] = [
-    { label: 'Print Articles', href: '/articles' },
-  ];
-
-  const categories = [
-    { value: 'biology', label: 'Biology' },
-    { value: 'chemistry', label: 'Chemistry' },
-    { value: 'environment', label: 'Environment' },
-    { value: 'health', label: 'Health' },
-    { value: 'newsletter', label: 'Newsletter' },
-    { value: 'opinion', label: 'Opinion' },
-    { value: 'physics', label: 'Physics' },
-    { value: 'psychology', label: 'Psychology' },
-    { value: 'space', label: 'Space' },
-    { value: 'technology', label: 'Technology' },
-    { value: 'world', label: 'World' },
-  ];
+  const categories = Object.values(Category);
 
   const handleLogout = async () => {
     await fetch('/api/logout', { method: 'POST' });
@@ -66,15 +50,15 @@ export default function InternalHeader({
   };
 
   const handleAboutUsChange = (value: string) => {
-    if (value === 'about') {
-      window.location.href = '/about-us';
+    if (value === 'teams') {
+      window.location.href = '/teams';
     } else if (value === 'eboard') {
       window.location.href = '/teams/eboard';
     }
   };
 
   const handleCategoryChange = (value: string) => {
-    window.location.href = `/${value}`;
+    window.location.href = `/article-search?category=${encodeURIComponent(value)}`;
   };
 
   const handleProfileChange = (value: string) => {
@@ -128,24 +112,13 @@ export default function InternalHeader({
 
           {/* Desktop Navigation */}
           <Box className="hidden lg:flex items-center space-x-6">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                newWindow={false}
-                className="text-gray-700 hover:text-black transition-colors duration-200 font-medium text-sm"
-              >
-                {item.label}
-              </Link>
-            ))}
-
             {/* About Us Dropdown */}
             <Box className="relative">
               <DropdownInput
                 placeholder="About Us"
                 onChange={handleAboutUsChange}
               >
-                <DropdownItem value="about">Teams</DropdownItem>
+                <DropdownItem value="teams">Teams</DropdownItem>
                 <DropdownItem value="eboard">Eboard & Editors</DropdownItem>
               </DropdownInput>
             </Box>
@@ -157,8 +130,8 @@ export default function InternalHeader({
                 onChange={handleCategoryChange}
               >
                 {categories.map((category) => (
-                  <DropdownItem key={category.value} value={category.value}>
-                    {category.label}
+                  <DropdownItem key={category} value={category}>
+                    {category}
                   </DropdownItem>
                 ))}
               </DropdownInput>
@@ -169,7 +142,7 @@ export default function InternalHeader({
               variant="outline"
               size="sm"
               color="black"
-              onClick={() => (window.location.href = '/search')}
+              onClick={() => (window.location.href = '/article-search')}
               className="flex items-center h-[35px]"
             >
               <Icon icon="search" size="sm" className="mr-1" />
@@ -226,22 +199,6 @@ export default function InternalHeader({
                 </Box>
               </Box>
 
-              {/* Navigation Items */}
-              {navigationItems.map((item) => (
-                <div
-                  key={item.label}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Link
-                    href={item.href}
-                    newWindow={false}
-                    className="text-gray-700 hover:text-black transition-colors duration-200 font-medium p-2 hover:bg-gray-50 rounded block"
-                  >
-                    {item.label}
-                  </Link>
-                </div>
-              ))}
-
               {/* Mobile About Us Dropdown */}
               <Box className="w-full">
                 <DropdownInput
@@ -252,7 +209,7 @@ export default function InternalHeader({
                     setIsMobileMenuOpen(false);
                   }}
                 >
-                  <DropdownItem value="about">Teams</DropdownItem>
+                  <DropdownItem value="teams">Teams</DropdownItem>
                   <DropdownItem value="eboard">Eboard & Editors</DropdownItem>
                 </DropdownInput>
               </Box>
@@ -268,8 +225,8 @@ export default function InternalHeader({
                   }}
                 >
                   {categories.map((category) => (
-                    <DropdownItem key={category.value} value={category.value}>
-                      {category.label}
+                    <DropdownItem key={category} value={category}>
+                      {category}
                     </DropdownItem>
                   ))}
                 </DropdownInput>
@@ -281,7 +238,7 @@ export default function InternalHeader({
                 size="sm"
                 color="black"
                 onClick={() => {
-                  window.location.href = '/search';
+                  window.location.href = '/article-search';
                   setIsMobileMenuOpen(false);
                 }}
                 className="flex items-center justify-center w-full"

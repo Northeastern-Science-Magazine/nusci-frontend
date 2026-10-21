@@ -7,17 +7,14 @@ import { api, ApiResponse } from './api';
 export type ArchivedIssue = {
   issueNumber: number;
   title: string;
-  publicationDate: string;
   pdfUrl: string; // presigned, expires after an hour
-  coverUrl: string | null; // presigned, expires after an hour
+  coverUrl: string; // rendered from the PDF's first page, presigned, expires after an hour
 };
 
 export type ArchivedIssueCreate = {
   issueNumber: number;
   title: string;
-  publicationDate: string;
   pdfKey: string;
-  coverKey?: string;
 };
 
 export type MediaFolder = 'archive' | 'images';
@@ -40,7 +37,6 @@ export interface MagazineIssue {
   issueNumber: number;
   thumbnailUrl: string;
   title: string;
-  date: string;
   href: string;
 }
 
@@ -58,7 +54,6 @@ const LEGACY_MAGAZINES: MagazineIssue[] = Array.from(
       issueNumber,
       thumbnailUrl: `${LEGACY_ARCHIVE_URL}thumbnails/issue${issueNumber}.png`,
       title: `Issue ${issueNumber}`,
-      date: '',
       href: LEGACY_ARCHIVE_URL,
     };
   },
@@ -68,9 +63,8 @@ function archivedIssueToMagazine(issue: ArchivedIssue): MagazineIssue {
   return {
     id: `issue-${issue.issueNumber}`,
     issueNumber: issue.issueNumber,
-    thumbnailUrl: issue.coverUrl ?? '/logo.png',
+    thumbnailUrl: issue.coverUrl,
     title: issue.title,
-    date: new Date(issue.publicationDate).getFullYear().toString(),
     // stable link that redirects to a fresh presigned URL
     href: `/archive/${issue.issueNumber}`,
   };

@@ -21,17 +21,13 @@ import { uploadToS3 } from '@/lib/helpers/uploadToS3';
 interface ArchiveFormValues {
   issueNumber: string;
   title: string;
-  publicationDate: string;
   pdf?: File;
-  cover?: File;
 }
 
 const EMPTY_FORM: ArchiveFormValues = {
   issueNumber: '',
   title: '',
-  publicationDate: '',
   pdf: undefined,
-  cover: undefined,
 };
 
 interface ArchiveManagerProps {
@@ -66,23 +62,13 @@ export default function ArchiveManager({
         setProgress(Math.round(fraction * 100)),
       );
 
-      let coverKey: string | undefined;
-      if (data.cover) {
-        setStatus('Uploading cover...');
-        setProgress(0);
-        coverKey = await uploadToS3('archive', data.cover, (fraction) =>
-          setProgress(Math.round(fraction * 100)),
-        );
-      }
-
-      setStatus('Saving issue...');
+      // the backend renders the PDF's first page as the cover while saving
+      setStatus('Saving issue and generating its cover...');
       setProgress(null);
       const response = await apiCreateArchivedIssue({
         issueNumber: Number(data.issueNumber),
         title: data.title.trim(),
-        publicationDate: data.publicationDate,
         pdfKey,
-        coverKey,
       });
       if (!response.ok) {
         throw new Error(response.error);
@@ -128,7 +114,7 @@ export default function ArchiveManager({
           options={{ defaultValues: EMPTY_FORM }}
           className="space-y-5"
         >
-          <Box className="grid grid-cols-1 laptop:grid-cols-3 gap-5">
+          <Box className="grid grid-cols-1 laptop:grid-cols-[1fr_2fr] gap-5">
             <FormField<ArchiveFormValues>
               name="issueNumber"
               rules={{
@@ -156,44 +142,22 @@ export default function ArchiveManager({
                 className="w-full"
               />
             </FormField>
-            <FormField<ArchiveFormValues>
-              name="publicationDate"
-              rules={{ required: 'Publication date is required' }}
-            >
-              <TextInput
-                label="Publication Date *"
-                type="date"
-                className="w-full"
-              />
-            </FormField>
           </Box>
 
-          <Box className="grid grid-cols-1 laptop:grid-cols-2 gap-5">
-            <Controller
-              name="pdf"
-              rules={{ required: 'A PDF is required' }}
-              render={({ field, fieldState }) => (
-                <FileInput
-                  label="Issue PDF *"
-                  accept="application/pdf"
-                  value={field.value}
-                  onChange={field.onChange}
-                  error={fieldState.error?.message}
-                />
-              )}
-            />
-            <Controller
-              name="cover"
-              render={({ field }) => (
-                <FileInput
-                  label="Cover Image"
-                  accept="image/jpeg,image/png,image/webp,image/gif"
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-              )}
-            />
-          </Box>
+          <Controller
+            name="pdf"
+            rules={{ required: 'A PDF is required' }}
+            render={({ field, fieldState }) => (
+              <FileInput
+                label="Issue PDF *"
+                accept="application/pdf"
+                hint="The first page becomes the issue's cover."
+                value={field.value}
+                onChange={field.onChange}
+                error={fieldState.error?.message}
+              />
+            )}
+          />
 
           <Box className="flex items-center gap-6 flex-wrap">
             <Button
@@ -247,22 +211,13 @@ export default function ArchiveManager({
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={issue.coverUrl ?? '/logo.png'}
+                src={issue.coverUrl}
                 alt={`Cover of ${issue.title}`}
                 className="h-20 w-16 object-cover border border-black/10"
               />
-              <Box className="flex-1">
-                <Text style="bold" size={18} color="black">
-                  {issue.issueNumber}. {issue.title}
-                </Text>
-                <Text style="regular" size={14} color="black">
-                  {new Date(issue.publicationDate).toLocaleDateString('en-US', {
-                    timeZone: 'UTC',
-                    year: 'numeric',
-                    month: 'long',
-                  })}
-                </Text>
-              </Box>
+              <Text style="bold" size={18} color="black" className="flex-1">
+                {issue.issueNumber}. {issue.title}
+              </Text>
               <a
                 href={`/archive/${issue.issueNumber}`}
                 target="_blank"
@@ -308,16 +263,23 @@ export default function ArchiveManager({
 interface FileInputProps {
   label: string;
   accept: string;
+  hint?: string;
   value?: File;
   onChange: (file?: File) => void;
   error?: string;
 }
 
 /**
- * File picker styled like ImageUpload, with a unique id
- * so several can live on one page.
+ * File picker styled like ImageUpload.
  */
-function FileInput({ label, accept, value, onChange, error }: FileInputProps) {
+function FileInput({
+  label,
+  accept,
+  hint,
+  value,
+  onChange,
+  error,
+}: FileInputProps) {
   const id = useId();
 
   return (
@@ -340,6 +302,11 @@ function FileInput({ label, accept, value, onChange, error }: FileInputProps) {
         onChange={(event) => onChange(event.target.files?.[0])}
         className="hidden"
       />
+      {hint && (
+        <Text style="regular" size={14} color="black" className="opacity-75">
+          {hint}
+        </Text>
+      )}
       {error && <span className="text-sm text-red-500">{error}</span>}
     </Box>
   );

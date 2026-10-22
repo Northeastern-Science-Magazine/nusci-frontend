@@ -14,7 +14,7 @@ export interface DialogTriggerProps extends DialogTriggerVariants {
 
 /** Dialog Window */
 export const dialogWindowVariants = tv({
-  base: 'fixed inset-0 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shadow-xl rounded-md',
+  base: 'fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 shadow-xl rounded-md',
   variants: {
     size: {
       xs: 'max-w-xs',
@@ -41,6 +41,12 @@ export interface DialogWindowProps
 
 export const dialogWindowVariantsCN = (variantProps: VariantProps<any>) =>
   clsx(dialogWindowVariants(variantProps), basicColorVariants(variantProps));
+
+/** Dialog Title / Description (required by Radix for screen readers) */
+export interface DialogTextProps {
+  children?: React.ReactNode;
+  className?: string;
+}
 
 /** Dialog */
 export const dialogVariants = tv({});

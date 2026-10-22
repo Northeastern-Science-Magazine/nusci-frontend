@@ -15,14 +15,6 @@ export interface Article {
   slug: string;
 }
 
-export interface MagazineIssue {
-  id: string;
-  issueNumber: number;
-  thumbnailUrl: string;
-  title: string;
-  date: string;
-}
-
 const FALLBACK_ARTICLES: Article[] = [
   {
     id: 'featured-1',
@@ -98,49 +90,6 @@ const FALLBACK_RECENT_ARTICLES: Article[] = [
   FALLBACK_ARTICLES[4],
   FALLBACK_ARTICLES[5],
   FALLBACK_ARTICLES[6],
-];
-
-const HARDCODED_MAGAZINES: MagazineIssue[] = [
-  {
-    id: 'issue-60',
-    issueNumber: 60,
-    thumbnailUrl:
-      'https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue60.png',
-    title: 'Issue 60',
-    date: '2024',
-  },
-  {
-    id: 'issue-59',
-    issueNumber: 59,
-    thumbnailUrl:
-      'https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue59.png',
-    title: 'Issue 59',
-    date: '2024',
-  },
-  {
-    id: 'issue-58',
-    issueNumber: 5,
-    thumbnailUrl:
-      'https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue58.png',
-    title: 'Issue 58',
-    date: '2024',
-  },
-  {
-    id: 'issue-57',
-    issueNumber: 57,
-    thumbnailUrl:
-      'https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue57.png',
-    title: 'Issue 57',
-    date: '2024',
-  },
-  {
-    id: 'issue-56',
-    issueNumber: 56,
-    thumbnailUrl:
-      'https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue56.png',
-    title: 'Issue 56',
-    date: '2023',
-  },
 ];
 
 // Extract the first image URL from nested ArticleContent (paragraphs -> segments)
@@ -248,10 +197,6 @@ export async function getFeaturedArticles(): Promise<Article[]> {
     console.error('Error fetching featured articles:', error);
     return FALLBACK_FEATURED_ARTICLES;
   }
-}
-
-export async function getMagazineIssues(): Promise<MagazineIssue[]> {
-  return HARDCODED_MAGAZINES;
 }
 
 export interface ArticleSearchRequest {

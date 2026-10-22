@@ -65,6 +65,10 @@ export default async function DashboardPage({
                       text="Make An Article"
                       href="internal/article-submission"
                     />
+                    <DashboardCard
+                      text="Magazine Archive"
+                      href="/internal/archive"
+                    />
                   </Box>
                 );
               } else if (role == Roles.Editor) {
@@ -77,6 +81,10 @@ export default async function DashboardPage({
                     <DashboardCard
                       text="Create an Article"
                       href="internal/article-submission"
+                    />
+                    <DashboardCard
+                      text="Magazine Archive"
+                      href="/internal/archive"
                     />
                   </Box>
                 );

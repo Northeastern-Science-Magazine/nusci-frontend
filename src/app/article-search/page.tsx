@@ -21,7 +21,8 @@ import Link from '@/design-system/primitives/Link';
 import { ParallaxScrollSection } from '@/design-system/components/ParallaxScrollSection';
 import Divider from '@/design-system/primitives/Divider';
 import { Category, Article, PhotographyStatus } from '@/lib/types/types';
-import { searchArticles, getMagazineIssues } from '@/lib/api/articles';
+import { searchArticles } from '@/lib/api/articles';
+import { apiGetAllIssueNumbers } from '@/lib/api/issues';
 import categoryToIcon from '@/lib/helpers/categoryToIcon';
 import categoryToIconColor from '@/lib/helpers/categoryToIconColor';
 import { IconName } from '@/design-system/primitives/Icon';
@@ -271,8 +272,8 @@ export default function ArticleSearchPage({
   // Fetch available issue numbers for dropdown
   useEffect(() => {
     const fetchIssueNumbers = async () => {
-      const issues = await getMagazineIssues();
-      setIssueNumbers(issues.map((i) => String(i.issueNumber)));
+      const response = await apiGetAllIssueNumbers();
+      setIssueNumbers(response.ok ? response.data.map(String) : []);
     };
     fetchIssueNumbers();
   }, []);

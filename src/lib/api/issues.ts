@@ -17,6 +17,10 @@ export async function apiGetAllIssues(): Promise<ApiResponse<IssueSummary[]>> {
   return api<IssueSummary[]>('GET', '/issue-map/all');
 }
 
+export async function apiGetAllIssueNumbers(): Promise<ApiResponse<number[]>> {
+  return api<number[]>('GET', '/issue-map/all-issue-numbers');
+}
+
 export async function apiCreateIssue(
   data: IssueCreate,
 ): Promise<ApiResponse<IssueSummary>> {

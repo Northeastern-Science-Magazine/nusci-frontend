@@ -66,9 +66,12 @@ export function articleContentToHtml(content: ArticleContent[]): string {
             return `<a href="${escapeHtml(segment.href!)}">${text}</a>`;
           }
 
-          // Preserve an inline quote if an older article contains one.
+          // Standalone quotes are edited separately. Mixed quote paragraphs
+          // cannot safely round-trip through this editor.
           if (segment.contentType === 'pull_quote') {
-            return `<blockquote>${text}</blockquote>`;
+            throw new Error(
+              'This article contains a pull quote mixed into a text paragraph. Its layout needs review before editing.',
+            );
           }
 
           return text;
@@ -111,6 +114,16 @@ export function htmlToArticleContent(html: string): ArticleContent[] {
       segments.push({ contentType: 'text', content: value });
     }
   }
+  // Preserve line breaks inside links.
+  function getLinkText(element: HTMLElement): string {
+    const clone = element.cloneNode(true) as HTMLElement;
+
+    clone.querySelectorAll('br').forEach((lineBreak) => {
+      lineBreak.replaceWith(document.createTextNode('\n'));
+    });
+
+    return clone.textContent ?? '';
+  }
 
   function walk(node: Node): void {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -134,7 +147,7 @@ export function htmlToArticleContent(html: string): ArticleContent[] {
 
       segments.push({
         contentType: 'link',
-        content: element.textContent ?? '',
+        content: getLinkText(element),
         href,
       });
       return;

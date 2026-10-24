@@ -12,7 +12,7 @@ import Button from '@/design-system/primitives/Button';
 import { Dropdown } from '@/design-system/primitives/Dropdown';
 
 import ArticleInput from '@/app/internal/article-submission/components/ArticleInput';
-import { PullQuoteInput } from '@/app/internal/article-submission/components/PullQuoteInput';
+import { EditPullQuoteInput } from './EditInputs';
 import { SourcesInput } from '@/app/internal/article-submission/components/SourcesInput';
 
 import { updateArticle } from '@/lib/api/articles';
@@ -167,7 +167,7 @@ export default function ArticleEditForm({
     ]),
   );
 
-  // Validate and save without discarding edits when a request fails.
+  // Validate edited fields and preserve unchanged saved content.
   async function handleSave(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (saving.current) return;
@@ -179,12 +179,12 @@ export default function ArticleEditForm({
       return;
     }
 
+    // Older articles may have no issue assigned.
     if (
-      values.issueNumber === undefined ||
-      !Number.isInteger(values.issueNumber) ||
-      values.issueNumber < 1
+      values.issueNumber !== undefined &&
+      (!Number.isInteger(values.issueNumber) || values.issueNumber < 1)
     ) {
-      setError('Please select an issue.');
+      setError('Please select a valid issue.');
       return;
     }
 
@@ -201,64 +201,107 @@ export default function ArticleEditForm({
       return;
     }
 
-    const sources = values.noSources
-      ? []
-      : values.sources
-          .map((source) => ({
-            text: (source.text ?? '').trim(),
-            href: (source.href ?? '').trim(),
-          }))
-          .filter((source) => source.text || source.href);
+    const originalSources = (article.sources ?? []).map((source) => ({
+      text: source.text ?? '',
+      href: source.href ?? '',
+    }));
 
-    if (!values.noSources && !sources.length) {
-      setError('Enter a source or select no sources.');
-      return;
-    }
+    const sourcesChanged =
+      values.noSources !== (originalSources.length === 0) ||
+      JSON.stringify(values.sources) !== JSON.stringify(originalSources);
 
-    if (
-      sources.some(
-        (source) =>
-          !source.text || !source.href || !isHttpUrl(source.href),
-      )
-    ) {
-      setError('Each source needs a title and a valid http or https URL.');
-      return;
+    // Do not force users to repair old sources when editing another field.
+    const sources = !sourcesChanged
+      ? originalSources
+      : values.noSources
+        ? []
+        : values.sources
+            .map((source) => ({
+              text: (source.text ?? '').trim(),
+              href: (source.href ?? '').trim(),
+            }))
+            .filter((source) => source.text || source.href);
+
+    if (sourcesChanged) {
+      if (!values.noSources && !sources.length) {
+        setError('Enter a source or select no sources.');
+        return;
+      }
+
+      if (
+        sources.some(
+          (source) => !source.text || !source.href || !isHttpUrl(source.href),
+        )
+      ) {
+        setError('Each source needs a title and a valid http or https URL.');
+        return;
+      }
     }
 
     saving.current = true;
     setIsSaving(true);
 
     try {
-      const body = htmlToArticleContent(values.content);
+      const originalContent = article.articleContent ?? [];
 
-      if (!body.length) {
+      // Compare parsed content because the editor may normalize HTML
+      // when loading, without the user changing the article.
+      const body = htmlToArticleContent(values.content);
+      const initialBody = htmlToArticleContent(initialEditor.html);
+
+      const contentChanged =
+        JSON.stringify(body) !== JSON.stringify(initialBody);
+
+      const originalQuotes = getPullQuotes(originalContent);
+      const quotesChanged =
+        values.noPullQuotes !== (originalQuotes.length === 0) ||
+        JSON.stringify(values.pullQuotes) !== JSON.stringify(originalQuotes);
+
+      if (contentChanged && !body.length) {
         setError('Please enter article content.');
         return;
       }
 
-      // Restore separately edited quotes near their original positions.
-      const articleContent = restorePullQuotes(
-        body,
-        values.noPullQuotes ? [] : values.pullQuotes,
-        article.articleContent ?? [],
-      );
+      // Keep the original structure intact when only metadata is edited.
+      let articleContent = originalContent;
 
-      // Endpoint details and pending backend contracts live in updateArticle().
-      const result = await updateArticle(article.slug, {
-        title: values.title.trim(),
-        issueNumber: values.issueNumber,
-        authors: values.authors,
-        categories: values.categories,
-        articleContent,
-        sources,
-      });
+      if (contentChanged || quotesChanged) {
+        const bodyWithoutQuotes = contentChanged
+          ? body
+          : originalContent.filter(
+              (paragraph) =>
+                !(
+                  paragraph.length === 1 &&
+                  paragraph[0].contentType === 'pull_quote'
+                ),
+            );
+
+        articleContent = restorePullQuotes(
+          bodyWithoutQuotes,
+          values.noPullQuotes ? [] : values.pullQuotes,
+          originalContent,
+        );
+      }
+
+      const result = await updateArticle(
+        article.slug,
+        {
+          title: values.title.trim(),
+          issueNumber: values.issueNumber,
+          authors: values.authors,
+          categories: values.categories,
+          articleContent,
+          sources,
+        },
+        new Date(article.modificationTime).toISOString(),
+      );
 
       if (!result.ok) {
         setError(result.error);
         return;
       }
 
-      // The backend preserves the slug when updating the title.
+      // Updating the title does not change the article's URL.
       router.push(`/${encodeURIComponent(article.slug)}`);
       router.refresh();
     } catch (error) {
@@ -271,10 +314,6 @@ export default function ArticleEditForm({
       saving.current = false;
       setIsSaving(false);
     }
-  }
-
-  if (initialEditor.error) {
-    return <p role="alert">{initialEditor.error}</p>;
   }
 
   return (
@@ -415,10 +454,9 @@ export default function ArticleEditForm({
 
             {/* Pull Quotes */}
             <div className="space-y-3">
-              <PullQuoteInput
+              <EditPullQuoteInput
                 value={values.pullQuotes}
                 onChange={(value) => changeField('pullQuotes', value)}
-                placeholder="Enter a pull quote"
                 disabled={isSaving || values.noPullQuotes}
               />
               <Checkbox

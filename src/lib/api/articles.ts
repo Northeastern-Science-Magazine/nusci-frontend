@@ -288,11 +288,12 @@ export async function createArticle(articleData: ArticleCreate) {
 
 /**
  * Saves changed article fields through separate update endpoints.
- * Reports partial saves if a later request fails.
+ * Checks for a stale form and reports partial saves.
  */
 export async function updateArticle(
   slug: string,
   changes: ArticleUpdate,
+  expectedModificationTime?: string,
 ): Promise<ApiResponse<null>> {
   const rolesResult = await apiGetUserRoles();
 
@@ -317,6 +318,21 @@ export async function updateArticle(
   }
 
   const current = currentResult.data;
+
+  // Detect changes made after this form was opened.
+  // Full concurrency protection still requires a backend version check.
+  if (
+    expectedModificationTime &&
+    new Date(current.modificationTime).getTime() !==
+      new Date(expectedModificationTime).getTime()
+  ) {
+    return {
+      ok: false,
+      error:
+        'This article changed after you opened the form. Copy your unsaved edits before reloading the latest article.',
+    };
+  }
+
   const encodedSlug = encodeURIComponent(slug);
 
   const normalizeSources = (sources: ArticleUpdate['sources']) =>
@@ -326,6 +342,18 @@ export async function updateArticle(
         href: (source.href ?? '').trim(),
       }))
       .filter((source) => source.text || source.href);
+
+  // Ignore database metadata such as segment IDs.
+  const normalizeContent = (
+    content: ArticleUpdate['articleContent'],
+  ) =>
+    content.map((paragraph) =>
+      paragraph.map((segment) => ({
+        contentType: segment.contentType,
+        content: segment.content,
+        href: segment.href ?? null,
+      })),
+    );
 
   const sameCategories =
     JSON.stringify([...changes.categories].sort()) ===
@@ -337,28 +365,23 @@ export async function updateArticle(
 
   const sameAuthors =
     JSON.stringify(changes.authors) ===
-    JSON.stringify(
-      (current.authors ?? []).map((author) => author.email),
-    );
+    JSON.stringify((current.authors ?? []).map((author) => author.email));
 
   const updates = [
     {
       label: 'issue number',
       changed:
-        (changes.issueNumber ?? null) !==
-        (current.issueNumber ?? null),
+        (changes.issueNumber ?? null) !== (current.issueNumber ?? null),
 
-      // TODO(BACKEND-339): Proposed endpoint and payload.
-      // Confirm with Kalina when issue-number updating is implemented.
+      // TODO(BACKEND-339): Confirm route and payload with Kalina/Arushi.
       endpoint: `/articles/issue-number/${encodedSlug}`,
-      body: { issueNumber: changes.issueNumber },
+      body: { issueNumber: changes.issueNumber ?? null },
     },
     {
       label: 'categories',
       changed: !sameCategories,
 
-      // TODO(BACKEND-339): Proposed endpoint and payload.
-      // Confirm with Kalina when category updating is implemented.
+      // TODO(BACKEND-339): Confirm route and payload with Kalina/Arushi.
       endpoint: `/articles/categories/${encodedSlug}`,
       body: { categories: changes.categories },
     },
@@ -366,8 +389,8 @@ export async function updateArticle(
       label: 'sources',
       changed: !sameSources,
 
-      // TODO(BACKEND-339): Proposed endpoint and payload.
-      // Confirm with Kalina when source updating is implemented.
+      // TODO(BACKEND-339): Confirm route and payload with Kalina/Arushi.
+      // An empty array explicitly removes existing sources.
       endpoint: `/articles/sources/${encodedSlug}`,
       body: { sources: changes.sources },
     },
@@ -380,8 +403,8 @@ export async function updateArticle(
     {
       label: 'content',
       changed:
-        JSON.stringify(changes.articleContent) !==
-        JSON.stringify(current.articleContent ?? []),
+        JSON.stringify(normalizeContent(changes.articleContent)) !==
+        JSON.stringify(normalizeContent(current.articleContent ?? [])),
       endpoint: `/articles/content/${encodedSlug}`,
       body: { articleContent: changes.articleContent },
     },
@@ -395,8 +418,6 @@ export async function updateArticle(
 
   const saved: string[] = [];
 
-  // Try pending endpoints first when their fields changed.
-  // Stop on the first failure and retain the edits in the form.
   for (const update of updates) {
     if (!update.changed) continue;
 
@@ -411,12 +432,20 @@ export async function updateArticle(
         ? `Already saved: ${saved.join(', ')}. `
         : '';
 
+      // Avoid displaying an entire backend HTML error page.
+      const details = result.error?.trim();
+      const message =
+        !details || details.startsWith('<')
+          ? 'The backend endpoint is unavailable or returned an unexpected response.'
+          : details;
+
       return {
         ok: false,
         error:
           `${previousUpdates}Could not confirm the ${update.label} update. ` +
-          `${result.error || 'Request failed.'} ` +
-          'Your edits are still in the form. Check the saved article before retrying.',
+          `${message} Your edits remain in the form. ` +
+          'Check the saved article in another tab before retrying. ' +
+          'Copy your unsaved edits before reloading.',
       };
     }
 

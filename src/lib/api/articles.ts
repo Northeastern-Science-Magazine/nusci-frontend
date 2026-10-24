@@ -421,11 +421,7 @@ export async function updateArticle(
   for (const update of updates) {
     if (!update.changed) continue;
 
-    const result = await api<unknown>(
-      'PATCH',
-      update.endpoint,
-      update.body,
-    );
+    const result = await api<unknown>('PATCH', update.endpoint, update.body);
 
     if (!result.ok) {
       const previousUpdates = saved.length

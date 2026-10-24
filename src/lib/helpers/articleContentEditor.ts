@@ -1,7 +1,4 @@
-import type {
-  ArticleContent,
-  ArticleContentSegment,
-} from '@/lib/types/types';
+import type { ArticleContent, ArticleContentSegment } from '@/lib/types/types';
 
 // Escape saved text before placing it inside editor HTML.
 function escapeHtml(value: string): string {
@@ -24,16 +21,11 @@ function isHttpUrl(value: string): boolean {
 
 // Standalone pull quotes are edited separately, like in submission.
 function isPullQuote(paragraph: ArticleContent): boolean {
-  return (
-    paragraph.length === 1 &&
-    paragraph[0].contentType === 'pull_quote'
-  );
+  return paragraph.length === 1 && paragraph[0].contentType === 'pull_quote';
 }
 
 export function getPullQuotes(content: ArticleContent[]): string[] {
-  return content
-    .filter(isPullQuote)
-    .map((paragraph) => paragraph[0].content);
+  return content.filter(isPullQuote).map((paragraph) => paragraph[0].content);
 }
 
 // Convert saved paragraphs into the HTML expected by ArticleInput.
@@ -93,8 +85,7 @@ export function htmlToArticleContent(html: string): ArticleContent[] {
     if (
       segments.some(
         (segment) =>
-          segment.contentType === 'image' ||
-          segment.content.trim().length > 0,
+          segment.contentType === 'image' || segment.content.trim().length > 0,
       )
     ) {
       paragraphs.push(segments);

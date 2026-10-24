@@ -517,7 +517,9 @@ export default function ArticleSearchPage({
                           String(article.photographyStatus) ===
                           String(PhotographyStatus.NoPhoto);
                         const subtitleWithIssue = [
-                          article.categories[0] || 'Uncategorized',
+                          ...(article.categories?.length
+                            ? article.categories
+                            : ['Uncategorized']),
                           article.issueNumber
                             ? `Issue ${article.issueNumber}`
                             : null,

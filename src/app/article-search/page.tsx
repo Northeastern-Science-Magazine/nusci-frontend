@@ -21,7 +21,8 @@ import Link from '@/design-system/primitives/Link';
 import { ParallaxScrollSection } from '@/design-system/components/ParallaxScrollSection';
 import Divider from '@/design-system/primitives/Divider';
 import { Category, Article, PhotographyStatus } from '@/lib/types/types';
-import { searchArticles, getMagazineIssues } from '@/lib/api/articles';
+import { searchArticles } from '@/lib/api/articles';
+import { apiGetAllIssueNumbers } from '@/lib/api/issues';
 import categoryToIcon from '@/lib/helpers/categoryToIcon';
 import categoryToIconColor from '@/lib/helpers/categoryToIconColor';
 import { IconName } from '@/design-system/primitives/Icon';
@@ -60,7 +61,7 @@ const getArticleDescription = (article: Article): string => {
 };
 
 interface ArticleSearchPageProps {
-  searchParams: { category?: string | string[] };
+  searchParams: { category?: string | string[]; issue?: string | string[] };
 }
 
 export default function ArticleSearchPage({
@@ -72,12 +73,17 @@ export default function ArticleSearchPage({
     Object.values(Category).includes(searchParams.category as Category)
       ? searchParams.category
       : 'all';
+  // preset the issue filter from ?issue= (e.g. links from article headers)
+  const initialIssue =
+    typeof searchParams.issue === 'string' && /^\d+$/.test(searchParams.issue)
+      ? searchParams.issue
+      : '';
 
   const [title, setTitle] = useState('');
   const [debouncedTitle, setDebouncedTitle] = useState('');
   const [category, setCategory] = useState<string>(initialCategory);
   const [sortBy, setSortBy] = useState<'asc' | 'desc'>('desc');
-  const [issueNumber, setIssueNumber] = useState('');
+  const [issueNumber, setIssueNumber] = useState(initialIssue);
   const [articles, setArticles] = useState<Article[]>([]);
   const [issueNumbers, setIssueNumbers] = useState<string[]>([]);
 
@@ -86,7 +92,7 @@ export default function ArticleSearchPage({
   const [resultsCount, setResultsCount] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(
-    initialCategory !== 'all',
+    initialCategory !== 'all' || initialIssue !== '',
   );
   const [initialLoad, setInitialLoad] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(15);
@@ -271,11 +277,17 @@ export default function ArticleSearchPage({
   // Fetch available issue numbers for dropdown
   useEffect(() => {
     const fetchIssueNumbers = async () => {
-      const issues = await getMagazineIssues();
-      setIssueNumbers(issues.map((i) => String(i.issueNumber)));
+      const response = await apiGetAllIssueNumbers();
+      const available = response.ok ? response.data.map(String) : [];
+      setIssueNumbers(available);
+      // drop a preset ?issue= that doesn't match a real issue
+      if (response.ok && initialIssue && !available.includes(initialIssue)) {
+        setIssueNumber((current) => (current === initialIssue ? '' : current));
+        setKeys((k) => ({ ...k, issueNumber: k.issueNumber + 1 }));
+      }
     };
     fetchIssueNumbers();
-  }, []);
+  }, [initialIssue]);
 
   const hasActiveFilters = filterTags.length > 0;
   const showResults = searchPerformed && !loading;
@@ -398,6 +410,12 @@ export default function ArticleSearchPage({
                           <DropdownInput
                             key={keys.issueNumber}
                             placeholder="All issues"
+                            // only preset on first render; cleared once the filter is reset
+                            defaultValue={
+                              keys.issueNumber === 0 && initialIssue
+                                ? initialIssue
+                                : undefined
+                            }
                             onChange={(value) => setIssueNumber(value)}
                           >
                             {issueNumbers.map((num) => (
@@ -499,7 +517,9 @@ export default function ArticleSearchPage({
                           String(article.photographyStatus) ===
                           String(PhotographyStatus.NoPhoto);
                         const subtitleWithIssue = [
-                          article.categories[0] || 'Uncategorized',
+                          ...(article.categories?.length
+                            ? article.categories
+                            : ['Uncategorized']),
                           article.issueNumber
                             ? `Issue ${article.issueNumber}`
                             : null,

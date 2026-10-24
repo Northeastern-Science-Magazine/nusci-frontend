@@ -46,9 +46,8 @@ const FALLBACK_PROFILE_USER: ProfileData = {
 };
 
 function mapRolesToEnum(roleStrings: string[]): Roles[] {
-  return roleStrings
-    .map((role) => Roles[role as keyof typeof Roles])
-    .filter(Boolean);
+  const validRoles = Object.values(Roles) as string[];
+  return roleStrings.filter((role): role is Roles => validRoles.includes(role));
 }
 
 function mapPublicUserToProfile(user: PublicUser): ProfileData {

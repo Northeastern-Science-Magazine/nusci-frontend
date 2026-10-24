@@ -306,6 +306,10 @@ export default function ArticleEditForm({
     }
   }
 
+  if (initialEditor.error) {
+    return <p role="alert">{initialEditor.error}</p>;
+  }
+  
   return (
     <Box className="mx-auto w-full max-w-3xl px-4 py-8">
       <form onSubmit={handleSave}>

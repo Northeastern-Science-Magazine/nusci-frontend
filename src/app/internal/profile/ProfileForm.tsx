@@ -28,7 +28,6 @@ interface ProfileFormValues {
   phone: string;
 }
 
-const DEFAULT_PROFILE_IMAGE = '/profil.png';
 const DEFAULT_BANNER_IMAGE = '/icy.png';
 
 function userToFormValues(user: PublicUser): ProfileFormValues {
@@ -76,7 +75,7 @@ function ProfileEditor({ user }: { user: PublicUser }) {
 
   // Store image previews
   const [profileImagePreview, setProfileImagePreview] = useState<string>(
-    user.profileImage || DEFAULT_PROFILE_IMAGE,
+    user.profileImage || '',
   );
   const [bannerImagePreview, setBannerImagePreview] = useState<string>(
     user.bannerImage || DEFAULT_BANNER_IMAGE,

@@ -53,13 +53,17 @@ export default async function DashboardPage({
               if (role == Roles.Admin) {
                 return (
                   <Box className="grid grid-cols-4 gap-6" key={index}>
-                    <DashboardCard
+                    {/* <DashboardCard
                       text="Invite User"
-                      href="internal/inviteUser"
+                      href="/internal/inviteUser"
+                    /> */}
+                    <DashboardCard
+                      text="Create An Article"
+                      href="/internal/article-submission"
                     />
                     <DashboardCard
-                      text="Make An Article"
-                      href="internal/article-submission"
+                      text="Create An Issue"
+                      href="/internal/issues"
                     />
                   </Box>
                 );
@@ -68,7 +72,7 @@ export default async function DashboardPage({
                   <Box className="grid grid-cols-4 gap-6" key={index}>
                     <DashboardCard
                       text="Create an Article"
-                      href="internal/article-submission"
+                      href="/internal/article-submission"
                     />
                   </Box>
                 );
@@ -76,7 +80,7 @@ export default async function DashboardPage({
                 return (
                   <DashboardCard
                     text="Upload Photos"
-                    href="internal/photoApproval"
+                    href="/internal/photoApproval"
                     key={index}
                   />
                 );

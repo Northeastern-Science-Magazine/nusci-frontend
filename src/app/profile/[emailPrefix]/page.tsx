@@ -222,6 +222,7 @@ export default async function PublicProfilePage({
         </Box>
       </Box>
 
+      {/* Articles section is placeholder data, hidden until it's pulled from the db
       {hasArticles && (
         <Box className="bg-white shadow-md-top">
           <Box className="max-w-6xl mx-auto px-4 laptop:px-8 py-16">
@@ -234,7 +235,7 @@ export default async function PublicProfilePage({
               Articles
             </Text>
             <Box className="flex flex-col gap-6">
-              {/* Top row: 3 articles */}
+              Top row: 3 articles
               <Box className="flex flex-col laptop:flex-row gap-6">
                 <Box className="flex-1">
                   <MediaCard
@@ -285,7 +286,7 @@ export default async function PublicProfilePage({
                   />
                 </Box>
               </Box>
-              {/* Bottom row: 1 article */}
+              Bottom row: 1 article
               <Box className="flex flex-col laptop:flex-row gap-6">
                 <Box className="flex-1 laptop:max-w-[calc(33.333%-1rem)]">
                   <MediaCard
@@ -310,6 +311,7 @@ export default async function PublicProfilePage({
           </Box>
         </Box>
       )}
+      */}
     </>
   );
 }

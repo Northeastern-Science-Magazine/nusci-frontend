@@ -56,10 +56,6 @@ export default async function DashboardPage({
                     {/* <DashboardCard
                       text="Invite User"
                       href="/internal/inviteUser"
-                    />
-                    <DashboardCard
-                      text="Approve Submission"
-                      href="/internal/approvals"
                     /> */}
                     <DashboardCard
                       text="Create An Article"
@@ -74,10 +70,6 @@ export default async function DashboardPage({
               } else if (role == Roles.Editor) {
                 return (
                   <Box className="grid grid-cols-4 gap-6" key={index}>
-                    <DashboardCard
-                      text="Approve Submission"
-                      href="/internal/approvals"
-                    />
                     <DashboardCard
                       text="Create an Article"
                       href="/internal/article-submission"

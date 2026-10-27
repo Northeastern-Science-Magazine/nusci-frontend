@@ -106,7 +106,11 @@ export function MediaCarousel({
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               onClick={
-                isCenter ? () => window.open(href) : () => paginate(offset)
+                isCenter
+                  ? () => {
+                      window.location.href = href;
+                    }
+                  : () => paginate(offset)
               }
               style={{ zIndex }}
               className={clsx(

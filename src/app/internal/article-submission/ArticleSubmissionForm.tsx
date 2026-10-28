@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Form, FormField } from '../../../design-system/primitives/Form/Form';
-import { useWatch } from 'react-hook-form';
+import { useFormState, useWatch } from 'react-hook-form';
 import Box from '@/design-system/primitives/Box';
 import { Grid, GridCol } from '@/design-system/primitives/Grid';
 import TextInput from '@/design-system/primitives/TextInput';
@@ -34,6 +34,8 @@ import {
 import { Dialog, DialogWindow } from '@/design-system/primitives/Dialog';
 import Icon from '@/design-system/primitives/Icon';
 import { createArticle } from '@/lib/api/articles';
+import { uploadToS3 } from '@/lib/helpers/uploadToS3';
+import { mediaPath } from '@/lib/helpers/media';
 import type { BasicUser } from '@/lib/api/users';
 import { X } from 'lucide-react';
 
@@ -121,10 +123,13 @@ type ArticleSubmissionFormProps = {
 const FormContent = ({
   authorOptions,
   defaultAuthorEmails,
+  submitError,
 }: {
   authorOptions: DropdownOption[];
   defaultAuthorEmails: string[];
+  submitError: string | null;
 }) => {
+  const { isSubmitting } = useFormState<ArticleSubmissionFormValues>();
   const [progress, setProgress] = useState<FormProgress>({
     author: defaultAuthorEmails.length > 0,
     title: false,
@@ -437,6 +442,7 @@ const FormContent = ({
             }
             className="w-full"
             disabled={
+              isSubmitting ||
               !progress.author ||
               !progress.title ||
               !progress.issueNumber ||
@@ -446,8 +452,13 @@ const FormContent = ({
               !progress.sources
             }
           >
-            Submit Article
+            {isSubmitting ? 'Submitting...' : 'Submit Article'}
           </Button>
+          {submitError && (
+            <Text size={14} color="red" className="mt-3">
+              {submitError}
+            </Text>
+          )}
         </Box>
       </GridCol>
     </Grid>
@@ -511,6 +522,7 @@ export default function ArticleSubmissionForm({
   );
 
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleSuccessDialogOpenChange = useCallback((open: boolean) => {
     setSuccessDialogOpen(open);
@@ -528,7 +540,25 @@ export default function ArticleSubmissionForm({
         .replace(/\s+/g, '-');
 
       const originalContent = reactQuillHtmlToArticleContent(data.content);
-      const articleContent = insertPullQuotes(originalContent, data.pullQuotes);
+      let articleContent = insertPullQuotes(originalContent, data.pullQuotes);
+      setSubmitError(null);
+
+      // the image goes first, as its own paragraph: article cards and the
+      // article page use the first image in the content as the featured image
+      if (data.image) {
+        try {
+          const key = await uploadToS3('images', data.image);
+          articleContent = [
+            [{ contentType: 'image', content: mediaPath(key) }],
+            ...articleContent,
+          ];
+        } catch (e) {
+          setSubmitError(
+            `Couldn't upload the image: ${e instanceof Error ? e.message : 'unknown error'}`,
+          );
+          return;
+        }
+      }
 
       const articleData = {
         title: data.title,
@@ -551,8 +581,11 @@ export default function ArticleSubmissionForm({
         creationTime: new Date(),
         modificationTime: new Date(),
       } as ArticleCreate;
-      console.log(articleData);
-      await createArticle(articleData);
+      const response = await createArticle(articleData);
+      if (!response.ok) {
+        setSubmitError(`Couldn't submit the article: ${response.error}`);
+        return;
+      }
       setSuccessDialogOpen(true);
     },
     [],
@@ -630,6 +663,7 @@ export default function ArticleSubmissionForm({
         <FormContent
           authorOptions={authorOptions}
           defaultAuthorEmails={defaultAuthorEmails}
+          submitError={submitError}
         />
       </Form>
     </Box>

@@ -13,6 +13,8 @@ import ImageUpload from '@/design-system/components/ImageUpload';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { PublicUser, apiUpdateMyProfile } from '@/lib/api/users';
+import { uploadToS3 } from '@/lib/helpers/uploadToS3';
+import { mediaPath } from '@/lib/helpers/media';
 
 interface ProfileFormValues {
   firstName: string;
@@ -82,8 +84,35 @@ function ProfileEditor({ user }: { user: PublicUser }) {
     user.bannerImage || DEFAULT_BANNER_IMAGE,
   );
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   const onSubmit = async (data: ProfileFormValues) => {
+    setSaving(true);
+    try {
+      await saveProfile(data);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const saveProfile = async (data: ProfileFormValues) => {
+    // new images go straight to S3 first, then the profile saves their links
+    let profileImage: string | undefined;
+    let bannerImage: string | undefined;
+    try {
+      if (data.profileImage) {
+        profileImage = mediaPath(await uploadToS3('images', data.profileImage));
+      }
+      if (data.bannerImage) {
+        bannerImage = mediaPath(await uploadToS3('images', data.bannerImage));
+      }
+    } catch (e) {
+      setSaveError(
+        `Couldn't upload your image: ${e instanceof Error ? e.message : 'unknown error'}`,
+      );
+      return;
+    }
+
     const response = await apiUpdateMyProfile({
       firstName: data.firstName,
       lastName: data.lastName,
@@ -96,6 +125,8 @@ function ProfileEditor({ user }: { user: PublicUser }) {
       location: data.location,
       bio: data.bio,
       phone: data.phone,
+      ...(profileImage && { profileImage }),
+      ...(bannerImage && { bannerImage }),
     });
 
     if (!response.ok || !response.data) {
@@ -105,13 +136,8 @@ function ProfileEditor({ user }: { user: PublicUser }) {
       return;
     }
 
-    // Image uploads aren't wired up to storage yet, so only the preview updates locally.
-    if (data.bannerImage) {
-      setBannerImagePreview(URL.createObjectURL(data.bannerImage));
-    }
-    if (data.profileImage) {
-      setProfileImagePreview(URL.createObjectURL(data.profileImage));
-    }
+    setBannerImagePreview(response.data.bannerImage || DEFAULT_BANNER_IMAGE);
+    setProfileImagePreview(response.data.profileImage || DEFAULT_PROFILE_IMAGE);
 
     setCurrentData(userToFormValues(response.data));
     setSaveError(null);
@@ -183,6 +209,7 @@ function ProfileEditor({ user }: { user: PublicUser }) {
                 variant="outline"
                 color="black"
                 size="md"
+                disabled={saving}
               >
                 Cancel
               </Button>
@@ -191,8 +218,9 @@ function ProfileEditor({ user }: { user: PublicUser }) {
                 variant="default"
                 color="forest-green"
                 size="md"
+                disabled={saving}
               >
-                Save Changes
+                {saving ? 'Saving...' : 'Save Changes'}
               </Button>
             </>
           )}

@@ -1,4 +1,4 @@
-import { apiGetUploadUrl, MediaFolder } from '@/lib/api/archive';
+import { apiGetUploadUrl, MediaFolder } from '@/lib/api/media';
 
 /**
  * Uploads a file straight from the browser to S3.

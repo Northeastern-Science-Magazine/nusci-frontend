@@ -373,7 +373,6 @@ export async function updateArticle(
       changed:
         (changes.issueNumber ?? null) !== (current.issueNumber ?? null),
 
-      // TODO(BACKEND-339): Confirm route and payload with Kalina/Arushi.
       endpoint: `/articles/issue-number/${encodedSlug}`,
       body: { issueNumber: changes.issueNumber ?? null },
     },
@@ -381,7 +380,6 @@ export async function updateArticle(
       label: 'categories',
       changed: !sameCategories,
 
-      // TODO(BACKEND-339): Confirm route and payload with Kalina/Arushi.
       endpoint: `/articles/categories/${encodedSlug}`,
       body: { categories: changes.categories },
     },
@@ -389,7 +387,6 @@ export async function updateArticle(
       label: 'sources',
       changed: !sameSources,
 
-      // TODO(BACKEND-339): Confirm route and payload with Kalina/Arushi.
       // An empty array explicitly removes existing sources.
       endpoint: `/articles/sources/${encodedSlug}`,
       body: { sources: changes.sources },

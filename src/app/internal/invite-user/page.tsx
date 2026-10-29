@@ -31,16 +31,25 @@ export default function InviteUser() {
     setError(null);
     setSuccess(null);
 
-    // TODO: roles are not part of the invite endpoint's request body yet.
-    const inviteUrl = `${window.location.origin}/create-account`;
-    const result = await apiInviteUser(emails, inviteUrl);
+    // Checkboxes hold enum keys ("Author"); the backend expects enum values ("author").
+    const roleValues = roles.map((role) => Roles[role as keyof typeof Roles]);
+    const result = await apiInviteUser(emails, roleValues);
 
     if (result.ok) {
-      setSuccess(
-        `Invite sent to ${emails.length} ${emails.length === 1 ? 'person' : 'people'}.`,
-      );
-      setEmails([]);
-      setRoles([]);
+      const { invited, skipped, failed } = result.data;
+      const notes: string[] = [];
+      if (invited.length) {
+        notes.push(
+          `Invited ${invited.length} ${invited.length === 1 ? 'person' : 'people'}.`,
+        );
+      }
+      if (skipped.length) {
+        notes.push(`Skipped (already have an account): ${skipped.join(', ')}.`);
+      }
+      setSuccess(notes.length ? notes.join(' ') : null);
+      setError(failed.length ? `Failed to send: ${failed.join(', ')}.` : null);
+      // Failed addresses stay in the list so the admin can retry them.
+      setEmails(failed);
     } else {
       setError(result.error);
     }

@@ -38,7 +38,6 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
     '/teams/photography',
     '/teams/web-and-software',
     '/issue/',
-    '/about-us', //something is up here
     '/create-account',
     '/invalid-invite',
   ];

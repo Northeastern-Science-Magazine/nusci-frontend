@@ -39,7 +39,6 @@ export async function middleware(request: NextRequest) {
     '/teams/photography',
     '/teams/web-and-software',
     '/issue/',
-    '/about-us', //something is up here
     '/create-account',
     '/invalid-invite',
   ];

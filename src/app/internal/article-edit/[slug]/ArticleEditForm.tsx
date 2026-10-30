@@ -23,6 +23,7 @@ import {
   articleContentToHtml,
   getPullQuotes,
   htmlToArticleContent,
+  normalizeArticleSpaces,
   restorePullQuotes,
 } from '@/lib/helpers/articleContentEditor';
 
@@ -280,7 +281,7 @@ export default function ArticleEditForm({
           issueNumber: values.issueNumber,
           authors: values.authors,
           categories: values.categories,
-          articleContent,
+          articleContent: normalizeArticleSpaces(articleContent),
           sources,
         },
         new Date(article.modificationTime).toISOString(),

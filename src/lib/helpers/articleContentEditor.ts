@@ -28,6 +28,19 @@ export function getPullQuotes(content: ArticleContent[]): string[] {
   return content.filter(isPullQuote).map((paragraph) => paragraph[0].content);
 }
 
+// Replace non-breaking spaces from earlier saves so article text can wrap.
+export function normalizeArticleSpaces(
+  content: ArticleContent[],
+): ArticleContent[] {
+  return content.map((paragraph) =>
+    paragraph.map((segment) =>
+      segment.contentType === 'image'
+        ? segment
+        : { ...segment, content: segment.content.replace(/\u00A0/g, ' ') },
+    ),
+  );
+}
+
 // Convert saved paragraphs into the HTML expected by ArticleInput.
 export function articleContentToHtml(content: ArticleContent[]): string {
   return content
@@ -94,7 +107,14 @@ export function htmlToArticleContent(html: string): ArticleContent[] {
     segments = [];
   }
 
+  // Quill emits every space as &nbsp;. Saving those as non-breaking spaces
+  // stops the article text from wrapping, so store regular spaces instead.
+  function normalizeSpaces(value: string): string {
+    return value.replace(/\u00A0/g, ' ');
+  }
+
   function addText(value: string) {
+    value = normalizeSpaces(value);
     if (!value) return;
 
     const previous = segments[segments.length - 1];
@@ -113,7 +133,7 @@ export function htmlToArticleContent(html: string): ArticleContent[] {
       lineBreak.replaceWith(document.createTextNode('\n'));
     });
 
-    return clone.textContent ?? '';
+    return normalizeSpaces(clone.textContent ?? '');
   }
 
   function walk(node: Node): void {

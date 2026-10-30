@@ -6,8 +6,9 @@ import React from 'react';
 
 export function AboutUsHero() {
   return (
-    <OverlayMedia className="w-full relative overflow-hidden">
-      <div className="absolute inset-0">
+    <OverlayMedia className="w-full relative overflow-hidden bg-black">
+      {/* Fade the image into the black background so the text stays readable. */}
+      <div className="absolute inset-0 opacity-70">
         <Image
           raw
           src="/succulent.png"

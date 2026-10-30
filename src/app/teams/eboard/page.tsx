@@ -46,10 +46,10 @@ export default function EboardPage() {
       name: 'Ranya Jain',
       pronouns: 'she/her',
       role: 'Co-Head of Web & Software',
-      bio: 'Ranya is a third-year Data Science and Ecology and Evolutionary Biology major at Northeastern. She joined NU Sci in Fall 2025 hoping to learn more about web development and found herself on the E-Board this semester as Co-Head of Software/Web Development. Ranya enjoys finding ways to bring data science and ecology together, especially to better understand marine environments. Outside of her work, she loves volunteering, diving, and spending time near the ocean.',
+      bio: 'Ranya is a third-year Data Science and Ecology and Evolutionary Biology major from Dubai. She joined NU Sci in Fall 2025 hoping to learn more about web development and found herself on the E-Board this semester as Co-Head of Software/Web Development. Ranya enjoys finding ways to bring data science and ecology together, especially to better understand marine environments. Outside of her work, she loves volunteering, diving, and spending time near the ocean.',
       graduationYear: 2028,
       major: 'Data Science & Ecology and Evolutionary Biology',
-      email: '@northeastern.edu',
+      email: 'jain.ran@northeastern.edu',
       avatarUrl: '/headshots/ranya_headshot.jpeg',
     },
 

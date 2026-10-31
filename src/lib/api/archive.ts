@@ -25,25 +25,6 @@ export interface MagazineIssue {
   href: string;
 }
 
-// Issues still hosted on the legacy nusci-issuu site. Used until each one is
-// uploaded to the S3 archive, at which point the archived version replaces it.
-const LEGACY_ARCHIVE_URL =
-  'https://northeasternsciencemagazine.github.io/nusci-issuu/';
-const LEGACY_ISSUE_COUNT = 60;
-const LEGACY_MAGAZINES: MagazineIssue[] = Array.from(
-  { length: LEGACY_ISSUE_COUNT },
-  (_, i) => {
-    const issueNumber = LEGACY_ISSUE_COUNT - i;
-    return {
-      id: `issue-${issueNumber}`,
-      issueNumber,
-      thumbnailUrl: `${LEGACY_ARCHIVE_URL}thumbnails/issue${issueNumber}.png`,
-      title: `Issue ${issueNumber}`,
-      href: LEGACY_ARCHIVE_URL,
-    };
-  },
-);
-
 function archivedIssueToMagazine(issue: ArchivedIssue): MagazineIssue {
   return {
     id: `issue-${issue.issueNumber}`,
@@ -56,26 +37,18 @@ function archivedIssueToMagazine(issue: ArchivedIssue): MagazineIssue {
 }
 
 /**
- * All print issues, newest first: archived issues from S3,
- * plus legacy issues that haven't been uploaded yet.
+ * All archived print issues, in issue number order (oldest first).
  */
 export async function getMagazineIssues(): Promise<MagazineIssue[]> {
   const response = await apiGetArchivedIssues();
   if (!response.ok) {
-    console.warn('Get archived issues failed, using legacy issues only');
-    return LEGACY_MAGAZINES;
+    console.warn('Get archived issues failed');
+    return [];
   }
 
-  const byNumber = new Map<number, MagazineIssue>(
-    LEGACY_MAGAZINES.map((issue) => [issue.issueNumber, issue]),
-  );
-  response.data.forEach((issue) =>
-    byNumber.set(issue.issueNumber, archivedIssueToMagazine(issue)),
-  );
-
-  return Array.from(byNumber.values()).sort(
-    (a, b) => b.issueNumber - a.issueNumber,
-  );
+  return response.data
+    .map(archivedIssueToMagazine)
+    .sort((a, b) => a.issueNumber - b.issueNumber);
 }
 
 export async function apiGetArchivedIssues(): Promise<

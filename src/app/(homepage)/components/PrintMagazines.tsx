@@ -7,7 +7,6 @@ import Link from '@/design-system/primitives/Link';
 import Text from '@/design-system/primitives/Text';
 import { breakpoints } from '../../../../tailwind.config';
 import useWindowSize from '@/lib/hooks/useWindowSize';
-import { useMemo } from 'react';
 import { MagazineIssue } from '@/lib/api/archive';
 
 interface PrintMagazinesProps {
@@ -16,17 +15,6 @@ interface PrintMagazinesProps {
 
 export default function PrintMagazines({ magazines }: PrintMagazinesProps) {
   const { width } = useWindowSize();
-
-  // Newest issue in the center, older issues alternating out to the
-  // right and left: [60, 58, 56, ..., 55, 57, 59] (the carousel wraps)
-  const arranged = useMemo(() => {
-    const newestFirst = [...magazines].sort(
-      (a, b) => b.issueNumber - a.issueNumber,
-    );
-    const right = newestFirst.filter((_, i) => i % 2 === 0);
-    const left = newestFirst.filter((_, i) => i % 2 === 1).reverse();
-    return [...right, ...left];
-  }, [magazines]);
 
   return (
     <Box id="featured-issues" className="scroll-mt-24 bg-white">
@@ -55,11 +43,11 @@ export default function PrintMagazines({ magazines }: PrintMagazinesProps) {
         <Divider mt={8} />
 
         <MediaCarousel
-          media={arranged.map((magazine) => magazine.thumbnailUrl)}
+          media={magazines.map((magazine) => magazine.thumbnailUrl)}
           size={width && width > breakpoints.laptop ? 'lg' : 'md'}
           visibleCount={width && width > breakpoints.laptop ? 7 : 3}
-          initialIndex={0}
-          centerLink={(index) => arranged[index].href}
+          initialIndex={magazines.length - 1}
+          centerLink={(index) => magazines[index].href}
         />
 
         <Divider mt={8} />

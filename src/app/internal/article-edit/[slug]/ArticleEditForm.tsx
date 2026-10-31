@@ -30,6 +30,7 @@ import {
 type ArticleEditFormProps = {
   article: Article;
   basicUsers: BasicUser[];
+  issueNumbers: number[];
 };
 
 type EditValues = {
@@ -61,6 +62,7 @@ function isHttpUrl(value: string): boolean {
 export default function ArticleEditForm({
   article,
   basicUsers,
+  issueNumbers,
 }: ArticleEditFormProps) {
   const router = useRouter();
 
@@ -139,10 +141,10 @@ export default function ArticleEditForm({
     authorOptions.find((option) => option.value === email)?.label ?? email;
 
   // Match submission's options and retain the article's existing issue.
-  const issueOptions = [
-    { label: 'Issue 67: Intrepid', value: '67' },
-    { label: 'Issue 68: Dissonance', value: '68' },
-  ];
+  const issueOptions = issueNumbers.map((n) => ({
+    label: `Issue ${n}`,
+    value: String(n),
+  }));
 
   if (
     article.issueNumber != null &&
@@ -310,7 +312,7 @@ export default function ArticleEditForm({
   if (initialEditor.error) {
     return <p role="alert">{initialEditor.error}</p>;
   }
-  
+
   return (
     <Box className="mx-auto w-full max-w-3xl px-4 py-8">
       <form onSubmit={handleSave}>

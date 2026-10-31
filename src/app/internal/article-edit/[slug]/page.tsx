@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 
 import { getArticleBySlug } from '@/lib/api/articles';
+import { apiGetAllIssueNumbers } from '@/lib/api/issues';
 import { apiGetBasicUserList } from '@/lib/api/users';
 import { requireArticlePermission } from '@/lib/helpers/articlePermissions';
 
@@ -23,9 +24,10 @@ export default async function ArticleEditPage({
   const { slug } = await params;
 
   // Load independent requests together.
-  const [articleResult, usersResult] = await Promise.all([
+  const [articleResult, usersResult, issuesResult] = await Promise.all([
     getArticleBySlug(slug),
     apiGetBasicUserList(),
+    apiGetAllIssueNumbers(),
   ]);
 
   if (!articleResult.ok) {
@@ -47,6 +49,7 @@ export default async function ArticleEditPage({
       key={articleResult.data.slug}
       article={articleResult.data}
       basicUsers={usersResult.data}
+      issueNumbers={issuesResult.ok ? issuesResult.data : []}
     />
   );
 }

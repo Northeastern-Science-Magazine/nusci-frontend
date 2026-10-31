@@ -15,6 +15,7 @@ import {
   ArchivedIssue,
   apiCreateArchivedIssue,
   apiDeleteArchivedIssue,
+  apiGetArchivedIssue,
 } from '@/lib/api/archive';
 import { uploadToS3 } from '@/lib/helpers/uploadToS3';
 
@@ -56,6 +57,13 @@ export default function ArchiveManager({
     setSubmitting(true);
 
     try {
+      // catch a taken issue number before uploading the whole PDF
+      const issueNumber = Number(data.issueNumber);
+      const existing = await apiGetArchivedIssue(issueNumber);
+      if (existing.ok) {
+        throw new Error(`Issue ${issueNumber} is already archived.`);
+      }
+
       setStatus('Uploading PDF...');
       setProgress(0);
       const pdfKey = await uploadToS3('archive', data.pdf, (fraction) =>
@@ -66,7 +74,7 @@ export default function ArchiveManager({
       setStatus('Saving issue and generating its cover...');
       setProgress(null);
       const response = await apiCreateArchivedIssue({
-        issueNumber: Number(data.issueNumber),
+        issueNumber,
         title: data.title.trim(),
         pdfKey,
       });

@@ -78,10 +78,6 @@ export default async function DashboardPage({
                       text="Create an Article"
                       href="/internal/article-submission"
                     />
-                    <DashboardCard
-                      text="Magazine Archive"
-                      href="/internal/archive"
-                    />
                   </Box>
                 );
               } else if (role == Roles.Photographer) {

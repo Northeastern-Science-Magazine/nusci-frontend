@@ -4,11 +4,8 @@ import Hero from './components/Hero';
 import PrintMagazines from './components/PrintMagazines';
 import FeaturedArticles from './components/FeaturedArticles';
 import CTA from './components/CTA';
-import {
-  getMagazineIssues,
-  getRecentArticles,
-  getFeaturedArticles,
-} from '@/lib/api/articles';
+import { getRecentArticles, getFeaturedArticles } from '@/lib/api/articles';
+import { getMagazineIssues } from '@/lib/api/archive';
 
 export default async function Homepage() {
   try {

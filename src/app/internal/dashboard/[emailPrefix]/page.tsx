@@ -65,6 +65,10 @@ export default async function DashboardPage({
                       text="Create An Issue"
                       href="/internal/issues"
                     />
+                    <DashboardCard
+                      text="Magazine Archive"
+                      href="/internal/archive"
+                    />
                   </Box>
                 );
               } else if (role == Roles.Editor) {

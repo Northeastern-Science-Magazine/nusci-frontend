@@ -344,9 +344,7 @@ export async function updateArticle(
       .filter((source) => source.text || source.href);
 
   // Ignore database metadata such as segment IDs.
-  const normalizeContent = (
-    content: ArticleUpdate['articleContent'],
-  ) =>
+  const normalizeContent = (content: ArticleUpdate['articleContent']) =>
     content.map((paragraph) =>
       paragraph.map((segment) => ({
         contentType: segment.contentType,

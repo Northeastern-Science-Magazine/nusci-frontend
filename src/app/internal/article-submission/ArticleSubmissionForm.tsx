@@ -115,15 +115,20 @@ type FormProgress = {
 type ArticleSubmissionFormProps = {
   basicUsers: BasicUser[];
   defaultAuthorEmails: string[];
+  issueNumbers: number[];
 };
 
 /* FORM CONTENT COMPONENT */
 const FormContent = ({
   authorOptions,
   defaultAuthorEmails,
+  issueOptions,
+  defaultIssueNumber,
 }: {
   authorOptions: DropdownOption[];
   defaultAuthorEmails: string[];
+  issueOptions: DropdownOption[];
+  defaultIssueNumber?: number;
 }) => {
   const [progress, setProgress] = useState<FormProgress>({
     author: defaultAuthorEmails.length > 0,
@@ -194,11 +199,12 @@ const FormContent = ({
                   </Text>
                   <Dropdown
                     color="black"
-                    options={[
-                      { label: 'Issue 67: Intrepid', value: '67' },
-                      { label: 'Issue 68: Dissonance', value: '68' },
-                    ]}
-                    defaultValue={'68'}
+                    options={issueOptions}
+                    defaultValue={
+                      defaultIssueNumber !== undefined
+                        ? String(defaultIssueNumber)
+                        : undefined
+                    }
                     placeholder="Select issue"
                     onChange={(value) => {
                       const num =
@@ -504,11 +510,19 @@ function insertPullQuotes(
 export default function ArticleSubmissionForm({
   basicUsers,
   defaultAuthorEmails,
+  issueNumbers,
 }: ArticleSubmissionFormProps) {
   const authorOptions = useMemo<DropdownOption[]>(
     () => basicUsers.map((u) => ({ label: u.name, value: u.email })),
     [basicUsers],
   );
+
+  const issueOptions = useMemo<DropdownOption[]>(
+    () => issueNumbers.map((n) => ({ label: `Issue ${n}`, value: String(n) })),
+    [issueNumbers],
+  );
+  // issue numbers come back newest first, so default to the latest issue
+  const defaultIssueNumber = issueNumbers[0];
 
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
 
@@ -616,7 +630,7 @@ export default function ArticleSubmissionForm({
           defaultValues: {
             authors: defaultAuthorEmails,
             title: '',
-            issueNumber: 67,
+            issueNumber: defaultIssueNumber,
             categories: [],
             content: '',
             pullQuotes: [],
@@ -630,6 +644,8 @@ export default function ArticleSubmissionForm({
         <FormContent
           authorOptions={authorOptions}
           defaultAuthorEmails={defaultAuthorEmails}
+          issueOptions={issueOptions}
+          defaultIssueNumber={defaultIssueNumber}
         />
       </Form>
     </Box>

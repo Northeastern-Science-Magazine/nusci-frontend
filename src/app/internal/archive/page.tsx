@@ -5,7 +5,7 @@ import { apiGetArchivedIssues } from '@/lib/api/archive';
 import { Roles } from '@/lib/types/types';
 import ArchiveManager from './ArchiveManager';
 
-const ALLOWED_ROLES: string[] = [Roles.Admin, Roles.Editor];
+const ALLOWED_ROLES: string[] = [Roles.Admin];
 
 export default async function ArchivePage() {
   const roles = await getUserRoles();
@@ -14,7 +14,7 @@ export default async function ArchivePage() {
     return (
       <Box className="max-w-6xl mx-auto px-4 laptop:px-8 py-16">
         <Text style="regular" size={18} color="black">
-          Only admins and editors can manage the magazine archive.
+          Only admins can manage the magazine archive.
         </Text>
       </Box>
     );

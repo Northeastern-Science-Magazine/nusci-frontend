@@ -1,4 +1,5 @@
 import type { ArticleContent, ArticleContentSegment } from '@/lib/types/types';
+import { isMediaPath } from '@/lib/helpers/media';
 
 // Escape saved text before placing it inside editor HTML.
 function escapeHtml(value: string): string {
@@ -22,6 +23,25 @@ function isHttpUrl(value: string): boolean {
 // Standalone pull quotes are edited separately, like in submission.
 function isPullQuote(paragraph: ArticleContent): boolean {
   return paragraph.length === 1 && paragraph[0].contentType === 'pull_quote';
+}
+
+// Submission saves the uploaded image as the first paragraph, on its own.
+// It is edited separately from the body, like pull quotes.
+export function splitFeaturedImage(content: ArticleContent[]): {
+  featuredImage: string | undefined;
+  body: ArticleContent[];
+} {
+  const [first, ...rest] = content;
+
+  if (
+    first?.length === 1 &&
+    first[0].contentType === 'image' &&
+    isMediaPath(first[0].content)
+  ) {
+    return { featuredImage: first[0].content, body: rest };
+  }
+
+  return { featuredImage: undefined, body: content };
 }
 
 export function getPullQuotes(content: ArticleContent[]): string[] {

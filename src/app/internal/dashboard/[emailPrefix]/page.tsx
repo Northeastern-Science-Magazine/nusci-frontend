@@ -55,15 +55,15 @@ export default async function DashboardPage({
                   <Box className="grid grid-cols-4 gap-6" key={index}>
                     <DashboardCard
                       text="Invite User"
-                      href="internal/inviteUser"
+                      href="/internal/invite-user"
                     />
                     <DashboardCard
-                      text="Approve Submission"
-                      href="internal/approvals"
+                      text="Create An Article"
+                      href="/internal/article-submission"
                     />
                     <DashboardCard
-                      text="Make An Article"
-                      href="internal/article-submission"
+                      text="Create An Issue"
+                      href="/internal/issues"
                     />
                     <DashboardCard
                       text="Magazine Archive"
@@ -75,16 +75,8 @@ export default async function DashboardPage({
                 return (
                   <Box className="grid grid-cols-4 gap-6" key={index}>
                     <DashboardCard
-                      text="Approve Submission"
-                      href="internal/approvals"
-                    />
-                    <DashboardCard
                       text="Create an Article"
-                      href="internal/article-submission"
-                    />
-                    <DashboardCard
-                      text="Magazine Archive"
-                      href="/internal/archive"
+                      href="/internal/article-submission"
                     />
                   </Box>
                 );
@@ -92,7 +84,7 @@ export default async function DashboardPage({
                 return (
                   <DashboardCard
                     text="Upload Photos"
-                    href="internal/photoApproval"
+                    href="/internal/photoApproval"
                     key={index}
                   />
                 );

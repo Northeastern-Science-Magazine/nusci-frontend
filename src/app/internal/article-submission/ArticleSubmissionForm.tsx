@@ -117,6 +117,7 @@ type FormProgress = {
 type ArticleSubmissionFormProps = {
   basicUsers: BasicUser[];
   defaultAuthorEmails: string[];
+  issueNumbers: number[];
 };
 
 /* FORM CONTENT COMPONENT */
@@ -124,9 +125,13 @@ const FormContent = ({
   authorOptions,
   defaultAuthorEmails,
   submitError,
+  issueOptions,
+  defaultIssueNumber,
 }: {
   authorOptions: DropdownOption[];
   defaultAuthorEmails: string[];
+  issueOptions: DropdownOption[];
+  defaultIssueNumber?: number;
   submitError: string | null;
 }) => {
   const { isSubmitting } = useFormState<ArticleSubmissionFormValues>();
@@ -199,11 +204,12 @@ const FormContent = ({
                   </Text>
                   <Dropdown
                     color="black"
-                    options={[
-                      { label: 'Issue 67: Intrepid', value: '67' },
-                      { label: 'Issue 68: Dissonance', value: '68' },
-                    ]}
-                    defaultValue={'68'}
+                    options={issueOptions}
+                    defaultValue={
+                      defaultIssueNumber !== undefined
+                        ? String(defaultIssueNumber)
+                        : undefined
+                    }
                     placeholder="Select issue"
                     onChange={(value) => {
                       const num =
@@ -515,11 +521,19 @@ function insertPullQuotes(
 export default function ArticleSubmissionForm({
   basicUsers,
   defaultAuthorEmails,
+  issueNumbers,
 }: ArticleSubmissionFormProps) {
   const authorOptions = useMemo<DropdownOption[]>(
     () => basicUsers.map((u) => ({ label: u.name, value: u.email })),
     [basicUsers],
   );
+
+  const issueOptions = useMemo<DropdownOption[]>(
+    () => issueNumbers.map((n) => ({ label: `Issue ${n}`, value: String(n) })),
+    [issueNumbers],
+  );
+  // issue numbers come back newest first, so default to the latest issue
+  const defaultIssueNumber = issueNumbers[0];
 
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -649,7 +663,7 @@ export default function ArticleSubmissionForm({
           defaultValues: {
             authors: defaultAuthorEmails,
             title: '',
-            issueNumber: 67,
+            issueNumber: defaultIssueNumber,
             categories: [],
             content: '',
             pullQuotes: [],
@@ -664,6 +678,8 @@ export default function ArticleSubmissionForm({
           authorOptions={authorOptions}
           defaultAuthorEmails={defaultAuthorEmails}
           submitError={submitError}
+          issueOptions={issueOptions}
+          defaultIssueNumber={defaultIssueNumber}
         />
       </Form>
     </Box>

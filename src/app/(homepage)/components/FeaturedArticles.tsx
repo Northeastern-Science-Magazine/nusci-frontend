@@ -67,7 +67,7 @@ export default function FeaturedArticles({
               Recent Articles
             </Text>
             <Link
-              href="/articles"
+              href="/article-search"
               className="group inline-flex items-center gap-2 border-b-2 border-black/20 pb-1 text-[14px] font-medium text-black/80 transition-all hover:border-black/40 hover:text-black"
             >
               View all articles

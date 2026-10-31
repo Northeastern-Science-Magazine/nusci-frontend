@@ -4,6 +4,9 @@ import { api, ApiResponse } from './api';
 import { Article as ArticleType } from '@/lib/types/types';
 import { ArticleCreate } from '@/lib/types/types';
 import { Category } from '@/lib/types/types';
+import type { ArticleUpdate } from '@/lib/types/types';
+import { apiGetUserRoles } from './users';
+import { canManageArticles } from '@/lib/helpers/articlePermissions';
 
 export interface Article {
   id: string;
@@ -226,4 +229,132 @@ export async function getArticleBySlug(
 
 export async function createArticle(articleData: ArticleCreate) {
   return api<ArticleCreate>('POST', '/articles/create', articleData);
+}
+
+/**
+ * Saves changed article fields in a single edit request.
+ * Checks for a stale form before saving.
+ */
+export async function updateArticle(
+  slug: string,
+  changes: ArticleUpdate,
+  expectedModificationTime?: string,
+): Promise<ApiResponse<null>> {
+  const rolesResult = await apiGetUserRoles();
+
+  if (!rolesResult.ok) {
+    return { ok: false, error: rolesResult.error };
+  }
+
+  if (!canManageArticles(rolesResult.data.roles)) {
+    return {
+      ok: false,
+      error: 'You do not have permission to edit articles.',
+    };
+  }
+
+  const currentResult = await getArticleBySlug(slug);
+
+  if (!currentResult.ok) {
+    return {
+      ok: false,
+      error: `Unable to load the saved article: ${currentResult.error}`,
+    };
+  }
+
+  const current = currentResult.data;
+
+  // Detect changes made after this form was opened.
+  // Full concurrency protection still requires a backend version check.
+  if (
+    expectedModificationTime &&
+    new Date(current.modificationTime).getTime() !==
+      new Date(expectedModificationTime).getTime()
+  ) {
+    return {
+      ok: false,
+      error:
+        'This article changed after you opened the form. Copy your unsaved edits before reloading the latest article.',
+    };
+  }
+
+  const encodedSlug = encodeURIComponent(slug);
+
+  const normalizeSources = (sources: ArticleUpdate['sources']) =>
+    sources
+      .map((source) => ({
+        text: (source.text ?? '').trim(),
+        href: (source.href ?? '').trim(),
+      }))
+      .filter((source) => source.text || source.href);
+
+  // Ignore database metadata such as segment IDs.
+  const normalizeContent = (content: ArticleUpdate['articleContent']) =>
+    content.map((paragraph) =>
+      paragraph.map((segment) => ({
+        contentType: segment.contentType,
+        content: segment.content,
+        href: segment.href ?? null,
+      })),
+    );
+
+  const sameCategories =
+    JSON.stringify([...changes.categories].sort()) ===
+    JSON.stringify([...(current.categories ?? [])].sort());
+
+  const sameSources =
+    JSON.stringify(normalizeSources(changes.sources)) ===
+    JSON.stringify(normalizeSources(current.sources ?? []));
+
+  const sameAuthors =
+    JSON.stringify(changes.authors) ===
+    JSON.stringify((current.authors ?? []).map((author) => author.email));
+
+  const body: Partial<ArticleUpdate> = {};
+
+  if (
+    changes.issueNumber !== undefined &&
+    changes.issueNumber !== (current.issueNumber ?? undefined)
+  ) {
+    body.issueNumber = changes.issueNumber;
+  }
+  if (!sameCategories) body.categories = changes.categories;
+  // An empty array explicitly removes existing sources.
+  if (!sameSources) body.sources = changes.sources;
+  if (changes.title !== current.title) body.title = changes.title;
+  if (
+    JSON.stringify(normalizeContent(changes.articleContent)) !==
+    JSON.stringify(normalizeContent(current.articleContent ?? []))
+  ) {
+    body.articleContent = changes.articleContent;
+  }
+  if (!sameAuthors) body.authors = changes.authors;
+
+  if (Object.keys(body).length === 0) {
+    return { ok: true, data: null };
+  }
+
+  const result = await api<unknown>(
+    'PATCH',
+    `/articles/edit/${encodedSlug}`,
+    body,
+  );
+
+  if (!result.ok) {
+    // Avoid displaying an entire backend HTML error page.
+    const details = result.error?.trim();
+    const message =
+      !details || details.startsWith('<')
+        ? 'The backend endpoint is unavailable or returned an unexpected response.'
+        : details;
+
+    return {
+      ok: false,
+      error:
+        `Could not save the article. ${message} Your edits remain in the form. ` +
+        'Copy your unsaved edits before reloading.',
+    };
+  }
+
+  return { ok: true, data: null };
 }

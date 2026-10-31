@@ -1,6 +1,7 @@
 import { tv, type VariantProps } from 'tailwind-variants';
 import { ImageProps } from '@/primitives/Image';
 import { ArticleSource, ArticleContent } from '@/lib/types/types';
+import type { ReactNode } from 'react';
 
 export const articleTemplateVariants = tv({
   base: 'max-w-4xl mx-auto px-4 pt-24 pb-8 bg-white',
@@ -40,4 +41,5 @@ export interface ArticleTemplateProps extends VariantProps<
   articleContent: ArticleContent[];
   sources?: ArticleSource[];
   className?: string;
+  editAction?: ReactNode;
 }

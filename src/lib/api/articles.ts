@@ -287,8 +287,8 @@ export async function createArticle(articleData: ArticleCreate) {
 }
 
 /**
- * Saves changed article fields through separate update endpoints.
- * Checks for a stale form and reports partial saves.
+ * Saves changed article fields in a single edit request.
+ * Checks for a stale form before saving.
  */
 export async function updateArticle(
   slug: string,
@@ -367,82 +367,50 @@ export async function updateArticle(
     JSON.stringify(changes.authors) ===
     JSON.stringify((current.authors ?? []).map((author) => author.email));
 
-  const updates = [
-    {
-      label: 'issue number',
-      changed:
-        (changes.issueNumber ?? null) !== (current.issueNumber ?? null),
+  const body: Partial<ArticleUpdate> = {};
 
-      endpoint: `/articles/issue-number/${encodedSlug}`,
-      body: { issueNumber: changes.issueNumber ?? null },
-    },
-    {
-      label: 'categories',
-      changed: !sameCategories,
+  if (
+    changes.issueNumber !== undefined &&
+    changes.issueNumber !== (current.issueNumber ?? undefined)
+  ) {
+    body.issueNumber = changes.issueNumber;
+  }
+  if (!sameCategories) body.categories = changes.categories;
+  // An empty array explicitly removes existing sources.
+  if (!sameSources) body.sources = changes.sources;
+  if (changes.title !== current.title) body.title = changes.title;
+  if (
+    JSON.stringify(normalizeContent(changes.articleContent)) !==
+    JSON.stringify(normalizeContent(current.articleContent ?? []))
+  ) {
+    body.articleContent = changes.articleContent;
+  }
+  if (!sameAuthors) body.authors = changes.authors;
 
-      endpoint: `/articles/categories/${encodedSlug}`,
-      body: { categories: changes.categories },
-    },
-    {
-      label: 'sources',
-      changed: !sameSources,
+  if (Object.keys(body).length === 0) {
+    return { ok: true, data: null };
+  }
 
-      // An empty array explicitly removes existing sources.
-      endpoint: `/articles/sources/${encodedSlug}`,
-      body: { sources: changes.sources },
-    },
-    {
-      label: 'title',
-      changed: changes.title !== current.title,
-      endpoint: `/articles/title/${encodedSlug}`,
-      body: { title: changes.title },
-    },
-    {
-      label: 'content',
-      changed:
-        JSON.stringify(normalizeContent(changes.articleContent)) !==
-        JSON.stringify(normalizeContent(current.articleContent ?? [])),
-      endpoint: `/articles/content/${encodedSlug}`,
-      body: { articleContent: changes.articleContent },
-    },
-    {
-      label: 'authors',
-      changed: !sameAuthors,
-      endpoint: `/articles/authors/${encodedSlug}`,
-      body: { authors: changes.authors },
-    },
-  ];
+  const result = await api<unknown>(
+    'PATCH',
+    `/articles/edit/${encodedSlug}`,
+    body,
+  );
 
-  const saved: string[] = [];
+  if (!result.ok) {
+    // Avoid displaying an entire backend HTML error page.
+    const details = result.error?.trim();
+    const message =
+      !details || details.startsWith('<')
+        ? 'The backend endpoint is unavailable or returned an unexpected response.'
+        : details;
 
-  for (const update of updates) {
-    if (!update.changed) continue;
-
-    const result = await api<unknown>('PATCH', update.endpoint, update.body);
-
-    if (!result.ok) {
-      const previousUpdates = saved.length
-        ? `Already saved: ${saved.join(', ')}. `
-        : '';
-
-      // Avoid displaying an entire backend HTML error page.
-      const details = result.error?.trim();
-      const message =
-        !details || details.startsWith('<')
-          ? 'The backend endpoint is unavailable or returned an unexpected response.'
-          : details;
-
-      return {
-        ok: false,
-        error:
-          `${previousUpdates}Could not confirm the ${update.label} update. ` +
-          `${message} Your edits remain in the form. ` +
-          'Check the saved article in another tab before retrying. ' +
-          'Copy your unsaved edits before reloading.',
-      };
-    }
-
-    saved.push(update.label);
+    return {
+      ok: false,
+      error:
+        `Could not save the article. ${message} Your edits remain in the form. ` +
+        'Copy your unsaved edits before reloading.',
+    };
   }
 
   return { ok: true, data: null };

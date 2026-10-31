@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { notFound, useRouter } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { Form, FormField } from '@/primitives/Form';
 import { SubmitHandler } from 'react-hook-form';
 import MediaCard from '@/design-system/components/MediaCard';
@@ -17,12 +17,12 @@ type SignUpFormValues = {
   lastName: string;
   graduationYear: string;
   password: string;
+  confirmPassword: string;
 };
 
 type PageState = 'loading' | 'ready' | 'error';
 
 export default function SignUpPage() {
-  const router = useRouter();
   // Invite token is kept in memory only; never logged or stored.
   const tokenRef = useRef<string | null>(null);
   const [inviteEmail, setInviteEmail] = useState('');
@@ -70,8 +70,9 @@ export default function SignUpPage() {
       });
 
       if (result.ok) {
-        // Login cookie is already set by the signup response.
-        router.push('/');
+        // Login cookie is already set by the signup response; full reload so the
+        // middleware and server components see it.
+        window.location.href = '/internal/profile';
       } else {
         setPageState('error');
       }
@@ -121,6 +122,7 @@ export default function SignUpPage() {
               lastName: '',
               graduationYear: '',
               password: '',
+              confirmPassword: '',
             },
           }}
           className="space-y-6 mt-6 p-5"
@@ -206,22 +208,53 @@ export default function SignUpPage() {
             />
           </FormField>
 
+          <Box>
+            <FormField<SignUpFormValues>
+              name="password"
+              rules={{
+                required: 'Password is required',
+                minLength: {
+                  value: 8,
+                  message: 'Password must be at least 8 characters',
+                },
+                validate: (value) => {
+                  if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) {
+                    return 'Password must contain uppercase, lowercase, and numbers';
+                  }
+                  return true;
+                },
+              }}
+            >
+              <TextInput
+                variant="outline"
+                size="md"
+                color="black"
+                label="Password"
+                placeholder="Create a password"
+                className="w-full"
+                type="password"
+              />
+            </FormField>
+            <p className="mt-2 text-xs text-gray-500">
+              Must be at least 8 characters with uppercase, lowercase, and
+              numbers
+            </p>
+          </Box>
+
           <FormField<SignUpFormValues>
-            name="password"
+            name="confirmPassword"
             rules={{
-              required: 'Password is required',
-              minLength: {
-                value: 8,
-                message: 'Password must be at least 8 characters',
-              },
+              required: 'Please confirm your password',
+              validate: (value, formValues) =>
+                value === formValues.password || 'Passwords do not match',
             }}
           >
             <TextInput
               variant="outline"
               size="md"
               color="black"
-              label="Password"
-              placeholder="Create a password"
+              label="Confirm Password"
+              placeholder="Re-enter your password"
               className="w-full"
               type="password"
             />

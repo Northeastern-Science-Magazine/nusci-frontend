@@ -141,6 +141,7 @@ function ProfileEditor({ user }: { user: PublicUser }) {
     setCurrentData(userToFormValues(response.data));
     setSaveError(null);
     setIsEditing(false);
+    setFormKey((k) => k + 1);
   };
 
   const handleCancel = () => {

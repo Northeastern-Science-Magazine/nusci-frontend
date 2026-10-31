@@ -17,21 +17,6 @@ export type ArchivedIssueCreate = {
   pdfKey: string;
 };
 
-export type MediaFolder = 'archive' | 'images';
-
-export type UploadUrlRequest = {
-  folder: MediaFolder;
-  contentType: string;
-  size: number; // bytes
-};
-
-export type UploadUrlResponse = {
-  key: string;
-  uploadUrl: string;
-  contentType: string;
-  expiresIn: number;
-};
-
 export interface MagazineIssue {
   id: string;
   issueNumber: number;
@@ -115,10 +100,4 @@ export async function apiDeleteArchivedIssue(
   issueNumber: number,
 ): Promise<ApiResponse<{ message: string }>> {
   return api<{ message: string }>('DELETE', `/archive/${issueNumber}`);
-}
-
-export async function apiGetUploadUrl(
-  request: UploadUrlRequest,
-): Promise<ApiResponse<UploadUrlResponse>> {
-  return api<UploadUrlResponse>('POST', '/media/upload-url', request);
 }

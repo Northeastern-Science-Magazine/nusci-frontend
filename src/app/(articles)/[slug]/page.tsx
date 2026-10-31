@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getArticleBySlug } from '@/lib/api/articles';
 import { ArticleTemplate } from '@/design-system/components/ArticleTemplate';
+import { isMediaPath } from '@/lib/helpers/media';
 import Link from 'next/link';
 import { apiGetUserRoles } from '@/lib/api/users';
 import { canManageArticles } from '@/lib/helpers/articlePermissions';
@@ -10,12 +11,17 @@ interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
 
-// Extract the first image URL from articleContent for featured image
+// Extract the first image URL from nested articleContent (paragraphs -> segments)
 function extractFirstImageUrl(
-  articleContent: Array<{ contentType: string; content: string }>,
+  articleContent: Array<Array<{ contentType: string; content: string }>>,
 ): string | undefined {
-  const imageItem = articleContent.find((item) => item.contentType === 'image');
-  return imageItem?.content;
+  for (const paragraph of articleContent ?? []) {
+    const imageSegment = paragraph?.find(
+      (segment) => segment.contentType === 'image',
+    );
+    if (imageSegment?.content) return imageSegment.content;
+  }
+  return undefined;
 }
 
 /** Backend may return a display string or a populated user document. */
@@ -64,8 +70,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   const canEdit = rolesResult.ok && canManageArticles(rolesResult.data.roles);
 
-  // Extract first image URL for featured image
-  // const firstImageUrl = extractFirstImageUrl(article.articleContent);
+  // Featured image: the first image in the content. Only images uploaded to
+  // our S3 bucket, since next/image refuses hosts it isn't configured for
+  const firstImageUrl = extractFirstImageUrl(article.articleContent);
+  const imageUrl = isMediaPath(firstImageUrl) ? firstImageUrl : undefined;
 
   // Format publish date (using creationTime as publish date)
   const publishDate = formatDate(article.creationTime);
@@ -82,9 +90,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       ? formatPersonName(article.editors[0])
       : undefined;
 
-  // Only use image if it actually exists in the content (no placeholder fallback)
-  // const imageUrl = firstImageUrl;
-
   return (
     <ArticleTemplate
       title={article.title}
@@ -95,6 +100,17 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       publishDate={publishDate}
       articleContent={article.articleContent}
       sources={article.sources}
+      featuredImage={
+        imageUrl
+          ? {
+              src: imageUrl,
+              alt: article.title,
+              width: 'w-full',
+              ratio: 16 / 9,
+              className: 'object-cover',
+            }
+          : undefined
+      }
       imageCaption={undefined}
       editAction={
         canEdit ? (

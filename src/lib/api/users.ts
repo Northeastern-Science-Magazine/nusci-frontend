@@ -126,6 +126,8 @@ export type ProfileUpdate = {
   graduationYear?: number;
   major?: string;
   location?: string;
+  profileImage?: string; // a mediaPath, see lib/helpers/media
+  bannerImage?: string; // a mediaPath, see lib/helpers/media
   bio?: string;
   email?: string;
   phone?: string;

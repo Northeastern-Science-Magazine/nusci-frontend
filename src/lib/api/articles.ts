@@ -107,25 +107,20 @@ function extractFirstImageUrl(
   return undefined;
 }
 
-// Extract description from first paragraph (concatenate segment text).
-// Works for both "text"/"link" and "body_paragraph" style contentTypes.
+// Extract description from the first paragraph with text, skipping
+// image and pull quote paragraphs.
 function extractDescription(
   articleContent: ArticleType['articleContent'],
 ): string {
-  if (!articleContent || articleContent.length === 0) return '';
-
-  const firstParagraph = articleContent.find(
-    (paragraph) => paragraph && paragraph.length > 0,
-  );
-  if (!firstParagraph) return '';
-
-  // Prefer body_paragraph segments if present; otherwise use all segments
-  const bodySegments = firstParagraph.filter(
-    (seg) => seg.contentType === 'text',
-  );
-  const segmentsToUse = bodySegments.length > 0 ? bodySegments : firstParagraph;
-
-  return segmentsToUse.map((seg) => seg.content).join(' ');
+  for (const paragraph of articleContent || []) {
+    const text = (paragraph || [])
+      .filter((seg) => seg.contentType === 'text' || seg.contentType === 'link')
+      .map((seg) => seg.content)
+      .join(' ')
+      .trim();
+    if (text) return text;
+  }
+  return '';
 }
 
 // Map ArticleType to Article interface

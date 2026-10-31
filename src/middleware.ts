@@ -38,8 +38,6 @@ export async function middleware(request: NextRequest) {
     '/teams/photography',
     '/teams/web-and-software',
     '/issue/',
-    '/create-account',
-    '/invalid-invite',
   ];
 
   if (blockedURLs.some((url) => request.url.includes(url))) {

@@ -37,8 +37,6 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
     '/teams/photography',
     '/teams/web-and-software',
     '/issue/',
-    '/create-account',
-    '/invalid-invite',
   ];
 
   if (blockedURLs.some((url) => request.url.includes(url))) {

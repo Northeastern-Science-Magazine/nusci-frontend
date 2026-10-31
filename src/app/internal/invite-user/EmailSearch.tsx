@@ -87,7 +87,6 @@ export default function EmailSearch({
           label="Email"
           placeholder="name@northeastern.edu"
           value={email}
-          resize
           onChange={(v: string) => {
             setEmail(v);
             if (error) setError(null);

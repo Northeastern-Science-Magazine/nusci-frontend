@@ -88,13 +88,8 @@ function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
           flush();
           const text = normalize(el.textContent ?? '');
           const href = el.getAttribute('href') || undefined;
-          // a link with no text uses its url, since content can't be empty
-          if (text || href)
-            segments.push({
-              contentType: 'link',
-              content: text || href!,
-              href,
-            });
+          // a link with no text is dropped, since content can't be empty
+          if (text) segments.push({ contentType: 'link', content: text, href });
           return;
         }
 

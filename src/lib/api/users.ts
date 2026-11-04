@@ -157,9 +157,14 @@ export async function apiLogin(data: {
 /**
  * Looks up the email an invite belongs to. Does not use up the invite.
  */
-export async function apiGetInvite(
-  token: string,
-): Promise<ApiResponse<{ email: string }>> {
+export async function apiGetInvite(token: string): Promise<
+  ApiResponse<{
+    email: string;
+    // Set when an editor added this person as an author before they signed up
+    firstName?: string;
+    lastName?: string;
+  }>
+> {
   return api('GET', `/user/invite?token=${encodeURIComponent(token)}`);
 }
 
@@ -191,6 +196,24 @@ export async function apiVerifyOTPToken(
 
 export async function apiGetBasicUserList(): Promise<ApiResponse<BasicUser[]>> {
   return api<BasicUser[]>('GET', '/user/list/basic');
+}
+
+export type CreatedAuthor = BasicUser & {
+  /** false if the account was made but the invite email failed to send */
+  invited: boolean;
+};
+
+/**
+ * Adds an author who has no account yet, so they can be credited on an
+ * article right away, and emails them an invite to finish signing up.
+ * Admins and editors only. Fails if the email already has an account.
+ */
+export async function apiCreateAuthor(author: {
+  firstName: string;
+  lastName: string;
+  email: string;
+}): Promise<ApiResponse<CreatedAuthor>> {
+  return api('POST', '/user/author', author);
 }
 
 type InviteResult = {

@@ -15,6 +15,7 @@ import { Controller } from 'react-hook-form';
 import ImageUpload from '@/design-system/components/ImageUpload';
 import ArticleInput from './components/ArticleInput';
 import { PullQuoteInput } from './components/PullQuoteInput';
+import { NewAuthorInput } from './components/NewAuthorInput';
 import {
   Category,
   ArticleSource,
@@ -124,12 +125,14 @@ type ArticleSubmissionFormProps = {
 const FormContent = ({
   authorOptions,
   defaultAuthorEmails,
+  onAuthorCreated,
   submitError,
   issueOptions,
   defaultIssueNumber,
 }: {
   authorOptions: DropdownOption[];
   defaultAuthorEmails: string[];
+  onAuthorCreated: (author: BasicUser) => void;
   issueOptions: DropdownOption[];
   defaultIssueNumber?: number;
   submitError: string | null;
@@ -301,6 +304,14 @@ const FormContent = ({
                         </div>
                       </Box>
                     )}
+                    <NewAuthorInput
+                      onCreated={(author) => {
+                        onAuthorCreated(author);
+                        if (!selectedEmails.includes(author.email)) {
+                          field.onChange([...selectedEmails, author.email]);
+                        }
+                      }}
+                    />
                   </div>
                 );
               }}
@@ -523,9 +534,18 @@ export default function ArticleSubmissionForm({
   defaultAuthorEmails,
   issueNumbers,
 }: ArticleSubmissionFormProps) {
+  // Authors added from this page, so they show up without a reload.
+  const [addedAuthors, setAddedAuthors] = useState<BasicUser[]>([]);
+  const onAuthorCreated = useCallback((author: BasicUser) => {
+    setAddedAuthors((authors) => [...authors, author]);
+  }, []);
   const authorOptions = useMemo<DropdownOption[]>(
-    () => basicUsers.map((u) => ({ label: u.name, value: u.email })),
-    [basicUsers],
+    () =>
+      [...basicUsers, ...addedAuthors].map((u) => ({
+        label: u.name,
+        value: u.email,
+      })),
+    [basicUsers, addedAuthors],
   );
 
   const issueOptions = useMemo<DropdownOption[]>(
@@ -681,6 +701,7 @@ export default function ArticleSubmissionForm({
         <FormContent
           authorOptions={authorOptions}
           defaultAuthorEmails={defaultAuthorEmails}
+          onAuthorCreated={onAuthorCreated}
           submitError={submitError}
           issueOptions={issueOptions}
           defaultIssueNumber={defaultIssueNumber}

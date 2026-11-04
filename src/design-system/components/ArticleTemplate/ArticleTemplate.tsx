@@ -10,6 +10,7 @@ import Link from '@/primitives/Link';
 import Image from '@/primitives/Image';
 import Badge from '@/primitives/Badge';
 import { OverlayMedia, Overlay } from '@/components/MediaOverlay';
+import { MathText } from '@/components/MathText';
 
 // Convert ArticleContent to ContentBlock format
 function convertArticleContentToContentBlocks(
@@ -193,7 +194,9 @@ export default function ArticleTemplate({
                   <Text size={18} color="black">
                     {block.segments.map((segment, segIndex) => (
                       <React.Fragment key={segIndex}>
-                        {segment.type === 'text' && segment.content}
+                        {segment.type === 'text' && (
+                          <MathText text={segment.content} />
+                        )}
                         {segment.type === 'link' && (
                           <>
                             {' '}

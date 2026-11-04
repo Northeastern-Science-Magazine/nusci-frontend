@@ -15,6 +15,7 @@ import { Controller } from 'react-hook-form';
 import ImageUpload from '@/design-system/components/ImageUpload';
 import ArticleInput from './components/ArticleInput';
 import { PullQuoteInput } from './components/PullQuoteInput';
+import { joinSplitEquations } from '@/lib/helpers/articleMath';
 import {
   Category,
   ArticleSource,
@@ -63,7 +64,7 @@ function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
 
   const doc = new DOMParser().parseFromString(html, 'text/html');
 
-  return [...doc.querySelectorAll('p')]
+  const paragraphs = [...doc.querySelectorAll('p')]
     .map((p) => {
       const segments: ArticleContentSegment[] = [];
       let buf = '';
@@ -102,6 +103,8 @@ function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
       return segments.length ? (segments as ArticleContent) : null;
     })
     .filter((p): p is ArticleContent => !!p);
+
+  return joinSplitEquations(paragraphs);
 }
 
 type FormProgress = {

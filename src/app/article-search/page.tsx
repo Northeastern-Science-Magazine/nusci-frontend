@@ -181,7 +181,9 @@ export default function ArticleSearchPage({
             ? [searchCategory]
             : undefined,
         sortBy: searchSortBy,
-        issueNumber: searchIssueNumber.trim() || undefined, // ignored by API until backend supports it
+        issueNumber: searchIssueNumber.trim()
+          ? Number(searchIssueNumber)
+          : undefined,
       };
       const result = await searchArticles(request);
       if (result.ok) {

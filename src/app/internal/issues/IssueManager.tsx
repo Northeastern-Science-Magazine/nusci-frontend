@@ -8,6 +8,9 @@ import { Box } from '@/design-system/primitives/Box/Box';
 import { Form, FormField } from '@/design-system/primitives/Form';
 import TextInput from '@/design-system/primitives/TextInput';
 import Button from '@/design-system/primitives/Button';
+import Link from '@/design-system/primitives/Link';
+import { Article } from '@/lib/types/types';
+import { searchArticles } from '@/lib/api/articles';
 import {
   IssueSummary,
   apiCreateIssue,
@@ -257,6 +260,7 @@ interface IssueRowProps {
 
 function IssueRow({ issue, onUpdated, onDeleted }: IssueRowProps) {
   const [mode, setMode] = useState<'view' | 'edit'>('view');
+  const [showArticles, setShowArticles] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isBusy, setIsBusy] = useState(false);
@@ -397,15 +401,101 @@ function IssueRow({ issue, onUpdated, onDeleted }: IssueRowProps) {
           </Text>
         </Box>
 
-        <Button
-          onClick={() => changeMode('edit')}
-          variant="outline"
-          color="black"
-          size="sm"
-        >
-          Edit
-        </Button>
+        <Box className="flex gap-3">
+          <Button
+            onClick={() => setShowArticles((show) => !show)}
+            variant={showArticles ? 'default' : 'outline'}
+            color="forest-green"
+            size="sm"
+          >
+            {showArticles ? 'Hide Articles' : 'View Articles'}
+          </Button>
+          <Button
+            onClick={() => changeMode('edit')}
+            variant="outline"
+            color="black"
+            size="sm"
+          >
+            Edit
+          </Button>
+        </Box>
       </Box>
+
+      {showArticles && <IssueArticles issueNumber={issue.issueNumber} />}
+    </Box>
+  );
+}
+
+type ArticlesState =
+  | { status: 'loading' }
+  | { status: 'error'; error: string }
+  | { status: 'loaded'; articles: Article[] };
+
+/** Lists the articles assigned to an issue, each linking to its article page. */
+function IssueArticles({ issueNumber }: { issueNumber: number }) {
+  const [state, setState] = useState<ArticlesState>({ status: 'loading' });
+
+  useEffect(() => {
+    let cancelled = false;
+    setState({ status: 'loading' });
+
+    searchArticles({ issueNumber }).then((response) => {
+      if (cancelled) return;
+      setState(
+        response.ok
+          ? { status: 'loaded', articles: response.data.results }
+          : { status: 'error', error: response.error },
+      );
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [issueNumber]);
+
+  return (
+    <Box className="mt-3 rounded-md bg-gray p-4">
+      {state.status === 'loading' ? (
+        <Text style="regular" size={14} color="black">
+          Loading articles...
+        </Text>
+      ) : state.status === 'error' ? (
+        <Text style="regular" size={14} color="red">
+          Unable to load articles: {state.error}
+        </Text>
+      ) : state.articles.length === 0 ? (
+        <Text style="regular" size={14} color="black">
+          No articles in this issue yet.
+        </Text>
+      ) : (
+        <>
+          <Text style="bold" size={14} color="black" className="mb-2">
+            {state.articles.length}{' '}
+            {state.articles.length === 1 ? 'article' : 'articles'}
+          </Text>
+          <Box className="space-y-1">
+            {state.articles.map((article) => (
+              <Link
+                key={article.slug}
+                href={`/${article.slug}`}
+                className="block hover:underline"
+              >
+                <Text style="regular" size={14} color="forest-green">
+                  {article.title}
+                </Text>
+              </Link>
+            ))}
+          </Box>
+          <Link
+            href={`/article-search?issue=${issueNumber}`}
+            className="mt-3 inline-block hover:underline"
+          >
+            <Text style="regular" size={14} color="sage-green">
+              View in article search →
+            </Text>
+          </Link>
+        </>
+      )}
     </Box>
   );
 }

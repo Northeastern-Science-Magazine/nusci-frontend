@@ -22,6 +22,7 @@ export const TeamMember = (props: TeamMemberProps) => {
     major,
     email,
     avatarUrl,
+    linkToProfile = true,
     size,
     children,
     ...variantProps
@@ -29,7 +30,7 @@ export const TeamMember = (props: TeamMemberProps) => {
 
   const textSizes = teamMemberTextSizes[size ?? 'md'];
   const avatarSize = teamMemberAvatarSizes[size ?? 'md'];
-  const href = profilePath(email);
+  const href = linkToProfile ? profilePath(email) : undefined;
 
   const card = (
     <>
@@ -94,7 +95,7 @@ export const TeamMember = (props: TeamMemberProps) => {
     </>
   );
 
-  // Members without a usable email have no profile to link to.
+  // Members without a usable email or a profile have nothing to link to.
   return href ? (
     <Link href={href} newWindow={false} className={teamMemberVariants(props)}>
       {card}

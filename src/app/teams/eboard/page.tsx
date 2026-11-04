@@ -29,7 +29,7 @@ export default function EboardPage() {
       bio: 'Ella is a third year student from Wisconsin. She has been writing for NU Sci for a year and authors the Science in Conversation interview column. She enjoys writing about developments in immunology, genetics, and other biology topics. Ella is also the Treasurer of NU Sci as well as being involved with the Biotech Club and an HIV prevention group on campus.',
       graduationYear: 2028,
       major: 'Cell & Molecular Biology',
-      email: '@northeastern.edu',
+      email: '',
       avatarUrl: '/headshots/ella_headshot.jpeg',
     },
     {
@@ -49,7 +49,7 @@ export default function EboardPage() {
       bio: 'Ranya is a third-year Data Science and Ecology and Evolutionary Biology major at Northeastern. She joined NU Sci in Fall 2025 hoping to learn more about web development and found herself on the E-Board this semester as Co-Head of Software/Web Development. Ranya enjoys finding ways to bring data science and ecology together, especially to better understand marine environments. Outside of her work, she loves volunteering, diving, and spending time near the ocean.',
       graduationYear: 2028,
       major: 'Data Science & Ecology and Evolutionary Biology',
-      email: '@northeastern.edu',
+      email: '',
       avatarUrl: '/headshots/ranya_headshot.jpeg',
     },
 

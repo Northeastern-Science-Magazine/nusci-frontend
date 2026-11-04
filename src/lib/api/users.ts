@@ -70,12 +70,16 @@ export type BasicUser = {
   email: string;
 };
 
+/**
+ * Gets a public profile by email.
+ *
+ * @param email the full email, see emailFromProfileParam for route params
+ */
 export async function getPublicUserByEmail(
   email: string,
 ): Promise<ProfileData> {
   try {
-    const newEmail = email.concat('@northeastern.edu');
-    const response = await apiGetPublicUserByEmail(newEmail);
+    const response = await apiGetPublicUserByEmail(email);
 
     if (!response.ok) {
       if (process.env.NODE_ENV === 'development') {
@@ -180,7 +184,7 @@ export async function apiSignup(data: {
 export async function apiGetPublicUserByEmail(
   email: string,
 ): Promise<ApiResponse<PublicUser>> {
-  return api<PublicUser>('GET', `/user/email/${email}`);
+  return api<PublicUser>('GET', `/user/email/${encodeURIComponent(email)}`);
 }
 
 export async function apiVerifyOTPToken(

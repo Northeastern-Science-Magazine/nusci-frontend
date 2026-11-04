@@ -88,8 +88,8 @@ function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
           flush();
           const text = normalize(el.textContent ?? '');
           const href = el.getAttribute('href') || undefined;
-          if (text || href)
-            segments.push({ contentType: 'link', content: text, href });
+          // a link with no text is dropped, since content can't be empty
+          if (text) segments.push({ contentType: 'link', content: text, href });
           return;
         }
 
@@ -537,11 +537,14 @@ export default function ArticleSubmissionForm({
 
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  // bumped to remount (and so clear) the form after a successful submit
+  const [formKey, setFormKey] = useState(0);
 
   const handleSuccessDialogOpenChange = useCallback((open: boolean) => {
     setSuccessDialogOpen(open);
     if (!open) {
-      window.location.reload();
+      setSubmitError(null);
+      setFormKey((k) => k + 1);
     }
   }, []);
 
@@ -658,6 +661,7 @@ export default function ArticleSubmissionForm({
       </Dialog>
 
       <Form<ArticleSubmissionFormValues>
+        key={formKey}
         onSubmit={onSubmitArticle}
         options={{
           defaultValues: {

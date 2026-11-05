@@ -48,8 +48,8 @@ export default function PitchPage() {
       <h1 className="text-3xl font-semibold">Pitch to NU Sci</h1>
 
       <p className="mt-4 text-gray-600">
-        Thank you for your interest in writing for NU Sci! Please provide
-        us with the details below and we will reach out shortly via email.
+        Thank you for your interest in writing for NU Sci! Please provide us
+        with the details below and we will reach out shortly via email.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-8">
@@ -101,8 +101,8 @@ export default function PitchPage() {
               Draft link (optional)
             </label>
             <p id="draft-help" className="mb-2 text-sm text-gray-600">
-              If you already have a draft, link it here. Set sharing to
-              “Anyone with the link can edit.”
+              If you already have a draft, link it here. Set sharing to “Anyone
+              with the link can edit.”
             </p>
             <input
               id="draftUrl"

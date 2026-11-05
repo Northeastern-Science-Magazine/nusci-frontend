@@ -136,7 +136,7 @@ export default function Hero({
                     as="span"
                     size={24}
                     color="white"
-                    className="inline-block min-w-[2ch] text-right font-semibold tabular-nums"
+                    className="inline-block font-semibold tabular-nums"
                   >
                     {legacyYears.toLocaleString()}
                   </Text>
@@ -160,7 +160,7 @@ export default function Hero({
                     as="span"
                     size={24}
                     color="white"
-                    className="inline-block min-w-[2ch] text-right font-semibold tabular-nums"
+                    className="inline-block font-semibold tabular-nums"
                   >
                     {publishedIssues.toLocaleString()}
                   </Text>
@@ -184,7 +184,7 @@ export default function Hero({
                     as="span"
                     size={24}
                     color="white"
-                    className="inline-block min-w-[5.5ch] text-right font-semibold tabular-nums"
+                    className="inline-block font-semibold tabular-nums"
                   >
                     {reachArticles.toLocaleString()}+
                   </Text>

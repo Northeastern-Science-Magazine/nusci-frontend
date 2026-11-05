@@ -8,6 +8,7 @@ import { notFound } from 'next/navigation';
 import { Roles } from '@/lib/types/types';
 import { getPublicUserByEmail } from '@/lib/api/users';
 import Image from '@/design-system/primitives/Image';
+import { emailFromProfileParam } from '@/lib/helpers/profile';
 
 export interface ProfileData {
   name: string;
@@ -31,7 +32,9 @@ export default async function PublicProfilePage({
 }: PublicProfilePageProps) {
   const { emailPrefix } = await params;
 
-  const userData = await getPublicUserByEmail(emailPrefix);
+  const userData = await getPublicUserByEmail(
+    emailFromProfileParam(emailPrefix),
+  );
 
   if (!userData || userData.email === '') {
     notFound();
@@ -56,13 +59,17 @@ export default async function PublicProfilePage({
   return (
     <>
       {/* Banner */}
-      <Box className="relative w-full h-[300px] overflow-hidden">
-        <Image
-          src={bannerUrl}
-          alt="Banner"
-          raw
-          className="w-full h-full object-cover"
-        />
+      <Box className="relative w-full h-[300px] overflow-hidden bg-forest-green">
+        {bannerUrl && (
+          <Image
+            src={bannerUrl}
+            alt={`${name}'s banner`}
+            raw
+            // Images on other sites may be on hosts next.config doesn't list.
+            unoptimized={/^https?:\/\//.test(bannerUrl)}
+            className="w-full h-full object-cover"
+          />
+        )}
       </Box>
 
       {/* Header: Avatar, Name and Role */}
@@ -74,8 +81,12 @@ export default async function PublicProfilePage({
               <Box className="-mt-40 laptop:-mt-40 flex-shrink-0 z-10">
                 <Avatar
                   src={avatarUrl}
-                  alt="A blue surgeonfish avatar"
-                  fallback="SX"
+                  alt={`${name}'s avatar`}
+                  fallback={name
+                    .split(' ')
+                    .map((part) => part[0])
+                    .join('')
+                    .slice(0, 2)}
                   size={'xl'}
                 />
               </Box>

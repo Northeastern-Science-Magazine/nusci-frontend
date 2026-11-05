@@ -49,9 +49,11 @@ export const TeamMember = (props: TeamMemberProps) => {
             <Text style="bold" size={textSizes.name} className="text-inherit">
               {name}
             </Text>
-            <Text size={textSizes.pronouns} className="text-inherit">
-              ({pronouns})
-            </Text>
+            {pronouns && (
+              <Text size={textSizes.pronouns} className="text-inherit">
+                ({pronouns})
+              </Text>
+            )}
           </Box>
           {role && (
             <Badge color="aqua" variant="default" rounded="sm">
@@ -65,9 +67,11 @@ export const TeamMember = (props: TeamMemberProps) => {
         <Badge color="sage-green" variant="outline" rounded="sm">
           Class of {graduationYear}
         </Badge>
-        <Badge color="forest-green" variant="outline" rounded="sm">
-          {major}
-        </Badge>
+        {major && (
+          <Badge color="forest-green" variant="outline" rounded="sm">
+            {major}
+          </Badge>
+        )}
       </Box>
 
       {bio && (

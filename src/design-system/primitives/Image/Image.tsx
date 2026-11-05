@@ -18,6 +18,7 @@ export const Image = ({
   width,
   height,
   raw = false,
+  unoptimized = false,
   className,
   ...props
 }: ImageProps) => {
@@ -30,6 +31,7 @@ export const Image = ({
           className={imageVariantsCN(props, className)}
           src={src}
           alt={alt}
+          unoptimized={unoptimized}
         />
       </div>
     </>
@@ -45,6 +47,7 @@ export const Image = ({
             className={imageVariantsCN(props, className)}
             src={src}
             alt={alt}
+            unoptimized={unoptimized}
           />
         </div>
       </AspectRatio.Root>

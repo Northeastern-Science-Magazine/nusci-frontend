@@ -71,8 +71,8 @@ export interface TeamMemberProps extends TeamMemberVariants {
   bio: string;
   graduationYear: number;
   major: string;
+  /** The card links to this person's public profile when set */
   email: string;
   avatarUrl: string;
-  profileBaseUrl?: string;
   children?: React.ReactNode;
 }

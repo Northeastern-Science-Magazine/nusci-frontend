@@ -1,5 +1,6 @@
 import type { ArticleContent, ArticleContentSegment } from '@/lib/types/types';
 import { isMediaPath } from '@/lib/helpers/media';
+import { joinSplitEquations } from '@/lib/helpers/articleMath';
 
 // Escape saved text before placing it inside editor HTML.
 function escapeHtml(value: string): string {
@@ -188,7 +189,10 @@ export function htmlToArticleContent(html: string): ArticleContent[] {
       const src = element.getAttribute('src') ?? '';
 
       if (!isHttpUrl(src)) {
-        throw new Error('Article images need valid http or https URLs.');
+        // Equations copied from Word or PDFs often paste in as images
+        throw new Error(
+          'Article images need valid http or https URLs. If you pasted an equation, type it as LaTeX instead.',
+        );
       }
 
       segments.push({ contentType: 'image', content: src });
@@ -233,7 +237,7 @@ export function htmlToArticleContent(html: string): ArticleContent[] {
   document.body.childNodes.forEach(walk);
   flushParagraph();
 
-  return paragraphs;
+  return joinSplitEquations(paragraphs);
 }
 
 // Keep existing quotes near their original paragraph positions.

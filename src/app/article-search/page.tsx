@@ -74,11 +74,9 @@ export default function ArticleSearchPage({
       ? searchParams.category
       : 'all';
   // preset the issue filter from ?issue= (e.g. links from article headers)
+  // invalid values are kept so the search shows no matching articles
   const initialIssue =
-    typeof searchParams.issue === 'string' &&
-    /^[1-9]\d*$/.test(searchParams.issue)
-      ? searchParams.issue
-      : '';
+    typeof searchParams.issue === 'string' ? searchParams.issue.trim() : '';
 
   const [title, setTitle] = useState('');
   const [debouncedTitle, setDebouncedTitle] = useState('');
@@ -172,6 +170,23 @@ export default function ArticleSearchPage({
       searchIssueNumber: string,
     ) => {
       setLoading(true);
+
+      // an invalid issue number can't match any article
+      const trimmedIssue = searchIssueNumber.trim();
+      if (
+        trimmedIssue &&
+        !(
+          /^[1-9]\d*$/.test(trimmedIssue) &&
+          Number.isSafeInteger(Number(trimmedIssue))
+        )
+      ) {
+        setArticles([]);
+        setResultsCount(0);
+        setSearchPerformed(true);
+        setLoading(false);
+        setInitialLoad(false);
+        return;
+      }
 
       const request = {
         limit: 12,

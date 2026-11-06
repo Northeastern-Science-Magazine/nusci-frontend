@@ -75,7 +75,8 @@ export default function ArticleSearchPage({
       : 'all';
   // preset the issue filter from ?issue= (e.g. links from article headers)
   const initialIssue =
-    typeof searchParams.issue === 'string' && /^[1-9]\d*$/.test(searchParams.issue)
+    typeof searchParams.issue === 'string' &&
+    /^[1-9]\d*$/.test(searchParams.issue)
       ? searchParams.issue
       : '';
 

@@ -20,7 +20,7 @@ interface ProfileFormValues {
   firstName: string;
   lastName: string;
   pronouns: string;
-  graduationYear: number;
+  graduationYear: number | null;
   major: string;
   location: string;
   profileImage?: File;
@@ -37,7 +37,7 @@ function userToFormValues(user: PublicUser): ProfileFormValues {
     firstName: user.firstName,
     lastName: user.lastName,
     pronouns: user.pronouns?.join(' / ') ?? '',
-    graduationYear: user.graduationYear,
+    graduationYear: user.graduationYear ?? null,
     major: user.major ?? '',
     location: user.location ?? '',
     profileImage: undefined,
@@ -425,7 +425,7 @@ function ProfileEditor({ user }: { user: PublicUser }) {
                           Graduation Year
                         </Text>
                         <Text style="regular" size={18} color="black">
-                          {currentData.graduationYear}
+                          {currentData.graduationYear ?? ''}
                         </Text>
                       </Box>
                       <Box>

@@ -75,7 +75,7 @@ export default function ArticleSearchPage({
       : 'all';
   // preset the issue filter from ?issue= (e.g. links from article headers)
   const initialIssue =
-    typeof searchParams.issue === 'string' && /^\d+$/.test(searchParams.issue)
+    typeof searchParams.issue === 'string' && /^[1-9]\d*$/.test(searchParams.issue)
       ? searchParams.issue
       : '';
 
@@ -280,16 +280,10 @@ export default function ArticleSearchPage({
   useEffect(() => {
     const fetchIssueNumbers = async () => {
       const response = await apiGetAllIssueNumbers();
-      const available = response.ok ? response.data.map(String) : [];
-      setIssueNumbers(available);
-      // drop a preset ?issue= that doesn't match a real issue
-      if (response.ok && initialIssue && !available.includes(initialIssue)) {
-        setIssueNumber((current) => (current === initialIssue ? '' : current));
-        setKeys((k) => ({ ...k, issueNumber: k.issueNumber + 1 }));
-      }
+      setIssueNumbers(response.ok ? response.data.map(String) : []);
     };
     fetchIssueNumbers();
-  }, [initialIssue]);
+  }, []);
 
   const hasActiveFilters = filterTags.length > 0;
   const showResults = searchPerformed && !loading;

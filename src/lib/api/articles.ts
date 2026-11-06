@@ -202,6 +202,7 @@ export interface ArticleSearchRequest {
   skip?: number;
   textQuery?: string;
   categories?: string[];
+  issueNumber?: number;
   sortBy?: 'asc' | 'desc';
 }
 

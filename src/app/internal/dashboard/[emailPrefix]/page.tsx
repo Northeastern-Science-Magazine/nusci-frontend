@@ -21,7 +21,7 @@ const DASHBOARD_CARDS: { text: string; href: string; roles: Roles[] }[] = [
     href: '/internal/article-submission',
     roles: [Roles.Admin, Roles.Editor],
   },
-  { text: 'Create an Issue', href: '/internal/issues', roles: [Roles.Admin] },
+  { text: 'Manage Issues', href: '/internal/issues', roles: [Roles.Admin] },
   {
     text: 'Magazine Archive',
     href: '/internal/archive',

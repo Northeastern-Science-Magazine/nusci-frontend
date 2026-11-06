@@ -210,6 +210,13 @@ export interface ArticleSearchResponse {
   total: number;
 }
 
+/** Number of published (print or online) articles. */
+export async function apiGetPublishedArticleCount(): Promise<
+  ApiResponse<{ count: number }>
+> {
+  return api<{ count: number }>('GET', '/articles/count');
+}
+
 export async function searchArticles(
   request: ArticleSearchRequest,
 ): Promise<ApiResponse<ArticleSearchResponse>> {

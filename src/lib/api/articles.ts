@@ -202,12 +202,20 @@ export interface ArticleSearchRequest {
   skip?: number;
   textQuery?: string;
   categories?: string[];
+  issueNumber?: number;
   sortBy?: 'asc' | 'desc';
 }
 
 export interface ArticleSearchResponse {
   results: ArticleType[];
   total: number;
+}
+
+/** Number of published (print or online) articles. */
+export async function apiGetPublishedArticleCount(): Promise<
+  ApiResponse<{ count: number }>
+> {
+  return api<{ count: number }>('GET', '/articles/count');
 }
 
 export async function searchArticles(

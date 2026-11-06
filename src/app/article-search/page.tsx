@@ -74,10 +74,9 @@ export default function ArticleSearchPage({
       ? searchParams.category
       : 'all';
   // preset the issue filter from ?issue= (e.g. links from article headers)
+  // invalid values are kept so the search shows no matching articles
   const initialIssue =
-    typeof searchParams.issue === 'string' && /^\d+$/.test(searchParams.issue)
-      ? searchParams.issue
-      : '';
+    typeof searchParams.issue === 'string' ? searchParams.issue.trim() : '';
 
   const [title, setTitle] = useState('');
   const [debouncedTitle, setDebouncedTitle] = useState('');
@@ -172,6 +171,23 @@ export default function ArticleSearchPage({
     ) => {
       setLoading(true);
 
+      // an invalid issue number can't match any article
+      const trimmedIssue = searchIssueNumber.trim();
+      if (
+        trimmedIssue &&
+        !(
+          /^[1-9]\d*$/.test(trimmedIssue) &&
+          Number.isSafeInteger(Number(trimmedIssue))
+        )
+      ) {
+        setArticles([]);
+        setResultsCount(0);
+        setSearchPerformed(true);
+        setLoading(false);
+        setInitialLoad(false);
+        return;
+      }
+
       const request = {
         limit: 12,
         skip: (page - 1) * 12,
@@ -181,7 +197,9 @@ export default function ArticleSearchPage({
             ? [searchCategory]
             : undefined,
         sortBy: searchSortBy,
-        issueNumber: searchIssueNumber.trim() || undefined, // ignored by API until backend supports it
+        issueNumber: searchIssueNumber.trim()
+          ? Number(searchIssueNumber)
+          : undefined,
       };
       const result = await searchArticles(request);
       if (result.ok) {
@@ -278,16 +296,10 @@ export default function ArticleSearchPage({
   useEffect(() => {
     const fetchIssueNumbers = async () => {
       const response = await apiGetAllIssueNumbers();
-      const available = response.ok ? response.data.map(String) : [];
-      setIssueNumbers(available);
-      // drop a preset ?issue= that doesn't match a real issue
-      if (response.ok && initialIssue && !available.includes(initialIssue)) {
-        setIssueNumber((current) => (current === initialIssue ? '' : current));
-        setKeys((k) => ({ ...k, issueNumber: k.issueNumber + 1 }));
-      }
+      setIssueNumbers(response.ok ? response.data.map(String) : []);
     };
     fetchIssueNumbers();
-  }, [initialIssue]);
+  }, []);
 
   const hasActiveFilters = filterTags.length > 0;
   const showResults = searchPerformed && !loading;

@@ -439,14 +439,19 @@ function IssueArticles({ issueNumber }: { issueNumber: number }) {
     let cancelled = false;
     setState({ status: 'loading' });
 
-    searchArticles({ issueNumber }).then((response) => {
-      if (cancelled) return;
-      setState(
-        response.ok
-          ? { status: 'loaded', articles: response.data.results }
-          : { status: 'error', error: response.error },
-      );
-    });
+    searchArticles({ issueNumber })
+      .then((response) => {
+        if (cancelled) return;
+        setState(
+          response.ok
+            ? { status: 'loaded', articles: response.data.results }
+            : { status: 'error', error: response.error },
+        );
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setState({ status: 'error', error: 'Request failed' });
+      });
 
     return () => {
       cancelled = true;

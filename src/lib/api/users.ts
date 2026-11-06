@@ -19,7 +19,7 @@ export type PublicUser = {
   firstName: string;
   lastName: string;
   pronouns?: string[];
-  graduationYear: number;
+  graduationYear?: number | null;
   major?: string;
   location?: string;
   profileImage?: string;
@@ -35,7 +35,7 @@ export type PublicUser = {
 const FALLBACK_PROFILE_USER: ProfileData = {
   name: 'Unknown User',
   pronouns: '',
-  graduationYear: 0,
+  graduationYear: null,
   major: '',
   location: '',
   email: '',
@@ -54,7 +54,7 @@ function mapPublicUserToProfile(user: PublicUser): ProfileData {
   return {
     name: `${user.firstName} ${user.lastName}`,
     pronouns: user.pronouns?.join(' / ') ?? '',
-    graduationYear: user.graduationYear,
+    graduationYear: user.graduationYear ?? null,
     major: user.major ?? '',
     location: user.location ?? '',
     email: user.email,

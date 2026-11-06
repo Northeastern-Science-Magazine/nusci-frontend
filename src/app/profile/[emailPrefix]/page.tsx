@@ -12,7 +12,7 @@ import Image from '@/design-system/primitives/Image';
 export interface ProfileData {
   name: string;
   pronouns: string;
-  graduationYear: number;
+  graduationYear: number | null;
   major: string;
   location: string;
   email: string;

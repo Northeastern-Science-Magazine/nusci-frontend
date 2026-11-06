@@ -7,7 +7,10 @@ import TextInput from '@/design-system/primitives/TextInput';
 import Button from '@/design-system/primitives/Button';
 import { apiCreateAuthor, type BasicUser } from '@/lib/api/users';
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Same pattern the backend's z.email() checks, so anything that passes here
+// is accepted when the author is created.
+const EMAIL_PATTERN =
+  /^(?:[A-Za-z0-9_'+\-]+\.)*[A-Za-z0-9_'+\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/;
 
 type NewAuthorInputProps = {
   /** Called with the new author once their account exists */
@@ -36,10 +39,10 @@ export function NewAuthorInput({ onCreated }: NewAuthorInputProps) {
     lastName: lastName.trim(),
     email: email.trim(),
   };
+  const isEmailValid = EMAIL_PATTERN.test(trimmed.email);
+  const showEmailHint = trimmed.email.length > 0 && !isEmailValid;
   const isComplete =
-    trimmed.firstName.length > 0 &&
-    trimmed.lastName.length > 0 &&
-    EMAIL_PATTERN.test(trimmed.email);
+    trimmed.firstName.length > 0 && trimmed.lastName.length > 0 && isEmailValid;
 
   const addAuthor = async () => {
     if (!isComplete || isSaving) return;
@@ -151,6 +154,11 @@ export function NewAuthorInput({ onCreated }: NewAuthorInputProps) {
         className="w-full"
         disabled={isSaving}
       />
+      {showEmailHint && (
+        <Text size={14} color="red">
+          Enter a valid email address.
+        </Text>
+      )}
 
       <Button
         type="button"

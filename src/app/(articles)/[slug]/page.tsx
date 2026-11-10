@@ -5,6 +5,7 @@ import { isMediaPath } from '@/lib/helpers/media';
 import Link from 'next/link';
 import { apiGetUserRoles } from '@/lib/api/users';
 import { canManageArticles } from '@/lib/helpers/articlePermissions';
+import { profileHref } from '@/lib/helpers/authorLinks';
 import { Pencil } from 'lucide-react';
 
 interface ArticlePageProps {
@@ -79,9 +80,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const publishDate = formatDate(article.creationTime);
 
   // Every author, e.g. "A, B, and C" (or default if no authors)
-  const authorNames = (article.authors ?? [])
-    .map(formatPersonName)
-    .filter((name): name is string => !!name);
+  const authorLinks = (article.authors ?? [])
+    .map((person) => {
+      const name = formatPersonName(person);
+      if (!name) return undefined;
+      const email =
+        typeof person === 'object' && person !== null && 'email' in person
+          ? String((person as { email?: string }).email ?? '')
+          : '';
+      return { name, href: profileHref(email) };
+    })
+    .filter((a): a is { name: string; href: string | undefined } => !!a);
+  const authorNames = authorLinks.map((a) => a.name);
   const author = authorNames.length
     ? new Intl.ListFormat('en', { type: 'conjunction' }).format(authorNames)
     : 'NU Sci Magazine';
@@ -96,6 +106,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     <ArticleTemplate
       title={article.title}
       author={author}
+      authors={authorLinks}
       editor={editor}
       categories={article.categories}
       issueNumber={article.issueNumber}

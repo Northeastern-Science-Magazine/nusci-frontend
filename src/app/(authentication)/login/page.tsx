@@ -9,6 +9,7 @@ import Box from '@/primitives/Box';
 import Text from '@/primitives/Text';
 import { Flex } from '@/primitives/Flex';
 import { apiLogin } from '@/lib/api/users';
+import { normalizeEmail } from '@/lib/helpers/email';
 
 type LoginFormValues = {
   email: string;
@@ -17,7 +18,6 @@ type LoginFormValues = {
 
 export default function LoginPage() {
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    console.log('Login data:', data);
     const result = await apiLogin(data);
     if (result.ok) {
       // redirects to the profile on login
@@ -58,10 +58,10 @@ export default function LoginPage() {
             name="email"
             rules={{
               required: 'Email is required',
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: 'Please enter a valid email',
-              },
+              validate: (value: string) =>
+                /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+                  normalizeEmail(value),
+                ) || 'Please enter a valid email',
             }}
           >
             <TextInput

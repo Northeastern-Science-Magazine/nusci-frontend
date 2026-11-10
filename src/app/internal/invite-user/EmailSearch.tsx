@@ -2,6 +2,7 @@
 import Text from '@/design-system/primitives/Text';
 import TextInput from '@/design-system/primitives/TextInput';
 import Badge from '@/design-system/primitives/Badge';
+import { normalizeEmail } from '@/lib/helpers/email';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 const NORTHEASTERN_EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@northeastern\.edu$/i;
@@ -17,7 +18,7 @@ export default function EmailSearch({
   const [error, setError] = useState<string | null>(null);
 
   const addEmail = () => {
-    const trimmed = email.trim();
+    const trimmed = normalizeEmail(email);
     if (!trimmed) return;
 
     if (!NORTHEASTERN_EMAIL_REGEX.test(trimmed)) {
@@ -25,7 +26,7 @@ export default function EmailSearch({
       return;
     }
 
-    setEmails((prev) => [...prev, trimmed]);
+    setEmails((prev) => (prev.includes(trimmed) ? prev : [...prev, trimmed]));
     setEmail('');
     setError(null);
   };

@@ -5,6 +5,7 @@ import Box from '@/design-system/primitives/Box';
 import Text from '@/design-system/primitives/Text';
 import TextInput from '@/design-system/primitives/TextInput';
 import Button from '@/design-system/primitives/Button';
+import { normalizeEmail } from '@/lib/helpers/email';
 import { apiCreateAuthor, type BasicUser } from '@/lib/api/users';
 
 // Same pattern the backend's z.email() checks, so anything that passes here
@@ -37,7 +38,7 @@ export function NewAuthorInput({ onCreated }: NewAuthorInputProps) {
   const trimmed = {
     firstName: firstName.trim(),
     lastName: lastName.trim(),
-    email: email.trim(),
+    email: normalizeEmail(email),
   };
   const isEmailValid = EMAIL_PATTERN.test(trimmed.email);
   const showEmailHint = trimmed.email.length > 0 && !isEmailValid;

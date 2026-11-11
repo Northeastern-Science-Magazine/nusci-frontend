@@ -10,6 +10,8 @@ import Link from '@/primitives/Link';
 import Image from '@/primitives/Image';
 import Badge from '@/primitives/Badge';
 import { OverlayMedia, Overlay } from '@/components/MediaOverlay';
+import { MathText } from '@/components/MathText';
+import { joinSplitEquations } from '@/lib/helpers/articleMath';
 
 // Convert ArticleContent to ContentBlock format
 function convertArticleContentToContentBlocks(
@@ -18,7 +20,9 @@ function convertArticleContentToContentBlocks(
   const blocks: ContentBlock[] = [];
 
   // articleContent is an array of paragraphs; each paragraph is an array of segments.
-  articleContent.forEach((paragraph) => {
+  // Older articles may store an equation as one paragraph per line, so
+  // rejoin those before rendering.
+  joinSplitEquations(articleContent).forEach((paragraph) => {
     if (!paragraph || paragraph.length === 0) return;
 
     // If this paragraph is a pull_quote, treat entire paragraph as a quote block
@@ -193,7 +197,9 @@ export default function ArticleTemplate({
                   <Text size={18} color="black">
                     {block.segments.map((segment, segIndex) => (
                       <React.Fragment key={segIndex}>
-                        {segment.type === 'text' && segment.content}
+                        {segment.type === 'text' && (
+                          <MathText text={segment.content} />
+                        )}
                         {segment.type === 'link' && (
                           <>
                             {' '}
@@ -220,7 +226,7 @@ export default function ArticleTemplate({
                   className="my-8 border-l-4 border-aqua pl-6 py-4 bg-aqua-light/20"
                 >
                   <Text size={24} style="italic" color="black">
-                    {block.content}
+                    <MathText text={block.content} />
                   </Text>
                 </div>
               );

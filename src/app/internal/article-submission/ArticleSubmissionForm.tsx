@@ -15,12 +15,13 @@ import { Controller } from 'react-hook-form';
 import ImageUpload from '@/design-system/components/ImageUpload';
 import ArticleInput from './components/ArticleInput';
 import { PullQuoteInput } from './components/PullQuoteInput';
+import { findEquationError } from '@/lib/helpers/articleMath';
+import { submissionHtmlToArticleContent } from '@/lib/helpers/articleContentEditor';
 import { NewAuthorInput } from './components/NewAuthorInput';
 import {
   Category,
   ArticleSource,
   ArticleContent,
-  ArticleContentSegment,
   ArticleStatus,
   WritingStatus,
   DesignStatus,
@@ -52,58 +53,6 @@ type ArticleSubmissionFormValues = {
   sources: ArticleSource[];
   noSources: boolean;
 };
-
-function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
-  if (!html) return [];
-
-  const normalize = (s: string) =>
-    s
-      .replace(/\u00A0/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-
-  return [...doc.querySelectorAll('p')]
-    .map((p) => {
-      const segments: ArticleContentSegment[] = [];
-      let buf = '';
-
-      const flush = () => {
-        const text = normalize(buf);
-        if (text) segments.push({ contentType: 'text', content: text });
-        buf = '';
-      };
-
-      const walk = (node: Node): void => {
-        if (node.nodeType === Node.TEXT_NODE) {
-          buf += node.textContent ?? '';
-          return;
-        }
-
-        if (node.nodeType !== Node.ELEMENT_NODE) return;
-
-        const el = node as HTMLElement;
-
-        if (el.tagName === 'A') {
-          flush();
-          const text = normalize(el.textContent ?? '');
-          const href = el.getAttribute('href') || undefined;
-          // a link with no text is dropped, since content can't be empty
-          if (text) segments.push({ contentType: 'link', content: text, href });
-          return;
-        }
-
-        for (const child of el.childNodes) walk(child);
-      };
-
-      for (const n of p.childNodes) walk(n);
-      flush();
-
-      return segments.length ? (segments as ArticleContent) : null;
-    })
-    .filter((p): p is ArticleContent => !!p);
-}
 
 type FormProgress = {
   author: boolean;
@@ -340,7 +289,7 @@ const FormContent = ({
           {/* Content */}
           <div id="content" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="content">
-              <ArticleInput />
+              <ArticleInput toContent={submissionHtmlToArticleContent} />
             </FormField>
           </div>
 
@@ -576,7 +525,13 @@ export default function ArticleSubmissionForm({
         .trim()
         .replace(/\s+/g, '-');
 
-      const originalContent = reactQuillHtmlToArticleContent(data.content);
+      const originalContent = submissionHtmlToArticleContent(data.content);
+      const equationError = findEquationError(originalContent);
+      if (equationError) {
+        setSubmitError(equationError);
+        return;
+      }
+
       let articleContent = insertPullQuotes(originalContent, data.pullQuotes);
       setSubmitError(null);
 

@@ -9,8 +9,7 @@ import Button from '@/primitives/Button';
 import Box from '@/primitives/Box';
 import Text from '@/primitives/Text';
 import { Flex } from '@/primitives/Flex';
-import { apiSendEmail } from '@/lib/api/email';
-import { EmailType } from '@/lib/types/types';
+import { apiRequestOTP } from '@/lib/api/users';
 
 type EmailFormValues = {
   email: string;
@@ -21,8 +20,7 @@ export default function OTPPage() {
   const [submittedEmail, setSubmittedEmail] = useState('');
 
   const onEmailSubmit: SubmitHandler<EmailFormValues> = async (data) => {
-    await apiSendEmail({ to: [data.email], type: EmailType.OTP });
-    console.log({ to: [data.email], type: EmailType.OTP });
+    await apiRequestOTP(data.email);
     setSubmittedEmail(data.email);
     setIsSubmitted(true);
   };
@@ -37,6 +35,7 @@ export default function OTPPage() {
         }}
         size="lg"
         rounded="rounded"
+        onHover={false}
         className="max-w-7xl w-full [&_.media-container]:flex-1"
         color="white"
       >

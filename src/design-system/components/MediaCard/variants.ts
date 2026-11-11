@@ -11,7 +11,7 @@ import { tv, type VariantProps } from 'tailwind-variants';
 
 // variants.ts
 export const mediaCardVariants = tv({
-  base: 'flex transition-transform ease-in-out hover:-translate-y-1',
+  base: 'flex',
   variants: {
     mediaDirection: {
       right: 'flex-row',
@@ -35,6 +35,10 @@ export const mediaCardVariants = tv({
     rounded: {
       rounded: 'rounded-3xl overflow-hidden',
       none: '',
+    },
+    onHover: {
+      true: 'transition-transform ease-in-out hover:-translate-y-1',
+      false: '',
     },
     backgroundOpacity: {
       100: 'bg-opacity-100',
@@ -179,6 +183,7 @@ export const mediaCardVariants = tv({
     shadow: 'shadow',
     border: 'none',
     rounded: 'none',
+    onHover: true,
   },
 });
 

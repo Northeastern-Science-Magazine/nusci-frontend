@@ -490,6 +490,7 @@ export default function ArticleEditForm({
             <ArticleInput
               value={values.content}
               onChange={(value) => changeField('content', value)}
+              toContent={htmlToArticleContent}
             />
 
             {/* Pull Quotes */}

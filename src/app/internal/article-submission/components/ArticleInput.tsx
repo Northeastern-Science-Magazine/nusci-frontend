@@ -4,29 +4,51 @@ import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 import { Equation } from '@/design-system/components/MathText';
-import { findEquations } from '@/lib/helpers/articleMath';
-import { htmlToArticleContent } from '@/lib/helpers/articleContentEditor';
+import { findEquationError, findEquations } from '@/lib/helpers/articleMath';
+import type { ArticleContent } from '@/lib/types/types';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 type ArticleInputProps = {
   value?: string;
   onChange?: (value: string) => void;
+  // The converter the form saves with, so the preview matches what is saved
+  toContent: (html: string) => ArticleContent[];
 };
 
 // Wait for a pause in typing before re-rendering the equation preview.
 const PREVIEW_DELAY_MS = 300;
 
-// Equations as they will be saved, using the same converter as saving.
-function findEditorEquations(html: string) {
+type EquationPreview = {
+  equations: ReturnType<typeof findEquations>;
+  error: string | null;
+};
+
+// Equations as they will be saved, and any problem that would stop saving.
+function previewEquations(
+  html: string,
+  toContent: ArticleInputProps['toContent'],
+): EquationPreview {
   try {
-    return findEquations(htmlToArticleContent(html));
-  } catch {
-    return [];
+    const content = toContent(html);
+    return {
+      equations: findEquations(content),
+      error: findEquationError(content),
+    };
+  } catch (error) {
+    return {
+      equations: [],
+      error:
+        error instanceof Error ? error.message : 'Unable to read the content.',
+    };
   }
 }
 
-export function ArticleInput({ value = '', onChange }: ArticleInputProps) {
+export function ArticleInput({
+  value = '',
+  onChange,
+  toContent,
+}: ArticleInputProps) {
   const [localValue, setLocalValue] = useState<string>(value);
 
   // keep local state in sync with incoming prop
@@ -35,17 +57,20 @@ export function ArticleInput({ value = '', onChange }: ArticleInputProps) {
   }, [value]);
 
   // DOMParser only exists in the browser, so find equations after render
-  const [equations, setEquations] = useState<ReturnType<typeof findEquations>>(
-    [],
-  );
+  const [preview, setPreview] = useState<EquationPreview>({
+    equations: [],
+    error: null,
+  });
 
   useEffect(() => {
     const timeout = setTimeout(
-      () => setEquations(findEditorEquations(localValue)),
+      () => setPreview(previewEquations(localValue, toContent)),
       PREVIEW_DELAY_MS,
     );
     return () => clearTimeout(timeout);
-  }, [localValue]);
+  }, [localValue, toContent]);
+
+  const { equations, error } = preview;
 
   return (
     <div>
@@ -72,11 +97,18 @@ export function ArticleInput({ value = '', onChange }: ArticleInputProps) {
           '[&_.ql-editor.ql-blank::before]:text-black [&_.ql-editor.ql-blank::before]:opacity-50 [&_.ql-editor.ql-blank::before]:text-base'
         }
       />
-      {equations.length > 0 && (
+      {(equations.length > 0 || error) && (
         <div className="rounded-md border-2 border-black p-4">
-          <p className="mb-2 text-sm font-bold">
-            Equation preview ({equations.length})
-          </p>
+          {error && (
+            <p role="alert" className="mb-2 text-sm text-red-600">
+              {error}
+            </p>
+          )}
+          {equations.length > 0 && (
+            <p className="mb-2 text-sm font-bold">
+              Equation preview ({equations.length})
+            </p>
+          )}
           <div className="flex flex-col gap-3">
             {equations.map((equation, index) => (
               <Equation key={index} latex={equation.latex} display />

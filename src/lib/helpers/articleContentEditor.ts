@@ -290,3 +290,59 @@ export function restorePullQuotes(
 
   return result;
 }
+
+// Converts the new-article editor HTML into backend content.
+// Line breaks are dropped and whitespace collapsed.
+export function submissionHtmlToArticleContent(html: string): ArticleContent[] {
+  if (!html) return [];
+
+  const normalize = (s: string) =>
+    s
+      .replace(/\u00A0/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+
+  const paragraphs = [...doc.querySelectorAll('p')]
+    .map((p) => {
+      const segments: ArticleContentSegment[] = [];
+      let buf = '';
+
+      const flush = () => {
+        const text = normalize(buf);
+        if (text) segments.push({ contentType: 'text', content: text });
+        buf = '';
+      };
+
+      const walk = (node: Node): void => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          buf += node.textContent ?? '';
+          return;
+        }
+
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+        const el = node as HTMLElement;
+
+        if (el.tagName === 'A') {
+          flush();
+          const text = normalize(el.textContent ?? '');
+          const href = el.getAttribute('href') || undefined;
+          // a link with no text is dropped, since content can't be empty
+          if (text) segments.push({ contentType: 'link', content: text, href });
+          return;
+        }
+
+        for (const child of el.childNodes) walk(child);
+      };
+
+      for (const n of p.childNodes) walk(n);
+      flush();
+
+      return segments.length ? (segments as ArticleContent) : null;
+    })
+    .filter((p): p is ArticleContent => !!p);
+
+  return joinSplitEquations(paragraphs);
+}

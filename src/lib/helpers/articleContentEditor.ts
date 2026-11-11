@@ -249,7 +249,8 @@ export function restorePullQuotes(
 ): ArticleContent[] {
   const result = [...body];
 
-  const originalPositions = originalContent
+  // The body has split equations rejoined, so count positions the same way.
+  const originalPositions = joinSplitEquations(originalContent)
     .map((paragraph, index) => (isPullQuote(paragraph) ? index : -1))
     .filter((index) => index !== -1);
 

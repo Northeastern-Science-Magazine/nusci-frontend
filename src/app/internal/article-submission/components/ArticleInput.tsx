@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 import { Equation } from '@/design-system/components/MathText';
-import { findEquations, joinSplitEquations } from '@/lib/helpers/articleMath';
-import type { ArticleContent } from '@/lib/types/types';
+import { findEquations } from '@/lib/helpers/articleMath';
+import { htmlToArticleContent } from '@/lib/helpers/articleContentEditor';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
@@ -14,12 +14,16 @@ type ArticleInputProps = {
   onChange?: (value: string) => void;
 };
 
-// Plain text of each editor paragraph, enough to find the equations in it.
-function htmlToTextParagraphs(html: string): ArticleContent[] {
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  return [...doc.body.children].map((block) => [
-    { contentType: 'text', content: block.textContent ?? '' },
-  ]);
+// Wait for a pause in typing before re-rendering the equation preview.
+const PREVIEW_DELAY_MS = 300;
+
+// Equations as they will be saved, using the same converter as saving.
+function findEditorEquations(html: string) {
+  try {
+    return findEquations(htmlToArticleContent(html));
+  } catch {
+    return [];
+  }
 }
 
 export function ArticleInput({ value = '', onChange }: ArticleInputProps) {
@@ -36,9 +40,11 @@ export function ArticleInput({ value = '', onChange }: ArticleInputProps) {
   );
 
   useEffect(() => {
-    setEquations(
-      findEquations(joinSplitEquations(htmlToTextParagraphs(localValue))),
+    const timeout = setTimeout(
+      () => setEquations(findEditorEquations(localValue)),
+      PREVIEW_DELAY_MS,
     );
+    return () => clearTimeout(timeout);
   }, [localValue]);
 
   return (
@@ -46,8 +52,9 @@ export function ArticleInput({ value = '', onChange }: ArticleInputProps) {
       <label className="mb-1">Content</label>
       <p className="text-sm opacity-70">
         Equations: type LaTeX between <code>\(</code> and <code>\)</code> for an
-        inline equation, or between <code>$$</code> and <code>$$</code> for one
-        on its own line.
+        inline equation, or between <code>\begin&#123;equation&#125;</code> and{' '}
+        <code>\end&#123;equation&#125;</code> for a numbered one on its own
+        line. Use <code>equation*</code> instead for no number.
       </p>
       <ReactQuill
         value={localValue}

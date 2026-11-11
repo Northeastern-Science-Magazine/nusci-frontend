@@ -2,9 +2,10 @@ import type { ArticleContent } from '@/lib/types/types';
 
 /*
  * Equations are stored as LaTeX inside regular text segments:
- *   $$ ... $$  or  \[ ... \]  -> display equation on its own line
- *   \( ... \)                 -> inline equation within a sentence
- * A single $ is not a delimiter, so prices like "$5" stay plain text.
+ *   \begin{equation} ... \end{equation}   -> numbered equation on its own line
+ *   \begin{equation*} ... \end{equation*} -> unnumbered equation on its own line
+ *   \( ... \)                             -> inline equation within a sentence
+ * Dollar signs are never delimiters, so prose like "$5" or "US$$" stays text.
  */
 
 export type MathPart =
@@ -12,7 +13,7 @@ export type MathPart =
   | { type: 'math'; latex: string; display: boolean };
 
 const MATH_PATTERN =
-  /\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\]|\\\(([\s\S]+?)\\\)/g;
+  /\\begin\{(equation\*?)\}[\s\S]+?\\end\{\1\}|\\\(([\s\S]+?)\\\)/g;
 
 // Split text into plain text and LaTeX equation parts.
 export function splitMath(text: string): MathPart[] {
@@ -20,17 +21,18 @@ export function splitMath(text: string): MathPart[] {
   let lastIndex = 0;
 
   for (const match of text.matchAll(MATH_PATTERN)) {
-    const [whole, dollars, brackets, parens] = match;
+    const [whole, environment, inline] = match;
     const index = match.index ?? 0;
 
     if (index > lastIndex) {
       parts.push({ type: 'text', content: text.slice(lastIndex, index) });
     }
 
+    // Equation environments are passed whole, so KaTeX can number them.
     parts.push({
       type: 'math',
-      latex: (dollars ?? brackets ?? parens).trim(),
-      display: parens === undefined,
+      latex: environment ? whole.trim() : inline.trim(),
+      display: environment !== undefined,
     });
     lastIndex = index + whole.length;
   }
@@ -42,8 +44,13 @@ export function splitMath(text: string): MathPart[] {
   return parts;
 }
 
-export function hasMath(text: string): boolean {
-  return splitMath(text).some((part) => part.type === 'math');
+// Text with every equation removed, for places that cannot typeset LaTeX.
+export function mathToPlainText(text: string): string {
+  return splitMath(text)
+    .map((part) => (part.type === 'text' ? part.content : ' '))
+    .join('')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 // Every LaTeX equation in the article, in order (used for the editor preview).
@@ -69,12 +76,11 @@ function paragraphText(paragraph: ArticleContent): string {
     .join('');
 }
 
-// True when a display equation is opened but not closed in this text.
-function hasOpenDisplayMath(text: string): boolean {
-  const dollars = (text.match(/\$\$/g) ?? []).length;
-  const opens = (text.match(/\\\[/g) ?? []).length;
-  const closes = (text.match(/\\\]/g) ?? []).length;
-  return dollars % 2 === 1 || opens > closes;
+// True when an equation environment is opened but not closed in this text.
+function hasOpenEquation(text: string): boolean {
+  const opens = (text.match(/\\begin\{equation\*?\}/g) ?? []).length;
+  const closes = (text.match(/\\end\{equation\*?\}/g) ?? []).length;
+  return opens > closes;
 }
 
 function joinParagraphs(
@@ -95,10 +101,20 @@ function joinParagraphs(
   return [...first, ...second];
 }
 
+function isTextOnly(paragraph: ArticleContent): boolean {
+  return paragraph.every((segment) => segment.contentType === 'text');
+}
+
+// Longest equation, in lines, that will be rejoined.
+const MAX_EQUATION_LINES = 30;
+
 /*
  * Pasting a multi-line equation into Quill splits it into one paragraph per
  * line. Rejoin those lines so the equation is stored, and rendered, as one.
- * An equation that is never closed is left as is.
+ * Only plain-text lines are joined (no links, quotes or images), so the
+ * result is always a single text segment. An equation that is never closed
+ * is left as is. LaTeX that crosses a link inside one paragraph is not
+ * valid and stays as raw text.
  */
 export function joinSplitEquations(
   content: ArticleContent[],
@@ -110,15 +126,13 @@ export function joinSplitEquations(
     let paragraph = content[i];
     let end = i;
 
-    if (hasOpenDisplayMath(paragraphText(paragraph))) {
+    if (isTextOnly(paragraph) && hasOpenEquation(paragraphText(paragraph))) {
       let joined = paragraph;
-      for (let j = i + 1; j < content.length; j++) {
-        // never pull a quote or image into an equation
-        if (content[j].some((segment) => segment.contentType !== 'text')) {
-          break;
-        }
+      const last = Math.min(content.length, i + MAX_EQUATION_LINES);
+      for (let j = i + 1; j < last; j++) {
+        if (!isTextOnly(content[j])) break;
         joined = joinParagraphs(joined, content[j]);
-        if (!hasOpenDisplayMath(paragraphText(joined))) {
+        if (!hasOpenEquation(paragraphText(joined))) {
           paragraph = joined;
           end = j;
           break;

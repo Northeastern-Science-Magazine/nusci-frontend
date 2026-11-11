@@ -20,17 +20,24 @@ export const Inline: Story = {
   },
 };
 
-/** Display equation on its own line */
+/** Numbered equation on its own line */
 export const Display: Story = {
   args: {
-    text: 'The time-dependent Schrödinger equation is $$i\\hbar \\frac{\\partial}{\\partial t} \\Psi(\\mathbf{r}, t) = \\left[ -\\frac{\\hbar^2}{2m} \\nabla^2 + V(\\mathbf{r}, t) \\right] \\Psi(\\mathbf{r}, t)$$ which describes how a quantum state evolves.',
+    text: 'The time-dependent Schrödinger equation is \\begin{equation}i\\hbar \\frac{\\partial}{\\partial t} \\Psi(\\mathbf{r}, t) = \\left[ -\\frac{\\hbar^2}{2m} \\nabla^2 + V(\\mathbf{r}, t) \\right] \\Psi(\\mathbf{r}, t)\\end{equation} which describes how a quantum state evolves.',
+  },
+};
+
+/** Unnumbered equation on its own line */
+export const Unnumbered: Story = {
+  args: {
+    text: 'Euler’s identity: \\begin{equation*}e^{i\\pi} + 1 = 0\\end{equation*}',
   },
 };
 
 /** Multi-line display equation */
 export const Aligned: Story = {
   args: {
-    text: '$$\\begin{aligned} \\nabla \\cdot \\mathbf{E} &= \\frac{\\rho}{\\varepsilon_0} \\\\ \\nabla \\cdot \\mathbf{B} &= 0 \\\\ \\nabla \\times \\mathbf{E} &= -\\frac{\\partial \\mathbf{B}}{\\partial t} \\\\ \\nabla \\times \\mathbf{B} &= \\mu_0 \\mathbf{J} + \\mu_0 \\varepsilon_0 \\frac{\\partial \\mathbf{E}}{\\partial t} \\end{aligned}$$',
+    text: '\\begin{equation}\\begin{aligned} \\nabla \\cdot \\mathbf{E} &= \\frac{\\rho}{\\varepsilon_0} \\\\ \\nabla \\cdot \\mathbf{B} &= 0 \\\\ \\nabla \\times \\mathbf{E} &= -\\frac{\\partial \\mathbf{B}}{\\partial t} \\\\ \\nabla \\times \\mathbf{B} &= \\mu_0 \\mathbf{J} + \\mu_0 \\varepsilon_0 \\frac{\\partial \\mathbf{E}}{\\partial t} \\end{aligned}\\end{equation}',
   },
 };
 
@@ -41,9 +48,9 @@ export const InvalidLatex: Story = {
   },
 };
 
-/** A single dollar sign is not treated as math */
+/** Dollar signs are never treated as math */
 export const Prices: Story = {
   args: {
-    text: 'The telescope cost $5 million, and its upgrade cost $2 million more.',
+    text: 'The telescope cost $5 million, and its upgrade cost $$ more than planned, in US$$.',
   },
 };

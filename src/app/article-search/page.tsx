@@ -26,6 +26,7 @@ import { apiGetAllIssueNumbers } from '@/lib/api/issues';
 import categoryToIcon from '@/lib/helpers/categoryToIcon';
 import categoryToIconColor from '@/lib/helpers/categoryToIconColor';
 import { IconName } from '@/design-system/primitives/Icon';
+import { mathToPlainText } from '@/lib/helpers/articleMath';
 
 type FilterTag = {
   id: string;
@@ -57,7 +58,7 @@ const getArticleDescription = (article: Article): string => {
   const firstParagraph = paragraphs.find((p) => p && p.length > 0);
   if (!firstParagraph) return '';
 
-  return firstParagraph.map((seg) => seg.content).join(' ');
+  return firstParagraph.map((seg) => mathToPlainText(seg.content)).join(' ');
 };
 
 interface ArticleSearchPageProps {

@@ -223,7 +223,7 @@ export default function ArticleTemplate({
                   className="my-8 border-l-4 border-aqua pl-6 py-4 bg-aqua-light/20"
                 >
                   <Text size={24} style="italic" color="black">
-                    {block.content}
+                    <MathText text={block.content} />
                   </Text>
                 </div>
               );

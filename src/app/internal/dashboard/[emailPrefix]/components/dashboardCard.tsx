@@ -11,23 +11,18 @@ interface DashboardCardProps {
 export default function DashboardCard({ text, href }: DashboardCardProps) {
   return (
     <Font serif>
-      <Link href={href}>
+      <Link href={href} className="block h-full">
         <Card
           color="gray-light"
-          width={256}
-          height={128}
-          mx={10}
-          my={16}
           animation="scale110Hover"
-          className="flex items-center justify-center shadow-lg"
+          className="flex h-32 w-full items-center justify-center px-6 shadow-lg transition-transform"
         >
           <Text
             size={24}
             color="black"
             className="text-center whitespace-normal break-words"
           >
-            {' '}
-            {text}{' '}
+            {text}
           </Text>
         </Card>
       </Link>

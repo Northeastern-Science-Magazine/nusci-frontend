@@ -13,6 +13,24 @@ interface PublicProfilePageProps {
   params: Promise<{ emailPrefix: string }>;
 }
 
+type DashboardLink = { text: string; href: string };
+
+const ROLE_LINKS: Partial<Record<Roles, DashboardLink[]>> = {
+  [Roles.Admin]: [
+    { text: 'Invite User', href: '/internal/invite-user' },
+    { text: 'Create An Article', href: '/internal/article-submission' },
+    { text: 'Create An Issue', href: '/internal/issues' },
+    { text: 'Magazine Archive', href: '/internal/archive' },
+    { text: 'Pitch Recipients', href: '/internal/pitch-settings' },
+  ],
+  [Roles.Editor]: [
+    { text: 'Create An Article', href: '/internal/article-submission' },
+  ],
+  [Roles.Photographer]: [
+    { text: 'Upload Photos', href: '/internal/photoApproval' },
+  ],
+};
+
 export default async function DashboardPage({
   params,
 }: PublicProfilePageProps) {
@@ -27,6 +45,16 @@ export default async function DashboardPage({
   const roles: Roles[] = profile.roles;
   const userName: string = profile.name;
 
+  // Merge links from every role the user has, without duplicates
+  // (e.g. an admin who is also an editor sees "Create An Article" once).
+  const links = Array.from(
+    new Map(
+      roles
+        .flatMap((role) => ROLE_LINKS[role] ?? [])
+        .map((link) => [link.href, link]),
+    ).values(),
+  );
+
   return (
     <OverlayMedia className="relative w-full overflow-hidden">
       <Image
@@ -37,59 +65,34 @@ export default async function DashboardPage({
         ratio={1920 / 1000}
       />
       <Overlay background="gradient-black">
-        <Box className="flex h-full w-full items-center justify-center">
+        <Box className="flex h-full w-full items-center justify-center px-4">
           <Card
             color="white"
-            className="h-[80vh] w-full max-w-[95vw] shadow-2xl"
+            className="flex max-h-[80vh] min-h-[50vh] w-full max-w-6xl flex-col gap-8 overflow-y-auto p-6 shadow-2xl sm:p-8"
           >
-            <Card color="gray-light" className="w-full shadow-2xl">
+            <Card color="gray-light" className="w-full px-6 shadow-lg">
               <Font serif>
-                <Text size={30} mx={6} style="bold">
+                <Text size={30} style="bold">
                   Welcome Back {userName}!
                 </Text>
               </Font>
             </Card>
-            {roles.map((role, index) => {
-              if (role == Roles.Admin) {
-                return (
-                  <Box className="grid grid-cols-4 gap-6" key={index}>
-                    <DashboardCard
-                      text="Invite User"
-                      href="/internal/invite-user"
-                    />
-                    <DashboardCard
-                      text="Create An Article"
-                      href="/internal/article-submission"
-                    />
-                    <DashboardCard
-                      text="Create An Issue"
-                      href="/internal/issues"
-                    />
-                    <DashboardCard
-                      text="Magazine Archive"
-                      href="/internal/archive"
-                    />
-                  </Box>
-                );
-              } else if (role == Roles.Editor) {
-                return (
-                  <Box className="grid grid-cols-4 gap-6" key={index}>
-                    <DashboardCard
-                      text="Create an Article"
-                      href="/internal/article-submission"
-                    />
-                  </Box>
-                );
-              } else if (role == Roles.Photographer) {
-                return (
+
+            {links.length > 0 ? (
+              <Box className="grid grid-cols-1 gap-6 p-2 sm:grid-cols-2 lg:grid-cols-3">
+                {links.map((link) => (
                   <DashboardCard
-                    text="Upload Photos"
-                    href="/internal/photoApproval"
-                    key={index}
+                    key={link.href}
+                    text={link.text}
+                    href={link.href}
                   />
-                );
-              }
-            })}
+                ))}
+              </Box>
+            ) : (
+              <Text color="black">
+                No dashboard tools are available for your role yet.
+              </Text>
+            )}
           </Card>
         </Box>
       </Overlay>

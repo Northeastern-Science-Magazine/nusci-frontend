@@ -31,6 +31,10 @@ import {
   restorePullQuotes,
   splitFeaturedImage,
 } from '@/lib/helpers/articleContentEditor';
+import {
+  findEquationError,
+  joinSplitEquations,
+} from '@/lib/helpers/articleMath';
 
 type ArticleEditFormProps = {
   article: Article;
@@ -271,18 +275,30 @@ export default function ArticleEditForm({
         return;
       }
 
+      // Only check edited content, so older articles can still be saved
+      // when just their details change.
+      const equationError = contentChanged ? findEquationError(body) : null;
+      if (equationError) {
+        setError(equationError);
+        return;
+      }
+
       // Keep the original structure intact when only metadata is edited.
       let articleContent = originalContent;
 
       if (contentChanged || quotesChanged) {
+        // Rejoin split equations either way, since restorePullQuotes
+        // places quotes by the rejoined paragraphs.
         const bodyWithoutQuotes = contentChanged
           ? body
-          : originalContent.filter(
-              (paragraph) =>
-                !(
-                  paragraph.length === 1 &&
-                  paragraph[0].contentType === 'pull_quote'
-                ),
+          : joinSplitEquations(
+              originalContent.filter(
+                (paragraph) =>
+                  !(
+                    paragraph.length === 1 &&
+                    paragraph[0].contentType === 'pull_quote'
+                  ),
+              ),
             );
 
         articleContent = restorePullQuotes(

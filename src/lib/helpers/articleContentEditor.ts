@@ -1,6 +1,9 @@
 import type { ArticleContent, ArticleContentSegment } from '@/lib/types/types';
 import { isMediaPath } from '@/lib/helpers/media';
-import { joinSplitEquations } from '@/lib/helpers/articleMath';
+import {
+  joinSplitEquations,
+  joinSplitEquationsWithStarts,
+} from '@/lib/helpers/articleMath';
 
 // Escape saved text before placing it inside editor HTML.
 function escapeHtml(value: string): string {
@@ -249,10 +252,24 @@ export function restorePullQuotes(
 ): ArticleContent[] {
   const result = [...body];
 
-  // The body has split equations rejoined, so count positions the same way.
-  const originalPositions = joinSplitEquations(originalContent)
-    .map((paragraph, index) => (isPullQuote(paragraph) ? index : -1))
-    .filter((index) => index !== -1);
+  // The body has split equations rejoined, so place each quote after the
+  // same paragraphs it followed once the original is rejoined too.
+  const { starts } = joinSplitEquationsWithStarts(
+    originalContent.filter((paragraph) => !isPullQuote(paragraph)),
+  );
+  const originalPositions: number[] = [];
+  let paragraphsBefore = 0;
+  originalContent.forEach((paragraph) => {
+    if (!isPullQuote(paragraph)) {
+      paragraphsBefore++;
+      return;
+    }
+    // A quote that sat inside a split equation goes after the equation.
+    const joinedBefore = starts.filter(
+      (start) => start < paragraphsBefore,
+    ).length;
+    originalPositions.push(joinedBefore + originalPositions.length);
+  });
 
   quotes
     .map((quote, index) => ({ quote: quote.trim(), index }))

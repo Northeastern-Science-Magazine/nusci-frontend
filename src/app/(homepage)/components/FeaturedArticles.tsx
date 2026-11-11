@@ -1,6 +1,8 @@
 'use client';
 
 import MediaCard from '@/design-system/components/MediaCard';
+import MathText from '@/design-system/components/MathText';
+import { truncateMathText } from '@/lib/helpers/articleMath';
 import { OverlayMedia, Overlay } from '@/design-system/components/MediaOverlay';
 import Button from '@/design-system/primitives/Button';
 import Divider from '@/design-system/primitives/Divider';
@@ -27,11 +29,7 @@ interface Article {
 
 const truncateByWords = (text: string, wordLimit: number): string => {
   if (!text) return 'No description available.';
-  const words = text.trim().split(/\s+/);
-  if (words.length <= wordLimit) {
-    return text;
-  }
-  return words.slice(0, wordLimit).join(' ') + '...';
+  return truncateMathText(text, wordLimit);
 };
 
 const truncateTitle = (text: string, charLimit: number): string => {
@@ -116,7 +114,13 @@ export default function FeaturedArticles({
                           color="white"
                           className="mt-3 max-w-2xl font-light leading-relaxed opacity-95 max-sm:text-[16px]"
                         >
-                          {truncateByWords(overlayArticle1.description, 15)}
+                          <MathText
+                            text={truncateByWords(
+                              overlayArticle1.description,
+                              15,
+                            )}
+                            inline
+                          />
                         </Text>
                         <Box className="mt-6">
                           <Link href={overlayArticle1.slug}>
@@ -172,7 +176,13 @@ export default function FeaturedArticles({
                           color="white"
                           className="mt-3 max-w-2xl font-light leading-relaxed opacity-95 max-sm:text-[16px]"
                         >
-                          {truncateByWords(overlayArticle2.description, 15)}
+                          <MathText
+                            text={truncateByWords(
+                              overlayArticle2.description,
+                              15,
+                            )}
+                            inline
+                          />
                         </Text>
                         <Box className="mt-6">
                           <Link href={overlayArticle2.slug}>

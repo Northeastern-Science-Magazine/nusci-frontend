@@ -54,3 +54,18 @@ export const Prices: Story = {
     text: 'The telescope cost $5 million, and its upgrade cost $$ more than planned, in US$$.',
   },
 };
+
+/** Card previews render every equation inline, numbered ones included */
+export const InlineOnly: Story = {
+  args: {
+    inline: true,
+    text: 'Einstein showed \\begin{equation}E = mc^2\\end{equation} and \\(p = mv\\) in one line.',
+  },
+};
+
+/** An unclosed or empty equation stays as plain text (saving reports it) */
+export const Unclosed: Story = {
+  args: {
+    text: 'Never closed: \\begin{equation} x = 1, and empty: \\(\\).',
+  },
+};

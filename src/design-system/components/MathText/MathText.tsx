@@ -8,6 +8,8 @@ export interface MathTextProps {
   /** Text that may contain LaTeX in \begin{equation}...\end{equation}, equation*, or \(...\) */
   text: string;
   className?: string;
+  /** Render display equations inline too, for short previews like cards */
+  inline?: boolean;
 }
 
 /** Renders a LaTeX equation. Invalid LaTeX shows in red instead of throwing. */
@@ -39,7 +41,11 @@ export function Equation({
 }
 
 /** Renders text with any embedded LaTeX equations typeset. */
-export default function MathText({ text, className }: MathTextProps) {
+export default function MathText({
+  text,
+  className,
+  inline = false,
+}: MathTextProps) {
   const parts = splitMath(text);
 
   return (
@@ -47,6 +53,9 @@ export default function MathText({ text, className }: MathTextProps) {
       {parts.map((part, index) =>
         part.type === 'text' ? (
           <React.Fragment key={index}>{part.content}</React.Fragment>
+        ) : inline ? (
+          // KaTeX only allows equation environments in display mode
+          <Equation key={index} latex={part.body} />
         ) : (
           <Equation key={index} latex={part.latex} display={part.display} />
         ),

@@ -26,7 +26,7 @@ import { apiGetAllIssueNumbers } from '@/lib/api/issues';
 import categoryToIcon from '@/lib/helpers/categoryToIcon';
 import categoryToIconColor from '@/lib/helpers/categoryToIconColor';
 import { IconName } from '@/design-system/primitives/Icon';
-import { mathToPlainText } from '@/lib/helpers/articleMath';
+import { truncateMathText } from '@/lib/helpers/articleMath';
 
 type FilterTag = {
   id: string;
@@ -44,11 +44,7 @@ const CATEGORY_LABEL: Record<string, string> = Object.values(Category).reduce(
 
 const truncateByWords = (text: string, wordLimit: number): string => {
   if (!text) return 'No description available.';
-  const words = text.trim().split(/\s+/);
-  if (words.length <= wordLimit) {
-    return text;
-  }
-  return words.slice(0, wordLimit).join(' ') + '...';
+  return truncateMathText(text, wordLimit);
 };
 
 const getArticleDescription = (article: Article): string => {
@@ -58,7 +54,7 @@ const getArticleDescription = (article: Article): string => {
   const firstParagraph = paragraphs.find((p) => p && p.length > 0);
   if (!firstParagraph) return '';
 
-  return firstParagraph.map((seg) => mathToPlainText(seg.content)).join(' ');
+  return firstParagraph.map((seg) => seg.content).join(' ');
 };
 
 interface ArticleSearchPageProps {

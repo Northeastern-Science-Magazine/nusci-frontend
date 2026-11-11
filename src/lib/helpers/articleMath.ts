@@ -63,15 +63,6 @@ export function splitMath(text: string): MathPart[] {
   return parts;
 }
 
-// Text with every equation removed, for places that cannot typeset LaTeX.
-export function mathToPlainText(text: string): string {
-  return splitMath(text)
-    .map((part) => (part.type === 'text' ? part.content : ' '))
-    .join('')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
 // Every LaTeX equation in the article, in order (used for the editor preview).
 export function findEquations(content: ArticleContent[]): MathEquation[] {
   return content.flatMap((paragraph) =>

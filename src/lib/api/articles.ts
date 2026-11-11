@@ -7,6 +7,7 @@ import { Category } from '@/lib/types/types';
 import type { ArticleUpdate } from '@/lib/types/types';
 import { apiGetUserRoles } from './users';
 import { canManageArticles } from '@/lib/helpers/articlePermissions';
+import { joinSplitEquations } from '@/lib/helpers/articleMath';
 
 export interface Article {
   id: string;
@@ -108,11 +109,12 @@ function extractFirstImageUrl(
 }
 
 // Extract description from the first paragraph with text, skipping
-// image and pull quote paragraphs.
+// image and pull quote paragraphs. Equations are kept as LaTeX for the
+// card to render.
 function extractDescription(
   articleContent: ArticleType['articleContent'],
 ): string {
-  for (const paragraph of articleContent || []) {
+  for (const paragraph of joinSplitEquations(articleContent || [])) {
     const text = (paragraph || [])
       .filter((seg) => seg.contentType === 'text' || seg.contentType === 'link')
       .map((seg) => seg.content)

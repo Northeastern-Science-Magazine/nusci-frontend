@@ -11,6 +11,7 @@ import Image from '@/primitives/Image';
 import Badge from '@/primitives/Badge';
 import { OverlayMedia, Overlay } from '@/components/MediaOverlay';
 import { MathText } from '@/components/MathText';
+import { joinSplitEquations } from '@/lib/helpers/articleMath';
 
 // Convert ArticleContent to ContentBlock format
 function convertArticleContentToContentBlocks(
@@ -19,7 +20,9 @@ function convertArticleContentToContentBlocks(
   const blocks: ContentBlock[] = [];
 
   // articleContent is an array of paragraphs; each paragraph is an array of segments.
-  articleContent.forEach((paragraph) => {
+  // Older articles may store an equation as one paragraph per line, so
+  // rejoin those before rendering.
+  joinSplitEquations(articleContent).forEach((paragraph) => {
     if (!paragraph || paragraph.length === 0) return;
 
     // If this paragraph is a pull_quote, treat entire paragraph as a quote block

@@ -13,6 +13,27 @@ interface PublicProfilePageProps {
   params: Promise<{ emailPrefix: string }>;
 }
 
+// every dashboard card, shown if the user has any of its roles
+const DASHBOARD_CARDS: { text: string; href: string; roles: Roles[] }[] = [
+  { text: 'Invite User', href: '/internal/invite-user', roles: [Roles.Admin] },
+  {
+    text: 'Create an Article',
+    href: '/internal/article-submission',
+    roles: [Roles.Admin, Roles.Editor],
+  },
+  { text: 'Manage Issues', href: '/internal/issues', roles: [Roles.Admin] },
+  {
+    text: 'Magazine Archive',
+    href: '/internal/archive',
+    roles: [Roles.Admin],
+  },
+  {
+    text: 'Upload Photos',
+    href: '/internal/photoApproval',
+    roles: [Roles.Photographer],
+  },
+];
+
 export default async function DashboardPage({
   params,
 }: PublicProfilePageProps) {
@@ -49,47 +70,17 @@ export default async function DashboardPage({
                 </Text>
               </Font>
             </Card>
-            {roles.map((role, index) => {
-              if (role == Roles.Admin) {
-                return (
-                  <Box className="grid grid-cols-4 gap-6" key={index}>
-                    <DashboardCard
-                      text="Invite User"
-                      href="/internal/invite-user"
-                    />
-                    <DashboardCard
-                      text="Create An Article"
-                      href="/internal/article-submission"
-                    />
-                    <DashboardCard
-                      text="Create An Issue"
-                      href="/internal/issues"
-                    />
-                    <DashboardCard
-                      text="Magazine Archive"
-                      href="/internal/archive"
-                    />
-                  </Box>
-                );
-              } else if (role == Roles.Editor) {
-                return (
-                  <Box className="grid grid-cols-4 gap-6" key={index}>
-                    <DashboardCard
-                      text="Create an Article"
-                      href="/internal/article-submission"
-                    />
-                  </Box>
-                );
-              } else if (role == Roles.Photographer) {
-                return (
-                  <DashboardCard
-                    text="Upload Photos"
-                    href="/internal/photoApproval"
-                    key={index}
-                  />
-                );
-              }
-            })}
+            <Box className="grid grid-cols-4 gap-6">
+              {DASHBOARD_CARDS.filter((card) =>
+                card.roles.some((role) => roles.includes(role)),
+              ).map((card) => (
+                <DashboardCard
+                  key={card.href}
+                  text={card.text}
+                  href={card.href}
+                />
+              ))}
+            </Box>
           </Card>
         </Box>
       </Overlay>

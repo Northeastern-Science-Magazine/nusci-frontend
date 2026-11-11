@@ -160,7 +160,7 @@ export type PublicUser = {
   firstName: string;
   lastName: string;
   pronouns?: string[];
-  graduationYear: number;
+  graduationYear?: number | null;
   major?: string;
   location?: string;
   profileImage?: string;

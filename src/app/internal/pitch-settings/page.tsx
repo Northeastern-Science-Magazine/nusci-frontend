@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { apiGetMyProfile } from '@/lib/api/users';
 import { getPitchSettings } from '@/lib/api/pitch';
@@ -16,14 +15,7 @@ export default async function PitchSettingsPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-12">
-      <Link
-        href={`/internal/dashboard/${profile.data.email.split('@')[0]}`}
-        className="text-sm text-[#800020] underline"
-      >
-        Back to dashboard
-      </Link>
-
-      <h1 className="mt-6 text-3xl font-semibold">Article pitch recipients</h1>
+      <h1 className="text-3xl font-semibold">Article pitch recipients</h1>
 
       <p className="mt-3 text-gray-600">
         Choose who receives article pitches submitted through the website.

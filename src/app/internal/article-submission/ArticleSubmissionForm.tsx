@@ -15,11 +15,13 @@ import { Controller } from 'react-hook-form';
 import ImageUpload from '@/design-system/components/ImageUpload';
 import ArticleInput from './components/ArticleInput';
 import { PullQuoteInput } from './components/PullQuoteInput';
+import { findEquationError } from '@/lib/helpers/articleMath';
+import { submissionHtmlToArticleContent } from '@/lib/helpers/articleContentEditor';
+import { NewAuthorInput } from './components/NewAuthorInput';
 import {
   Category,
   ArticleSource,
   ArticleContent,
-  ArticleContentSegment,
   ArticleStatus,
   WritingStatus,
   DesignStatus,
@@ -52,58 +54,6 @@ type ArticleSubmissionFormValues = {
   noSources: boolean;
 };
 
-function reactQuillHtmlToArticleContent(html: string): ArticleContent[] {
-  if (!html) return [];
-
-  const normalize = (s: string) =>
-    s
-      .replace(/\u00A0/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-
-  return [...doc.querySelectorAll('p')]
-    .map((p) => {
-      const segments: ArticleContentSegment[] = [];
-      let buf = '';
-
-      const flush = () => {
-        const text = normalize(buf);
-        if (text) segments.push({ contentType: 'text', content: text });
-        buf = '';
-      };
-
-      const walk = (node: Node): void => {
-        if (node.nodeType === Node.TEXT_NODE) {
-          buf += node.textContent ?? '';
-          return;
-        }
-
-        if (node.nodeType !== Node.ELEMENT_NODE) return;
-
-        const el = node as HTMLElement;
-
-        if (el.tagName === 'A') {
-          flush();
-          const text = normalize(el.textContent ?? '');
-          const href = el.getAttribute('href') || undefined;
-          if (text || href)
-            segments.push({ contentType: 'link', content: text, href });
-          return;
-        }
-
-        for (const child of el.childNodes) walk(child);
-      };
-
-      for (const n of p.childNodes) walk(n);
-      flush();
-
-      return segments.length ? (segments as ArticleContent) : null;
-    })
-    .filter((p): p is ArticleContent => !!p);
-}
-
 type FormProgress = {
   author: boolean;
   title: boolean;
@@ -124,12 +74,14 @@ type ArticleSubmissionFormProps = {
 const FormContent = ({
   authorOptions,
   defaultAuthorEmails,
+  onAuthorCreated,
   submitError,
   issueOptions,
   defaultIssueNumber,
 }: {
   authorOptions: DropdownOption[];
   defaultAuthorEmails: string[];
+  onAuthorCreated: (author: BasicUser) => void;
   issueOptions: DropdownOption[];
   defaultIssueNumber?: number;
   submitError: string | null;
@@ -301,6 +253,14 @@ const FormContent = ({
                         </div>
                       </Box>
                     )}
+                    <NewAuthorInput
+                      onCreated={(author) => {
+                        onAuthorCreated(author);
+                        if (!selectedEmails.includes(author.email)) {
+                          field.onChange([...selectedEmails, author.email]);
+                        }
+                      }}
+                    />
                   </div>
                 );
               }}
@@ -329,7 +289,7 @@ const FormContent = ({
           {/* Content */}
           <div id="content" className="scroll-mt-[80px]">
             <FormField<ArticleSubmissionFormValues> name="content">
-              <ArticleInput />
+              <ArticleInput toContent={submissionHtmlToArticleContent} />
             </FormField>
           </div>
 
@@ -523,9 +483,18 @@ export default function ArticleSubmissionForm({
   defaultAuthorEmails,
   issueNumbers,
 }: ArticleSubmissionFormProps) {
+  // Authors added from this page, so they show up without a reload.
+  const [addedAuthors, setAddedAuthors] = useState<BasicUser[]>([]);
+  const onAuthorCreated = useCallback((author: BasicUser) => {
+    setAddedAuthors((authors) => [...authors, author]);
+  }, []);
   const authorOptions = useMemo<DropdownOption[]>(
-    () => basicUsers.map((u) => ({ label: u.name, value: u.email })),
-    [basicUsers],
+    () =>
+      [...basicUsers, ...addedAuthors].map((u) => ({
+        label: u.name,
+        value: u.email,
+      })),
+    [basicUsers, addedAuthors],
   );
 
   const issueOptions = useMemo<DropdownOption[]>(
@@ -537,11 +506,14 @@ export default function ArticleSubmissionForm({
 
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  // bumped to remount (and so clear) the form after a successful submit
+  const [formKey, setFormKey] = useState(0);
 
   const handleSuccessDialogOpenChange = useCallback((open: boolean) => {
     setSuccessDialogOpen(open);
     if (!open) {
-      window.location.reload();
+      setSubmitError(null);
+      setFormKey((k) => k + 1);
     }
   }, []);
 
@@ -553,7 +525,13 @@ export default function ArticleSubmissionForm({
         .trim()
         .replace(/\s+/g, '-');
 
-      const originalContent = reactQuillHtmlToArticleContent(data.content);
+      const originalContent = submissionHtmlToArticleContent(data.content);
+      const equationError = findEquationError(originalContent);
+      if (equationError) {
+        setSubmitError(equationError);
+        return;
+      }
+
       let articleContent = insertPullQuotes(originalContent, data.pullQuotes);
       setSubmitError(null);
 
@@ -658,6 +636,7 @@ export default function ArticleSubmissionForm({
       </Dialog>
 
       <Form<ArticleSubmissionFormValues>
+        key={formKey}
         onSubmit={onSubmitArticle}
         options={{
           defaultValues: {
@@ -677,6 +656,7 @@ export default function ArticleSubmissionForm({
         <FormContent
           authorOptions={authorOptions}
           defaultAuthorEmails={defaultAuthorEmails}
+          onAuthorCreated={onAuthorCreated}
           submitError={submitError}
           issueOptions={issueOptions}
           defaultIssueNumber={defaultIssueNumber}

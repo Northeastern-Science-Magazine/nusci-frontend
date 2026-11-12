@@ -78,11 +78,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   // Format publish date (using creationTime as publish date)
   const publishDate = formatDate(article.creationTime);
 
-  // Get first author name (or default if no authors)
-  const author =
-    article.authors?.length > 0
-      ? (formatPersonName(article.authors[0]) ?? 'NU Sci Magazine')
-      : 'NU Sci Magazine';
+  // Every author, e.g. "A, B, and C" (or default if no authors)
+  const authorNames = (article.authors ?? [])
+    .map(formatPersonName)
+    .filter((name): name is string => !!name);
+  const author = authorNames.length
+    ? new Intl.ListFormat('en', { type: 'conjunction' }).format(authorNames)
+    : 'NU Sci Magazine';
 
   // Get first editor if available (API may return a user object or string)
   const editor =

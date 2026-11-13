@@ -226,6 +226,49 @@ export async function searchArticles(
   return api<ArticleSearchResponse>('POST', '/articles/search', request);
 }
 
+const AUTHOR_SEARCH_PAGE_SIZE = 100;
+
+/**
+ * Every article credited to the author with this email, newest first.
+ * The search endpoint has no author filter, so this pages through the
+ * results and filters here.
+ */
+export async function getArticlesByAuthorEmail(
+  email: string,
+): Promise<ArticleType[]> {
+  const target = email.trim().toLowerCase();
+  const found: ArticleType[] = [];
+  let skip = 0;
+  let total = Infinity;
+
+  while (skip < total) {
+    const response = await searchArticles({
+      limit: AUTHOR_SEARCH_PAGE_SIZE,
+      skip,
+      sortBy: 'desc',
+    });
+    if (!response.ok) break;
+
+    const { results, total: count } = response.data;
+    total = count;
+    if (!Array.isArray(results) || results.length === 0) break;
+
+    for (const article of results) {
+      const isAuthor = (article.authors ?? []).some(
+        (author) =>
+          typeof author === 'object' &&
+          author !== null &&
+          'email' in author &&
+          String(author.email).trim().toLowerCase() === target,
+      );
+      if (isAuthor) found.push(article);
+    }
+    skip += results.length;
+  }
+
+  return found;
+}
+
 export async function getArticleBySlug(
   slug: string,
 ): Promise<ApiResponse<ArticleType>> {

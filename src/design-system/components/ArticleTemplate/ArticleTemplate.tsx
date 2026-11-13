@@ -68,6 +68,7 @@ function convertArticleContentToContentBlocks(
 export default function ArticleTemplate({
   title,
   author,
+  authors,
   editor,
   categories = [],
   issueNumber,
@@ -108,9 +109,31 @@ export default function ArticleTemplate({
             <Text size={14} color="black">
               By
             </Text>
-            <Text size={14} style="bold" color="black">
-              {author}
-            </Text>
+            {authors && authors.length > 0 ? (
+              <Text size={14} style="bold" color="black">
+                {new Intl.ListFormat('en', { type: 'conjunction' })
+                  .formatToParts(authors.map((a) => a.name))
+                  .map((part, i) => {
+                    if (part.type === 'literal') return part.value;
+                    const match = authors.find((a) => a.name === part.value);
+                    return match?.href ? (
+                      <Link
+                        key={i}
+                        href={match.href}
+                        className="underline hover:text-maroon"
+                      >
+                        {part.value}
+                      </Link>
+                    ) : (
+                      part.value
+                    );
+                  })}
+              </Text>
+            ) : (
+              <Text size={14} style="bold" color="black">
+                {author}
+              </Text>
+            )}
             {editor && (
               <>
                 <Text size={14} color="black">

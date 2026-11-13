@@ -19,6 +19,7 @@ export const Image = ({
   width,
   height,
   raw = false,
+  unoptimized = false,
   className,
   ...props
 }: ImageProps) => {

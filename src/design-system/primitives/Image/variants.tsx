@@ -63,6 +63,8 @@ export interface ImageProps
   alt: string;
   width?: string;
   height?: string;
+  /** Skip Next's optimizer, needed for hosts missing from next.config */
+  unoptimized?: boolean;
 }
 
 export const imageVariantsCN = (

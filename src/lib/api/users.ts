@@ -216,6 +216,30 @@ export async function apiCreateAuthor(author: {
   return api('POST', '/user/author', author);
 }
 
+export type UserRoles = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  roles: string[];
+};
+
+/**
+ * Lists every approved user and their roles. Admins only.
+ */
+export async function apiGetUserRoleList(): Promise<ApiResponse<UserRoles[]>> {
+  return api<UserRoles[]>('GET', '/user/list/roles');
+}
+
+/**
+ * Replaces another user's roles. Admins only, and never their own.
+ */
+export async function apiUpdateUserRoles(
+  email: string,
+  roles: string[],
+): Promise<ApiResponse<UserRoles>> {
+  return api('PATCH', `/user/roles/${encodeURIComponent(email)}`, { roles });
+}
+
 type InviteResult = {
   invited: string[];
   skipped: string[];

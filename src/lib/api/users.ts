@@ -147,6 +147,13 @@ export async function apiUpdateMyProfile(
   return api('PATCH', '/user/me', update);
 }
 
+export async function apiChangePassword(data: {
+  currentPassword: string;
+  newPassword: string;
+}): Promise<ApiResponse<{ message: string }>> {
+  return api('PATCH', '/user/me/password', data);
+}
+
 export async function apiLogin(data: {
   email: string;
   password: string;

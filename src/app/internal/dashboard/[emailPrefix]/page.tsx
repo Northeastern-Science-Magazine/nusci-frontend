@@ -79,22 +79,17 @@ export default async function DashboardPage({
                 </Text>
               </Font>
             </Card>
-
-            {cards.length > 0 ? (
-              <Box className="grid grid-cols-1 gap-6 p-2 sm:grid-cols-2 lg:grid-cols-3">
-                {cards.map((card) => (
-                  <DashboardCard
-                    key={card.href}
-                    text={card.text}
-                    href={card.href}
-                  />
-                ))}
-              </Box>
-            ) : (
-              <Text color="black">
-                No dashboard tools are available for your role yet.
-              </Text>
-            )}
+            <Box className="grid grid-cols-4 gap-6">
+              {DASHBOARD_CARDS.filter((card) =>
+                card.roles.some((role) => roles.includes(role)),
+              ).map((card) => (
+                <DashboardCard
+                  key={card.href}
+                  text={card.text}
+                  href={card.href}
+                />
+              ))}
+            </Box>
           </Card>
         </Box>
       </Overlay>

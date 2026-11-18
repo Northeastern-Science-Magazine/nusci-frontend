@@ -16,6 +16,21 @@ export function issuePdfUrl(issueNumber: number): string {
   return `${base}/issue${issueNumber}.pdf`;
 }
 
+/** True if the issue PDF is configured and reachable (HEAD request, cached 5 min). */
+export async function issuePdfAvailable(issueNumber: number): Promise<boolean> {
+  if (!process.env.NEXT_PUBLIC_ISSUE_PDF_URL) return false;
+  try {
+    const res = await fetch(issuePdfUrl(issueNumber), {
+      method: 'HEAD',
+      next: { revalidate: 300 },
+      signal: AbortSignal.timeout(4000),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 /** Issue numbers, newest first. */
 export async function getPrintIssueNumbers(): Promise<number[]> {
   const res = await apiGetAllIssues();

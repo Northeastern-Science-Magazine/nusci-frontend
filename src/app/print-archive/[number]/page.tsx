@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getPrintIssueNumbers, issuePdfUrl } from '@/lib/helpers/printIssues';
+import {
+  getPrintIssueNumbers,
+  issuePdfAvailable,
+  issuePdfUrl,
+} from '@/lib/helpers/printIssues';
 
 export default async function PrintIssuePage({
   params,
@@ -17,6 +21,7 @@ export default async function PrintIssuePage({
   const newer = issueNumbers[idx - 1];
   const older = issueNumbers[idx + 1];
   const pdfUrl = issuePdfUrl(issueNumber);
+  const pdfAvailable = await issuePdfAvailable(issueNumber);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-6">
@@ -38,23 +43,35 @@ export default async function PrintIssuePage({
           ) : null}
         </div>
       </nav>
-      <iframe
-        src={pdfUrl}
-        title={`NU Sci Magazine Issue ${issueNumber}`}
-        className="h-[80vh] w-full rounded border"
-      />
-      <p className="mt-3 text-center text-sm">
-        Viewer not loading?{' '}
-        <a
-          href={pdfUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline"
-        >
-          Open the PDF directly
-        </a>
-        .
-      </p>
+      {pdfAvailable ? (
+        <>
+          <iframe
+            src={pdfUrl}
+            title={`NU Sci Magazine Issue ${issueNumber}`}
+            className="h-[80vh] w-full rounded border"
+          />
+          <p className="mt-3 text-center text-sm">
+            Viewer not loading?{' '}
+            <a
+              href={pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              Open the PDF directly
+            </a>
+            .
+          </p>
+        </>
+      ) : (
+        <div className="flex h-[80vh] w-full items-center justify-center rounded border bg-gray-200 text-center text-gray-600">
+          <p>
+            Issue {issueNumber} is unavailable right now.
+            <br />
+            Please try again later.
+          </p>
+        </div>
+      )}
     </main>
   );
 }

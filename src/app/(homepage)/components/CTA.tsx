@@ -55,6 +55,15 @@ export default function CTA() {
                 >
                   Join the team
                 </Button>
+                <Button
+                  className="inline-flex"
+                  variant="outline"
+                  color="white"
+                  size="lg"
+                  onClick={() => (window.location.href = '/pitch')}
+                >
+                  Pitch an article
+                </Button>
               </Box>
             </Box>
           </Box>

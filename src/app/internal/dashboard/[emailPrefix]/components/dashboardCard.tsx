@@ -1,31 +1,49 @@
-import Card from '@/design-system/primitives/Card';
+import Box from '@/design-system/primitives/Box';
 import Text from '@/design-system/primitives/Text';
-import Link from 'next/link';
-import Font from '@/design-system/primitives/Font';
+import Icon, { IconName } from '@/design-system/primitives/Icon';
+import Link from '@/design-system/primitives/Link';
+import { ChevronRight } from 'lucide-react';
+
+export type CardColor =
+  'forest-green' | 'aqua' | 'coral' | 'purple' | 'marigold' | 'pink';
 
 interface DashboardCardProps {
   text: string;
+  description: string;
   href: string;
+  icon: IconName;
+  color: CardColor;
 }
 
-export default function DashboardCard({ text, href }: DashboardCardProps) {
+/**
+ * A dashboard tool tile, styled like the article grid on the homepage.
+ */
+export default function DashboardCard({
+  text,
+  description,
+  href,
+  icon,
+  color,
+}: DashboardCardProps) {
   return (
-    <Font serif>
-      <Link href={href} className="block h-full">
-        <Card
-          color="gray-light"
-          animation="scale110Hover"
-          className="flex h-32 w-full items-center justify-center px-6 shadow-lg transition-transform"
+    <Link href={href} newWindow={false} className="group block h-full">
+      <Box className="flex h-full flex-col border border-t-4 border-black/10 border-t-forest-green bg-white p-6 transition-all duration-200 hover:border-forest-green hover:shadow-lg">
+        <Icon icon={icon} size={36} color={color} />
+        <Text size={24} color="black" className="mt-4 tracking-tight">
+          {text}
+        </Text>
+        <Text
+          size={14}
+          color="black"
+          className="mt-2 flex-1 font-light leading-relaxed opacity-75"
         >
-          <Text
-            size={24}
-            color="black"
-            className="text-center whitespace-normal break-words"
-          >
-            {text}
-          </Text>
-        </Card>
-      </Link>
-    </Font>
+          {description}
+        </Text>
+        <span className="mt-6 inline-flex items-center gap-2 self-start border-b-2 border-forest-green/30 pb-1 text-[14px] font-medium text-forest-green transition-all group-hover:border-forest-green">
+          Open
+          <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        </span>
+      </Box>
+    </Link>
   );
 }

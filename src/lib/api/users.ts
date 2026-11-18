@@ -194,6 +194,16 @@ export async function apiVerifyOTPToken(
   return api<void>('POST', `/user/verify-otp?token=${token}`);
 }
 
+/**
+ * Emails a one-time link if the email belongs to an approved account.
+ * The response is the same for every email.
+ */
+export async function apiRequestOTP(
+  email: string,
+): Promise<ApiResponse<{ message: string }>> {
+  return api<{ message: string }>('POST', '/user/otp', { email });
+}
+
 export async function apiGetBasicUserList(): Promise<ApiResponse<BasicUser[]>> {
   return api<BasicUser[]>('GET', '/user/list/basic');
 }

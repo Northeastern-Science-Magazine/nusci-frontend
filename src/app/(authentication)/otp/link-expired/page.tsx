@@ -21,6 +21,7 @@ export default function LinkExpiredPage() {
         }}
         size="lg"
         rounded="rounded"
+        onHover={false}
         className="max-w-7xl w-full [&_.media-container]:flex-1"
         color="white"
       >

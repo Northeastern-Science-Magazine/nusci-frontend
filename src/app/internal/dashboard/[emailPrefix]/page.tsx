@@ -13,23 +13,26 @@ interface PublicProfilePageProps {
   params: Promise<{ emailPrefix: string }>;
 }
 
-type DashboardLink = { text: string; href: string };
-
-const ROLE_LINKS: Partial<Record<Roles, DashboardLink[]>> = {
-  [Roles.Admin]: [
-    { text: 'Invite User', href: '/internal/invite-user' },
-    { text: 'Create An Article', href: '/internal/article-submission' },
-    { text: 'Create An Issue', href: '/internal/issues' },
-    { text: 'Magazine Archive', href: '/internal/archive' },
-    { text: 'Pitch Recipients', href: '/internal/pitch-settings' },
-  ],
-  [Roles.Editor]: [
-    { text: 'Create An Article', href: '/internal/article-submission' },
-  ],
-  [Roles.Photographer]: [
-    { text: 'Upload Photos', href: '/internal/photoApproval' },
-  ],
-};
+// every dashboard card, shown if the user has any of its roles
+const DASHBOARD_CARDS: { text: string; href: string; roles: Roles[] }[] = [
+  { text: 'Invite User', href: '/internal/invite-user', roles: [Roles.Admin] },
+  {
+    text: 'Create an Article',
+    href: '/internal/article-submission',
+    roles: [Roles.Admin, Roles.Editor],
+  },
+  { text: 'Manage Issues', href: '/internal/issues', roles: [Roles.Admin] },
+  {
+    text: 'Magazine Archive',
+    href: '/internal/archive',
+    roles: [Roles.Admin],
+  },
+  {
+    text: 'Upload Photos',
+    href: '/internal/photoApproval',
+    roles: [Roles.Photographer],
+  },
+];
 
 export default async function DashboardPage({
   params,
@@ -77,22 +80,17 @@ export default async function DashboardPage({
                 </Text>
               </Font>
             </Card>
-
-            {links.length > 0 ? (
-              <Box className="grid grid-cols-1 gap-6 p-2 sm:grid-cols-2 lg:grid-cols-3">
-                {links.map((link) => (
-                  <DashboardCard
-                    key={link.href}
-                    text={link.text}
-                    href={link.href}
-                  />
-                ))}
-              </Box>
-            ) : (
-              <Text color="black">
-                No dashboard tools are available for your role yet.
-              </Text>
-            )}
+            <Box className="grid grid-cols-4 gap-6">
+              {DASHBOARD_CARDS.filter((card) =>
+                card.roles.some((role) => roles.includes(role)),
+              ).map((card) => (
+                <DashboardCard
+                  key={card.href}
+                  text={card.text}
+                  href={card.href}
+                />
+              ))}
+            </Box>
           </Card>
         </Box>
       </Overlay>

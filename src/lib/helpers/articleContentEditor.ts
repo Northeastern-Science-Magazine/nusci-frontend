@@ -1,5 +1,9 @@
 import type { ArticleContent, ArticleContentSegment } from '@/lib/types/types';
 import { isMediaPath } from '@/lib/helpers/media';
+import {
+  joinSplitEquations,
+  joinSplitEquationsWithStarts,
+} from '@/lib/helpers/articleMath';
 
 // Escape saved text before placing it inside editor HTML.
 function escapeHtml(value: string): string {
@@ -188,7 +192,10 @@ export function htmlToArticleContent(html: string): ArticleContent[] {
       const src = element.getAttribute('src') ?? '';
 
       if (!isHttpUrl(src)) {
-        throw new Error('Article images need valid http or https URLs.');
+        // Equations copied from Word or PDFs often paste in as images
+        throw new Error(
+          'Article images need valid http or https URLs. If you pasted an equation, type it as LaTeX instead.',
+        );
       }
 
       segments.push({ contentType: 'image', content: src });
@@ -233,7 +240,7 @@ export function htmlToArticleContent(html: string): ArticleContent[] {
   document.body.childNodes.forEach(walk);
   flushParagraph();
 
-  return paragraphs;
+  return joinSplitEquations(paragraphs);
 }
 
 // Keep existing quotes near their original paragraph positions.
@@ -245,9 +252,24 @@ export function restorePullQuotes(
 ): ArticleContent[] {
   const result = [...body];
 
-  const originalPositions = originalContent
-    .map((paragraph, index) => (isPullQuote(paragraph) ? index : -1))
-    .filter((index) => index !== -1);
+  // The body has split equations rejoined, so place each quote after the
+  // same paragraphs it followed once the original is rejoined too.
+  const { starts } = joinSplitEquationsWithStarts(
+    originalContent.filter((paragraph) => !isPullQuote(paragraph)),
+  );
+  const originalPositions: number[] = [];
+  let paragraphsBefore = 0;
+  originalContent.forEach((paragraph) => {
+    if (!isPullQuote(paragraph)) {
+      paragraphsBefore++;
+      return;
+    }
+    // A quote that sat inside a split equation goes after the equation.
+    const joinedBefore = starts.filter(
+      (start) => start < paragraphsBefore,
+    ).length;
+    originalPositions.push(joinedBefore + originalPositions.length);
+  });
 
   quotes
     .map((quote, index) => ({ quote: quote.trim(), index }))
@@ -267,4 +289,60 @@ export function restorePullQuotes(
     });
 
   return result;
+}
+
+// Converts the new-article editor HTML into backend content.
+// Line breaks are dropped and whitespace collapsed.
+export function submissionHtmlToArticleContent(html: string): ArticleContent[] {
+  if (!html) return [];
+
+  const normalize = (s: string) =>
+    s
+      .replace(/\u00A0/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+
+  const paragraphs = [...doc.querySelectorAll('p')]
+    .map((p) => {
+      const segments: ArticleContentSegment[] = [];
+      let buf = '';
+
+      const flush = () => {
+        const text = normalize(buf);
+        if (text) segments.push({ contentType: 'text', content: text });
+        buf = '';
+      };
+
+      const walk = (node: Node): void => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          buf += node.textContent ?? '';
+          return;
+        }
+
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+        const el = node as HTMLElement;
+
+        if (el.tagName === 'A') {
+          flush();
+          const text = normalize(el.textContent ?? '');
+          const href = el.getAttribute('href') || undefined;
+          // a link with no text is dropped, since content can't be empty
+          if (text) segments.push({ contentType: 'link', content: text, href });
+          return;
+        }
+
+        for (const child of el.childNodes) walk(child);
+      };
+
+      for (const n of p.childNodes) walk(n);
+      flush();
+
+      return segments.length ? (segments as ArticleContent) : null;
+    })
+    .filter((p): p is ArticleContent => !!p);
+
+  return joinSplitEquations(paragraphs);
 }

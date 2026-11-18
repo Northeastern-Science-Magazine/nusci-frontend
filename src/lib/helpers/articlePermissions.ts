@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { apiGetUserRoles } from '@/lib/api/users';
 import { Roles } from '@/lib/types/types';
 
-// Admins and Editors currently have Create Article links in the dashboard.
+// Keep in sync with the Create an Article card roles in the internal dashboard.
 
 /**
  * Checks whether the user's roles allow article creation and editing.

@@ -21,6 +21,13 @@ export async function apiGetAllIssueNumbers(): Promise<ApiResponse<number[]>> {
   return api<number[]>('GET', '/issue-map/all-issue-numbers');
 }
 
+/** Number of issues that have at least one article. */
+export async function apiGetIssueCount(): Promise<
+  ApiResponse<{ count: number }>
+> {
+  return api<{ count: number }>('GET', '/issue-map/count');
+}
+
 export async function apiCreateIssue(
   data: IssueCreate,
 ): Promise<ApiResponse<IssueSummary>> {

@@ -5,6 +5,7 @@ import Video from '@/primitives/Video';
 import Icon from '@/primitives/Icon';
 import Text from '@/primitives/Text';
 import { mediaCardTextSizes } from './variants';
+import MathText from '@/components/MathText';
 
 export const MediaCard = (props: MediaCardProps) => {
   const {
@@ -36,7 +37,7 @@ export const MediaCard = (props: MediaCardProps) => {
         )}
         {description && (
           <Text size={textSizes.description} className="text-inherit">
-            {description}
+            <MathText text={description} inline />
           </Text>
         )}
         {children}

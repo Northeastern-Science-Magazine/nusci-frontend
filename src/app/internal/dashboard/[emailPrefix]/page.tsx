@@ -13,6 +13,32 @@ interface PublicProfilePageProps {
   params: Promise<{ emailPrefix: string }>;
 }
 
+// every dashboard card, shown if the user has any of its roles
+const DASHBOARD_CARDS: { text: string; href: string; roles: Roles[] }[] = [
+  { text: 'Invite User', href: '/internal/invite-user', roles: [Roles.Admin] },
+  {
+    text: 'Create an Article',
+    href: '/internal/article-submission',
+    roles: [Roles.Admin, Roles.Editor],
+  },
+  { text: 'Manage Issues', href: '/internal/issues', roles: [Roles.Admin] },
+  {
+    text: 'Magazine Archive',
+    href: '/internal/archive',
+    roles: [Roles.Admin],
+  },
+  {
+    text: 'Pitch Recipients',
+    href: '/internal/pitch-settings',
+    roles: [Roles.Admin],
+  },
+  {
+    text: 'Upload Photos',
+    href: '/internal/photoApproval',
+    roles: [Roles.Photographer],
+  },
+];
+
 export default async function DashboardPage({
   params,
 }: PublicProfilePageProps) {
@@ -27,6 +53,10 @@ export default async function DashboardPage({
   const roles: Roles[] = profile.roles;
   const userName: string = profile.name;
 
+  const cards = DASHBOARD_CARDS.filter((card) =>
+    card.roles.some((role) => roles.includes(role)),
+  );
+
   return (
     <OverlayMedia className="relative w-full overflow-hidden">
       <Image
@@ -37,55 +67,34 @@ export default async function DashboardPage({
         ratio={1920 / 1000}
       />
       <Overlay background="gradient-black">
-        <Box className="flex h-full w-full items-center justify-center">
+        <Box className="flex h-full w-full items-center justify-center px-4">
           <Card
             color="white"
-            className="h-[80vh] w-full max-w-[95vw] shadow-2xl"
+            className="flex max-h-[80vh] min-h-[50vh] w-full max-w-6xl flex-col gap-8 overflow-y-auto p-6 shadow-2xl sm:p-8"
           >
-            <Card color="gray-light" className="w-full shadow-2xl">
+            <Card color="gray-light" className="w-full px-6 shadow-lg">
               <Font serif>
-                <Text size={30} mx={6} style="bold">
+                <Text size={30} style="bold">
                   Welcome Back {userName}!
                 </Text>
               </Font>
             </Card>
-            {roles.map((role, index) => {
-              if (role == Roles.Admin) {
-                return (
-                  <Box className="grid grid-cols-4 gap-6" key={index}>
-                    <DashboardCard
-                      text="Invite User"
-                      href="/internal/invite-user"
-                    />
-                    <DashboardCard
-                      text="Create An Article"
-                      href="/internal/article-submission"
-                    />
-                    <DashboardCard
-                      text="Create An Issue"
-                      href="/internal/issues"
-                    />
-                  </Box>
-                );
-              } else if (role == Roles.Editor) {
-                return (
-                  <Box className="grid grid-cols-4 gap-6" key={index}>
-                    <DashboardCard
-                      text="Create an Article"
-                      href="/internal/article-submission"
-                    />
-                  </Box>
-                );
-              } else if (role == Roles.Photographer) {
-                return (
+
+            {cards.length > 0 ? (
+              <Box className="grid grid-cols-1 gap-6 p-2 sm:grid-cols-2 lg:grid-cols-3">
+                {cards.map((card) => (
                   <DashboardCard
-                    text="Upload Photos"
-                    href="/internal/photoApproval"
-                    key={index}
+                    key={card.href}
+                    text={card.text}
+                    href={card.href}
                   />
-                );
-              }
-            })}
+                ))}
+              </Box>
+            ) : (
+              <Text color="black">
+                No dashboard tools are available for your role yet.
+              </Text>
+            )}
           </Card>
         </Box>
       </Overlay>

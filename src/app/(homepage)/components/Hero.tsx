@@ -38,10 +38,27 @@ function useCountUp(target: number, durationMs: number) {
   return value;
 }
 
-export default function Hero() {
-  const legacyYears = useCountUp(17, 1500);
-  const publishedIssues = useCountUp(66, 2500);
-  const reachArticles = useCountUp(1300, 3500);
+const FOUNDING_YEAR = 2008;
+
+// Shown when the counts can't be fetched from the API
+const FALLBACK_PUBLISHED_ISSUES = 66;
+const FALLBACK_PUBLISHED_ARTICLES = 1300;
+
+interface HeroProps {
+  publishedIssues?: number;
+  publishedArticles?: number;
+}
+
+export default function Hero({
+  publishedIssues: issueCount = FALLBACK_PUBLISHED_ISSUES,
+  publishedArticles: articleCount = FALLBACK_PUBLISHED_ARTICLES,
+}: HeroProps) {
+  const legacyYears = useCountUp(
+    new Date().getFullYear() - FOUNDING_YEAR,
+    1500,
+  );
+  const publishedIssues = useCountUp(issueCount, 2500);
+  const reachArticles = useCountUp(articleCount, 3500);
 
   return (
     <OverlayMedia className="w-full h-[620px] laptop:h-[700px] overflow-hidden">
@@ -119,7 +136,7 @@ export default function Hero() {
                     as="span"
                     size={24}
                     color="white"
-                    className="inline-block min-w-[2ch] text-right font-semibold tabular-nums"
+                    className="inline-block font-semibold tabular-nums"
                   >
                     {legacyYears.toLocaleString()}
                   </Text>
@@ -143,7 +160,7 @@ export default function Hero() {
                     as="span"
                     size={24}
                     color="white"
-                    className="inline-block min-w-[2ch] text-right font-semibold tabular-nums"
+                    className="inline-block font-semibold tabular-nums"
                   >
                     {publishedIssues.toLocaleString()}
                   </Text>
@@ -167,7 +184,7 @@ export default function Hero() {
                     as="span"
                     size={24}
                     color="white"
-                    className="inline-block min-w-[5.5ch] text-right font-semibold tabular-nums"
+                    className="inline-block font-semibold tabular-nums"
                   >
                     {reachArticles.toLocaleString()}+
                   </Text>

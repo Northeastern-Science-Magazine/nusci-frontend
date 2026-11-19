@@ -10,12 +10,16 @@ import TextInput from '@/design-system/primitives/TextInput';
 import Checkbox from '@/design-system/primitives/Checkbox';
 import Button from '@/design-system/primitives/Button';
 import { Dropdown } from '@/design-system/primitives/Dropdown';
+import Image from '@/design-system/primitives/Image';
+import ImageUpload from '@/design-system/components/ImageUpload';
 
 import ArticleInput from '@/app/internal/article-submission/components/ArticleInput';
 import { EditPullQuoteInput } from './EditInputs';
 import { SourcesInput } from '@/app/internal/article-submission/components/SourcesInput';
 
 import { updateArticle } from '@/lib/api/articles';
+import { uploadToS3 } from '@/lib/helpers/uploadToS3';
+import { mediaPath } from '@/lib/helpers/media';
 import type { BasicUser } from '@/lib/api/users';
 import { Category, type Article, type ArticleSource } from '@/lib/types/types';
 
@@ -25,7 +29,12 @@ import {
   htmlToArticleContent,
   normalizeArticleSpaces,
   restorePullQuotes,
+  splitFeaturedImage,
 } from '@/lib/helpers/articleContentEditor';
+import {
+  findEquationError,
+  joinSplitEquations,
+} from '@/lib/helpers/articleMath';
 
 type ArticleEditFormProps = {
   article: Article;
@@ -43,6 +52,10 @@ type EditValues = {
   noPullQuotes: boolean;
   sources: ArticleSource[];
   noSources: boolean;
+  // Saved image path; undefined once removed.
+  featuredImage: string | undefined;
+  // New image to upload in place of the saved one.
+  imageFile: File | undefined;
 };
 
 // Only accept http and https URLs for sources.
@@ -69,11 +82,16 @@ export default function ArticleEditForm({
   // Prevent duplicate requests before the saving state updates.
   const saving = useRef(false);
 
+  // The featured image is edited separately from the body.
+  const [original] = useState(() =>
+    splitFeaturedImage(article.articleContent ?? []),
+  );
+
   // Load saved content into the same editor used for submission.
   const [initialEditor] = useState(() => {
     try {
       return {
-        html: articleContentToHtml(article.articleContent ?? []),
+        html: articleContentToHtml(original.body),
         error: null as string | null,
       };
     } catch (error) {
@@ -104,6 +122,8 @@ export default function ArticleEditForm({
       noPullQuotes: pullQuotes.length === 0,
       sources,
       noSources: sources.length === 0,
+      featuredImage: original.featuredImage,
+      imageFile: undefined,
     };
   });
 
@@ -235,7 +255,7 @@ export default function ArticleEditForm({
     setIsSaving(true);
 
     try {
-      const originalContent = article.articleContent ?? [];
+      const originalContent = original.body;
 
       // Compare parsed content because the editor may normalize HTML
       // when loading, without the user changing the article.
@@ -255,18 +275,30 @@ export default function ArticleEditForm({
         return;
       }
 
+      // Only check edited content, so older articles can still be saved
+      // when just their details change.
+      const equationError = contentChanged ? findEquationError(body) : null;
+      if (equationError) {
+        setError(equationError);
+        return;
+      }
+
       // Keep the original structure intact when only metadata is edited.
       let articleContent = originalContent;
 
       if (contentChanged || quotesChanged) {
+        // Rejoin split equations either way, since restorePullQuotes
+        // places quotes by the rejoined paragraphs.
         const bodyWithoutQuotes = contentChanged
           ? body
-          : originalContent.filter(
-              (paragraph) =>
-                !(
-                  paragraph.length === 1 &&
-                  paragraph[0].contentType === 'pull_quote'
-                ),
+          : joinSplitEquations(
+              originalContent.filter(
+                (paragraph) =>
+                  !(
+                    paragraph.length === 1 &&
+                    paragraph[0].contentType === 'pull_quote'
+                  ),
+              ),
             );
 
         articleContent = restorePullQuotes(
@@ -276,6 +308,27 @@ export default function ArticleEditForm({
         );
       }
 
+      let featuredImage = values.featuredImage;
+
+      if (values.imageFile) {
+        try {
+          featuredImage = mediaPath(
+            await uploadToS3('images', values.imageFile),
+          );
+        } catch (error) {
+          setError(
+            `Couldn't upload the image: ${error instanceof Error ? error.message : 'unknown error'}`,
+          );
+          return;
+        }
+      }
+
+      // Put the image back first, where article cards and the article page
+      // look for the featured image.
+      const imageParagraphs: typeof articleContent = featuredImage
+        ? [[{ contentType: 'image', content: featuredImage }]]
+        : [];
+
       const result = await updateArticle(
         article.slug,
         {
@@ -283,7 +336,10 @@ export default function ArticleEditForm({
           issueNumber: values.issueNumber,
           authors: values.authors,
           categories: values.categories,
-          articleContent: normalizeArticleSpaces(articleContent),
+          articleContent: normalizeArticleSpaces([
+            ...imageParagraphs,
+            ...articleContent,
+          ]),
           sources,
         },
         new Date(article.modificationTime).toISOString(),
@@ -434,6 +490,7 @@ export default function ArticleEditForm({
             <ArticleInput
               value={values.content}
               onChange={(value) => changeField('content', value)}
+              toContent={htmlToArticleContent}
             />
 
             {/* Pull Quotes */}
@@ -477,6 +534,43 @@ export default function ArticleEditForm({
                 }
                 disabled={isSaving}
               />
+            </div>
+
+            {/* Featured Image */}
+            <div className="flex flex-col gap-3">
+              <Text size={16} color="black">
+                Featured Image
+              </Text>
+              {values.featuredImage && !values.imageFile && (
+                <Image
+                  src={values.featuredImage}
+                  alt={values.title}
+                  width="w-full"
+                  ratio={16 / 9}
+                  className="rounded-md object-cover"
+                />
+              )}
+              <div className="flex items-center gap-4">
+                <ImageUpload
+                  value={values.imageFile}
+                  onChange={(file) => changeField('imageFile', file)}
+                  disabled={isSaving}
+                />
+                {(values.featuredImage || values.imageFile) && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    color="red"
+                    disabled={isSaving}
+                    onClick={() => {
+                      changeField('featuredImage', undefined);
+                      changeField('imageFile', undefined);
+                    }}
+                  >
+                    Remove image
+                  </Button>
+                )}
+              </div>
             </div>
 
             {/* Save button without the submission progress sidebar. */}

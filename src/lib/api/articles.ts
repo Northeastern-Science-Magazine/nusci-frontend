@@ -7,6 +7,7 @@ import { Category } from '@/lib/types/types';
 import type { ArticleUpdate } from '@/lib/types/types';
 import { apiGetUserRoles } from './users';
 import { canManageArticles } from '@/lib/helpers/articlePermissions';
+import { joinSplitEquations } from '@/lib/helpers/articleMath';
 
 export interface Article {
   id: string;
@@ -16,14 +17,6 @@ export interface Article {
   subtitle?: string;
   category?: string;
   slug: string;
-}
-
-export interface MagazineIssue {
-  id: string;
-  issueNumber: number;
-  thumbnailUrl: string;
-  title: string;
-  date: string;
 }
 
 const FALLBACK_ARTICLES: Article[] = [
@@ -103,49 +96,6 @@ const FALLBACK_RECENT_ARTICLES: Article[] = [
   FALLBACK_ARTICLES[6],
 ];
 
-const HARDCODED_MAGAZINES: MagazineIssue[] = [
-  {
-    id: 'issue-60',
-    issueNumber: 60,
-    thumbnailUrl:
-      'https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue60.png',
-    title: 'Issue 60',
-    date: '2024',
-  },
-  {
-    id: 'issue-59',
-    issueNumber: 59,
-    thumbnailUrl:
-      'https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue59.png',
-    title: 'Issue 59',
-    date: '2024',
-  },
-  {
-    id: 'issue-58',
-    issueNumber: 5,
-    thumbnailUrl:
-      'https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue58.png',
-    title: 'Issue 58',
-    date: '2024',
-  },
-  {
-    id: 'issue-57',
-    issueNumber: 57,
-    thumbnailUrl:
-      'https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue57.png',
-    title: 'Issue 57',
-    date: '2024',
-  },
-  {
-    id: 'issue-56',
-    issueNumber: 56,
-    thumbnailUrl:
-      'https://northeasternsciencemagazine.github.io/nusci-issuu/thumbnails/issue56.png',
-    title: 'Issue 56',
-    date: '2023',
-  },
-];
-
 // Extract the first image URL from nested ArticleContent (paragraphs -> segments)
 function extractFirstImageUrl(
   articleContent: ArticleType['articleContent'],
@@ -158,25 +108,21 @@ function extractFirstImageUrl(
   return undefined;
 }
 
-// Extract description from first paragraph (concatenate segment text).
-// Works for both "text"/"link" and "body_paragraph" style contentTypes.
+// Extract description from the first paragraph with text, skipping
+// image and pull quote paragraphs. Equations are kept as LaTeX for the
+// card to render.
 function extractDescription(
   articleContent: ArticleType['articleContent'],
 ): string {
-  if (!articleContent || articleContent.length === 0) return '';
-
-  const firstParagraph = articleContent.find(
-    (paragraph) => paragraph && paragraph.length > 0,
-  );
-  if (!firstParagraph) return '';
-
-  // Prefer body_paragraph segments if present; otherwise use all segments
-  const bodySegments = firstParagraph.filter(
-    (seg) => seg.contentType === 'text',
-  );
-  const segmentsToUse = bodySegments.length > 0 ? bodySegments : firstParagraph;
-
-  return segmentsToUse.map((seg) => seg.content).join(' ');
+  for (const paragraph of joinSplitEquations(articleContent || [])) {
+    const text = (paragraph || [])
+      .filter((seg) => seg.contentType === 'text' || seg.contentType === 'link')
+      .map((seg) => seg.content)
+      .join(' ')
+      .trim();
+    if (text) return text;
+  }
+  return '';
 }
 
 // Map ArticleType to Article interface
@@ -253,21 +199,25 @@ export async function getFeaturedArticles(): Promise<Article[]> {
   }
 }
 
-export async function getMagazineIssues(): Promise<MagazineIssue[]> {
-  return HARDCODED_MAGAZINES;
-}
-
 export interface ArticleSearchRequest {
   limit?: number;
   skip?: number;
   textQuery?: string;
   categories?: string[];
+  issueNumber?: number;
   sortBy?: 'asc' | 'desc';
 }
 
 export interface ArticleSearchResponse {
   results: ArticleType[];
   total: number;
+}
+
+/** Number of published (print or online) articles. */
+export async function apiGetPublishedArticleCount(): Promise<
+  ApiResponse<{ count: number }>
+> {
+  return api<{ count: number }>('GET', '/articles/count');
 }
 
 export async function searchArticles(

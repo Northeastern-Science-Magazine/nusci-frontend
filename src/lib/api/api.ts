@@ -63,7 +63,7 @@ export async function api<T>(
       const message =
         typeof parsed === 'string'
           ? parsed
-          : parsed?.message || 'Request failed';
+          : parsed?.message || parsed?.error || 'Request failed';
 
       return {
         ok: false,

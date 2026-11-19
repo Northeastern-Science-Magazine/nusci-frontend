@@ -26,6 +26,8 @@ export default function SignUpPage() {
   // Invite token is kept in memory only; never logged or stored.
   const tokenRef = useRef<string | null>(null);
   const [inviteEmail, setInviteEmail] = useState('');
+  // Filled in when an editor already added this person as an author.
+  const [inviteName, setInviteName] = useState({ firstName: '', lastName: '' });
   const [pageState, setPageState] = useState<PageState>('loading');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -49,6 +51,10 @@ export default function SignUpPage() {
       .then((result) => {
         if (result.ok) {
           setInviteEmail(result.data.email);
+          setInviteName({
+            firstName: result.data.firstName ?? '',
+            lastName: result.data.lastName ?? '',
+          });
           setPageState('ready');
         } else {
           setPageState('error');
@@ -118,8 +124,8 @@ export default function SignUpPage() {
           onSubmit={onSubmit}
           options={{
             defaultValues: {
-              firstName: '',
-              lastName: '',
+              firstName: inviteName.firstName,
+              lastName: inviteName.lastName,
               graduationYear: '',
               password: '',
               confirmPassword: '',

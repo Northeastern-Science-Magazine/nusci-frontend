@@ -1,6 +1,10 @@
 import { notFound } from 'next/navigation';
 import { getArticleBySlug } from '@/lib/api/articles';
 import { ArticleTemplate } from '@/design-system/components/ArticleTemplate';
+import Link from 'next/link';
+import { apiGetUserRoles } from '@/lib/api/users';
+import { canManageArticles } from '@/lib/helpers/articlePermissions';
+import { Pencil } from 'lucide-react';
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
@@ -55,6 +59,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   const article = result.data;
 
+  // Only show the edit button to users with article permissions.
+  const rolesResult = await apiGetUserRoles();
+
+  const canEdit = rolesResult.ok && canManageArticles(rolesResult.data.roles);
+
   // Extract first image URL for featured image
   // const firstImageUrl = extractFirstImageUrl(article.articleContent);
 
@@ -86,16 +95,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       publishDate={publishDate}
       articleContent={article.articleContent}
       sources={article.sources}
-      // featuredImage={
-      //   imageUrl
-      //     ? {
-      //         src: imageUrl,
-      //         alt: article.title,
-      //         width: "w-full",
-      //       }
-      //     : undefined
-      // }
-      imageCaption={undefined} // TODO: Add image caption if available in article
+      imageCaption={undefined}
+      editAction={
+        canEdit ? (
+          <Link
+            href={`/internal/article-edit/${encodeURIComponent(article.slug)}`}
+            className="inline-flex items-center gap-2 rounded-md bg-maroon px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-maroon/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon"
+          >
+            <Pencil className="h-4 w-4" aria-hidden="true" />
+            Edit article
+          </Link>
+        ) : undefined
+      }
     />
   );
 }

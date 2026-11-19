@@ -152,6 +152,29 @@ export async function apiLogin(data: {
   return api('POST', '/user/login', data);
 }
 
+/**
+ * Looks up the email an invite belongs to. Does not use up the invite.
+ */
+export async function apiGetInvite(
+  token: string,
+): Promise<ApiResponse<{ email: string }>> {
+  return api('GET', `/user/invite?token=${encodeURIComponent(token)}`);
+}
+
+/**
+ * Creates an account from an invite and logs the new user in.
+ * Email and roles come from the invite, so they are not sent.
+ */
+export async function apiSignup(data: {
+  token: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  graduationYear: number;
+}): Promise<ApiResponse<{ message: string }>> {
+  return api('POST', '/user/signup', data);
+}
+
 export async function apiGetPublicUserByEmail(
   email: string,
 ): Promise<ApiResponse<PublicUser>> {
@@ -166,4 +189,20 @@ export async function apiVerifyOTPToken(
 
 export async function apiGetBasicUserList(): Promise<ApiResponse<BasicUser[]>> {
   return api<BasicUser[]>('GET', '/user/list/basic');
+}
+
+type InviteResult = {
+  invited: string[];
+  skipped: string[];
+  failed: string[];
+};
+
+/**
+ * Invites each address in `emails` with `roles`; the backend creates a separate one-time signup link per address.
+ */
+export async function apiInviteUser(
+  emails: string[],
+  roles: string[],
+): Promise<ApiResponse<InviteResult>> {
+  return api('POST', '/user/invite', { to: emails, roles });
 }

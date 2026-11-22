@@ -10,6 +10,7 @@ import Text, { TextProps } from '@/primitives/Text';
 import { Badge } from '@/primitives/Badge/Badge';
 import Icon from '@/primitives/Icon';
 import Link from '@/primitives/Link';
+import { profilePath } from '@/lib/helpers/profile';
 
 export const TeamMember = (props: TeamMemberProps) => {
   const {
@@ -21,7 +22,6 @@ export const TeamMember = (props: TeamMemberProps) => {
     major,
     email,
     avatarUrl,
-    profileBaseUrl = '/profile',
     size,
     children,
     ...variantProps
@@ -29,10 +29,10 @@ export const TeamMember = (props: TeamMemberProps) => {
 
   const textSizes = teamMemberTextSizes[size ?? 'md'];
   const avatarSize = teamMemberAvatarSizes[size ?? 'md'];
+  const href = profilePath(email);
 
-  return (
-    <Link href={``} newWindow={false} className={teamMemberVariants(props)}>
-      {/*<Link href={`${profileBaseUrl}/${email.split("@")[0]}`} newWindow={false} className={teamMemberVariants(props)}>*/}
+  const card = (
+    <>
       <Box className="flex items-center gap-4">
         <Avatar
           src={avatarUrl}
@@ -49,9 +49,11 @@ export const TeamMember = (props: TeamMemberProps) => {
             <Text style="bold" size={textSizes.name} className="text-inherit">
               {name}
             </Text>
-            <Text size={textSizes.pronouns} className="text-inherit">
-              ({pronouns})
-            </Text>
+            {pronouns && (
+              <Text size={textSizes.pronouns} className="text-inherit">
+                ({pronouns})
+              </Text>
+            )}
           </Box>
           {role && (
             <Badge color="aqua" variant="default" rounded="sm">
@@ -65,9 +67,11 @@ export const TeamMember = (props: TeamMemberProps) => {
         <Badge color="sage-green" variant="outline" rounded="sm">
           Class of {graduationYear}
         </Badge>
-        <Badge color="forest-green" variant="outline" rounded="sm">
-          {major}
-        </Badge>
+        {major && (
+          <Badge color="forest-green" variant="outline" rounded="sm">
+            {major}
+          </Badge>
+        )}
       </Box>
 
       {bio && (
@@ -91,6 +95,15 @@ export const TeamMember = (props: TeamMemberProps) => {
           </Text>
         </Box>
       )}
+    </>
+  );
+
+  // Members without a usable email have no profile to link to.
+  return href ? (
+    <Link href={href} newWindow={false} className={teamMemberVariants(props)}>
+      {card}
     </Link>
+  ) : (
+    <Box className={teamMemberVariants(props)}>{card}</Box>
   );
 };

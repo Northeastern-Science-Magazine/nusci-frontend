@@ -3,6 +3,7 @@
 import { Roles } from '../types/types';
 import { api, ApiResponse } from './api';
 import { ProfileData } from '@/app/profile/[emailPrefix]/page';
+import { TeamMemberProps } from '@/design-system/components/TeamMember';
 
 /**
  * Gets the login status along with the roles of the
@@ -65,17 +66,33 @@ function mapPublicUserToProfile(user: PublicUser): ProfileData {
   };
 }
 
+function mapPublicUserToTeamMember(user: PublicUser): TeamMemberProps {
+  return {
+    name: `${user.firstName} ${user.lastName}`,
+    pronouns: user.pronouns?.join(' / ') ?? '',
+    bio: user.bio,
+    graduationYear: user.graduationYear,
+    major: user.major ?? '',
+    email: user.email,
+    avatarUrl: user.profileImage ?? '',
+  };
+}
+
 export type BasicUser = {
   name: string;
   email: string;
 };
 
+/**
+ * Gets a public profile by email.
+ *
+ * @param email the full email, see emailFromProfileParam for route params
+ */
 export async function getPublicUserByEmail(
   email: string,
 ): Promise<ProfileData> {
   try {
-    const newEmail = email.concat('@northeastern.edu');
-    const response = await apiGetPublicUserByEmail(newEmail);
+    const response = await apiGetPublicUserByEmail(email);
 
     if (!response.ok) {
       if (process.env.NODE_ENV === 'development') {
@@ -95,6 +112,24 @@ export async function getPublicUserByEmail(
     console.error('Error fetching public user:', error);
     return FALLBACK_PROFILE_USER;
   }
+}
+
+export type TeamMembersResult =
+  { ok: true; members: TeamMemberProps[] } | { ok: false; error: string };
+
+export async function getTeamMembersByRole(
+  role: Roles,
+): Promise<TeamMembersResult> {
+  const response = await apiGetUsersByRole(role);
+
+  if (!response.ok) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`Get users by role endpoint failed for role "${role}"`);
+    }
+    return { ok: false, error: response.error };
+  }
+
+  return { ok: true, members: response.data.map(mapPublicUserToTeamMember) };
 }
 
 export async function getMyProfile(): Promise<ProfileData> {
@@ -185,7 +220,13 @@ export async function apiSignup(data: {
 export async function apiGetPublicUserByEmail(
   email: string,
 ): Promise<ApiResponse<PublicUser>> {
-  return api<PublicUser>('GET', `/user/email/${email}`);
+  return api<PublicUser>('GET', `/user/email/${encodeURIComponent(email)}`);
+}
+
+export async function apiGetUsersByRole(
+  role: Roles,
+): Promise<ApiResponse<PublicUser[]>> {
+  return api<PublicUser[]>('GET', `/user/role/${role}`);
 }
 
 export async function apiVerifyOTPToken(

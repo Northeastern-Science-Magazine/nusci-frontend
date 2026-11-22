@@ -3,10 +3,11 @@ import Text from '@/design-system/primitives/Text/Text';
 import Card from '@/design-system/primitives/Card';
 import { Badge } from '@/design-system/primitives/Badge/Badge';
 import { Box } from '@/design-system/primitives/Box/Box';
-import MediaCard from '@/design-system/components/MediaCard';
+import ProfileArticles from './ProfileArticles';
 import { notFound } from 'next/navigation';
 import { Roles } from '@/lib/types/types';
 import { getPublicUserByEmail } from '@/lib/api/users';
+import { getArticlesByAuthorEmail } from '@/lib/api/articles';
 import Image from '@/design-system/primitives/Image';
 
 export interface ProfileData {
@@ -50,8 +51,7 @@ export default async function PublicProfilePage({
     bio,
   } = userData;
 
-  const hasArticles =
-    roles.includes(Roles.Author) || roles.includes(Roles.Editor);
+  const articles = await getArticlesByAuthorEmail(email);
 
   return (
     <>
@@ -222,96 +222,7 @@ export default async function PublicProfilePage({
         </Box>
       </Box>
 
-      {/* Articles section is placeholder data, hidden until it's pulled from the db
-      {hasArticles && (
-        <Box className="bg-white shadow-md-top">
-          <Box className="max-w-6xl mx-auto px-4 laptop:px-8 py-16">
-            <Text
-              style="bold"
-              color="black"
-              size={36}
-              className="tracking-tight mb-8"
-            >
-              Articles
-            </Text>
-            <Box className="flex flex-col gap-6">
-              Top row: 3 articles
-              <Box className="flex flex-col laptop:flex-row gap-6">
-                <Box className="flex-1">
-                  <MediaCard
-                    mediaType="image"
-                    imageProps={{ src: '/icy.png', alt: 'Icy texture' }}
-                    subtitle="Research Spotlight"
-                    title="Siberian Permafrost"
-                    description="A photo-led story about the science (and spectacle) behind ice—built to read like a print spread."
-                    mediaDirection="top"
-                    size="sm"
-                    rounded="none"
-                    shadow="none"
-                    color="white"
-                    className="w-full max-w-none border border-black/10"
-                  />
-                </Box>
-                <Box className="flex-1">
-                  <MediaCard
-                    mediaType="image"
-                    imageProps={{
-                      src: '/succulent.png',
-                      alt: 'Succulent plant',
-                    }}
-                    subtitle="Science + Society"
-                    title="Urban Heat Islands, Explained"
-                    description="How cities trap heat and what we can do about it—a deep dive into urban climate science."
-                    mediaDirection="top"
-                    size="sm"
-                    rounded="none"
-                    shadow="none"
-                    color="white"
-                    className="w-full max-w-none border border-black/10"
-                  />
-                </Box>
-                <Box className="flex-1">
-                  <MediaCard
-                    mediaType="image"
-                    imageProps={{ src: '/moss.png', alt: 'Green moss texture' }}
-                    subtitle="Quick Read"
-                    title="5 Questions About CRISPR"
-                    description="A concise guide to understanding gene editing technology."
-                    mediaDirection="top"
-                    size="sm"
-                    rounded="none"
-                    shadow="none"
-                    color="white"
-                    className="w-full max-w-none border border-black/10"
-                  />
-                </Box>
-              </Box>
-              Bottom row: 1 article
-              <Box className="flex flex-col laptop:flex-row gap-6">
-                <Box className="flex-1 laptop:max-w-[calc(33.333%-1rem)]">
-                  <MediaCard
-                    mediaType="image"
-                    imageProps={{
-                      src: '/eclipse-image.png',
-                      alt: 'Solar eclipse',
-                    }}
-                    subtitle="Opinion"
-                    title="Why Science Needs Better Stories"
-                    description="How narrative can bridge the gap between research and public understanding."
-                    mediaDirection="top"
-                    size="sm"
-                    rounded="none"
-                    shadow="none"
-                    color="white"
-                    className="w-full max-w-none border border-black/10"
-                  />
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      )}
-      */}
+      {articles.length > 0 && <ProfileArticles articles={articles} />}
     </>
   );
 }

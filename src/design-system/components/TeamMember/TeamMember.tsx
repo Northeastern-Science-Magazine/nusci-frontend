@@ -10,6 +10,7 @@ import Text, { TextProps } from '@/primitives/Text';
 import { Badge } from '@/primitives/Badge/Badge';
 import Icon from '@/primitives/Icon';
 import Link from '@/primitives/Link';
+import { profilePath } from '@/lib/helpers/profile';
 
 export const TeamMember = (props: TeamMemberProps) => {
   const {
@@ -21,7 +22,7 @@ export const TeamMember = (props: TeamMemberProps) => {
     major,
     email,
     avatarUrl,
-    profileBaseUrl = '/profile',
+    linkToProfile = true,
     size,
     children,
     ...variantProps
@@ -29,10 +30,10 @@ export const TeamMember = (props: TeamMemberProps) => {
 
   const textSizes = teamMemberTextSizes[size ?? 'md'];
   const avatarSize = teamMemberAvatarSizes[size ?? 'md'];
+  const href = linkToProfile ? profilePath(email) : undefined;
 
-  return (
-    <Link href={``} newWindow={false} className={teamMemberVariants(props)}>
-      {/*<Link href={`${profileBaseUrl}/${email.split("@")[0]}`} newWindow={false} className={teamMemberVariants(props)}>*/}
+  const card = (
+    <>
       <Box className="flex items-center gap-4">
         <Avatar
           src={avatarUrl}
@@ -91,6 +92,15 @@ export const TeamMember = (props: TeamMemberProps) => {
           </Text>
         </Box>
       )}
+    </>
+  );
+
+  // Members without a usable email or a profile have nothing to link to.
+  return href ? (
+    <Link href={href} newWindow={false} className={teamMemberVariants(props)}>
+      {card}
     </Link>
+  ) : (
+    <Box className={teamMemberVariants(props)}>{card}</Box>
   );
 };

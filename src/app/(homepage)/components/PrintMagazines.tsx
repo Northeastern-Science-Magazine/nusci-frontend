@@ -48,11 +48,9 @@ export default function PrintMagazines({ magazines }: PrintMagazinesProps) {
           visibleCount={width && width > breakpoints.laptop ? 7 : 3}
           initialIndex={0}
           centerLink={(index) => {
-            const issueNumber = magazines.map(
-              (magazine) => magazine.issueNumber,
-            );
-            return issueNumber
-              ? `/print-archive#issue-${issueNumber}`
+            const issueNumber = magazines[index]?.issueNumber;
+            return issueNumber != null
+              ? `/print-archive/${issueNumber}`
               : '/print-archive';
           }}
         />

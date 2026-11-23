@@ -42,11 +42,8 @@ export default async function PrintArchivePage() {
                   className="h-auto w-full rounded shadow transition group-hover:shadow-lg"
                 />
                 <span className="mt-2 block text-sm font-medium group-hover:underline">
-                  Issue {issueNumber}
+                  {title || `Issue ${issueNumber}`}
                 </span>
-                {title ? (
-                  <span className="block text-xs text-gray-600">{title}</span>
-                ) : null}
               </Link>
             </li>
           ))}

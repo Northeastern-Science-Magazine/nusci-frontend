@@ -55,8 +55,7 @@ export default async function PrintIssuePage({
           ← Back to Print Archive
         </Link>
         <h1 className="text-lg font-bold">
-          Issue {issueNumber}
-          {issue.title ? `: ${issue.title}` : ''}
+          {issue.title || `Issue ${issueNumber}`}
         </h1>
         <div className="flex gap-4">
           {older !== undefined ? (
@@ -72,14 +71,14 @@ export default async function PrintIssuePage({
         </div>
       </nav>
       <iframe
-        src={issue.pdfUrl}
+        src={`/print-archive/${issueNumber}/pdf`}
         title={`NU Sci Magazine Issue ${issueNumber}`}
         className="h-[80vh] w-full rounded border"
       />
       <p className="mt-3 text-center text-sm">
         Viewer not loading?{' '}
         <a
-          href={issue.pdfUrl}
+          href={`/print-archive/${issueNumber}/pdf`}
           target="_blank"
           rel="noopener noreferrer"
           className="underline"

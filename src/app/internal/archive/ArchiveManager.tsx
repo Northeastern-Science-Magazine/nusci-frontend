@@ -224,10 +224,10 @@ export default function ArchiveManager({
                 className="h-20 w-16 object-cover border border-black/10"
               />
               <Text style="bold" size={18} color="black" className="flex-1">
-                {issue.issueNumber}. {issue.title}
+                {issue.title}
               </Text>
               <a
-                href={issue.pdfUrl}
+                href={`/print-archive/${issue.issueNumber}/pdf`}
                 target="_blank"
                 rel="noreferrer"
                 className="underline text-sm"

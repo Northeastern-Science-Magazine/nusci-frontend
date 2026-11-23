@@ -4,6 +4,8 @@ import MediaCarousel from './MediaCarousel';
 const meta: Meta<typeof MediaCarousel> = {
   title: 'Components/MediaCarousel',
   component: MediaCarousel,
+  // useRouter needs the mocked app router
+  parameters: { nextjs: { appDirectory: true } },
   argTypes: {
     visibleCount: {
       control: { type: 'number', min: 1, step: 2 },

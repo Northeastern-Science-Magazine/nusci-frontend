@@ -6,17 +6,17 @@ import { apiGetArchivedIssue } from '@/lib/api/archive';
  * Presigned S3 URLs expire, so this looks up a fresh one on every visit.
  */
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { issueNumber: string } },
+  _request: NextRequest,
+  { params }: { params: { number: string } },
 ) {
-  const issueNumber = Number(params.issueNumber);
-  if (!Number.isInteger(issueNumber) || issueNumber <= 0) {
-    return NextResponse.redirect(new URL('/not-found', request.url));
+  const issueNumber = Number(params.number);
+  if (!Number.isInteger(issueNumber) || issueNumber < 1) {
+    return new NextResponse('Issue not found', { status: 404 });
   }
 
   const response = await apiGetArchivedIssue(issueNumber);
   if (!response.ok) {
-    return NextResponse.redirect(new URL('/not-found', request.url));
+    return new NextResponse('Issue not found', { status: 404 });
   }
 
   return NextResponse.redirect(response.data.pdfUrl);

@@ -70,7 +70,7 @@ export default function TeamsPage() {
               rounded="rounded"
               // Cards are not links, so drop the hover lift and give every
               // title the same gap above its description.
-              className="h-full w-full max-w-none hover:translate-y-0 [&>div:first-child>p:first-child]:mb-2 [&_.media-container]:flex-1"
+              className="h-full w-full max-w-none hover:translate-y-0 [&_.media-card-title]:mb-2 [&_.media-container]:flex-1"
               color="white"
             />
           ))}

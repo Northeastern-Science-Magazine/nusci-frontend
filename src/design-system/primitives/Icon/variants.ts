@@ -41,6 +41,7 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
   MicVocal,
 } from 'lucide-react';
 import {
@@ -178,6 +179,7 @@ export const iconMap = {
   check: Check,
   chevronDown: ChevronDown,
   chevronUp: ChevronUp,
+  chevronRight: ChevronRight,
   micVocal: MicVocal,
 };
 

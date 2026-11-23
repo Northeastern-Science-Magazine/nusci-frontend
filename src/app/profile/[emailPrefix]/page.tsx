@@ -11,6 +11,7 @@ import Image from '@/design-system/primitives/Image';
 
 export interface ProfileData {
   name: string;
+  firstName: string;
   pronouns: string;
   graduationYear: number | null;
   major: string;

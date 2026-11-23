@@ -86,83 +86,84 @@ export default async function DashboardPage({
   }
 
   const roles: Roles[] = profile.roles;
-  const firstName = profile.name.split(' ')[0] || profile.name;
+  const firstName = profile.firstName.trim() || profile.name.trim();
 
   const cards = DASHBOARD_CARDS.filter((card) =>
     card.roles.some((role) => roles.includes(role)),
   );
 
   return (
-    <Box className="min-h-screen bg-white">
-      {/* Hero, same pattern as the About Us hero */}
-      <OverlayMedia className="w-full relative overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            raw
-            src="/icy.png"
-            alt="Icy pine needles with icicles background"
-            width="w-full"
-          />
-        </div>
+    <Font serif>
+      <Box className="min-h-screen bg-white">
+        {/* Hero, same pattern as the About Us hero */}
+        <OverlayMedia className="w-full relative overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              raw
+              src="/icy.png"
+              alt="Icy pine needles with icicles background"
+              width="w-full"
+            />
+          </div>
 
-        <Overlay background="solid-black" className="relative">
-          {/* darker fade behind the text so it stays readable over the photo */}
-          <Box className="bg-gradient-to-r from-black/60 via-black/30 to-transparent">
-            <Box className="mx-auto w-full max-w-6xl px-6 py-16 drop-shadow-md laptop:py-20">
-              <Text
-                size={12}
-                color="white"
-                spacing="xl"
-                opacity={90}
-                className="uppercase"
-              >
-                NU Sci Internal Portal
-              </Text>
-              <Text
-                size={60}
-                color="white"
-                spacing="sm"
-                className="mt-4 leading-none max-laptop:text-[48px] max-sm:text-[36px]"
-              >
-                Welcome back, {firstName}
-              </Text>
-              <Text
-                size={20}
-                color="white"
-                opacity={95}
-                className="mt-4 max-w-2xl font-light max-sm:text-[16px]"
-              >
-                Everything you need to put the magazine together, in one place.
-              </Text>
+          <Overlay background="solid-black" className="relative">
+            {/* darker fade behind the text so it stays readable over the photo */}
+            <Box className="bg-gradient-to-r from-black/60 via-black/30 to-transparent">
+              <Box className="mx-auto w-full max-w-6xl px-6 py-16 drop-shadow-md laptop:py-20">
+                <Text
+                  size={12}
+                  color="white"
+                  spacing="xl"
+                  opacity={90}
+                  className="uppercase"
+                >
+                  NU Sci Internal Portal
+                </Text>
+                <Text
+                  size={60}
+                  color="white"
+                  spacing="sm"
+                  className="mt-4 leading-none max-laptop:text-[48px] max-sm:text-[36px]"
+                >
+                  Welcome back, {firstName}
+                </Text>
+                <Text
+                  size={20}
+                  color="white"
+                  opacity={95}
+                  className="mt-4 max-w-2xl font-light max-sm:text-[16px]"
+                >
+                  Everything you need to put the magazine together, in one
+                  place.
+                </Text>
 
-              {roles.length > 0 && (
-                <Box mt={8} className="flex flex-wrap gap-3">
-                  {roles.map((role) => (
-                    <Badge
-                      key={role}
-                      rounded="md"
-                      color="sage-green"
-                      className="px-4 py-2"
-                    >
-                      <Text
-                        size={12}
-                        color="black"
-                        spacing="lg"
-                        className="font-semibold uppercase"
+                {roles.length > 0 && (
+                  <Box mt={8} className="flex flex-wrap gap-3">
+                    {roles.map((role) => (
+                      <Badge
+                        key={role}
+                        rounded="md"
+                        color="sage-green"
+                        className="px-4 py-2"
                       >
-                        {role}
-                      </Text>
-                    </Badge>
-                  ))}
-                </Box>
-              )}
+                        <Text
+                          size={12}
+                          color="black"
+                          spacing="lg"
+                          className="font-semibold uppercase"
+                        >
+                          {role}
+                        </Text>
+                      </Badge>
+                    ))}
+                  </Box>
+                )}
+              </Box>
             </Box>
-          </Box>
-        </Overlay>
-      </OverlayMedia>
+          </Overlay>
+        </OverlayMedia>
 
-      {/* Tools, styled like the homepage article sections */}
-      <Font serif>
+        {/* Tools, styled like the homepage article sections */}
         <Box className="mx-auto max-w-6xl px-6 py-16">
           <Box className="flex flex-col items-start justify-between gap-2 laptop:flex-row laptop:items-end">
             <Text size={48} className="tracking-tight">
@@ -193,7 +194,7 @@ export default async function DashboardPage({
             </Text>
           )}
         </Box>
-      </Font>
-    </Box>
+      </Box>
+    </Font>
   );
 }

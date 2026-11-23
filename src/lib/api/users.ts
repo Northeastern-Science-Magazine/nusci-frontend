@@ -34,6 +34,7 @@ export type PublicUser = {
 
 const FALLBACK_PROFILE_USER: ProfileData = {
   name: 'Unknown User',
+  firstName: '',
   pronouns: '',
   graduationYear: null,
   major: '',
@@ -53,6 +54,7 @@ function mapRolesToEnum(roleStrings: string[]): Roles[] {
 function mapPublicUserToProfile(user: PublicUser): ProfileData {
   return {
     name: `${user.firstName} ${user.lastName}`,
+    firstName: user.firstName,
     pronouns: user.pronouns?.join(' / ') ?? '',
     graduationYear: user.graduationYear ?? null,
     major: user.major ?? '',

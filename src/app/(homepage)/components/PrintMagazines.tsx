@@ -32,7 +32,6 @@ export default function PrintMagazines({ magazines }: PrintMagazinesProps) {
           <Box className="flex items-center gap-3">
             <Link
               href="/print-archive"
-              newWindow={false}
               className="rounded-full border border-black/15 px-4 py-2 text-[14px] text-black/80 hover:bg-black/5"
             >
               View the archive
@@ -47,12 +46,7 @@ export default function PrintMagazines({ magazines }: PrintMagazinesProps) {
           size={width && width > breakpoints.laptop ? 'lg' : 'md'}
           visibleCount={width && width > breakpoints.laptop ? 7 : 3}
           initialIndex={0}
-          centerLink={(index) => {
-            const issueNumber = magazines[index]?.issueNumber;
-            return issueNumber != null
-              ? `/print-archive/${issueNumber}`
-              : '/print-archive';
-          }}
+          centerLink={(i) => `/print-archive/${magazines[i].issueNumber}`}
         />
 
         <Divider mt={8} />

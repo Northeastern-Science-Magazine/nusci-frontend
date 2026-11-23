@@ -227,7 +227,7 @@ export default function ArchiveManager({
                 {issue.issueNumber}. {issue.title}
               </Text>
               <a
-                href={`/archive/${issue.issueNumber}`}
+                href={issue.pdfUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="underline text-sm"

@@ -8,8 +8,7 @@ export const metadata = {
 };
 
 export default async function PrintArchivePage() {
-  // newest first
-  const magazines = (await getMagazineIssues()).reverse();
+  const magazines = await getMagazineIssues();
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">

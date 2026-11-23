@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { apiGetArchivedIssues } from '@/lib/api/archive';
+import { permanentRedirect, redirect } from 'next/navigation';
+import { getSortedArchivedIssues } from '@/lib/api/archive';
 
 export default async function PrintIssuePage({
   params,
@@ -8,9 +8,16 @@ export default async function PrintIssuePage({
   params: { number: string };
 }) {
   const issueNumber = Number(params.number);
-  if (!Number.isInteger(issueNumber) || issueNumber < 1) notFound();
+  // not an issue number, so show the full archive instead
+  if (!Number.isInteger(issueNumber) || issueNumber < 1) {
+    redirect('/print-archive');
+  }
+  // canonical URL is the bare number, e.g. 01 or 1e0 -> 1
+  if (params.number !== String(issueNumber)) {
+    permanentRedirect(`/print-archive/${issueNumber}`);
+  }
 
-  const response = await apiGetArchivedIssues();
+  const response = await getSortedArchivedIssues();
 
   if (!response.ok) {
     return (
@@ -32,17 +39,14 @@ export default async function PrintIssuePage({
   }
 
   // newest first
-  const issues = [...response.data].sort(
-    (a, b) => b.issueNumber - a.issueNumber,
-  );
+  const issues = response.data;
   const idx = issues.findIndex((i) => i.issueNumber === issueNumber);
-  if (idx === -1) notFound();
+  // no such issue (yet), so show the full archive instead
+  if (idx === -1) redirect('/print-archive');
 
   const issue = issues[idx];
   const newer = issues[idx - 1]?.issueNumber;
   const older = issues[idx + 1]?.issueNumber;
-  // stable route that redirects to a fresh presigned PDF URL
-  const pdfUrl = `/archive/${issueNumber}`;
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-6">
@@ -68,14 +72,14 @@ export default async function PrintIssuePage({
         </div>
       </nav>
       <iframe
-        src={pdfUrl}
+        src={issue.pdfUrl}
         title={`NU Sci Magazine Issue ${issueNumber}`}
         className="h-[80vh] w-full rounded border"
       />
       <p className="mt-3 text-center text-sm">
         Viewer not loading?{' '}
         <a
-          href={pdfUrl}
+          href={issue.pdfUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="underline"

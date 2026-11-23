@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, useInView } from 'framer-motion';
 import clsx from 'clsx';
 import Image from '@/primitives/Image';
@@ -20,6 +21,7 @@ export function MediaCarousel({
   className,
   centerLink,
 }: MediaCarouselProps) {
+  const router = useRouter();
   const layout = mediaCarouselLayoutBySize[size];
   const mod = (n: number, m: number) => ((n % m) + m) % m;
   const [index, setIndex] = useState(() =>
@@ -87,7 +89,8 @@ export function MediaCarousel({
             rotateY: -direction * 25,
             scale: 0.85,
           };
-          const href = centerLink ? centerLink(itemIndex) : '';
+          // without a link, the center item opens the full archive
+          const href = centerLink ? centerLink(itemIndex) : '/print-archive';
 
           return (
             <motion.div
@@ -106,11 +109,7 @@ export function MediaCarousel({
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               onClick={
-                isCenter
-                  ? () => {
-                      window.location.href = href;
-                    }
-                  : () => paginate(offset)
+                isCenter ? () => router.push(href) : () => paginate(offset)
               }
               style={{ zIndex }}
               className={clsx(

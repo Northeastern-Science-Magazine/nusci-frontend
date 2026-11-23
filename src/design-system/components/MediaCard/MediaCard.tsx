@@ -30,7 +30,10 @@ export const MediaCard = (props: MediaCardProps) => {
           </Text>
         )}
         {title && (
-          <Text size={textSizes.title} className="media-card-title font-semibold text-inherit">
+          <Text
+            size={textSizes.title}
+            className="media-card-title font-semibold text-inherit"
+          >
             {title}
           </Text>
         )}

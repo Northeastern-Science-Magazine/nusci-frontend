@@ -41,7 +41,8 @@ export default async function DashboardPage({
   const profile = await getMyProfile();
   const myEmailPrefix = profile.email.split('@')[0];
 
-  if (emailPrefix !== myEmailPrefix) {
+  // Case-insensitive so a hand-typed /internal/dashboard/Jane.Doe still works.
+  if (emailPrefix.toLowerCase() !== myEmailPrefix.toLowerCase()) {
     notFound();
   }
 

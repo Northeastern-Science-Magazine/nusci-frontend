@@ -11,7 +11,7 @@ export function AboutUsHero() {
         <Image
           raw
           src="/succulent.png"
-          alt="Icy pine needles with icicles background"
+          alt="Close-up of green succulent rosettes with pink-tipped buds"
           width="w-full"
         />
       </div>

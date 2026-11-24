@@ -22,7 +22,6 @@ export interface MagazineIssue {
   issueNumber: number;
   thumbnailUrl: string;
   title: string;
-  href: string;
 }
 
 function archivedIssueToMagazine(issue: ArchivedIssue): MagazineIssue {
@@ -31,24 +30,36 @@ function archivedIssueToMagazine(issue: ArchivedIssue): MagazineIssue {
     issueNumber: issue.issueNumber,
     thumbnailUrl: issue.coverUrl,
     title: issue.title,
-    // stable link that redirects to a fresh presigned URL
-    href: `/archive/${issue.issueNumber}`,
   };
 }
 
 /**
- * All archived print issues, in issue number order (oldest first).
+ * All archived print issues, newest first.
+ * The one place archive ordering is decided.
+ */
+export async function getSortedArchivedIssues(): Promise<
+  ApiResponse<ArchivedIssue[]>
+> {
+  const response = await apiGetArchivedIssues();
+  if (!response.ok) return response;
+
+  return {
+    ...response,
+    data: [...response.data].sort((a, b) => b.issueNumber - a.issueNumber),
+  };
+}
+
+/**
+ * All archived print issues as magazines, newest first.
  */
 export async function getMagazineIssues(): Promise<MagazineIssue[]> {
-  const response = await apiGetArchivedIssues();
+  const response = await getSortedArchivedIssues();
   if (!response.ok) {
     console.warn('Get archived issues failed');
     return [];
   }
 
-  return response.data
-    .map(archivedIssueToMagazine)
-    .sort((a, b) => a.issueNumber - b.issueNumber);
+  return response.data.map(archivedIssueToMagazine);
 }
 
 export async function apiGetArchivedIssues(): Promise<

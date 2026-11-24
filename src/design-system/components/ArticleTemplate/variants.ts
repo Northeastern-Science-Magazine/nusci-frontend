@@ -32,6 +32,8 @@ export interface ArticleTemplateProps extends VariantProps<
 > {
   title: string;
   author: string;
+  /** When given, each name is shown (linked if it has an href) instead of `author` */
+  authors?: { name: string; href?: string }[];
   editor?: string;
   categories?: string[];
   issueNumber?: number;

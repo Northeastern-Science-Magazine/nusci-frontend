@@ -11,6 +11,7 @@ import Box from '@/primitives/Box';
 import Text from '@/primitives/Text';
 import { Flex } from '@/primitives/Flex';
 import { apiGetInvite, apiSignup } from '@/lib/api/users';
+import { newPasswordRules, PASSWORD_HINT } from '@/lib/helpers/password';
 
 type SignUpFormValues = {
   firstName: string;
@@ -217,19 +218,7 @@ export default function SignUpPage() {
           <Box>
             <FormField<SignUpFormValues>
               name="password"
-              rules={{
-                required: 'Password is required',
-                minLength: {
-                  value: 8,
-                  message: 'Password must be at least 8 characters',
-                },
-                validate: (value) => {
-                  if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) {
-                    return 'Password must contain uppercase, lowercase, and numbers';
-                  }
-                  return true;
-                },
-              }}
+              rules={newPasswordRules<SignUpFormValues>()}
             >
               <TextInput
                 variant="outline"
@@ -241,10 +230,7 @@ export default function SignUpPage() {
                 type="password"
               />
             </FormField>
-            <p className="mt-2 text-xs text-gray-500">
-              Must be at least 8 characters with uppercase, lowercase, and
-              numbers
-            </p>
+            <p className="mt-2 text-xs text-gray-500">{PASSWORD_HINT}</p>
           </Box>
 
           <FormField<SignUpFormValues>

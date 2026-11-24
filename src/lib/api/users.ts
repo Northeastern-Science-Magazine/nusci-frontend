@@ -2,6 +2,7 @@
 
 import { Roles } from '../types/types';
 import { api, ApiResponse } from './api';
+import { normalizeEmail } from '@/lib/helpers/email';
 import { ProfileData } from '@/app/profile/[emailPrefix]/page';
 
 /**
@@ -76,7 +77,7 @@ export async function getPublicUserByEmail(
   email: string,
 ): Promise<ProfileData> {
   try {
-    const newEmail = email.concat('@northeastern.edu');
+    const newEmail = normalizeEmail(email).concat('@northeastern.edu');
     const response = await apiGetPublicUserByEmail(newEmail);
 
     if (!response.ok) {
@@ -160,7 +161,10 @@ export async function apiLogin(data: {
   email: string;
   password: string;
 }): Promise<ApiResponse<void>> {
-  return api('POST', '/user/login', data);
+  return api('POST', '/user/login', {
+    ...data,
+    email: normalizeEmail(data.email),
+  });
 }
 
 /**
@@ -194,7 +198,10 @@ export async function apiSignup(data: {
 export async function apiGetPublicUserByEmail(
   email: string,
 ): Promise<ApiResponse<PublicUser>> {
-  return api<PublicUser>('GET', `/user/email/${email}`);
+  return api<PublicUser>(
+    'GET',
+    `/user/email/${encodeURIComponent(normalizeEmail(email))}`,
+  );
 }
 
 export async function apiVerifyOTPToken(
@@ -222,7 +229,10 @@ export async function apiCreateAuthor(author: {
   lastName: string;
   email: string;
 }): Promise<ApiResponse<CreatedAuthor>> {
-  return api('POST', '/user/author', author);
+  return api('POST', '/user/author', {
+    ...author,
+    email: normalizeEmail(author.email),
+  });
 }
 
 type InviteResult = {
@@ -238,5 +248,8 @@ export async function apiInviteUser(
   emails: string[],
   roles: string[],
 ): Promise<ApiResponse<InviteResult>> {
-  return api('POST', '/user/invite', { to: emails, roles });
+  return api('POST', '/user/invite', {
+    to: Array.from(new Set(emails.map(normalizeEmail))),
+    roles,
+  });
 }

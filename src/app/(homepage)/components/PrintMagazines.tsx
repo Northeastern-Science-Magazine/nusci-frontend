@@ -31,8 +31,7 @@ export default function PrintMagazines({ magazines }: PrintMagazinesProps) {
           </Box>
           <Box className="flex items-center gap-3">
             <Link
-              href="https://northeasternsciencemagazine.github.io/nusci-issuu/"
-              newWindow
+              href="/print-archive"
               className="rounded-full border border-black/15 px-4 py-2 text-[14px] text-black/80 hover:bg-black/5"
             >
               View the archive
@@ -46,8 +45,8 @@ export default function PrintMagazines({ magazines }: PrintMagazinesProps) {
           media={magazines.map((magazine) => magazine.thumbnailUrl)}
           size={width && width > breakpoints.laptop ? 'lg' : 'md'}
           visibleCount={width && width > breakpoints.laptop ? 7 : 3}
-          initialIndex={magazines.length - 1}
-          centerLink={(index) => magazines[index].href}
+          initialIndex={0}
+          centerLink={(i) => `/print-archive/${magazines[i].issueNumber}`}
         />
 
         <Divider mt={8} />

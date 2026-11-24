@@ -15,6 +15,7 @@ import { Controller } from 'react-hook-form';
 import { PublicUser, apiUpdateMyProfile } from '@/lib/api/users';
 import { uploadToS3 } from '@/lib/helpers/uploadToS3';
 import { mediaPath } from '@/lib/helpers/media';
+import ChangePasswordForm from './ChangePasswordForm';
 
 interface ProfileFormValues {
   firstName: string;
@@ -63,7 +64,12 @@ export default function ProfileForm({ user }: ProfileFormProps) {
     );
   }
 
-  return <ProfileEditor user={user} />;
+  return (
+    <>
+      <ProfileEditor user={user} />
+      <ChangePasswordForm />
+    </>
+  );
 }
 
 function ProfileEditor({ user }: { user: PublicUser }) {

@@ -2,6 +2,7 @@
 
 import { Roles } from '../types/types';
 import { api, ApiResponse } from './api';
+import { normalizeEmail } from '@/lib/helpers/email';
 import { ProfileData } from '@/app/profile/[emailPrefix]/page';
 
 /**
@@ -34,6 +35,7 @@ export type PublicUser = {
 
 const FALLBACK_PROFILE_USER: ProfileData = {
   name: 'Unknown User',
+  firstName: '',
   pronouns: '',
   graduationYear: null,
   major: '',
@@ -53,6 +55,7 @@ function mapRolesToEnum(roleStrings: string[]): Roles[] {
 function mapPublicUserToProfile(user: PublicUser): ProfileData {
   return {
     name: `${user.firstName} ${user.lastName}`,
+    firstName: user.firstName,
     pronouns: user.pronouns?.join(' / ') ?? '',
     graduationYear: user.graduationYear ?? null,
     major: user.major ?? '',
@@ -74,7 +77,7 @@ export async function getPublicUserByEmail(
   email: string,
 ): Promise<ProfileData> {
   try {
-    const newEmail = email.concat('@northeastern.edu');
+    const newEmail = normalizeEmail(email).concat('@northeastern.edu');
     const response = await apiGetPublicUserByEmail(newEmail);
 
     if (!response.ok) {
@@ -147,11 +150,21 @@ export async function apiUpdateMyProfile(
   return api('PATCH', '/user/me', update);
 }
 
+export async function apiChangePassword(data: {
+  currentPassword: string;
+  newPassword: string;
+}): Promise<ApiResponse<{ message: string }>> {
+  return api('PATCH', '/user/me/password', data);
+}
+
 export async function apiLogin(data: {
   email: string;
   password: string;
 }): Promise<ApiResponse<void>> {
-  return api('POST', '/user/login', data);
+  return api('POST', '/user/login', {
+    ...data,
+    email: normalizeEmail(data.email),
+  });
 }
 
 /**
@@ -185,13 +198,26 @@ export async function apiSignup(data: {
 export async function apiGetPublicUserByEmail(
   email: string,
 ): Promise<ApiResponse<PublicUser>> {
-  return api<PublicUser>('GET', `/user/email/${email}`);
+  return api<PublicUser>(
+    'GET',
+    `/user/email/${encodeURIComponent(normalizeEmail(email))}`,
+  );
 }
 
 export async function apiVerifyOTPToken(
   token: string,
 ): Promise<ApiResponse<void>> {
   return api<void>('POST', `/user/verify-otp?token=${token}`);
+}
+
+/**
+ * Emails a one-time link if the email belongs to an approved account.
+ * The response is the same for every email.
+ */
+export async function apiRequestOTP(
+  email: string,
+): Promise<ApiResponse<{ message: string }>> {
+  return api<{ message: string }>('POST', '/user/otp', { email });
 }
 
 export async function apiGetBasicUserList(): Promise<ApiResponse<BasicUser[]>> {
@@ -213,7 +239,10 @@ export async function apiCreateAuthor(author: {
   lastName: string;
   email: string;
 }): Promise<ApiResponse<CreatedAuthor>> {
-  return api('POST', '/user/author', author);
+  return api('POST', '/user/author', {
+    ...author,
+    email: normalizeEmail(author.email),
+  });
 }
 
 type InviteResult = {
@@ -229,5 +258,8 @@ export async function apiInviteUser(
   emails: string[],
   roles: string[],
 ): Promise<ApiResponse<InviteResult>> {
-  return api('POST', '/user/invite', { to: emails, roles });
+  return api('POST', '/user/invite', {
+    to: Array.from(new Set(emails.map(normalizeEmail))),
+    roles,
+  });
 }

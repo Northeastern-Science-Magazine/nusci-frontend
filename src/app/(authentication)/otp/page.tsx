@@ -9,8 +9,8 @@ import Button from '@/primitives/Button';
 import Box from '@/primitives/Box';
 import Text from '@/primitives/Text';
 import { Flex } from '@/primitives/Flex';
-import { apiSendEmail } from '@/lib/api/email';
-import { EmailType } from '@/lib/types/types';
+import { normalizeEmail } from '@/lib/helpers/email';
+import { apiRequestOTP } from '@/lib/api/users';
 
 type EmailFormValues = {
   email: string;
@@ -21,9 +21,9 @@ export default function OTPPage() {
   const [submittedEmail, setSubmittedEmail] = useState('');
 
   const onEmailSubmit: SubmitHandler<EmailFormValues> = async (data) => {
-    await apiSendEmail({ to: [data.email], type: EmailType.OTP });
-    console.log({ to: [data.email], type: EmailType.OTP });
-    setSubmittedEmail(data.email);
+    const email = normalizeEmail(data.email);
+    await apiRequestOTP(email);
+    setSubmittedEmail(email);
     setIsSubmitted(true);
   };
   return (
@@ -37,6 +37,7 @@ export default function OTPPage() {
         }}
         size="lg"
         rounded="rounded"
+        onHover={false}
         className="max-w-7xl w-full [&_.media-container]:flex-1"
         color="white"
       >
@@ -89,10 +90,10 @@ export default function OTPPage() {
               name="email"
               rules={{
                 required: 'Email is required',
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                  message: 'Please enter a valid email',
-                },
+                validate: (value: string) =>
+                  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+                    normalizeEmail(value),
+                  ) || 'Please enter a valid email',
               }}
             >
               <TextInput
